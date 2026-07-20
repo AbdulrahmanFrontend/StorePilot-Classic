@@ -55,6 +55,8 @@
   <ItemGroup>
     <Compile Include="Database\DatabaseInitializer.cs" />
     <Compile Include="Database\DatabaseScriptRunner.cs" />
+    <Compile Include="Enums\EnumMappings.cs" />
+    <Compile Include="Enums\StorePilotEnums.cs" />
     <Compile Include="Helpers\AppPaths.cs" />
     <Compile Include="Helpers\StartupManager.cs" />
     <Compile Include="Models\CashTransactionModel.cs" />

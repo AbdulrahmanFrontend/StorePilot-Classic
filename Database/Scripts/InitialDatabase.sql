@@ -1,3 +1,5 @@
+-- Tables
+
 CREATE TABLE "Units" (
 	"UnitID"	INTEGER NOT NULL,
 	"UnitName"	TEXT NOT NULL UNIQUE,
@@ -155,3 +157,23 @@ CREATE TABLE "SalesReturnItems" (
 	FOREIGN KEY("ProductID") REFERENCES "Products"("ProductID"),
 	FOREIGN KEY("ReturnID") REFERENCES "SalesReturns"("ReturnID")
 ) STRICT;
+
+
+-- Views
+
+CREATE VIEW view_SuppliersDetails AS
+SELECT Suppliers.SupplierID, People.PersonID, People.Name,
+People.Phone, People.Address, People.CreatedAt, 
+Suppliers.Notes, Suppliers.Active
+FROM Suppliers
+JOIN People 
+ON Suppliers.PersonID = People.PersonID
+ORDER BY Suppliers.Active DESC, Suppliers.SupplierID DESC;
+
+CREATE VIEW view_CustomersDetails AS
+SELECT Customers.CustomerID, People.PersonID, People.Name,
+People.Phone, People.Address, People.CreatedAt, 
+Customers.Notes, Customers.Active
+FROM Customers
+JOIN People ON Customers.PersonID = People.PersonID
+ORDER BY Customers.Active DESC, Customers.CustomerID DESC;

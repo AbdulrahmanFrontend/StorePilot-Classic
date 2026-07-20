@@ -13,11 +13,11 @@ namespace StorePilot.Core.Models
 
         [Required("مطلوب إدخال الإسم")]
         [MaxLength(50, "يجب ألا يتجاوز طول الإسم ال 50 حرفا")]
-        public string PersonName { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
 
         [Required("مطلوب إدخال رقم الهاتف")]
         [PhoneNo("رقم هاتف غير صالح")]
-        public string PhoneNumber { get; set; } = string.Empty;
+        public string Phone { get; set; } = string.Empty;
 
         [MaxLength(50, "يجب ألا يتجاوز طول العنوان ال 50 حرف")]
         public string Address { get; set; } = string.Empty;
