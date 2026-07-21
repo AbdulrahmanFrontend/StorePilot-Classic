@@ -40,6 +40,12 @@
     <Reference Include="DevToolkit.Logging">
       <HintPath>..\DevToolkit\DevToolkit.Logging\bin\Debug\DevToolkit.Logging.dll</HintPath>
     </Reference>
+    <Reference Include="StorePilot.Core">
+      <HintPath>..\StorePilot.Core\bin\Debug\StorePilot.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="StorePilot.DAL">
+      <HintPath>..\StorePilot.DAL\bin\Debug\StorePilot.DAL.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -51,7 +57,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BackupService.cs" />
+    <Compile Include="CustomerService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SupplierService.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

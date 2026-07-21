@@ -62,7 +62,7 @@ namespace StorePilot.DAL
                 },
             };
 
-            var result = DbManager.Current?.GetScalar<int>(
+            Result<int> result = DbManager.Current?.GetScalar<int>(
                 con,
                 trans,
                 CommandType.Text,
@@ -105,7 +105,7 @@ namespace StorePilot.DAL
                 }
             };
 
-            var result = DbManager.Current?.ExecuteNonQuery(
+            Result<int> result = DbManager.Current?.ExecuteNonQuery(
                 con,
                 trans,
                 CommandType.Text,
@@ -137,7 +137,7 @@ namespace StorePilot.DAL
                 },
             };
 
-            var result = DbManager.Current?.ExecuteNonQuery(
+            Result<int> result = DbManager.Current?.ExecuteNonQuery(
                 CommandType.Text,
                 Query,
                 Parameters);

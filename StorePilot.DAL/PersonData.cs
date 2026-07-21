@@ -45,7 +45,7 @@ namespace StorePilot.DAL
                 },
             };
 
-            var result = DbManager.Current?.GetScalar<int>(
+            Result<int> result = DbManager.Current?.GetScalar<int>(
                 con,
                 trans,
                 CommandType.Text,
@@ -101,7 +101,7 @@ namespace StorePilot.DAL
                 },
             };
 
-            var result = DbManager.Current?.ExecuteNonQuery(
+            Result<int> result = DbManager.Current?.ExecuteNonQuery(
                 con,
                 trans,
                 CommandType.Text,
@@ -114,7 +114,7 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية تحديث بيانات هذا الشخص!");
         }
 
-        public static Result<bool> IsNameFound(string name, int id)
+        public static Result<bool> IsFound(string name, int id)
         {
             string Query = @"SELECT EXISTS
                 (

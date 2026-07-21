@@ -119,7 +119,7 @@ CREATE TABLE "Customers" (
 CREATE TABLE "PurchasesInvoices" (
 	"PurchaseInvoiceID"	INTEGER NOT NULL,
 	"InvoiceID"	INTEGER NOT NULL UNIQUE,
-	"SupplierID"	INTEGER NOT NULL,
+	"SupplierID"	INTEGER,
 	PRIMARY KEY("PurchaseInvoiceID" AUTOINCREMENT),
 	FOREIGN KEY("InvoiceID") REFERENCES "Invoices"("InvoiceID"),
 	FOREIGN KEY("SupplierID") REFERENCES "Suppliers"("SupplierID")
@@ -128,7 +128,7 @@ CREATE TABLE "PurchasesInvoices" (
 CREATE TABLE "SalesInvoices" (
 	"SaleInvoiceID"	INTEGER NOT NULL,
 	"InvoiceID"	INTEGER NOT NULL UNIQUE,
-	"CustomerID"	INTEGER NOT NULL,
+	"CustomerID"	INTEGER,
 	PRIMARY KEY("SaleInvoiceID" AUTOINCREMENT),
 	FOREIGN KEY("CustomerID") REFERENCES "Customers"("CustomerID"),
 	FOREIGN KEY("InvoiceID") REFERENCES "Invoices"("InvoiceID")
