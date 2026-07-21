@@ -24,4 +24,19 @@ namespace StorePilot.Core.Enums
         Phone = 2,
         Address = 3,
     }
+
+    public enum FilterMethodsProducts
+    {
+        ProductName = 1,
+        Unit = 2,
+        Group = 3,
+        BarCode = 4,
+    }
+
+    public enum FilterMethodsCash
+    {
+        TransactionDate = 1,
+        Type = 2,
+        Description = 3,
+    }
 }

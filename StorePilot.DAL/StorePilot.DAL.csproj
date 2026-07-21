@@ -54,9 +54,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomerData.cs" />
+    <Compile Include="GroupData.cs" />
+    <Compile Include="PaymentMethodData.cs" />
     <Compile Include="PersonData.cs" />
+    <Compile Include="CashTransactionData.cs" />
+    <Compile Include="ProductData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SupplierData.cs" />
+    <Compile Include="UnitData.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
