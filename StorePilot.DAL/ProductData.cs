@@ -44,7 +44,6 @@ namespace StorePilot.DAL
                 BarCode, 
                 UnitID,
                 GroupID, 
-                Quantity, 
                 MinQuantity, 
                 PurchasePrice,
                 SalePrice,
@@ -56,7 +55,6 @@ namespace StorePilot.DAL
                 @BarCode, 
                 @UnitID,
                 @GroupID, 
-                @Quantity, 
                 @MinQuantity, 
                 @PurchasePrice,
                 @SalePrice,
@@ -90,12 +88,6 @@ namespace StorePilot.DAL
                     Name = "@UnitID",
                     DbType = DbType.Int64,
                     Value = model.UnitID,
-                },
-                new DbParameterInfo
-                {
-                    Name = "@Quantity",
-                    DbType = DbType.Decimal,
-                    Value = model.Quantity,
                 },
                 new DbParameterInfo
                 {
@@ -550,12 +542,12 @@ namespace StorePilot.DAL
                 Parameters);
         }
 
-        public static Result<int> GetForSelection()
+        public static Result<DataTable> GetForSelection()
         {
             string Query = @"SELECT ProductID, ProductName FROM Products
                 WHERE Active = 1;";
 
-            return DataQueryService.Scalar<int>(CommandType.Text, Query);
+            return DbManager.Current?.GetDataTable(CommandType.Text, Query);
         }
 
         public static Result<DataTable> GetProducts(
