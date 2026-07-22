@@ -106,7 +106,7 @@ namespace StorePilot.BLL
             if (!result.IsSuccess)
                 return result;
 
-            return CashTransactionData.Cancelled(id);
+            return CashTransactionData.Cancell(id);
         }
 
         public static Result IsFound(int id)

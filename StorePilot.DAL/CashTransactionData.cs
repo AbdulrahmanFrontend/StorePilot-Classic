@@ -312,7 +312,7 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية حفظ بيانات حركة الصندوق هذه!");
         }
 
-        public static Result Cancelled(int id)
+        public static Result Cancell(int id)
         {
             string Query = @"UPDATE CashTransactions
                 SET
@@ -352,37 +352,41 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية إلغاء هذه الحركة!");
         }
 
-        //public static Result Delete(
-        //    IDbConnection con,
-        //    IDbTransaction trans,
-        //    int transId)
-        //{
-        //    string Query = @"
-        //        DELETE FROM CashTransactions
-        //        WHERE TransactionID = @TransactionID;";
+        public static Result Cancell(
+            IDbConnection con,
+            IDbTransaction trans,
+            int id)
+        {
+            string Query = @"UPDATE CashTransactions
+                SET
+                    Cancelled = CASE Cancelled 
+                    WHEN 0 THEN 1 
+                    ELSE 1
+                END
+                WHERE TransactionID = @TransactionID;";
 
-        //    DbParameterInfo[] Parameters = new DbParameterInfo[]
-        //    {
-        //        new DbParameterInfo
-        //        {
-        //            Name = "@TransactionID",
-        //            DbType = DbType.Int64,
-        //            Value = transId,
-        //        },
-        //    };
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@TransactionID",
+                    DbType = DbType.Int64,
+                    Value = id,
+                },
+            };
 
-        //    var result = DbManager.Current?.ExecuteNonQuery(
-        //        con,
-        //        trans,
-        //        CommandType.Text,
-        //        Query,
-        //        Parameters);
+            Result<int> result = DbManager.Current?.ExecuteNonQuery(
+                con,
+                trans,
+                CommandType.Text,
+                Query,
+                Parameters);
 
-        //    if (result.IsSuccess)
-        //        return Result.Success();
+            if (result.IsSuccess)
+                return Result.Success();
 
-        //    return Result.Failure("فشلت عملية حذف حركة الدفعة هذه!");
-        //}
+            return Result.Failure("فشلت عملية إلغاء هذه الحركة!");
+        }
 
         public static Result<bool> IsFound(int id)
         {

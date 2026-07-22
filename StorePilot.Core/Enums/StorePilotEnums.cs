@@ -39,4 +39,11 @@ namespace StorePilot.Core.Enums
         Type = 2,
         Description = 3,
     }
+
+    public enum FilterMethodsInvoices
+    {
+        Name = 1,
+        InvoiceDate = 2,
+        InvoiceStatus = 3,
+    }
 }

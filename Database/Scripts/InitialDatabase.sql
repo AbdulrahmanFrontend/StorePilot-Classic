@@ -62,12 +62,9 @@ CREATE TABLE "Invoices" (
 	"InvoiceDate"	TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	"InvoiceStatus"	TEXT NOT NULL CHECK("InvoiceStatus" IN ('مدفوع', 'آجل')),
 	"PaidAmount"	REAL NOT NULL DEFAULT 0 CHECK("PaidAmount" >= 0),
-	"RemainingAmount"	REAL NOT NULL DEFAULT 0 CHECK("RemainingAmount" >= 0),
 	"TotalAmount"	REAL NOT NULL CHECK("TotalAmount" > 0),
 	"CreatedAt"	TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	"Cancelled"	INT NOT NULL DEFAULT 0 CHECK("Cancelled" IN (1, 0)),
 	"TransactionID"	INTEGER,
-	"Notes"	TEXT,
 	PRIMARY KEY("InvoiceID" AUTOINCREMENT),
 	FOREIGN KEY("TransactionID") REFERENCES "CashTransactions"("TransactionID")
 ) STRICT;
@@ -120,6 +117,8 @@ CREATE TABLE "PurchasesInvoices" (
 	"PurchaseInvoiceID"	INTEGER NOT NULL,
 	"InvoiceID"	INTEGER NOT NULL UNIQUE,
 	"SupplierID"	INTEGER,
+	"Cancelled"	INT NOT NULL DEFAULT 0 CHECK("Cancelled" IN (1, 0)),
+	"Notes"	TEXT,
 	PRIMARY KEY("PurchaseInvoiceID" AUTOINCREMENT),
 	FOREIGN KEY("InvoiceID") REFERENCES "Invoices"("InvoiceID"),
 	FOREIGN KEY("SupplierID") REFERENCES "Suppliers"("SupplierID")
@@ -129,6 +128,8 @@ CREATE TABLE "SalesInvoices" (
 	"SaleInvoiceID"	INTEGER NOT NULL,
 	"InvoiceID"	INTEGER NOT NULL UNIQUE,
 	"CustomerID"	INTEGER,
+	"Cancelled"	INT NOT NULL DEFAULT 0 CHECK("Cancelled" IN (1, 0)),
+	"Notes"	TEXT,
 	PRIMARY KEY("SaleInvoiceID" AUTOINCREMENT),
 	FOREIGN KEY("CustomerID") REFERENCES "Customers"("CustomerID"),
 	FOREIGN KEY("InvoiceID") REFERENCES "Invoices"("InvoiceID")
@@ -198,3 +199,14 @@ InvoicesItems.UnitPrice
 FROM InvoicesItems
 JOIN view_ProductsDetails
 ON InvoicesItems.ProductID = view_ProductsDetails.ProductID;
+
+CREATE VIEW view_PurchasesInvoicesDetails AS
+SELECT PurchasesInvoices.PurchaseInvoiceID, PurchasesInvoices.InvoiceID, Invoices.InvoiceDate, Invoices.InvoiceStatus, 
+PurchasesInvoices.SupplierID, view_SuppliersDetails.Name AS SupplierName, Invoices.PaidAmount, Invoices.TotalAmount, Invoices.CreatedAt,
+PurchasesInvoices.Cancelled, PurchasesInvoices.Notes, Invoices.TransactionID
+FROM PurchasesInvoices
+JOIN Invoices
+ON PurchasesInvoices.InvoiceID = Invoices.InvoiceID
+LEFT JOIN Suppliers
+ON PurchasesInvoices.SupplierID = Suppliers.SupplierID
+ORDER BY PurchasesInvoices.Cancelled ASC, PurchasesInvoices.PurchaseInvoiceID DESC;
