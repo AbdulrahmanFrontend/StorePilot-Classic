@@ -55,7 +55,7 @@ namespace StorePilot.DAL
                     @Notes
                 );
 
-                SELECT last_insert_rowid();";
+                SELECT LAST_INSERT_ROWID();";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
             {
@@ -352,10 +352,10 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية إلغاء هذه الحركة!");
         }
 
-        public static Result Cancell(
+        public static Result CancellInvoiceTransaction(
             IDbConnection con,
             IDbTransaction trans,
-            int id)
+            int invoiceId)
         {
             string Query = @"UPDATE CashTransactions
                 SET
@@ -363,15 +363,18 @@ namespace StorePilot.DAL
                     WHEN 0 THEN 1 
                     ELSE 1
                 END
-                WHERE TransactionID = @TransactionID;";
+                WHERE TransactionID = 
+                (
+                    SELECT TransactionID FROM Invoices WHERE InvoiceID = @InvoiceID
+                );";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
             {
                 new DbParameterInfo
                 {
-                    Name = "@TransactionID",
+                    Name = "@InvoiceID",
                     DbType = DbType.Int64,
-                    Value = id,
+                    Value = invoiceId,
                 },
             };
 
@@ -386,6 +389,45 @@ namespace StorePilot.DAL
                 return Result.Success();
 
             return Result.Failure("فشلت عملية إلغاء هذه الحركة!");
+        }
+
+        public static Result CancellPaymentsTransactions(
+            IDbConnection con,
+            IDbTransaction trans,
+            int invoiceId)
+        {
+            string Query = @"UPDATE CashTransactions
+                SET
+                    Cancelled = CASE Cancelled 
+                    WHEN 0 THEN 1 
+                    ELSE 1
+                END
+                WHERE TransactionID IN
+                (
+                    SELECT TransactionID FROM Payments WHERE InvoiceID = @InvoiceID
+                );";
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@InvoiceID",
+                    DbType = DbType.Int64,
+                    Value = invoiceId,
+                },
+            };
+
+            Result<int> result = DbManager.Current?.ExecuteNonQuery(
+                con,
+                trans,
+                CommandType.Text,
+                Query,
+                Parameters);
+
+            if (result.IsSuccess)
+                return Result.Success();
+
+            return Result.Failure("فشلت عملية إلغاء حركات الدفع!");
         }
 
         public static Result<bool> IsFound(int id)

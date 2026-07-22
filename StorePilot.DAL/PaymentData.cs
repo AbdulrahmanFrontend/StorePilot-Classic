@@ -1,5 +1,11 @@
-﻿using System;
+﻿using DevToolkit.Core.Results;
+using DevToolkit.Data;
+using DevToolkit.Data.Core;
+using StorePilot.Core.Enums;
+using StorePilot.Core.Models;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,5 +14,393 @@ namespace StorePilot.DAL
 {
     public static class PaymentData
     {
+        public static Result<PaymentModel> GetByID(int id)
+        {
+            string Query = @"SELECT * FROM Payments 
+                WHERE PaymentID = @PaymentID;";
+
+            DbParameterInfo[] Paramters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@PaymentID",
+                    DbType = DbType.Int64,
+                    Value = id,
+                },
+            };
+
+            return DataQueryService.FirstOrDefault<PaymentModel>(
+                CommandType.Text,
+                Query,
+                Paramters);
+        }
+
+        public static Result AddNew(
+            IDbConnection con,
+            IDbTransaction trans,
+            PaymentModel model)
+        {
+            string Query = @"INSERT INTO Payments
+                (
+                    InvoiceID,
+                    PaymentDate,
+                    PaidAmount,
+                    MethodID,
+                    Notes,
+                    TransactionID
+                )
+                VALUES
+                (
+                    @InvoiceID,
+                    @PaymentDate,
+                    @PaidAmount,
+                    @MethodID,
+                    @Notes,
+                    @TransactionID
+                );
+
+                SELECT LAST_INSERT_ROWID();";
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@InvoiceID",
+                    DbType = DbType.Int64,
+                    Value = model.InvoiceID,
+                },
+                new DbParameterInfo
+                {
+                    Name = "@PaymentDate",
+                    DbType = DbType.DateTime,
+                    Value = model.PaymentDate,
+                },
+                new DbParameterInfo
+                {
+                    Name = "@PaidAmount",
+                    DbType = DbType.Decimal,
+                    Value = model.PaidAmount,
+                },
+                new DbParameterInfo
+                {
+                    Name = "@MethodID",
+                    DbType = DbType.Int64,
+                    Value = model.MethodID,
+                },
+                new DbParameterInfo
+                {
+                    Name = "@Notes",
+                    DbType = DbType.String,
+                    Value = model.Notes,
+                },
+                new DbParameterInfo
+                {
+                    Name = "@TransactionID",
+                    DbType = DbType.Int64,
+                    Value = model.TransactionID,
+                },
+            };
+
+            Result<int> result = DbManager.Current?.GetScalar<int>(
+                con,
+                trans,
+                CommandType.Text,
+                Query,
+                Parameters);
+
+            if (result.IsSuccess)
+            {
+                model.PaymentID = result.Data;
+
+                return Result.Success();
+            }
+
+            return Result.Failure("فشلت عملية إضافة عملية الدفع هذه!");
+        }
+
+        public static Result Cancell(
+            IDbConnection con,
+            IDbTransaction trans,
+            int paymentId)
+        {
+            string Query = @"UPDATE Payments
+                SET
+                    Cancelled = CASE Cancelled
+                    WHEN 0 THEN 1
+                    ELSE 1
+                END
+                WHERE PaymentID = @PaymentID;";
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@PaymentID",
+                    DbType = DbType.Int64,
+                    Value = paymentId,
+                },
+            };
+
+            Result<int> result = DbManager.Current?.ExecuteNonQuery(
+                con,
+                trans,
+                CommandType.Text,
+                Query,
+                Parameters);
+
+            if (result.IsSuccess)
+                return Result.Success();
+
+            return Result.Failure("فشلت عملية إلغاء عملية الدفع هذه!");
+        }
+
+        public static Result CancellInvoicePayments(
+            IDbConnection con,
+            IDbTransaction trans,
+            int invoiceId)
+        {
+            string Query = @"UPDATE Payments
+                SET
+                    Cancelled = CASE Cancelled
+                    WHEN 0 THEN 1
+                    ELSE 1
+                END
+                WHERE InvoiceID = @InvoiceID;";
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@InvoiceID",
+                    DbType = DbType.Int64,
+                    Value = invoiceId,
+                },
+            };
+
+            Result<int> result = DbManager.Current?.ExecuteNonQuery(
+                con,
+                trans,
+                CommandType.Text,
+                Query,
+                Parameters);
+
+            if (result.IsSuccess)
+                return Result.Success();
+
+            return Result.Failure("فشلت عملية حذف مدفوعات هذه الفاتورة!");
+        }
+
+        public static Result<bool> IsFound(int id)
+        {
+            string Query = @"SELECT EXISTS
+                (
+                    SELECT 1 FROM Payments WHERE PaymentID = @PaymentID
+                ) AS IsFound;";
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@PaymentID",
+                    DbType = DbType.Int64,
+                    Value = id,
+                },
+            };
+
+            return DataQueryService.Scalar<bool>(
+                CommandType.Text,
+                Query,
+                Parameters);
+        }
+
+        public static Result<int> GetPaymentsInvoiceCount(
+            int invoiceId,
+            int filterMethodIndex,
+            string filterValue)
+        {
+            string Query = string.Empty;
+
+            switch (filterMethodIndex)
+            {
+                case (int)FilterMethodsPayments.PaymentDate:
+                    Query = @"SELECT COUNT(InvoiceID) FROM view_PaymentsDetails
+                        WHERE PaymentDate LIKE @FilterValue || '%'
+                        AND InvoiceID = @InvoiceID;";
+                    break;
+
+                case (int)FilterMethodsPayments.PaymentMethod:
+                    Query = @"SELECT COUNT(InvoiceID) FROM view_PaymentsDetails
+                        WHERE MethodName LIKE @FilterValue || '%'
+                        AND InvoiceID = @InvoiceID;";
+                    break;
+
+                default:
+                    Query = @"SELECT COUNT(InvoiceID) FROM view_PaymentsDetails
+                        WHERE InvoiceID = @InvoiceID;";
+                    break;
+            }
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@InvoiceID",
+                    DbType = DbType.Int64,
+                    Value = invoiceId,
+                },
+                new DbParameterInfo
+                {
+                    Name = "@FilterValue",
+                    DbType = DbType.String,
+                    Value = filterValue,
+                },
+            };
+
+            return DataQueryService.Scalar<int>(
+                CommandType.Text,
+                Query,
+                Parameters);
+        }
+
+        public static Result<DataTable> GetPaymentsInvoice(
+            int invoiceId,
+            int offset,
+            int pageSize,
+            int filterMethodIndex,
+            string filterValue)
+        {
+            string Query = string.Empty;
+
+            switch (filterMethodIndex)
+            {
+                case (int)FilterMethodsPayments.PaymentDate:
+                    Query = @"SELECT PaymentID, PaymentDate, PaidAmount, MethodName,
+                        Cancelled FROM Payments
+                        WHERE PaymentDate LIKE @FilterValue || '%'
+                        AND InvoiceID = @InvoiceID
+                        LIMIT @PageSize
+                        OFFSET @Offset;";
+                    break;
+
+                case (int)FilterMethodsPayments.PaymentMethod:
+                    Query = @"SELECT PaymentID, PaymentDate, PaidAmount, MethodName,
+                        Cancelled FROM Payments
+                        WHERE MethodName LIKE @FilterValue || '%'
+                        AND InvoiceID = @InvoiceID
+                        LIMIT @PageSize
+                        OFFSET @Offset;";
+                    break;
+
+                default:
+                    Query = @"SELECT PaymentID, PaymentDate, PaidAmount, MethodName,
+                        Cancelled FROM Payments
+                        WHERE InvoiceID = @InvoiceID
+                        LIMIT @PageSize
+                        OFFSET @Offset;";
+                    break;
+            }
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@InvoiceID",
+                    DbType = DbType.Int64,
+                    Value = invoiceId,
+                },
+                new DbParameterInfo
+                {
+                    Name = "@FilterValue",
+                    DbType = DbType.String,
+                    Value = filterValue,
+                },
+                new DbParameterInfo
+                {
+                    Name = "@PageSize",
+                    DbType = DbType.Int64,
+                    Value = pageSize,
+                },
+                new DbParameterInfo
+                {
+                    Name = "@Offset",
+                    DbType = DbType.Int64,
+                    Value = offset,
+                }
+            };
+
+            return DbManager.Current?.GetDataTable(
+                CommandType.Text,
+                Query,
+                Parameters);
+        }
+
+        //public static Result<float> GetAmount(int id)
+        //{
+        //    string Query = @"SELECT Amount FROM CreditPayments
+        //        WHERE PaymentID = @PaymentID;";
+
+        //    DbParameterInfo[] Parameters = new DbParameterInfo[]
+        //    {
+        //        new DbParameterInfo
+        //        {
+        //            Name = "@PaymentID",
+        //            DbType = DbType.Int64,
+        //            Value = id,
+        //        },
+        //    };
+
+        //    return DataQueryService.Scalar<float>(
+        //        CommandType.Text,
+        //        Query,
+        //        Parameters);
+        //}
+
+        //public static Result<int> GetInvoiceID(int id)
+        //{
+        //    string Query = @"SELECT InvoiceID FROM CreditPayments
+        //        WHERE PaymentID = @PaymentID;";
+
+        //    DbParameterInfo[] Parameters = new DbParameterInfo[]
+        //    {
+        //        new DbParameterInfo
+        //        {
+        //            Name = "@PaymentID",
+        //            DbType = DbType.Int64,
+        //            Value = id,
+        //        },
+        //    };
+
+        //    return DataQueryService.Scalar<int>(
+        //        CommandType.Text,
+        //        Query,
+        //        Parameters);
+        //}
+
+        //public static Result<int> GetTransactionID(int paymentId)
+        //{
+        //    string Query = @"SELECT TransactionID FROM CreditPayments
+        //        WHERE PaymentID = @PaymentID;";
+
+        //    DbParameterInfo[] Parameters = new DbParameterInfo[]
+        //    {
+        //        new DbParameterInfo
+        //        {
+        //            Name = "@PaymentID",
+        //            DbType = DbType.Int64,
+        //            Value = paymentId,
+        //        },
+        //    };
+
+        //    var result = DbManager.Current?.GetScalar<int>(
+        //        CommandType.Text,
+        //        Query,
+        //        Parameters);
+
+        //    if (result.IsSuccess)
+        //        return result;
+
+        //    return Result<int>.Failure(
+        //        "فشلت عملية الوصول لحركة عملية الدفع هذه!");
+        //}
     }
 }

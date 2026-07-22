@@ -153,45 +153,57 @@ namespace StorePilot.BLL
         //    return Result.Success();
         //}
 
-        //public static Result Delete(int id)
-        //{
-        //    var transIdResult = InvoiceData.GetTransactionID(id);
+        public static Result Cancell(int invoiceId)
+        {
+            Result<bool> IsCancelledResult = IsCancelled(invoiceId);
 
-        //    if (!transIdResult.IsSuccess)
-        //        return Result.Failure("فشلت عملية الوصول لحركة الفاتورة!");
+            if (IsCancelledResult.IsSuccess)
+            {
+                if (IsCancelledResult.Data)
+                    return Result.Failure("هذه الفاتورة ملغية فعلا!");
+            }
+            else
+                return Result.Failure(IsCancelledResult.Message);
 
-        //    Result TransResult = DbManager.Current.ExecuteTransaction(
-        //        (con, trans) =>
-        //        {
-        //            Result result = ProductData
-        //                .DecreaseQuantitiesAfterDeletingPurchaseInvoice(
-        //                    con,
-        //                    trans,
-        //                    id);
+            Result TransResult = DbManager.Current.ExecuteTransaction(
+                (con, trans) =>
+                {
+                    Result result = ProductData.DecreaseStock(con,trans, invoiceId);
 
-        //            _ThrowException(result);
+                    _ThrowException(result);
 
-        //            result = PurchaseInvoiceData.Cancell(con, trans, id);
+                    result = PurchaseInvoiceData.Cancell(con, trans, invoiceId);
 
-        //            _ThrowException(result);
+                    _ThrowException(result);
 
-        //            result = CashTransactionData.Cancell(
-        //                con,
-        //                trans,
-        //                transIdResult.Data);
+                    result = PaymentData.CancellInvoicePayments(con, trans, invoiceId);
 
-        //            _ThrowException(result);
-        //        });
+                    _ThrowException(result);
 
-        //    if (TransResult.IsSuccess)
-        //    {
-        //        LogManager.LogInfo($"تمت عملية إلغاء فاتورة الشراء {id} بنجاح.");
+                    result = CashTransactionData.CancellPaymentsTransactions(
+                        con,
+                        trans,
+                        invoiceId);
 
-        //        return Result.Success("تمت عملية الإلغاء بنجاح.");
-        //    }
+                    _ThrowException(result);
 
-        //    return Result.Failure("فشلت عملية إلغاء هذه الفاتورة!");
-        //}
+                    result = CashTransactionData.CancellInvoiceTransaction(
+                        con, 
+                        trans, 
+                        invoiceId);
+
+                    _ThrowException(result);
+                });
+
+            if (TransResult.IsSuccess)
+            {
+                LogManager.LogInfo($"تمت عملية إلغاء فاتورة الشراء {invoiceId} بنجاح.");
+
+                return Result.Success("تمت عملية الإلغاء بنجاح.");
+            }
+
+            return Result.Failure("فشلت عملية إلغاء هذه الفاتورة!");
+        }
 
         public static Result IsFound(int id)
         {
@@ -257,6 +269,16 @@ namespace StorePilot.BLL
 
             return Result<DataTable>.Failure(
                 "فشلت عملية الحصول على جميع فواتير الشراء!");
+        }
+
+        public static Result<bool> IsCancelled(int id)
+        {
+            Result<bool> result = PurchaseInvoiceData.IsCancelled(id);
+
+            if (result.IsSuccess)
+                return result;
+
+            return Result<bool>.Failure("فشلت عملية التحقق من إلغاء هذه الفاتورة!");
         }
     }
 }

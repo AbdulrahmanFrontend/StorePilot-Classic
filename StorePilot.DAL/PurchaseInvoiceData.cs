@@ -97,7 +97,7 @@ namespace StorePilot.DAL
         public static Result Cancell(
             IDbConnection con,
             IDbTransaction trans,
-            int id)
+            int invoiceId)
         {
             string Query = @"UPDATE PurchasesInvoices
                 SET
@@ -105,15 +105,15 @@ namespace StorePilot.DAL
                     WHEN 0 THEN 1
                     ELSE 1
                 END
-                WHERE PurchaseInvoiceID = @PurchaseInvoiceID;";
+                WHERE InvoiceID = @InvoiceID;";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
             {
                 new DbParameterInfo
                 {
-                    Name = "@PurchaseInvoiceID",
+                    Name = "@InvoiceID",
                     DbType = DbType.Int64,
-                    Value = id,
+                    Value = invoiceId,
                 },
             };
 
@@ -306,6 +306,47 @@ namespace StorePilot.DAL
             };
 
             return DataQueryService.Scalar<bool>(CommandType.Text, Query, Parameters);
+        }
+
+        public static Result<bool> IsCancelled(int id)
+        {
+            string Query = @"SELECT Cancelled FROM PurchasesInvoices
+                WHERE PurchaseInvoiceID = @PurchaseInvoiceID;";
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@PurchaseInvoiceID",
+                    DbType = DbType.Int64,
+                    Value = id,
+                },
+            };
+
+            return DataQueryService.Scalar<bool>(CommandType.Text, Query, Parameters);
+        }
+
+        public static Result<decimal> GetDebtsSum()
+        {
+            string Query = @"SELECT COALESCE(
+                SUM(
+                    CASE
+                        WHEN InvoiceStatus = @InvoiceStatus
+                        THEN (TotalAmount - PaidAmount) AS RemainingAmount
+                    END
+                ), 0) AS DebtsSum FROM view_PurchasesInvoicesDetails;";
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@InvoiceStatus",
+                    DbType = DbType.String,
+                    Value = SalesInvoiceStatus.Deferred.ToArabic(),
+                }
+            };
+
+            return DataQueryService.Scalar<decimal>(CommandType.Text, Query, Parameters);
         }
     }
 }

@@ -210,3 +210,11 @@ ON PurchasesInvoices.InvoiceID = Invoices.InvoiceID
 LEFT JOIN Suppliers
 ON PurchasesInvoices.SupplierID = Suppliers.SupplierID
 ORDER BY PurchasesInvoices.Cancelled ASC, PurchasesInvoices.PurchaseInvoiceID DESC;
+
+CREATE VIEW view_PaymentsDetails AS
+SELECT Payments.PaymentID, Payments.InvoiceID, Payments.PaymentDate, Payments.PaidAmount, Payments.MethodID, PaymentMethods.MethodName,
+Payments.Cancelled, Payments.Notes, Payments.TransactionID
+FROM Payments
+JOIN PaymentMethods
+ON Payments.MethodID = PaymentMethods.MethodID
+ORDER BY Payments.Cancelled ASC, Payments.PaymentID DESC;

@@ -126,31 +126,5 @@ namespace StorePilot.DAL
 
             return Result.Failure("فشلت عملية تحديث بيانات الفاتورة!");
         }
-
-        public static Result<int> GetTransactionID(int invoiceId)
-        {
-            string Query = @"SELECT TransactionID FROM Invoices
-                WHERE InvoiceID = @InvoiceID;";
-
-            DbParameterInfo[] Parameters = new DbParameterInfo[]
-            {
-                new DbParameterInfo
-                {
-                    Name = "@InvoiceID",
-                    DbType = DbType.Int64,
-                    Value = invoiceId,
-                },
-            };
-
-            Result<int> result = DbManager.Current?.GetScalar<int>(
-                CommandType.Text,
-                Query,
-                Parameters);
-
-            if (result.IsSuccess)
-                return result;
-
-            return Result<int>.Failure("فشلت عملية الوصول لحركة هذه الفاتورة!");
-        }
     }
 }

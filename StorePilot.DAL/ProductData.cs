@@ -231,189 +231,95 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية حفظ بيانات هذا الصنف!");
         }
 
-        //public static Result IncreaseQuantityForPurchaseInvoice(
-        //    IDbConnection con,
-        //    IDbTransaction trans,
-        //    int purchaseId)
-        //{
-        //    string Query = @"UPDATE Products
-        //        SET Quantity =
-        //        (
-        //            Quantity +
-        //            (
-        //                SELECT Quantity
-        //                FROM PurchaseInvoiceItems
-        //                WHERE PurchaseInvoiceItems.ProductID = Products.ProductID
-        //                AND PurchaseInvoiceItems.PurchaseID = @PurchaseID
-        //            )
-        //        )
-        //        WHERE ProductID IN
-        //        (
-        //            SELECT ProductID
-        //            FROM PurchaseInvoiceItems
-        //            WHERE PurchaseID = @PurchaseID
-        //        );";
+        public static Result IncreaseStock(
+            IDbConnection con,
+            IDbTransaction trans,
+            int purchaseId)
+        {
+            string Query = @"UPDATE Products
+                SET Quantity =
+                (
+                    Quantity +
+                    (
+                        SELECT Quantity
+                        FROM InvoicesItems
+                        WHERE InvoicesItems.ProductID = Products.ProductID
+                        AND InvoicesItems.InvoiceID = @InvoiceID
+                    )
+                )
+                WHERE ProductID IN
+                (
+                    SELECT ProductID
+                    FROM InvoicesItems
+                    WHERE InvoiceID = @InvoiceID
+                );";
 
-        //    DbParameterInfo[] Parameters = new DbParameterInfo[]
-        //    {
-        //        new DbParameterInfo
-        //        {
-        //            Name = "@PurchaseID",
-        //            DbType = DbType.Int64,
-        //            Value = purchaseId,
-        //        },
-        //    };
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@InvoiceID",
+                    DbType = DbType.Int64,
+                    Value = purchaseId,
+                },
+            };
 
-        //    var result = DbManager.Current?.ExecuteNonQuery(
-        //        con,
-        //        trans,
-        //        CommandType.Text,
-        //        Query,
-        //        Parameters);
+            Result<int> result = DbManager.Current?.ExecuteNonQuery(
+                con,
+                trans,
+                CommandType.Text,
+                Query,
+                Parameters);
 
-        //    if (result.IsSuccess)
-        //        return Result.Success();
+            if (result.IsSuccess)
+                return Result.Success();
 
-        //    return Result.Failure("فشلت عملية زيادة كمية منتجات الفاتورة!");
-        //}
+            return Result.Failure("فشلت عملية زيادة المخزن!");
+        }
 
-        //public static Result IncreaseQuantityAfterDeleteSaleInvoice(
-        //    IDbConnection con,
-        //    IDbTransaction trans,
-        //    int purchaseId)
-        //{
-        //    string Query = @"UPDATE Products
-        //        SET Quantity =
-        //        (
-        //            Quantity +
-        //            (
-        //                SELECT Quantity
-        //                FROM SalesInvoiceItems
-        //                WHERE SalesInvoiceItems.ProductID = Products.ProductID
-        //                AND SalesInvoiceItems.InvoiceID = @InvoiceID
-        //            )
-        //        )
-        //        WHERE ProductID IN
-        //        (
-        //            SELECT ProductID
-        //            FROM SalesInvoiceItems
-        //            WHERE InvoiceID = @InvoiceID
-        //        );";
+        public static Result DecreaseStock(
+            IDbConnection con,
+            IDbTransaction trans,
+            int invoiceId)
+        {
+            string Query = @"UPDATE Products
+                SET Quantity =
+                (
+                    Quantity -
+                    (
+                        SELECT Quantity FROM InvoicesItems
+                        WHERE InvoicesItems.ProductID = Products.ProductID
+                        AND InvoicesItems.InvoiceID = @InvoiceID
+                    )
+                )
+                WHERE ProductID IN
+                (
+                    SELECT ProductID FROM InvoicesItems
+                    WHERE InvoiceID = @InvoiceID
+                );";
 
-        //    DbParameterInfo[] Parameters = new DbParameterInfo[]
-        //    {
-        //        new DbParameterInfo
-        //        {
-        //            Name = "@InvoiceID",
-        //            DbType = DbType.Int64,
-        //            Value = purchaseId,
-        //        },
-        //    };
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@InvoiceID",
+                    DbType = DbType.Int64,
+                    Value = invoiceId,
+                },
+            };
 
-        //    var result = DbManager.Current?.ExecuteNonQuery(
-        //        con,
-        //        trans,
-        //        CommandType.Text,
-        //        Query,
-        //        Parameters);
+            Result<int> result = DbManager.Current?.ExecuteNonQuery(
+                con,
+                trans,
+                CommandType.Text,
+                Query,
+                Parameters);
 
-        //    if (result.IsSuccess)
-        //        return Result.Success();
+            if (result.IsSuccess)
+                return Result.Success();
 
-        //    return Result.Failure("فشلت عملية زيادة كمية منتجات الفاتورة!");
-        //}
-
-        //public static Result DecreaseQuantitiesAfterDeletingPurchaseInvoice(
-        //    IDbConnection con,
-        //    IDbTransaction trans,
-        //    int purchaseId)
-        //{
-        //    string Query = @"UPDATE Products
-        //        SET Quantity =
-        //        (
-        //            Quantity -
-        //            (
-        //                SELECT Quantity
-        //                FROM PurchaseInvoiceItems
-        //                WHERE PurchaseInvoiceItems.ProductID = Products.ProductID
-        //                AND PurchaseInvoiceItems.PurchaseID = @PurchaseID
-        //            )
-        //        )
-        //        WHERE ProductID IN
-        //        (
-        //            SELECT ProductID
-        //            FROM PurchaseInvoiceItems
-        //            WHERE PurchaseID = @PurchaseID
-        //        );";
-
-        //    DbParameterInfo[] Parameters = new DbParameterInfo[]
-        //    {
-        //        new DbParameterInfo
-        //        {
-        //            Name = "@PurchaseID",
-        //            DbType = DbType.Int64,
-        //            Value = purchaseId,
-        //        },
-        //    };
-
-        //    var result = DbManager.Current?.ExecuteNonQuery(
-        //        con,
-        //        trans,
-        //        CommandType.Text,
-        //        Query,
-        //        Parameters);
-
-        //    if (result.IsSuccess)
-        //        return Result.Success();
-
-        //    return Result.Failure("فشلت عملية زيادة كمية منتجات الفاتورة!");
-        //}
-
-        //public static Result DecreaseQuantityAfterCreateSaleInvoice(
-        //    IDbConnection con,
-        //    IDbTransaction trans,
-        //    int invoiceId)
-        //{
-        //    string Query = @"UPDATE Products
-        //        SET Quantity =
-        //        (
-        //            Quantity -
-        //            (
-        //                SELECT Quantity
-        //                FROM SalesInvoiceItems
-        //                WHERE SalesInvoiceItems.ProductID = Products.ProductID
-        //                AND SalesInvoiceItems.InvoiceID = @InvoiceID
-        //            )
-        //        )
-        //        WHERE ProductID IN
-        //        (
-        //            SELECT ProductID
-        //            FROM SalesInvoiceItems
-        //            WHERE InvoiceID = @InvoiceID
-        //        );";
-
-        //    DbParameterInfo[] Parameters = new DbParameterInfo[]
-        //    {
-        //        new DbParameterInfo
-        //        {
-        //            Name = "@InvoiceID",
-        //            DbType = DbType.Int64,
-        //            Value = invoiceId,
-        //        },
-        //    };
-
-        //    var result = DbManager.Current?.ExecuteNonQuery(
-        //        con,
-        //        trans,
-        //        CommandType.Text,
-        //        Query,
-        //        Parameters);
-
-        //    if (result.IsSuccess)
-        //        return Result.Success();
-
-        //    return Result.Failure("فشلت عملية نقصان كمية منتجات الفاتورة!");
-        //}
+            return Result.Failure($"فشلت عملية إنقاص المخزن!");
+        }
 
         public static Result Activate(int id)
         {
@@ -694,94 +600,6 @@ namespace StorePilot.DAL
                 Query,
                 Parameters);
         }
-
-      //  public static Result<DataTable> GetForSelection(
-      //      int offset,
-      //      int pageSize,
-      //      int filterMethodIndex,
-      //      string filterValue)
-      //  {
-      //      string Query = string.Empty;
-
-      //      switch (filterMethodIndex)
-      //      {
-      //          case (int)FilterMethodsProducts.ProductName:
-      //              Query = @"SELECT ProductID, ProductName, BarCode, CategoryName,
-      //                  CarTypeName, SalePrice, PurchasePrice, Quantity, MinQuantity 
-      //                  FROM view_ProductsDetails
-      //                  WHERE ProductName LIKE '%' || @FilterValue || '%'
-						//AND Active = 1
-      //                  LIMIT @PageSize
-      //                  OFFSET @Offset;";
-      //              break;
-
-      //          case (int)FilterMethodsProducts.Unit:
-      //              Query = @"SELECT ProductID, ProductName, BarCode, CategoryName,
-      //                  CarTypeName, SalePrice, PurchasePrice, Quantity, MinQuantity 
-      //                  FROM view_ProductsDetails
-      //                  WHERE CategoryName LIKE '%' || @FilterValue || '%'
-						//AND Active = 1
-      //                  LIMIT @PageSize
-      //                  OFFSET @Offset;";
-      //              break;
-
-      //          case (int)FilterMethodsProducts.Group:
-      //              Query = @"SELECT ProductID, ProductName, BarCode, CategoryName,
-      //                  CarTypeName, SalePrice, PurchasePrice, Quantity, MinQuantity 
-      //                  FROM view_ProductsDetails
-      //                  WHERE CarTypeName LIKE '%' || @FilterValue || '%'
-						//AND Active = 1
-      //                  LIMIT @PageSize
-      //                  OFFSET @Offset;";
-      //              break;
-
-      //          case (int)FilterMethodsProducts.BarCode:
-      //              Query = @"SELECT ProductID, ProductName, BarCode, CategoryName,
-      //                  CarTypeName, SalePrice, PurchasePrice, Quantity, MinQuantity 
-      //                  FROM view_ProductsDetails
-      //                  WHERE BarCode LIKE '%' || @FilterValue || '%'
-						//AND Active = 1
-      //                  LIMIT @PageSize
-      //                  OFFSET @Offset;";
-      //              break;
-
-      //          default:
-      //              Query = @"SELECT ProductID, ProductName, BarCode, CategoryName,
-      //                  CarTypeName, SalePrice, PurchasePrice, Quantity, MinQuantity
-      //                  FROM view_ProductsDetails
-						//WHERE Active = 1
-      //                  LIMIT @PageSize
-      //                  OFFSET @Offset;";
-      //              break;
-      //      }
-
-      //      DbParameterInfo[] Parameters = new DbParameterInfo[]
-      //      {
-      //          new DbParameterInfo
-      //          {
-      //              Name = "@FilterValue",
-      //              DbType = DbType.String,
-      //              Value = filterValue,
-      //          },
-      //          new DbParameterInfo
-      //          {
-      //              Name = "@PageSize",
-      //              DbType = DbType.Int64,
-      //              Value = pageSize,
-      //          },
-      //          new DbParameterInfo
-      //          {
-      //              Name = "@Offset",
-      //              DbType = DbType.Int64,
-      //              Value = offset,
-      //          }
-      //      };
-
-      //      return DbManager.Current?.GetDataTable(
-      //          CommandType.Text,
-      //          Query,
-      //          Parameters);
-      //  }
 
         public static Result<bool> IsBarCodeFound(string barCode, int id)
         {
