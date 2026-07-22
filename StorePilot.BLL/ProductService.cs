@@ -167,6 +167,8 @@ namespace StorePilot.BLL
 
         public static Result Activate(int id) => ProductData.Activate(id);
 
+        public static Result Deactivate(int id) => ProductData.Deactivate(id);
+
         public static Result IsFound(int id)
         {
             Result<bool> result = ProductData.IsFound(id);
@@ -181,6 +183,22 @@ namespace StorePilot.BLL
 
             return Result.Failure(
                 "فشلت عملية التحقق من وجود هذا المنتج في النظام!");
+        }
+
+        public static Result<bool> IsActive(int id)
+        {
+            Result IsFoundResult = IsFound(id);
+
+            if (!IsFoundResult.IsSuccess)
+                return Result<bool>.Failure(IsFoundResult.Message);
+
+            Result<bool> result = ProductData.IsActive(id);
+
+            if (result.IsSuccess)
+                return Result<bool>.Success(result.Data);
+
+            return Result<bool>.Failure(
+                "فشلت عملية التحقق من تفعيل هذا الصنف في النظام!");
         }
 
         public static Result<int> GetCount()

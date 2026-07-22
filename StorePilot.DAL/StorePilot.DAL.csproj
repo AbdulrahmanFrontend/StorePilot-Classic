@@ -55,11 +55,15 @@
   <ItemGroup>
     <Compile Include="CustomerData.cs" />
     <Compile Include="GroupData.cs" />
+    <Compile Include="InvoiceData.cs" />
+    <Compile Include="InvoiceItemData.cs" />
+    <Compile Include="PaymentData.cs" />
     <Compile Include="PaymentMethodData.cs" />
     <Compile Include="PersonData.cs" />
     <Compile Include="CashTransactionData.cs" />
     <Compile Include="ProductData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PurchaseInvoiceData.cs" />
     <Compile Include="SupplierData.cs" />
     <Compile Include="UnitData.cs" />
   </ItemGroup>

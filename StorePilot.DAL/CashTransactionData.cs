@@ -319,6 +319,7 @@ namespace StorePilot.DAL
                     Cancelled = CASE Cancelled 
                     WHEN 0 THEN 1 
                     ELSE 1
+                END
                 WHERE TransactionID = @TransactionID;";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]

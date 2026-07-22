@@ -418,8 +418,9 @@ namespace StorePilot.DAL
         public static Result Activate(int id)
         {
             string Query = @"UPDATE Products
-                SET Active = CASE Active
-                    WHEN 1 THEN 0
+                SET 
+                    Active = CASE Active
+                    WHEN 0 THEN 1
                     ELSE 1
                 END
                 WHERE ProductID = @ProductID;";
@@ -443,15 +444,55 @@ namespace StorePilot.DAL
             {
                 if (result.Data > 0)
                 {
-                    LogManager.LogInfo($"تمت عملية تفعيل / تعطيل صنف {id} بنجاح.");
+                    LogManager.LogInfo($"تمت عملية تفعيل صنف {id} بنجاح.");
 
-                    return Result.Success("تمت عملية تفعيل / تعطيل هذا الصنف بنجاح.");
+                    return Result.Success("تمت عملية تفعيل هذا الصنف بنجاح.");
                 }
 
-                return Result.Failure("لم يتم تفعيل أو تعطيل أي صنف في النظام!");
+                return Result.Failure("لم يتم تفعيل أي صنف في النظام!");
             }
 
-            return Result.Failure("فشلت عملية تفعيل / تعطيل هذا الصنف!");
+            return Result.Failure("فشلت عملية تفعيل هذا الصنف!");
+        }
+
+        public static Result Deactivate(int id)
+        {
+            string Query = @"UPDATE Products
+                SET 
+                    Active = CASE Active
+                    WHEN 1 THEN 0
+                    ELSE 0
+                END
+                WHERE ProductID = @ProductID;";
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@ProductID",
+                    DbType = DbType.Int64,
+                    Value = id,
+                },
+            };
+
+            Result<int> result = DbManager.Current?.ExecuteNonQuery(
+                CommandType.Text,
+                Query,
+                Parameters);
+
+            if (result.IsSuccess)
+            {
+                if (result.Data > 0)
+                {
+                    LogManager.LogInfo($"تمت عملية تعطيل صنف {id} بنجاح.");
+
+                    return Result.Success("تمت عملية تعطيل هذا الصنف بنجاح.");
+                }
+
+                return Result.Failure("لم يتم تعطيل أي صنف في النظام!");
+            }
+
+            return Result.Failure("فشلت عملية تعطيل هذا الصنف!");
         }
 
         public static Result<bool> IsFound(int id)
@@ -460,6 +501,27 @@ namespace StorePilot.DAL
                 (
                     SELECT 1 FROM Products WHERE ProductID = @ProductID
                 ) AS IsFound;";
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@ProductID",
+                    DbType = DbType.Int64,
+                    Value = id,
+                },
+            };
+
+            return DataQueryService.Scalar<bool>(
+                CommandType.Text,
+                Query,
+                Parameters);
+        }
+
+        public static Result<bool> IsActive(int id)
+        {
+            string Query = @"SELECT Active FROM Products 
+                WHERE ProductID = @ProductID;";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
             {

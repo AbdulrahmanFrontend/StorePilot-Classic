@@ -177,3 +177,24 @@ Customers.Notes, Customers.Active
 FROM Customers
 JOIN People ON Customers.PersonID = People.PersonID
 ORDER BY Customers.Active DESC, Customers.CustomerID DESC;
+
+CREATE VIEW view_ProductsDetails AS
+SELECT Products.ProductID, Products.ProductName, 
+Products.BarCode, Products.GroupID, Groups.GroupName,
+Products.UnitID, Units.UnitName, Products.MinQuantity,
+Products.Quantity, Products.SalePrice, Products.PurchasePrice,
+Products.CreatedAt, Products.Active, Products.Notes
+FROM Products
+JOIN Groups
+ON Products.GroupID = Groups.GroupID
+JOIN Units
+ON Products.UnitID = Units.UnitID
+ORDER BY Products.Active DESC, Products.ProductID DESC;
+
+CREATE VIEW view_InvoicesItemsDetails AS
+SELECT InvoicesItems.ItemID, InvoicesItems.InvoiceID, InvoicesItems.ProductID, view_ProductsDetails.ProductName,
+view_ProductsDetails.BarCode, view_ProductsDetails.GroupName, view_ProductsDetails.UnitName, InvoicesItems.Quantity,
+InvoicesItems.UnitPrice
+FROM InvoicesItems
+JOIN view_ProductsDetails
+ON InvoicesItems.ProductID = view_ProductsDetails.ProductID;

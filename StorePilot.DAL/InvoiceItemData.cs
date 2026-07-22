@@ -1,0 +1,96 @@
+﻿using DevToolkit.Core.Results;
+using DevToolkit.Data.Core;
+using StorePilot.Core.Models;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace StorePilot.DAL
+{
+    public static class InvoiceItemData
+    {
+        public static Result AddNew(
+            IDbConnection con,
+            IDbTransaction trans,
+            InvoiceItemModel model)
+        {
+            string Query = @"INSERT INTO InvoiceItems
+                (
+                    InvoiceID,
+                    ProductID,
+                    Quantity, 
+                    UnitPrice
+                )
+                VALUES
+                (
+                    @InvoiceID,
+                    @ProductID,
+                    @Quantity,
+                    @UnitPrice
+                );";
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@InvoiceID",
+                    DbType = DbType.Int64,
+                    Value = model.InvoiceID,
+                },
+                new DbParameterInfo
+                {
+                    Name = "@ProductID",
+                    DbType = DbType.Int64,
+                    Value = model.ProductID,
+                },
+                new DbParameterInfo
+                {
+                    Name = "@Quantity",
+                    DbType = DbType.Decimal,
+                    Value = model.Quantity,
+                },
+                new DbParameterInfo
+                { Name = "@UnitPrice",
+                    DbType = DbType.Decimal,
+                    Value = model.UnitPrice,
+                },
+            };
+
+            var result = DbManager.Current?.ExecuteNonQuery(
+                con,
+                trans,
+                CommandType.Text,
+                Query,
+                Parameters);
+
+            if (result.IsSuccess)
+                return Result.Success();
+
+            return Result.Failure("فشلت عملية إضافة عنصر للفاتورة!");
+        }
+
+        public static Result<DataTable> GetInvoiceItems(int invoiceId)
+        {
+            string Query = @"SELECT * FROM view_InvoicesItemsDetails
+                WHERE InvoiceID = @InvoiceID;";
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@InvoiceID",
+                    DbType = DbType.Int64,
+                    Value = invoiceId,
+                },
+            };
+
+            return DbManager.Current?.GetDataTable(
+                CommandType.Text,
+                Query,
+                Parameters);
+        }
+    }
+}
