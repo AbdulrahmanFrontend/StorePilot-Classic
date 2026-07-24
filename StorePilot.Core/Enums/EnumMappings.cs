@@ -31,22 +31,22 @@ namespace StorePilot.Core.Enums
 
         // ---------- SalesInvoiceStatus ----------
 
-        public static string ToArabic(this SalesInvoiceStatus status)
+        public static string ToArabic(this InvoiceStatus status)
         {
             switch (status)
             {
-                case SalesInvoiceStatus.Paid: return "مدفوع";
-                case SalesInvoiceStatus.Deferred: return "آجل";
+                case InvoiceStatus.Paid: return "مدفوع";
+                case InvoiceStatus.Deferred: return "آجل";
                 default: throw new ArgumentOutOfRangeException(nameof(status));
             }
         }
 
-        public static SalesInvoiceStatus ToSalesInvoiceStatus(this string value)
+        public static InvoiceStatus ToInvoiceStatus(this string value)
         {
             switch (value)
             {
-                case "مدفوع": return SalesInvoiceStatus.Paid;
-                case "آجل": return SalesInvoiceStatus.Deferred;
+                case "مدفوع": return InvoiceStatus.Paid;
+                case "آجل": return InvoiceStatus.Deferred;
                 default:
                     throw new ArgumentException($"حالة فاتورة غير معرفة!");
             }

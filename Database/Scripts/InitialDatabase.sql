@@ -20,7 +20,7 @@ CREATE TABLE "PaymentMethods" (
 
 CREATE TABLE "People" (
 	"PersonID"	INTEGER NOT NULL,
-	"PersonName"	TEXT NOT NULL UNIQUE,
+	"Name"	TEXT NOT NULL UNIQUE,
 	"Phone"	TEXT NOT NULL UNIQUE,
 	"Address"	TEXT,
 	"CreatedAt"	TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -31,7 +31,7 @@ CREATE TABLE "CashTransactions" (
 	"TransactionID"	INTEGER NOT NULL,
 	"TransactionDate"	TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	"TransactionType"	TEXT NOT NULL DEFAULT 'مصروفات' CHECK("TransactionType" IN ('ايرادات', 'مصروفات')),
-	"Amount"	REAL NOT NULL CHECK("Amount" > 0),
+	"PaidAmount"	REAL NOT NULL CHECK("Amount" > 0),
 	"Description"	TEXT NOT NULL,
 	"CreatedAt"	TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	"Cancelled"	INT NOT NULL DEFAULT 0 CHECK("Cancelled" IN (1, 0)),

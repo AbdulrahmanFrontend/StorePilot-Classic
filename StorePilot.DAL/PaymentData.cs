@@ -334,6 +334,35 @@ namespace StorePilot.DAL
                 Parameters);
         }
 
+        public static Result<bool> IsInvoiceDateLargerThanPaymentsDate(
+            int invoiceId,
+            DateTime invoiceDate)
+        {
+            string Query = @"SELECT EXISTS
+                (
+                    SELECT 1 FROM Payments 
+                    WHERE InvoiceID = @InvoiceID AND @invoiceDate > MIN(PaymentDate)
+                ) AS IsFound;";
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@InvoiceID",
+                    DbType = DbType.Int64,
+                    Value = invoiceId,
+                },
+                new DbParameterInfo
+                {
+                    Name = "@InvoiceDate",
+                    DbType = DbType.String,
+                    Value = invoiceDate.ToString("yyyy-MM-dd"),
+                },
+            };
+
+            return DataQueryService.Scalar<bool>(CommandType.Text, Query, Parameters);
+        }
+
         //public static Result<float> GetAmount(int id)
         //{
         //    string Query = @"SELECT Amount FROM CreditPayments

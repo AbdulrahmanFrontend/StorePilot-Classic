@@ -4,13 +4,16 @@ using DevToolkit.Core.Guards;
 using DevToolkit.Core.Results;
 using DevToolkit.Data.Core;
 using DevToolkit.Logging.Managers;
+using StorePilot.Core.Enums;
 using StorePilot.Core.Models;
 using StorePilot.DAL;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,9 +23,12 @@ namespace StorePilot.BLL
     {
         public PurchaseInvoiceModel Model { get; private set; }
 
+        private List<InvoiceItemModel> _Items { get; set; }
+
         public PurchaseInvoiceService()
         {
             this.Model = new PurchaseInvoiceModel();
+            _Items = new List<InvoiceItemModel>();
             this.Mode = Mode.AddNew;
         }
 
@@ -51,107 +57,236 @@ namespace StorePilot.BLL
                 "فشلت عملية الوصول لبيانات هذه الفاتورة!");
         }
 
+        public void SetItems(IEnumerable<InvoiceItemModel> items)
+        {
+            this._Items.Clear();
+
+            this._Items.AddRange(items);
+        }
+
         protected override Result _AddNew()
-            => Result.Failure("لا يسمح بإنشاء فاتورة بدون عناصر!");
+        {
+            this.Model.TotalAmount = _Items.Sum(i => i.TotalPrice);
 
-        //protected Result _AddNew(BindingList<InvoiceItemModel> items)
-        //{
-        //    if (this.Model.SupplierID == 0)
-        //        return Result.Failure("رجاءا اختيار مورد أولا!");
+            switch (Model.InvoiceStatus.ToInvoiceStatus())
+            {
+                case InvoiceStatus.Paid:
+                    Model.PaidAmount = this.Model.TotalAmount;
+                    break;
 
-        //    var result = SupplierService.IsFound(this.Model.SupplierID);
+                case InvoiceStatus.Deferred:
+                    Model.PaidAmount = 0;
+                    break;
+            }
 
-        //    if (!result.IsSuccess)
-        //        return result;
+            Result TransactionResult = DbManager.Current?.ExecuteTransaction(
+                (con, trans) => 
+            {
+                CashTransactionModel transModel;
+                Result InnerResult;
 
-        //    result = ValidateItems(items);
+                if (Model.InvoiceStatus == InvoiceStatus.Paid.ToArabic())
+                {
+                    transModel = new CashTransactionModel
+                    {
+                        TransactionDate = Model.InvoiceDate,
+                        TransactionType = TransactionType.Expense.ToArabic(),
+                        Amount = Model.TotalAmount,
+                        Description = $"مصروفات فاتورة شراء",
+                        Notes = Model.Notes,
+                    };
 
-        //    if (!result.IsSuccess)
-        //        return result;
+                    InnerResult = CashTransactionData.AddNew(
+                        con,
+                        trans,
+                        transModel);
 
-        //    this.Model.TotalAmount = items.Sum(i => i.TotalPrice);
+                    _ThrowException(InnerResult);
 
-        //    var AddNewResult = DbManager.Current?.ExecuteTransaction((con, trans) =>
-        //    {
-        //        var transModel = new CashTransactionModel
-        //        {
-        //            TransactionDate = Model.PurchaseDate,
-        //            TransactionType = TransactionType.Expense.ToArabic(),
-        //            Amount = Model.TotalAmount,
-        //            Description = $"مصروفات فاتورة شراء"
-        //        };
+                    this.Model.TransactionID = transModel.TransactionID;
+                }
 
-        //        var transResult = CashTransactionData.AddNewPurchaseTransaction(
-        //            con,
-        //            trans,
-        //            transModel);
+                InnerResult = InvoiceData.AddNew(con, trans, Model);
 
-        //        _ThrowException(transResult);
+                _ThrowException(InnerResult);
 
-        //        this.Model.TransactionID = transModel.TransactionID;
+                InnerResult = PurchaseInvoiceData.AddNew(con, trans, Model);
 
-        //        var invoiceResult = PurchaseInvoiceData.AddNew(con, trans, Model);
+                _ThrowException(InnerResult);
 
-        //        _ThrowException(invoiceResult);
+                foreach (InvoiceItemModel item in _Items)
+                {
+                    item.InvoiceID = Model.InvoiceID;
 
-        //        foreach (var item in items)
-        //        {
-        //            var itemResult = PurchaseInvoiceItemData.AddNew(
-        //                con,
-        //                trans,
-        //                Model.PurchaseID,
-        //                item);
+                    InnerResult = InvoiceItemData.AddNew(con, trans, item);
 
-        //            _ThrowException(itemResult);
-        //        }
+                    _ThrowException(InnerResult);
+                }
 
-        //        var stockResult = ProductData.IncreaseQuantityForPurchaseInvoice(
-        //                con,
-        //                trans,
-        //                this.Model.PurchaseID);
+                InnerResult = ProductData.IncreaseStock(
+                    con, 
+                    trans, 
+                    this.Model.InvoiceID);
 
-        //        _ThrowException(stockResult);
-        //    });
+                _ThrowException(InnerResult);
+            });
 
-        //    if (AddNewResult.IsSuccess)
-        //    {
-        //        LogManager.LogInfo(
-        //            $"تمت عملية حفظ فاتورة الشراء {Model.PurchaseID} بنجاح.");
-        //        return Result.Success("تمت عملية حفظ الفاتورة بنجاح.");
-        //    }
+            if (TransactionResult.IsSuccess)
+            {
+                LogManager.LogInfo(
+                    $"تمت عملية حفظ فاتورة الشراء {Model.PurchaseInvoiceID} بنجاح.");
 
-        //    return Result.Failure("فشلت عملية حفظ الفاتورة!");
-        //}
+                return Result.Success("تمت عملية حفظ الفاتورة بنجاح.");
+            }
 
-        //public Result Save(BindingList<InvoiceItemModel> items) => _AddNew(items);
+            return Result.Failure("فشلت عملية حفظ الفاتورة!");
+        }
 
         protected override Result _Update()
         {
-            return Result.Failure(
-                "لا يسمح بتحديث أي فاتورة" +
-                " عليك إلغاء هذه الفاتورة ثم إنشاء فاتورة جديدة!");
+            CashTransactionModel transModel = new CashTransactionModel();
+
+            if (this.Model.TransactionID.HasValue)
+            {
+                Result<CashTransactionModel> result = 
+                    CashTransactionData.GetByID(this.Model.TransactionID.Value);
+
+                if (result.IsSuccess)
+                    transModel = result.Data;
+                else
+                    return Result.Failure("فشلت عملية الوصول لحركة هذه الفاتورة!");
+            }
+
+            Result ValidateDateResult = ValidateInvoiceDate();
+
+            if (!ValidateDateResult.IsSuccess)
+                return ValidateDateResult;
+
+            Result TransactionResult = DbManager.Current?.ExecuteTransaction(
+                (con, trans) =>
+                {
+                    Result InnerResult = InvoiceData.Update(con, trans, Model);
+
+                    _ThrowException(InnerResult);
+
+                    if (this.Model.TransactionID.HasValue)
+                    {
+                        InnerResult = CashTransactionData.Update(
+                            con,
+                            trans,
+                            transModel);
+
+                        _ThrowException(InnerResult);
+                    }                    
+
+                    InnerResult = PurchaseInvoiceData.Update(con, trans, Model);
+
+                    _ThrowException(InnerResult);
+                });
+
+            if (TransactionResult.IsSuccess)
+            {
+                LogManager.LogInfo($"تمت عملية تحديث بيانات فاتورة الشراء " +
+                    $"{Model.PurchaseInvoiceID} بنجاح.");
+
+                return Result.Success("تمت عملية تحديث بيانات الفاتورة بنجاح.");
+            }
+
+            return Result.Failure("فشلت عملية حفظ الفاتورة!");
         }
 
-        //public static Result ValidateItems(BindingList<InvoiceItemModel> items)
-        //{
-        //    if (!Guard.HasItems(items))
-        //        return Result.Failure("يجب إضافة عناصر للفاتورة أولا!");
+        public override Result Valid()
+        {
+            Result result = ValidateItems();
 
-        //    foreach (var item in items)
-        //    {
-        //        var result = ProductService.IsFound(item.ProductID);
+            if (!result.IsSuccess)
+                return result;
 
-        //        if (!result.IsSuccess) return result;
+            result = ValidateStatus();
 
-        //        if (item.RequiredQuantity <= 0)
-        //            return Result.Failure("هناك منتج الكمية المطلوبة منه غير صالحة!");
+            if (!result.IsSuccess)
+                return result;
 
-        //        if (item.UnitPrice <= 0)
-        //            return Result.Failure("هناك منتج سعره غير صالح!");
-        //    }
+            return result;
+        }
 
-        //    return Result.Success();
-        //}
+        public Result ValidateItems()
+        {
+            if (!Guard.HasItems(_Items))
+                return Result.Failure("يجب إضافة عناصر للفاتورة أولا!");
+
+            foreach (InvoiceItemModel item in _Items)
+            {
+                Result<ProductService> result = ProductService.GetByID(item.ProductID);
+
+                if (result.IsSuccess)
+                    return Result.Failure("هذا الصنف غير مسجل في النظام!");
+
+                if (item.Quantity <= 0)
+                    return Result.Failure(
+                        "هنك صنف الكمية المطلوبة منه أصغر من أو تساوي الصفر!");
+
+                if (item.UnitPrice <= 0)
+                    return Result.Failure(
+                        "هناك صنف سعر الوحدة له أصغر من أو يساوي الصفر!");
+            }
+
+            return Result.Success();
+        }
+
+        public Result ValidateStatus()
+        {
+            switch (Model.InvoiceStatus.ToInvoiceStatus())
+            {
+                case InvoiceStatus.Paid:
+                    if (Model.SupplierID.HasValue)
+                        return Result.Success();
+
+                    return SupplierService.IsFound(Model.SupplierID.Value);
+
+                case InvoiceStatus.Deferred:
+                    if(Model.SupplierID.HasValue)
+                        return Result.Failure(
+                            "يجب أن يكون إدخال المورد لفاتورة الآجل!");
+
+                    return SupplierService.IsFound(Model.SupplierID.Value);
+
+                default:
+                    return Result.Failure("حالة الشراء غير صالحة!");
+            }
+        }
+
+        public Result ValidateInvoiceDate()
+        {
+            Result<bool> result = HasPayments(this.Model.InvoiceID);
+
+            if (result.IsSuccess)
+            {
+                if (result.Data)
+                {
+                    result = PaymentData.IsInvoiceDateLargerThanPaymentsDate(
+                        this.Model.InvoiceID,
+                        this.Model.InvoiceDate);
+
+                    if (result.IsSuccess)
+                    {
+                        if (result.Data)
+                            return Result.Failure("يجب أن يكون تاريخ الفاتورة الجديد " +
+                                "أصغر من كل تواريخ الدفع او مساوي لأقل تاريخ دفع!");
+
+                        return Result.Success();
+                    }
+
+                    return Result.Failure(
+                        "فشلت عملية المقارنة بين تاريخ الفاتورة الجديد" +
+                        " وبين تواريخ سجلات دفع الفاتورة!");
+                }
+
+                return Result.Success();
+            }
+
+            return Result.Failure("فشلت عملية التحقق من وجود سجلات دفع لهذه الفاتورة!");
+        }
 
         public static Result Cancell(int invoiceId)
         {
@@ -279,6 +414,22 @@ namespace StorePilot.BLL
                 return result;
 
             return Result<bool>.Failure("فشلت عملية التحقق من إلغاء هذه الفاتورة!");
+        }
+
+        public static Result<bool> HasPayments(int invoiceId)
+        {
+            Result<bool> result = InvoiceData.HasPayments(invoiceId);
+
+            if (result.IsSuccess)
+            {
+                if (result.Data)
+                    return result;
+
+                return Result<bool>.Failure("هذه الفاتورة ليس لها سجل دفع!");
+            }
+
+            return Result<bool>.Failure(
+                "فشلت عملية التحقق من وجود سجل دفع لهذه الفاتورة!");
         }
     }
 }

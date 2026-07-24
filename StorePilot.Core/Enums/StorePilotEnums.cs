@@ -12,7 +12,7 @@ namespace StorePilot.Core.Enums
         Expense = 1,
     }
 
-    public enum SalesInvoiceStatus
+    public enum InvoiceStatus
     {
         Paid = 0,
         Deferred = 1,

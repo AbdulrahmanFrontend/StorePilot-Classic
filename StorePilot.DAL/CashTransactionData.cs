@@ -108,73 +108,126 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية حفظ بيانات حركة الصندوق هذه!");
         }
 
-        //public static Result AddNewPurchaseTransaction(
-        //    IDbConnection con,
-        //    IDbTransaction trans,
-        //    CashTransactionModel model)
-        //{
-        //    string Query = @"INSERT INTO CashTransactions 
-        //        (
-        //            TransactionDate,
-        //            TransactionType,
-        //            Amount,
-        //            Description
-        //        )
-        //        VALUES
-        //        (
-        //            @TransactionDate,
-        //            @TransactionType,
-        //            @Amount,
-        //            @Description
-        //        );
+        public static Result AddNew(
+            IDbConnection con,
+            IDbTransaction trans,
+            CashTransactionModel model)
+        {
+            string Query = @"INSERT INTO CashTransactions 
+                (
+                    TransactionDate,
+                    TransactionType,
+                    Amount,
+                    Description,
+                    Notes
+                )
+                VALUES
+                (
+                    @TransactionDate,
+                    @TransactionType,
+                    @Amount,
+                    @Description,
+                    @Notes
+                );
 
-        //        SELECT last_insert_rowid();";
+                SELECT LAST_INSERT_ROWID();";
 
-        //    DbParameterInfo[] Parameters = new DbParameterInfo[]
-        //    {
-        //        new DbParameterInfo
-        //        {
-        //            Name = "@TransactionDate",
-        //            DbType = DbType.DateTime,
-        //            Value = model.TransactionDate,
-        //        },
-        //        new DbParameterInfo
-        //        {
-        //            Name = "@Amount",
-        //            DbType = DbType.Double,
-        //            Value = model.Amount,
-        //        },
-        //        new DbParameterInfo
-        //        {
-        //            Name = "@Description",
-        //            DbType = DbType.String,
-        //            Value = model.Description,
-        //        },
-        //        new DbParameterInfo
-        //        {
-        //            Name = "@TransactionType",
-        //            DbType = DbType.String,
-        //            Value = TransactionType.Expense.ToArabic(),
-        //        }
-        //    };
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@TransactionDate",
+                    DbType = DbType.Date,
+                    Value = model.TransactionDate,
+                },
+                new DbParameterInfo
+                {
+                    Name = "@Amount",
+                    DbType = DbType.Decimal,
+                    Value = model.Amount,
+                },
+                new DbParameterInfo
+                {
+                    Name = "@Description",
+                    DbType = DbType.String,
+                    Value = model.Description,
+                },
+                new DbParameterInfo
+                {
+                    Name = "@TransactionType",
+                    DbType = DbType.String,
+                    Value = TransactionType.Expense.ToArabic(),
+                },
+                new DbParameterInfo
+                {
+                    Name = "@Notes",
+                    DbType = DbType.String,
+                    Value = model.Notes,
+                },
+            };
 
-        //    var result = DbManager.Current?.GetScalar<int>(
-        //        con,
-        //        trans,
-        //        CommandType.Text,
-        //        Query,
-        //        Parameters);
+            Result<int> result = DbManager.Current?.GetScalar<int>(
+                con,
+                trans,
+                CommandType.Text,
+                Query,
+                Parameters);
 
-        //    if (result.IsSuccess)
-        //    {
-        //        model.TransactionID = result.Data;
+            if (result.IsSuccess)
+            {
+                model.TransactionID = result.Data;
 
-        //        return Result.Success();
-        //    }
+                return Result.Success();
+            }
 
-        //    return Result.Failure(
-        //        "فشلت عملية إضافة حركة صندوق لهذه الفاتورة!");
-        //}
+            return Result.Failure(
+                "فشلت عملية إضافة حركة صندوق لهذه الفاتورة!");
+        }
+
+        public static Result Update(
+            IDbConnection con,
+            IDbTransaction trans,
+            CashTransactionModel model)
+        {
+            string Query = @"UPDATE CashTransactions
+                SET
+                    TransactionDate = @TransactionDate
+                WHERE TransactionID = @TransactionID;";
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@TransactionID",
+                    DbType = DbType.Int64,
+                    Value = model.TransactionID,
+                },
+                new DbParameterInfo
+                {
+                    Name = "@TransactionDate",
+                    DbType = DbType.DateTime,
+                    Value = model.TransactionDate,
+                },
+            };
+
+            Result<int> result = DbManager.Current?.ExecuteNonQuery(
+                con,
+                trans,
+                CommandType.Text,
+                Query,
+                Parameters);
+
+            if (result.IsSuccess)
+            {
+                if (result.Data > 0)
+                    return Result.Success();
+
+                return Result.Failure("لم يتم تحديث بيانات أي حركة!");
+            }
+
+            return Result.Failure(
+                "فشلت عملية إضافة حركة صندوق لهذه الفاتورة!");
+        }
 
         //public static Result AddNewSalesTransaction(
         //    IDbConnection con,

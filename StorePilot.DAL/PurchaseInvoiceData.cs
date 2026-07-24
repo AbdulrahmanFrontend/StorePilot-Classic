@@ -53,14 +53,14 @@ namespace StorePilot.DAL
                     @Notes
                 );
 
-                SELECT last_insert_rowid();";
+                SELECT LAST_INSERT_ROWID();";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
             {
                 new DbParameterInfo
                 {
                     Name = "@InvoiceID",
-                    DbType = DbType.DateTime,
+                    DbType = DbType.Int64,
                     Value = model.InvoiceID,
                 },
                 new DbParameterInfo
@@ -91,7 +91,51 @@ namespace StorePilot.DAL
                 return Result.Success();
             }
 
-            return Result.Failure("فشلت عملية حفظ بيانات فاتورة الشراء هذه!");
+            return Result.Failure("فشلت عملية إضافة فاتورة الشراء!");
+        }
+
+        public static Result Update(
+            IDbConnection con,
+            IDbTransaction trans,
+            PurchaseInvoiceModel model)
+        {
+            string Query = @"UPDATE PurchasesInvoices
+                SET
+                    SupplierID = @SupplierID
+                WHERE PurchaseInvoiceID = @PurchaseInvoiceID;";
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@PurchaseInvoiceID",
+                    DbType = DbType.Int64,
+                    Value = model.PurchaseInvoiceID,
+                },
+                new DbParameterInfo
+                {
+                    Name = "@SupplierID",
+                    DbType = DbType.Int64,
+                    Value = model.SupplierID,
+                },
+            };
+
+            Result<int> result = DbManager.Current?.ExecuteNonQuery(
+                con,
+                trans,
+                CommandType.Text,
+                Query,
+                Parameters);
+
+            if (result.IsSuccess)
+            {
+                if (result.Data == 0)
+                    return Result.Failure("لم تحديث بيانات أي فاتورة شراء!");
+
+                return Result.Success();
+            }
+
+            return Result.Failure("فشلت عملية تحديث بيانات فاتورة الشراء!");
         }
 
         public static Result Cancell(
@@ -342,7 +386,7 @@ namespace StorePilot.DAL
                 {
                     Name = "@InvoiceStatus",
                     DbType = DbType.String,
-                    Value = SalesInvoiceStatus.Deferred.ToArabic(),
+                    Value = InvoiceStatus.Deferred.ToArabic(),
                 }
             };
 

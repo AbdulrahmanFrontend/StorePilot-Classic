@@ -126,5 +126,28 @@ namespace StorePilot.DAL
 
             return Result.Failure("فشلت عملية تحديث بيانات الفاتورة!");
         }
+
+        public static Result<bool> HasPayments(int id)
+        {
+            string Query = @"SELECT EXISTS
+                (
+                    SELECT 1 FROM Payments WHERE InvoiceID = @InvoiceID
+                ) AS IsFound;";
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@InvoiceID",
+                    DbType = DbType.Int64,
+                    Value = id,
+                },
+            };
+
+            return DataQueryService.Scalar<bool>(
+                CommandType.Text,
+                Query,
+                Parameters);
+        }
     }
 }
