@@ -88,7 +88,7 @@ namespace StorePilot.BLL
                         {
                             TransactionDate = Model.InvoiceDate,
                             TransactionType = TransactionType.Revenue.ToArabic(),
-                            Amount = Model.TotalAmount,
+                            PaidAmount = Model.TotalAmount,
                             Description = $"إيرادات فاتورة بيع",
                             Notes = Model.Notes,
                         };
@@ -141,60 +141,8 @@ namespace StorePilot.BLL
 
         protected override Result _Update()
         {
-            CashTransactionModel transModel = new CashTransactionModel();
-
-            if (this.Model.TransactionID.HasValue)
-            {
-                Result<CashTransactionModel> result =
-                    CashTransactionData.GetByID(this.Model.TransactionID.Value);
-
-                if (result.IsSuccess)
-                    transModel = result.Data;
-                else
-                    return Result.Failure("فشلت عملية الوصول لحركة هذه الفاتورة!");
-            }
-
-            Result ValidateDateResult = ValidateInvoiceDate();
-
-            if (!ValidateDateResult.IsSuccess)
-                return ValidateDateResult;
-
-            Result<bool> IsCancelledResult = IsCancelled(this.Model.SaleInvoiceID);
-
-            if (!IsCancelledResult.IsSuccess)
-                return Result.Failure(IsCancelledResult.Message);
-
-            Result TransactionResult = DbManager.Current?.ExecuteTransaction(
-                (con, trans) =>
-                {
-                    Result InnerResult = InvoiceData.Update(con, trans, Model);
-
-                    _ThrowException(InnerResult);
-
-                    if (this.Model.TransactionID.HasValue)
-                    {
-                        InnerResult = CashTransactionData.Update(
-                            con,
-                            trans,
-                            transModel);
-
-                        _ThrowException(InnerResult);
-                    }
-
-                    InnerResult = SaleInvoiceData.Update(con, trans, Model);
-
-                    _ThrowException(InnerResult);
-                });
-
-            if (TransactionResult.IsSuccess)
-            {
-                LogManager.LogInfo($"تمت عملية تحديث بيانات فاتورة البيع " +
-                    $"{Model.SaleInvoiceID} بنجاح.");
-
-                return Result.Success("تمت عملية تحديث بيانات الفاتورة بنجاح.");
-            }
-
-            return Result.Failure("فشلت عملية حفظ الفاتورة!");
+            return Result.Failure("لا يسمح بتعديل أي فاتورة في النظام," +
+                " يرجى إلغاء هذه الفاتورة ثم إنشاء أخرى جديدة");
         }
 
         public override Result Valid()
@@ -262,38 +210,6 @@ namespace StorePilot.BLL
             }
         }
 
-        public Result ValidateInvoiceDate()
-        {
-            Result<bool> result = InvoiceService.HasPayments(this.Model.InvoiceID);
-
-            if (result.IsSuccess)
-            {
-                if (result.Data)
-                {
-                    result = PaymentData.IsInvoiceDateLargerThanPaymentsDate(
-                        this.Model.InvoiceID,
-                        this.Model.InvoiceDate);
-
-                    if (result.IsSuccess)
-                    {
-                        if (result.Data)
-                            return Result.Failure("يجب أن يكون تاريخ الفاتورة الجديد "
-                                + "أصغر من كل تواريخ الدفع او مساوي لأقل تاريخ دفع!");
-
-                        return Result.Success();
-                    }
-
-                    return Result.Failure(
-                        "فشلت عملية المقارنة بين تاريخ الفاتورة الجديد" +
-                        " وبين تواريخ سجلات دفع الفاتورة!");
-                }
-
-                return Result.Success();
-            }
-
-            return Result.Failure("فشلت عملية التحقق من وجود سجلات دفع لهذه الفاتورة!");
-        }
-
         public static Result Cancell(int invoiceId)
         {
             Result<bool> IsCancelledResult = IsCancelled(invoiceId);
@@ -321,7 +237,7 @@ namespace StorePilot.BLL
 
                     _ThrowException(result);
 
-                    result = CashTransactionData.CancellPaymentsTransactions(
+                    result = CashTransactionData.CancellInvoicePaymentsTransactions(
                         con,
                         trans,
                         invoiceId);

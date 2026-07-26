@@ -42,7 +42,7 @@ namespace StorePilot.DAL
                 (
                     TransactionDate,
                     TransactionType,
-                    Amount,
+                    PaidAmount,
                     Description,
                     Notes
                 )
@@ -50,7 +50,7 @@ namespace StorePilot.DAL
                 (
                     @TransactionDate,
                     @TransactionType,
-                    @Amount,
+                    @PaidAmount,
                     @Description,
                     @Notes
                 );
@@ -67,9 +67,9 @@ namespace StorePilot.DAL
                 },
                 new DbParameterInfo
                 {
-                    Name = "@Amount",
+                    Name = "@PaidAmount",
                     DbType = DbType.Decimal,
-                    Value = model.Amount,
+                    Value = model.PaidAmount,
                 },
                 new DbParameterInfo
                 {
@@ -117,7 +117,7 @@ namespace StorePilot.DAL
                 (
                     TransactionDate,
                     TransactionType,
-                    Amount,
+                    PaidAmount,
                     Description,
                     Notes
                 )
@@ -125,7 +125,7 @@ namespace StorePilot.DAL
                 (
                     @TransactionDate,
                     @TransactionType,
-                    @Amount,
+                    @PaidAmount,
                     @Description,
                     @Notes
                 );
@@ -142,9 +142,9 @@ namespace StorePilot.DAL
                 },
                 new DbParameterInfo
                 {
-                    Name = "@Amount",
+                    Name = "@PaidAmount",
                     DbType = DbType.Decimal,
-                    Value = model.Amount,
+                    Value = model.PaidAmount,
                 },
                 new DbParameterInfo
                 {
@@ -301,7 +301,7 @@ namespace StorePilot.DAL
         {
             string Query = @"UPDATE CashTransactions
                 SET
-                    TransactionDate = @TransactionDate, Amount = @Amount,
+                    TransactionDate = @TransactionDate, PaidAmount = @PaidAmount,
                     TransactionType = @TransactionType, Notes = @Notes,
                     Description = @Description
                 WHERE TransactionID = @TransactionID;";
@@ -322,9 +322,9 @@ namespace StorePilot.DAL
                 },
                 new DbParameterInfo
                 {
-                    Name = "@Amount",
+                    Name = "@PaidAmount",
                     DbType = DbType.Decimal,
-                    Value = model.Amount,
+                    Value = model.PaidAmount,
                 },
                 new DbParameterInfo
                 {
@@ -444,7 +444,7 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية إلغاء هذه الحركة!");
         }
 
-        public static Result CancellPaymentsTransactions(
+        public static Result CancellInvoicePaymentsTransactions(
             IDbConnection con,
             IDbTransaction trans,
             int invoiceId)
@@ -481,6 +481,50 @@ namespace StorePilot.DAL
                 return Result.Success();
 
             return Result.Failure("فشلت عملية إلغاء حركات الدفع!");
+        }
+
+        public static Result CancellPaymentTransaction(
+            IDbConnection con,
+            IDbTransaction trans,
+            int id)
+        {
+            string Query = @"UPDATE CashTransactions
+                SET
+                    Cancelled = CASE Cancelled
+                    WHEN 0 THEN 1
+                    ELSE 1
+                    END
+                WHERE TransactionID = 
+                (
+                    SELECT TransactionID FROM Payments WHERE PaymentID = @PaymentID
+                );";
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@PaymentID",
+                    DbType = DbType.Int64,
+                    Value = id,
+                },
+            };
+
+            Result<int> result =  DbManager.Current?.ExecuteNonQuery(
+                con,
+                trans,
+                CommandType.Text, 
+                Query, 
+                Parameters);
+
+            if (result.IsSuccess)
+            {
+                if (result.Data > 0)
+                    return Result.Success();
+
+                return Result.Failure("لم يتم تحديث بيانات أي حركة صندوق!");
+            }
+
+            return Result.Failure("فشلت عملية إلغاء حركة الصندوق!");
         }
 
         public static Result<bool> IsFound(int id)
@@ -665,8 +709,8 @@ namespace StorePilot.DAL
                 SUM(
                 CASE
                 WHEN TransactionType = @TransactionType AND Cancelled = 0
-                THEN Amount
-                ELSE -Amount
+                THEN PaidAmount
+                ELSE -PaidAmount
                 END
                 ), 0)
                 FROM CashTransactions;";

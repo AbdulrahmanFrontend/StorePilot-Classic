@@ -235,6 +235,42 @@ namespace StorePilot.DAL
                 Parameters);
         }
 
+        public static Result<DateTime> GetInvoiceDate(int invoiceId)
+        {
+            string Query = @"SELECT InvoiceDate FROM Invoices
+                WHERE InvoiceID = @InvoiceID;";
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@InvoiceID",
+                    DbType = DbType.DateTime,
+                    Value = invoiceId,
+                },
+            };
+
+            return DataQueryService.Scalar<DateTime>(CommandType.Text, Query, Parameters);
+        }
+
+        public static Result<decimal> GetRemainingAmount(int invoiceId)
+        {
+            string Query = @"SELECT (TotalAmount - PaidAmount) AS RemainingAmount
+                FROM Invoices WHERE InvoiceID = @InvoiceID;";
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@InvoiceID",
+                    DbType = DbType.Int64,
+                    Value = invoiceId,
+                }
+            };
+
+            return DataQueryService.Scalar<decimal>(CommandType.Text, Query, Parameters);
+        }
+
         public static Result<bool> HasPayments(int id)
         {
             string Query = @"SELECT EXISTS

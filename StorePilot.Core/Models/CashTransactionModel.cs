@@ -16,7 +16,7 @@ namespace StorePilot.Core.Models
         public string TransactionType { get; set; } = string.Empty;
 
         [Range(0.01, 999999, "يجب أن يكون المبلغ المدفوع أكبر من الصفر وأصغر من أو يساوي 999999")]
-        public decimal Amount { get; set; } = 0;
+        public decimal PaidAmount { get; set; } = 0;
 
         [Required("مطلوب إدخال توصيف الحركة")]
         [MaxLength(100, "يجب ألا يتجاوز توصيف الحركة ال 100 حرف")]

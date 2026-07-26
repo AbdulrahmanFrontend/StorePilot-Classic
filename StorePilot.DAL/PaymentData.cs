@@ -367,6 +367,26 @@ namespace StorePilot.DAL
             return DataQueryService.Scalar<bool>(CommandType.Text, Query, Parameters);
         }
 
+        public static Result<bool> IsForSales(int invoiceId)
+        {
+            string Query = @"SELECT EXISTS
+                (
+                    SELECT 1 FROM SalesInvoices WHERE InvoiceID = @InvoiceID
+                ) AS IsForSales;";
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@InvoiceID",
+                    DbType = DbType.Int64,
+                    Value = invoiceId,
+                },
+            };
+
+            return DataQueryService.Scalar<bool>(CommandType.Text, Query, Parameters);
+        }
+
         //public static Result<float> GetAmount(int id)
         //{
         //    string Query = @"SELECT Amount FROM CreditPayments
@@ -388,26 +408,44 @@ namespace StorePilot.DAL
         //        Parameters);
         //}
 
-        //public static Result<int> GetInvoiceID(int id)
-        //{
-        //    string Query = @"SELECT InvoiceID FROM CreditPayments
-        //        WHERE PaymentID = @PaymentID;";
+        public static Result<int> GetInvoiceID(int id)
+        {
+            string Query = @"SELECT InvoiceID FROM Payments
+                WHERE PaymentID = @PaymentID;";
 
-        //    DbParameterInfo[] Parameters = new DbParameterInfo[]
-        //    {
-        //        new DbParameterInfo
-        //        {
-        //            Name = "@PaymentID",
-        //            DbType = DbType.Int64,
-        //            Value = id,
-        //        },
-        //    };
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@PaymentID",
+                    DbType = DbType.Int64,
+                    Value = id,
+                },
+            };
 
-        //    return DataQueryService.Scalar<int>(
-        //        CommandType.Text,
-        //        Query,
-        //        Parameters);
-        //}
+            return DataQueryService.Scalar<int>(
+                CommandType.Text,
+                Query,
+                Parameters);
+        }
+
+        public static Result<bool> IsCancelled(int id)
+        {
+            string Query = @"SELECT Cancelled FROM Payments
+                WHERE PaymentID = @PaymentID;";
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@PaymentID",
+                    DbType = DbType.Int64,
+                    Value = id,
+                },
+            };
+
+            return DataQueryService.Scalar<bool>(CommandType.Text, Query, Parameters);
+        }
 
         //public static Result<int> GetTransactionID(int paymentId)
         //{

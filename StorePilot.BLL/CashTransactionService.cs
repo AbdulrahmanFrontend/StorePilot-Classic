@@ -61,7 +61,7 @@ namespace StorePilot.BLL
         protected override Result _AddNew() => CashTransactionData.AddNew(this.Model);
 
         public Result ValidateAmount()
-            => _ValidateProperty(nameof(this.Model.Amount), this.Model);
+            => _ValidateProperty(nameof(this.Model.PaidAmount), this.Model);
 
         public Result ValidateDescription()
             => _ValidateProperty(nameof(this.Model.Description), this.Model);

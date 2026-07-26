@@ -54,9 +54,21 @@ namespace StorePilot.BLL
             CashTransactionModel TransModel = new CashTransactionModel();
 
             TransModel.TransactionDate = Model.PaymentDate;
-            TransModel.Amount = Model.PaidAmount;
-            
-            TransModel.Description = $"تحصيل دين.";
+            TransModel.PaidAmount = Model.PaidAmount;
+
+            Result<bool> IsForSalesResult = PaymentData.IsForSales(this.Model.InvoiceID);
+
+            if (IsForSalesResult.IsSuccess)
+            {
+                if (IsForSalesResult.Data)
+                    TransModel.Description = "تحصيل دين.";
+                else
+                    TransModel.Description = "سداد دين.";
+            }
+            else
+                return Result.Failure(
+                    "فشلت عملية التحقق من كون الدين لفاتورة شراء أم بيع!");
+
             Result result = DbManager.Current?.ExecuteTransaction(
                 (con, trans) =>
                 {
@@ -107,7 +119,7 @@ namespace StorePilot.BLL
         {
             return Result.Failure(
                 "غير مسموح بتعديل بيانات " +
-                "عملية الدفع هذه يرجى حذفها وإنشاء عملية جديدة!");
+                "عملية الدفع هذه يرجى إلغاؤها وإنشاء عملية جديدة!");
         }
 
         public override Result Valid()
@@ -117,12 +129,12 @@ namespace StorePilot.BLL
             if (!result.IsSuccess)
                 return result;
 
-            result = ValidateAmount();
+            result = ValidatePaidAmount();
 
             if (!result.IsSuccess)
                 return result;
 
-            result = ValidateDate();
+            result = ValidateInvoiceDate();
 
             if (!result.IsSuccess)
                 return result;
@@ -136,15 +148,26 @@ namespace StorePilot.BLL
         }
 
         public Result ValidateInvoiceStatus()
-            => SaleInvoiceService.IsDeferred(this.Model.InvoiceID);
+        {
+            Result<bool> result = InvoiceService.IsDeferred(this.Model.InvoiceID);
+
+            if (result.IsSuccess)
+            {
+                if (result.Data)
+                    return Result.Success();
+
+                return Result.Failure("لا يمكن تسجيل دفع لفاتورة ليست آجل!");
+            }
+
+            return Result.Failure("فشلت عملية التحقق من كون الفاتورة آجل أم مدفوع!");
+        }
 
         public Result ValidateNotes() =>
             _ValidateProperty(nameof(this.Model.Notes), this.Model);
 
-        public Result ValidateAmount()
+        public Result ValidatePaidAmount()
         {
-            var result = InvoiceData.GetRemainingAmount(
-                this.Model.InvoiceID);
+            Result<decimal> result = InvoiceData.GetRemainingAmount(this.Model.InvoiceID);
 
             if (result.IsSuccess)
             {
@@ -158,10 +181,9 @@ namespace StorePilot.BLL
             return Result.Success();
         }
 
-        public Result ValidateDate()
+        public Result ValidateInvoiceDate()
         {
-            Result<DateTime> result = InvoiceData.GetInvoiceDate(
-                this.Model.InvoiceID);
+            Result<DateTime> result = InvoiceData.GetInvoiceDate(this.Model.InvoiceID);
 
             if (result.IsSuccess)
             {
@@ -176,35 +198,35 @@ namespace StorePilot.BLL
             return Result.Success();
         }
 
-        public static Result Delete(int id)
+        public static Result Cancell(int id)
         {
-            Result<decimal> AmountResult = PaymentData.GetAmount(id);
+            Result<bool> IsCancelledResult = IsCancelled(id);
 
-            if (!AmountResult.IsSuccess)
-                return Result.Failure("فشلت عملية الوصول للمبلغ المدفوع!");
+            if (IsCancelledResult.IsSuccess)
+            {
+                if (IsCancelledResult.Data)
+                    return Result.Failure("عملية الدفع هذه ملغية فعلا!");
+            }
+            else
+                return Result.Failure(
+                    "فشلت عملية التحقق من كون عملية الدفع هذه ملغية!");
 
             Result<int> InvoiceIDResult = PaymentData.GetInvoiceID(id);
 
             if (!InvoiceIDResult.IsSuccess)
-                return Result.Failure("فشلت عملية الوصول لفاتورة عملية الدفع!");
+                return Result.Failure(InvoiceIDResult.Message);
 
-            Result<int> TransIDResult = PaymentData.GetTransactionID(id);
-
-            if (!TransIDResult.IsSuccess)
-                return Result.Failure("فشلت عملية الوصول لحركة عملية الدفع هذه!");
-
-            Result DeleteResult = DbManager.Current?.ExecuteTransaction(
+            Result CancellResult = DbManager.Current?.ExecuteTransaction(
                 (con, trans) =>
                 {
-                    var result = SaleInvoiceData.ReturnPaymentAmount(
+                    Result result = InvoiceData.UpdatePaidAmount(
                         con,
                         trans,
-                        InvoiceIDResult.Data,
-                        AmountResult.Data);
+                        InvoiceIDResult.Data);
 
                     _ThrowException(result);
 
-                    result = SaleInvoiceData.UpdateStatus(
+                    result = InvoiceData.UpdateStatus(
                         con,
                         trans,
                         InvoiceIDResult.Data);
@@ -215,21 +237,22 @@ namespace StorePilot.BLL
 
                     _ThrowException(result);
 
-                    result = CashTransactionData.Cancell(
-                        con,
+                    result = CashTransactionData.CancellPaymentTransaction(
+                        con, 
                         trans,
-                        TransIDResult.Data);
+                        id);
 
                     _ThrowException(result);
                 });
 
-            if (DeleteResult.IsSuccess)
+            if (CancellResult.IsSuccess)
             {
-                LogManager.LogInfo($"تمت عملية حذف عملية الدفع {id} هذه بنجاح.");
-                return Result.Success("تمت عملية حذف عملية الدفع هذه بنجاح.");
+                LogManager.LogInfo($"تمت عملية إلغاء عملية الدفع {id} هذه بنجاح.");
+
+                return Result.Success("تمت عملية إلغاء عملية الدفع هذه بنجاح.");
             }
 
-            return Result.Failure("فشلت عملية حذف عملية الدفع هذه!");
+            return Result.Failure("فشلت عملية إلغاء عملية الدفع هذه!");
         }
 
         public static Result IsFound(int id)
@@ -293,15 +316,14 @@ namespace StorePilot.BLL
                 "فشلت عملية الحصول على جميع مدفوعات الفاتورة!");
         }
 
-        public static Result<DataTable> GetPayments(int invoiceId)
+        public static Result<bool> IsCancelled(int id)
         {
-            Result<DataTable> result = PaymentData.GetInvoicePayments(invoiceId);
+            Result<bool> result = PaymentData.IsCancelled(id);
 
             if (result.IsSuccess)
                 return result;
 
-            return Result<DataTable>.Failure(
-                "فشلت عملية الوصول لعملية مدفوعات الفاتورة!");
+            return Result<bool>.Failure("فشلت عملية التحقق من إلغاء عملية الدفع هذه!");
         }
     }
 }
