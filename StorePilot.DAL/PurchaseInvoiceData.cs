@@ -16,7 +16,7 @@ namespace StorePilot.DAL
     {
         public static Result<PurchaseInvoiceModel> GetByID(int id)
         {
-            string Query = @"SELECT * FROM PurchaseInvoices 
+            string Query = @"SELECT * FROM view_PurchasesInvoicesDetails 
                 WHERE PurchaseInvoiceID = @PurchaseInvoiceID;";
 
             DbParameterInfo[] Paramters = new DbParameterInfo[]
@@ -201,7 +201,7 @@ namespace StorePilot.DAL
         public static Result<int> GetCount()
         {
             string Query = @"SELECT COUNT(PurchaseInvoiceID) AS PurchasesInvoicesCount 
-                    FROM PurchaseInvoices;";
+                    FROM PurchaseInvoices WHERE Cancelled = 0;";
 
             return DataQueryService.Scalar<int>(CommandType.Text, Query);
         }
@@ -336,7 +336,10 @@ namespace StorePilot.DAL
         {
             string Query = @"SELECT EXISTS
             (
-                SELECT 1 FROM PurchasesInvoices WHERE TransactionID = @TransactionID
+                SELECT 1 FROM PurchasesInvoices WHERE InvoiceID = 
+                (
+                    SELECT InvoiceID FROM Invoices WHERE TransactionID = @TransactionID
+                )
             ) AS IsPurchaseTransaction;";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
@@ -378,7 +381,8 @@ namespace StorePilot.DAL
                         WHEN InvoiceStatus = @InvoiceStatus
                         THEN (TotalAmount - PaidAmount) AS RemainingAmount
                     END
-                ), 0) AS DebtsSum FROM view_PurchasesInvoicesDetails;";
+                ), 0) AS DebtsSum FROM view_PurchasesInvoicesDetails
+                WHERE Cancelled = 0;";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
             {

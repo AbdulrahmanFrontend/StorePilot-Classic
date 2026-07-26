@@ -162,6 +162,11 @@ namespace StorePilot.BLL
             if (!ValidateDateResult.IsSuccess)
                 return ValidateDateResult;
 
+            Result<bool> IsCancelledResult = IsCancelled(this.Model.PurchaseInvoiceID);
+
+            if (!IsCancelledResult.IsSuccess)
+                return Result.Failure(IsCancelledResult.Message);
+
             Result TransactionResult = DbManager.Current?.ExecuteTransaction(
                 (con, trans) =>
                 {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DevToolkit.Core.Validation.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,5 +12,10 @@ namespace StorePilot.Core.Models
         public int PurchaseInvoiceID { get; set; } = 0;
 
         public int? SupplierID { get; set; } = null;
+
+        public bool Cancelled { get; set; } = false;
+
+        [MaxLength(500, "يجب ألا يتجاوز طول الملاحظات ال 500 حرف")]
+        public string Notes { get; set; } = string.Empty;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using DevToolkit.Core.Results;
 using DevToolkit.Data;
 using DevToolkit.Data.Core;
+using StorePilot.Core.Enums;
 using StorePilot.Core.Models;
 using System;
 using System.Collections.Generic;
@@ -125,6 +126,113 @@ namespace StorePilot.DAL
                 return Result.Success("تمت عملية تحديث بيانات الفاتورة بنجاح.");
 
             return Result.Failure("فشلت عملية تحديث بيانات الفاتورة!");
+        }
+
+        public static Result UpdatePaidAmount(
+            IDbConnection con,
+            IDbTransaction trans,
+            int invoiceId)
+        {
+            string Query = @"UPDATE Invoices
+                SET
+                    PaidAmount = 
+                    (
+                        SELECT SUM(PaidAmount) AS InvoicePayments FROM Payments 
+                        WHERE InvoiceID = @InvoiceID AND Cancelled = 0
+                    )
+                WHERE InvoiceID = @InvoiceID;";
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@InvoiceID",
+                    DbType = DbType.Int64,
+                    Value = invoiceId,
+                },
+            };
+
+            Result<int> result = DbManager.Current?.ExecuteNonQuery(
+                con,
+                trans,
+                CommandType.Text,
+                Query,
+                Parameters);
+
+            if (result.IsSuccess)
+                return Result.Success();
+
+            return Result.Failure("فشلت عملية تحديث مبلغ السداد من الفاتورة");
+        }
+
+        public static Result UpdateStatus(
+            IDbConnection con,
+            IDbTransaction trans,
+            int invoiceId)
+        {
+            string Query = @"UPDATE Invoices
+                SET InvoiceStatus =
+                    CASE
+                        WHEN PaidAmount = TotalAmount
+                        THEN @Paid
+                        ELSE @Deferred
+                    END
+                WHERE InvoiceID = @InvoiceID;";
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@InvoiceID",
+                    DbType = DbType.Int64,
+                    Value = invoiceId,
+                },
+                new DbParameterInfo
+                {
+                    Name = "@Paid",
+                    DbType = DbType.String,
+                    Value = InvoiceStatus.Paid.ToArabic()
+                },
+                new DbParameterInfo
+                {
+                    Name = "@Deferred",
+                    DbType = DbType.String,
+                    Value = InvoiceStatus.Deferred.ToArabic()
+                }
+            };
+
+            Result<int> result = DbManager.Current?.ExecuteNonQuery(
+                con,
+                trans,
+                CommandType.Text,
+                Query,
+                Parameters);
+
+            if (result.IsSuccess)
+                return Result.Success();
+
+            return Result.Failure("فشلت عملية تحديث حالة الفاتورة!");
+        }
+
+        public static Result<string> GetInvoiceStatus(int id)
+        {
+            string Query = @"SELECT InvoiceStatus FROM Invoices
+                WHERE InvoiceID = @InvoiceID";
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@InvoiceID",
+                    DbType = DbType.Int64,
+                    Value = id,
+                },
+            };
+
+            return DataQueryService.Scalar<string>(
+                CommandType.Text,
+                Query,
+                Parameters);
         }
 
         public static Result<bool> HasPayments(int id)

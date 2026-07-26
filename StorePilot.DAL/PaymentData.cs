@@ -341,7 +341,11 @@ namespace StorePilot.DAL
             string Query = @"SELECT EXISTS
                 (
                     SELECT 1 FROM Payments 
-                    WHERE InvoiceID = @InvoiceID AND @invoiceDate > MIN(PaymentDate)
+                    WHERE @invoiceDate < 
+                    (
+                        SELECT MIN(PaymentDate) FROM Payments 
+                        WHERE InvoiceID = @InvoiceID
+                    )
                 ) AS IsFound;";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]

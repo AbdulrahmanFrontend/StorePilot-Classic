@@ -207,9 +207,20 @@ PurchasesInvoices.Cancelled, PurchasesInvoices.Notes, Invoices.TransactionID
 FROM PurchasesInvoices
 JOIN Invoices
 ON PurchasesInvoices.InvoiceID = Invoices.InvoiceID
-LEFT JOIN Suppliers
-ON PurchasesInvoices.SupplierID = Suppliers.SupplierID
+LEFT JOIN view_SuppliersDetails
+ON PurchasesInvoices.SupplierID = view_SuppliersDetails.SupplierID
 ORDER BY PurchasesInvoices.Cancelled ASC, PurchasesInvoices.PurchaseInvoiceID DESC;
+
+CREATE VIEW view_SalesInvoicesDetails AS
+SELECT SalesInvoices.SaleInvoiceID, SalesInvoices.InvoiceID, Invoices.InvoiceDate, Invoices.InvoiceStatus, 
+SalesInvoices.CustomerID, view_CustomersDetails.Name AS CustomerName, Invoices.PaidAmount, Invoices.TotalAmount, Invoices.CreatedAt,
+SalesInvoices.Cancelled, SalesInvoices.Notes, Invoices.TransactionID
+FROM SalesInvoices
+JOIN Invoices
+ON SalesInvoices.InvoiceID = Invoices.InvoiceID
+LEFT JOIN view_CustomersDetails
+ON SalesInvoices.CustomerID = view_CustomersDetails.CustomerID
+ORDER BY SalesInvoices.Cancelled ASC, SalesInvoices.PurchaseInvoiceID DESC;
 
 CREATE VIEW view_PaymentsDetails AS
 SELECT Payments.PaymentID, Payments.InvoiceID, Payments.PaymentDate, Payments.PaidAmount, Payments.MethodID, PaymentMethods.MethodName,

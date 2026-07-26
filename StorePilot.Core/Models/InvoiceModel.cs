@@ -24,11 +24,6 @@ namespace StorePilot.Core.Models
 
         public decimal RemainingAmount => TotalAmount - PaidAmount;
 
-        public bool Cancelled { get; set; } = false;
-
-        [MaxLength(500, "يجب ألا يتجاوز عدد حروف الملاحظات ال 500 حرف")]
-        public string Notes { get; set; } = string.Empty;
-
         public int? TransactionID { get; set; } = null;
     }
 }
