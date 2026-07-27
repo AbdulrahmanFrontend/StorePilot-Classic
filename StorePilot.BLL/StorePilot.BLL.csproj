@@ -68,6 +68,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PurchaseInvoiceService.cs" />
     <Compile Include="SaleInvoiceService.cs" />
+    <Compile Include="SaleReturnItemService.cs" />
+    <Compile Include="SaleReturnService.cs" />
     <Compile Include="SupplierService.cs" />
     <Compile Include="UnitService.cs" />
   </ItemGroup>

@@ -1,10 +1,12 @@
 ﻿using DevToolkit.Core.Results;
+using DevToolkit.Data;
 using DevToolkit.Data.Core;
 using StorePilot.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -89,6 +91,40 @@ namespace StorePilot.DAL
 
             return DbManager.Current?.GetDataTable(
                 CommandType.Text,
+                Query,
+                Parameters);
+        }
+
+        public static Result<InvoiceItemModel> GetSaleInvoiceItem(
+            int saleInvoiceId,
+            int productId)
+        {
+            string Query = @"SELECT * FROM InvoicesItems 
+                WHERE InvoiceID = 
+                (
+                    SELECT InvoiceID FROM SalesInvoices 
+                    WHERE SaleInvoiceID = @SaleInvoiceID
+                ) 
+                AND ProductID = @ProductID;";
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@InvoiceID",
+                    DbType = DbType.Int64,
+                    Value = saleInvoiceId,
+                },
+                new DbParameterInfo
+                {
+                    Name = "@ProductID",
+                    DbType = DbType.Int64,
+                    Value = productId,
+                },
+            };
+
+            return DataQueryService.FirstOrDefault<InvoiceItemModel>(
+                CommandType.Text, 
                 Query,
                 Parameters);
         }

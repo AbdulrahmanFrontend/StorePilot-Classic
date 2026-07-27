@@ -229,3 +229,11 @@ FROM Payments
 JOIN PaymentMethods
 ON Payments.MethodID = PaymentMethods.MethodID
 ORDER BY Payments.Cancelled ASC, Payments.PaymentID DESC;
+
+CREATE VIEW view_SalesReturnItemsDetails AS
+SELECT SalesReturnItems.ReturnItemID, SalesReturnItems.ReturnID, SalesReturnItems.ProductID, view_ProductsDetails.ProductName,
+view_ProductsDetails.BarCode, view_ProductsDetails.GroupName, view_ProductsDetails.UnitName, SalesReturnItems.Quantity,
+SalesReturnItems.UnitPrice
+FROM SalesReturnItems
+JOIN view_ProductsDetails
+ON SalesReturnItems.ProductID = view_ProductsDetails.ProductID;
