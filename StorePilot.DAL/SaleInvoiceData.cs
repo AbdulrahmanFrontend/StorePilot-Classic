@@ -138,6 +138,51 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية تحديث بيانات فاتورة البيع!");
         }
 
+
+
+        public static Result UpdatePaidAmount(
+            IDbConnection con,
+            IDbTransaction trans,
+            int returnId)
+        {
+            string Query = @"UPDATE Invoices
+                SET
+                    PaidAmount = PaidAmount -
+                    (
+                        SELECT TotalReturnAmount FROM SalesReturns 
+                        WHERE ReturnID = @ReturnID AND Cancelled = 0
+                    )
+                WHERE InvoiceID = 
+                (
+                    SELECT InvoiceID FROM SalesInvoices WHERE SaleInvoiceID =
+                    (
+                        SELECT SaleInvoiceID FROM SalesReturns WHERE ReturnID = @ReturnID
+                    )
+                );";
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@ReturnID",
+                    DbType = DbType.Int64,
+                    Value = returnId,
+                },
+            };
+
+            Result<int> result = DbManager.Current?.ExecuteNonQuery(
+                con,
+                trans,
+                CommandType.Text,
+                Query,
+                Parameters);
+
+            if (result.IsSuccess)
+                return Result.Success();
+
+            return Result.Failure("فشلت عملية تحديث مبلغ السداد من الفاتورة");
+        }
+
         public static Result Cancell(
             IDbConnection con,
             IDbTransaction trans,
