@@ -527,6 +527,47 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية إلغاء حركة الصندوق!");
         }
 
+        public static Result Cancell(
+            IDbConnection con,
+            IDbTransaction trans,
+            int id)
+        {
+            string Query = @"UPDATE CashTransactions
+                SET
+                    Cancelled = CASE Cancelled
+                    WHEN 0 THEN 1
+                    ELSE 1
+                    END
+                WHERE TransactionID = @TransactionID;";
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@TransactionID",
+                    DbType = DbType.Int64,
+                    Value = id,
+                },
+            };
+
+            Result<int> result = DbManager.Current?.ExecuteNonQuery(
+                con,
+                trans,
+                CommandType.Text,
+                Query,
+                Parameters);
+
+            if (result.IsSuccess)
+            {
+                if (result.Data > 0)
+                    return Result.Success();
+
+                return Result.Failure("لم يتم تحديث بيانات أي حركة صندوق!");
+            }
+
+            return Result.Failure("فشلت عملية إلغاء حركة الصندوق!");
+        }
+
         public static Result<bool> IsFound(int id)
         {
             string Query = @"SELECT EXISTS

@@ -137,9 +137,7 @@ namespace StorePilot.DAL
 
             return Result.Failure("فشلت عملية تحديث بيانات فاتورة البيع!");
         }
-
-
-
+        
         public static Result UpdatePaidAmount(
             IDbConnection con,
             IDbTransaction trans,
@@ -181,6 +179,55 @@ namespace StorePilot.DAL
                 return Result.Success();
 
             return Result.Failure("فشلت عملية تحديث مبلغ السداد من الفاتورة");
+        }
+
+        public static Result UpdateTotalAmount(
+            IDbConnection con,
+            IDbTransaction trans,
+            int returnId)
+        {
+            string Query = @"UPDATE Invoices
+                SET
+                    TotalAmount = TotalAmount + 
+                    (
+                        SELECT TotalReturnAmount FROM SalesReturns
+                        WHERE ReturnID = @ReturnID
+                    )
+                WHERE InvoiceID = 
+                (
+                    SELECT InvoiceID FROM SalesInvoices WHERE SaleInvoiceID = 
+                    (
+                        SELECT SaleInvoiceID FROM SalesReturns
+                        WHERE ReturnID = @ReturnID
+                    )
+                );";
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@ReturnID",
+                    DbType = DbType.Int64,
+                    Value = returnId,
+                },
+            };
+
+            Result<int> result=DbManager.Current?.ExecuteNonQuery(
+                con,
+                trans,
+                CommandType.Text,
+                Query,
+                Parameters);
+
+            if (result.IsSuccess)
+            {
+                if (result.Data > 0)
+                    return Result.Success();
+
+                return Result.Failure("لم يتم تحديث إجمالي أي فاتورة!");
+            }
+
+            return Result.Failure("فشلت عملية تحديث إجمالي الفاتورة!");
         }
 
         public static Result Cancell(

@@ -62,10 +62,10 @@ namespace StorePilot.BLL
 
         protected override Result _AddNew()
         {
-            var InvoiceIDResult = SaleInvoiceData.GetByID(this.Model.SaleInvoiceID);
+            var SaleInvoiceResult = SaleInvoiceData.GetByID(this.Model.SaleInvoiceID);
 
-            if (!InvoiceIDResult.IsSuccess || InvoiceIDResult.Data == null)
-                return Result.Failure(InvoiceIDResult.Message);
+            if (!SaleInvoiceResult.IsSuccess || SaleInvoiceResult.Data == null)
+                return Result.Failure(SaleInvoiceResult.Message);
 
             Result TransResult = DbManager.Current?.ExecuteTransaction(
                 (con, trans) =>
@@ -92,6 +92,13 @@ namespace StorePilot.BLL
 
                     _ThrowException(result);
 
+                    foreach (SaleReturnItemModel item in _Items)
+                    {
+                        result = SaleReturnItemData.AddNew(con, trans, item);
+
+                        _ThrowException(result);
+                    }
+
                     result = SaleInvoiceData.UpdatePaidAmount(
                         con,
                         trans,
@@ -102,7 +109,7 @@ namespace StorePilot.BLL
                     result = InvoiceData.UpdateStatus(
                         con,
                         trans,
-                        InvoiceIDResult.Data.InvoiceID);
+                        SaleInvoiceResult.Data.InvoiceID);
 
                     _ThrowException(result);
                 });
@@ -218,5 +225,29 @@ namespace StorePilot.BLL
 
             return Result.Success();
         }
+
+        //public static Result Cancell(int id)
+        //{
+        //    var SaleReturnResult = SaleReturnData.GetByID(id);
+
+        //    if (!SaleReturnResult.IsSuccess || SaleReturnResult.Data == null)
+        //        return Result.Failure(SaleReturnResult.Message);
+
+        //    if (SaleReturnResult.Data.Cancelled)
+        //        return Result.Failure("فاتورة المرتجع هذه ملغية بالفعل!");
+
+        //    Result TransResult = DbManager.Current?.ExecuteTransaction((con, trans) =>
+        //    {
+        //        /*
+        //         لو مدفوع وليس لها سجل دفع يتم تحدث إجمالي الفاتورة والمبلغ المدفوع
+        //        لو مدفوع ولها سجل دفع يتم تحديث إجمالي الفاتورة وحالة الفاتورة لآجل
+        //        لو آجل يتم تحديث إجمالي الفاتورة 
+        //         */
+        //        Result result = CashTransactionData.Cancell(
+        //            con, 
+        //            trans, 
+        //            SaleReturnResult.Data.TransactionID.Value);
+        //    });
+        //}
     }
 }

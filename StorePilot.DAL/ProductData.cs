@@ -234,7 +234,7 @@ namespace StorePilot.DAL
         public static Result IncreaseStock(
             IDbConnection con,
             IDbTransaction trans,
-            int purchaseId)
+            int invoiceId)
         {
             string Query = @"UPDATE Products
                 SET Quantity =
@@ -260,7 +260,7 @@ namespace StorePilot.DAL
                 {
                     Name = "@InvoiceID",
                     DbType = DbType.Int64,
-                    Value = purchaseId,
+                    Value = invoiceId,
                 },
             };
 
@@ -275,6 +275,53 @@ namespace StorePilot.DAL
                 return Result.Success();
 
             return Result.Failure("فشلت عملية زيادة المخزن!");
+        }
+
+        public static Result IncreaseStockAfterReturns(
+            IDbConnection con,
+            IDbTransaction trans,
+            int returnId)
+        {
+            string Query = @"UPDATE Products
+                SET 
+                    Quantity = Quantity +
+                    (
+                        SELECT Quantity FROM SalesReturnItems
+                        WHERE SalesReturnItems.ProductID = Products.ProductID
+                        AND SalesReturnItems.ReturnID = @ReturnID
+                    )
+                WHERE ProductID IN
+                (
+                    SELECT ProductID FROM SalesReturnItems
+                    WHERE ReturnID = @ReturnID
+                );";
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@ReturnID",
+                    DbType = DbType.Int64,
+                    Value = returnId,
+                },
+            };
+
+            Result<int> result = DbManager.Current?.ExecuteNonQuery(
+                con,
+                trans,
+                CommandType.Text,
+                Query,
+                Parameters);
+
+            if (result.IsSuccess)
+            {
+                if (result.Data > 0)
+                    return Result.Success();
+
+                return Result.Failure("لم تحديث مخزن أي صنف!");
+            }
+
+            return Result.Failure("فشلت عملية تحديث مخزن صنف!");
         }
 
         public static Result DecreaseStock(
@@ -319,6 +366,53 @@ namespace StorePilot.DAL
                 return Result.Success();
 
             return Result.Failure($"فشلت عملية إنقاص المخزن!");
+        }
+
+        public static Result DecreaseStockAfterCancellReturns(
+            IDbConnection con,
+            IDbTransaction trans,
+            int returnId)
+        {
+            string Query = @"UPDATE Products
+                SET 
+                    Quantity = Quantity -
+                    (
+                        SELECT Quantity FROM SalesReturnItems
+                        WHERE SalesReturnItems.ProductID = Products.ProductID
+                        AND SalesReturnItems.ReturnID = @ReturnID
+                    )
+                WHERE ProductID IN
+                (
+                    SELECT ProductID FROM SalesReturnItems
+                    WHERE ReturnID = @ReturnID
+                );";
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@ReturnID",
+                    DbType = DbType.Int64,
+                    Value = returnId,
+                },
+            };
+
+            Result<int> result = DbManager.Current?.ExecuteNonQuery(
+                con,
+                trans,
+                CommandType.Text,
+                Query,
+                Parameters);
+
+            if (result.IsSuccess)
+            {
+                if (result.Data > 0)
+                    return Result.Success();
+
+                return Result.Failure("لم تحديث مخزن أي صنف!");
+            }
+
+            return Result.Failure("فشلت عملية تحديث مخزن صنف!");
         }
 
         public static Result Activate(int id)
