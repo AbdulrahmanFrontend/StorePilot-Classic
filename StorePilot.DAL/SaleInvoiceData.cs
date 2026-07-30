@@ -14,6 +14,7 @@ namespace StorePilot.DAL
 {
     public static class SaleInvoiceData
     {
+        //used
         public static Result<SaleInvoiceModel> Find(int saleInvoiceId)
         {
             string Query = @"SELECT * FROM view_SalesInvoicesDetails 
@@ -56,6 +57,7 @@ namespace StorePilot.DAL
         //        Paramters);
         //}
 
+        //used
         public static Result AddNew(
             IDbConnection con,
             IDbTransaction trans,
@@ -326,13 +328,14 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية إلغاء هذه الفاتورة!");
         }
 
-        public static Result<bool> IsFound(int id)
+        //used
+        public static Result<bool> IsExist(int id)
         {
             string Query = @"SELECT EXISTS
                 (
                     SELECT 1 FROM SalesInvoices 
                     WHERE SaleInvoiceID = @SaleInvoiceID
-                ) AS IsFound;";
+                ) AS IsExist;";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
             {
@@ -350,6 +353,7 @@ namespace StorePilot.DAL
                 Parameters);
         }
 
+        //used
         public static Result<int> GetCount()
         {
             string Query = @"SELECT COUNT(SaleInvoiceID) AS SalesInvoicesCount 
@@ -358,6 +362,7 @@ namespace StorePilot.DAL
             return DataQueryService.Scalar<int>(CommandType.Text, Query);
         }
 
+        //used
         public static Result<int> GetCount(
             int filterMethodIndex,
             string filterValue)
@@ -406,6 +411,7 @@ namespace StorePilot.DAL
                 Parameters);
         }
 
+        //used
         public static Result<DataTable> GetInvoices(
             int offset,
             int pageSize,

@@ -1,6 +1,7 @@
 ﻿using DevToolkit.Core.Results;
 using DevToolkit.Data;
 using DevToolkit.Data.Core;
+using Microsoft.SqlServer.Server;
 using StorePilot.Core.Enums;
 using StorePilot.Core.Models;
 using System;
@@ -14,6 +15,7 @@ namespace StorePilot.DAL
 {
     public static class PurchaseInvoiceData
     {
+        //used
         public static Result<PurchaseInvoiceModel> Find(
             int purchaseInvoiceId)
         {
@@ -57,6 +59,7 @@ namespace StorePilot.DAL
         //        Paramters);
         //}
 
+        //used
         public static Result AddNew(
             IDbConnection con,
             IDbTransaction trans,
@@ -160,6 +163,7 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية تحديث بيانات فاتورة الشراء!");
         }
 
+        //used
         public static Result Cancell(
             IDbConnection con,
             IDbTransaction trans,
@@ -196,11 +200,12 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية إلغاء هذه الفاتورة!");
         }
 
-        public static Result<bool> IsFound(int id)
+        //used
+        public static Result<bool> IsExist(int id)
         {
             string Query = @"SELECT EXISTS
                 (
-                    SELECT 1 FROM PurchasesInvoices 
+                    SELECT 1 FROM view_PurchasesInvoicesDetails 
                     WHERE PurchaseInvoiceID = @PurchaseInvoiceID
                 ) AS IsFound;";
 
@@ -220,14 +225,16 @@ namespace StorePilot.DAL
                 Parameters);
         }
 
+        //used
         public static Result<int> GetCount()
         {
             string Query = @"SELECT COUNT(PurchaseInvoiceID) AS PurchasesInvoicesCount 
-                    FROM PurchaseInvoices WHERE Cancelled = 0;";
+                    FROM view_PurchaseInvoicesDetails WHERE Cancelled = 0;";
 
             return DataQueryService.Scalar<int>(CommandType.Text, Query);
         }
 
+        //used
         public static Result<int> GetCount(
             int filterMethodIndex,
             string filterValue)
@@ -276,6 +283,7 @@ namespace StorePilot.DAL
                 Parameters);
         }
 
+        //used
         public static Result<DataTable> GetInvoices(
             int offset,
             int pageSize,

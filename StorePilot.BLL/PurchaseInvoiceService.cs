@@ -25,16 +25,20 @@ namespace StorePilot.BLL
 
         private List<InvoiceItemModel> _Items { get; set; }
 
+        private int _ID = 0;
+
         public PurchaseInvoiceService()
         {
             this.Model = new PurchaseInvoiceModel();
-            _Items = new List<InvoiceItemModel>();
+            this._Items = new List<InvoiceItemModel>();
+            this._ID = this.Model.PurchaseInvoiceID;
             this.Mode = Mode.AddNew;
         }
 
         public PurchaseInvoiceService(PurchaseInvoiceModel model)
         {
             this.Model = model;
+            this._ID = this.Model.PurchaseInvoiceID;
             this.Mode = Mode.Update;
         }
 
@@ -170,10 +174,10 @@ namespace StorePilot.BLL
 
             foreach (InvoiceItemModel item in _Items)
             {
-                Result<ProductService> result = ProductService.Find(item.ProductID);
+                Result result = ProductService.IsExist(item.ProductID);
 
                 if (result.IsSuccess)
-                    return Result.Failure("هذا الصنف غير مسجل في النظام!");
+                    return Result.Failure(result.Message);
 
                 if (item.Quantity <= 0)
                     return Result.Failure(
@@ -195,14 +199,14 @@ namespace StorePilot.BLL
                     if (Model.SupplierID.HasValue)
                         return Result.Success();
 
-                    return SupplierService.IsFound(Model.SupplierID.Value);
+                    return SupplierService.IsExist(Model.SupplierID.Value);
 
                 case InvoiceStatus.Deferred:
                     if(Model.SupplierID.HasValue)
                         return Result.Failure(
                             "يجب أن يكون إدخال المورد لفاتورة الآجل!");
 
-                    return SupplierService.IsFound(Model.SupplierID.Value);
+                    return SupplierService.IsExist(Model.SupplierID.Value);
 
                 default:
                     return Result.Failure("حالة الشراء غير صالحة!");
@@ -272,16 +276,16 @@ namespace StorePilot.BLL
             return Result.Failure("فشلت عملية إلغاء هذه الفاتورة!");
         }
 
-        public static Result IsFound(int id)
+        public static Result IsExist(int id)
         {
-            Result<bool> result = PurchaseInvoiceData.IsFound(id);
+            Result<bool> result = PurchaseInvoiceData.IsExist(id);
 
             if (result.IsSuccess)
             {
                 if (result.Data)
                     return Result.Success();
 
-                return Result.Failure("هذه الفاتورة غير مسجلة في هذا النظام!");
+                return Result.Failure("هذه الفاتورة غير مسجلة في النظام!");
             }
 
             return Result.Failure(
@@ -327,12 +331,7 @@ namespace StorePilot.BLL
                 filterValue);
 
             if (result.IsSuccess)
-            {
-                if (result.Data != null)
-                    return result;
-
-                return Result<DataTable>.Success(default);
-            }
+                return result;
 
             return Result<DataTable>.Failure(
                 "فشلت عملية الحصول على جميع فواتير الشراء!");

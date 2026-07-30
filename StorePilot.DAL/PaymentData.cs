@@ -157,6 +157,7 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية إلغاء عملية الدفع هذه!");
         }
 
+        //used
         public static Result CancellInvoicePayments(
             IDbConnection con,
             IDbTransaction trans,

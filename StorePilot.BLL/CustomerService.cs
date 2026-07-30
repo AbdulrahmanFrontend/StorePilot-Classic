@@ -18,19 +18,23 @@ namespace StorePilot.BLL
     {
         public CustomerModel Model { get; private set; }
 
-        private int _ID = 0;
+        private int _CustomerID = 0;
+
+        private int _PersonID = 0;
 
         public CustomerService()
         {
             this.Model = new CustomerModel();
-            this._ID = this.Model.CustomerID;
+            this._CustomerID = this.Model.CustomerID;
+            this._PersonID = this.Model.PersonID;
             this.Mode = Mode.AddNew;
         }
 
         private CustomerService(CustomerModel model)
         {
             this.Model = model;
-            this._ID = this.Model.CustomerID;
+            this._CustomerID = this.Model.CustomerID;
+            this._PersonID = this.Model.PersonID;
             this.Mode = Mode.Update;
         }
 
@@ -54,7 +58,7 @@ namespace StorePilot.BLL
 
         protected override Result _AddNew()
         {
-            this.Model.CustomerID = this._ID;
+            this.Model.CustomerID = this._CustomerID;
 
             Result result = DbManager.Current?.ExecuteTransaction((con, trans) =>
                 {
@@ -93,7 +97,13 @@ namespace StorePilot.BLL
 
         protected override Result _Update()
         {
-            this.Model.CustomerID = this._ID;
+            this.Model.CustomerID = this._CustomerID;
+            this.Model.PersonID = this._PersonID;
+
+            Result IsExistResult = IsExist(this.Model.CustomerID);
+
+            if (!IsExistResult.IsSuccess)
+                return IsExistResult;
 
             Result result = DbManager.Current?.ExecuteTransaction((con, trans) =>
                 {

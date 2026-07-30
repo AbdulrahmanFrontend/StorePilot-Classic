@@ -35,6 +35,7 @@ namespace StorePilot.DAL
                 Parameters);
         }
 
+        //used
         public static Result AddNew(
             IDbConnection con,
             IDbTransaction trans,
@@ -71,7 +72,7 @@ namespace StorePilot.DAL
                 {
                     Name = "@InvoiceStatus",
                     DbType = DbType.String,
-                    Value = model.InvoiceDate,
+                    Value = model.InvoiceStatus,
                 },
                 new DbParameterInfo
                 {
@@ -327,12 +328,13 @@ namespace StorePilot.DAL
         //    return DataQueryService.Scalar<decimal>(CommandType.Text, Query, Parameters);
         //}
 
+        //used
         public static Result<bool> HasPayments(int id)
         {
             string Query = @"SELECT EXISTS
                 (
                     SELECT 1 FROM Payments WHERE InvoiceID = @InvoiceID
-                ) AS IsFound;";
+                ) AS IsExist;";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
             {

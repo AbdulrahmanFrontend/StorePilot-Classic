@@ -60,6 +60,11 @@ namespace StorePilot.BLL
         {
             this.Model.ProductID = this._ID;
 
+            Result IsExistResult = IsExist(this.Model.ProductID);
+
+            if (!IsExistResult.IsSuccess)
+                return IsExistResult;
+
             return ProductData.Update(this.Model); 
         }
 

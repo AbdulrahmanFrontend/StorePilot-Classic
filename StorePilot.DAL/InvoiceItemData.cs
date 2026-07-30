@@ -14,6 +14,7 @@ namespace StorePilot.DAL
 {
     public static class InvoiceItemData
     {
+        //used
         public static Result AddNew(
             IDbConnection con,
             IDbTransaction trans,
@@ -74,6 +75,7 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية إضافة عنصر للفاتورة!");
         }
 
+        //used
         public static Result<DataTable> GetInvoiceItems(int invoiceId)
         {
             string Query = @"SELECT * FROM view_InvoicesItemsDetails

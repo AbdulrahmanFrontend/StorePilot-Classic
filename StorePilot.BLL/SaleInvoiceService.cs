@@ -22,16 +22,20 @@ namespace StorePilot.BLL
 
         protected List<InvoiceItemModel> _Items { get; set; }
 
+        private int _SaleInvoiceID = 0;
+
         public SaleInvoiceService()
         {
             this.Model = new SaleInvoiceModel();
-            _Items = new List<InvoiceItemModel>();
+            this._Items = new List<InvoiceItemModel>();
+            this._SaleInvoiceID = this.Model.SaleInvoiceID;
             this.Mode = Mode.AddNew;
         }
 
         public SaleInvoiceService(SaleInvoiceModel model)
         {
             this.Model = model;
+            this._SaleInvoiceID = this.Model.SaleInvoiceID;
             this.Mode = Mode.Update;
         }
         
@@ -167,16 +171,21 @@ namespace StorePilot.BLL
 
             foreach (InvoiceItemModel item in _Items)
             {
-                Result<ProductService> result = ProductService.Find(item.ProductID);
+                Result<ProductModel> result = ProductData.Find(item.ProductID);
 
                 if (result.IsSuccess)
-                    return Result.Failure("هذا الصنف غير مسجل في النظام!");
+                {
+                    if (result.Data == null)
+                        return Result.Failure("هذا الصنف غير مسجل في النظام!");
+                }
+                else
+                    return Result.Failure("فشلت عملية الوصول لبيانات صنف!");
 
                 if (item.Quantity <= 0)
                     return Result.Failure(
                         "هنك صنف الكمية المطلوبة منه أصغر من أو تساوي الصفر!");
 
-                if (item.Quantity >= result.Data.Model.Quantity)
+                if (item.Quantity > result.Data.Quantity)
                     return Result.Failure(
                         "هنك صنف الكمية المطلوبة منه أكبر من الكمية المتوفرة في المخزن!");
 
@@ -196,14 +205,13 @@ namespace StorePilot.BLL
                     if (Model.CustomerID.HasValue)
                         return Result.Success();
 
-                    return SupplierService.IsFound(Model.CustomerID.Value);
+                    return CustomerService.IsExist(Model.CustomerID.Value);
 
                 case InvoiceStatus.Deferred:
                     if (Model.CustomerID.HasValue)
-                        return Result.Failure(
-                            "يجب أن يكون إدخال العميل لفاتورة الآجل!");
+                        return Result.Failure("يجب إدخال العميل لفاتورة الآجل!");
 
-                    return SupplierService.IsFound(Model.CustomerID.Value);
+                    return CustomerService.IsExist(Model.CustomerID.Value);
 
                 default:
                     return Result.Failure("حالة البيع غير صالحة!");
@@ -272,9 +280,9 @@ namespace StorePilot.BLL
             return Result.Failure("فشلت عملية إلغاء هذه الفاتورة!");
         }
 
-        public static Result IsFound(int id)
+        public static Result IsExist(int id)
         {
-            Result<bool> result = SaleInvoiceData.IsFound(id);
+            Result<bool> result = SaleInvoiceData.IsExist(id);
 
             if (result.IsSuccess)
             {
@@ -327,12 +335,7 @@ namespace StorePilot.BLL
                 filterValue);
 
             if (result.IsSuccess)
-            {
-                if (result.Data != null)
-                    return result;
-
-                return Result<DataTable>.Success(default);
-            }
+                return result;
 
             return Result<DataTable>.Failure(
                 "فشلت عملية الحصول على جميع فواتير البيع!");

@@ -233,6 +233,7 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية حفظ بيانات هذا الصنف!");
         }
 
+        //used
         public static Result IncreaseStock(
             IDbConnection con,
             IDbTransaction trans,
@@ -326,6 +327,7 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية تحديث مخزن صنف!");
         }
 
+        //used
         public static Result DecreaseStock(
             IDbConnection con,
             IDbTransaction trans,

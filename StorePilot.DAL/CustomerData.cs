@@ -215,7 +215,7 @@ namespace StorePilot.DAL
         {
             string Query = @"SELECT EXISTS
                 (
-                    SELECT 1 FROM Customers WHERE CustomerID = @CustomerID
+                    SELECT 1 FROM view_CustomersDetails WHERE CustomerID = @CustomerID
                 ) AS IsExist;";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]

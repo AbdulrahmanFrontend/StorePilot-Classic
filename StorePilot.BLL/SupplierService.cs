@@ -211,7 +211,7 @@ namespace StorePilot.BLL
 
         public static Result Deactivate(int id) => SupplierData.Deactivate(id);
 
-        public static Result IsFound(int id)
+        public static Result IsExist(int id)
         {
             Result<bool> result = SupplierData.IsFound(id);
 

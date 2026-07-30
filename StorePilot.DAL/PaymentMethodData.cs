@@ -49,7 +49,7 @@ namespace StorePilot.DAL
             string Query = @"SELECT EXISTS
             (
                 SELECT 1 FROM PaymentMethods WHERE MethodID = @MethodID
-            ) AS IsFound;";
+            ) AS IsExist;";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
             {
