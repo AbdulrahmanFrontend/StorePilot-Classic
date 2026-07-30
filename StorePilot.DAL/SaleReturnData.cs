@@ -13,7 +13,7 @@ namespace StorePilot.DAL
 {
     public static class SaleReturnData
     {
-        public static Result<SaleReturnModel> GetByID(int id)
+        public static Result<SaleReturnModel> Find(int id)
         {
             string Query = @"SELECT * FROM SalesReturns WHERE ReturnID = @ReturnID;";
 

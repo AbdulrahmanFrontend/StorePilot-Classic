@@ -221,26 +221,26 @@ namespace StorePilot.DAL
                 Parameters);
         }
 
-        public static Result<bool> IsActive(int id)
-        {
-            string Query = @"SELECT Active FROM Suppliers 
-                WHERE SupplierID = @SupplierID;";
+        //public static Result<bool> IsActive(int id)
+        //{
+        //    string Query = @"SELECT Active FROM Suppliers 
+        //        WHERE SupplierID = @SupplierID;";
 
-            DbParameterInfo[] Parameters = new DbParameterInfo[]
-            {
-                new DbParameterInfo
-                {
-                    Name = "@SupplierID",
-                    DbType = DbType.Int64,
-                    Value = id,
-                },
-            };
+        //    DbParameterInfo[] Parameters = new DbParameterInfo[]
+        //    {
+        //        new DbParameterInfo
+        //        {
+        //            Name = "@SupplierID",
+        //            DbType = DbType.Int64,
+        //            Value = id,
+        //        },
+        //    };
 
-            return DataQueryService.Scalar<bool>(
-                CommandType.Text,
-                Query,
-                Parameters);
-        }
+        //    return DataQueryService.Scalar<bool>(
+        //        CommandType.Text,
+        //        Query,
+        //        Parameters);
+        //}
 
         public static Result<int> GetCount()
         {

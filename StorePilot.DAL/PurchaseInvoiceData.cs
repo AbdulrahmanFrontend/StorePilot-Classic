@@ -14,7 +14,8 @@ namespace StorePilot.DAL
 {
     public static class PurchaseInvoiceData
     {
-        public static Result<PurchaseInvoiceModel> GetByID(int id)
+        public static Result<PurchaseInvoiceModel> Find(
+            int purchaseInvoiceId)
         {
             string Query = @"SELECT * FROM view_PurchasesInvoicesDetails 
                 WHERE PurchaseInvoiceID = @PurchaseInvoiceID;";
@@ -25,7 +26,7 @@ namespace StorePilot.DAL
                 {
                     Name = "@PurchaseInvoiceID",
                     DbType = DbType.Int64,
-                    Value = id,
+                    Value = purchaseInvoiceId,
                 },
             };
 
@@ -34,6 +35,27 @@ namespace StorePilot.DAL
                 Query,
                 Paramters);
         }
+
+        //public static Result<PurchaseInvoiceModel> FindByInvoiceID(int invoiceId)
+        //{
+        //    string Query = @"SELECT * FROM view_PurchasesInvoicesDetails 
+        //        WHERE InvoiceID = @InvoiceID;";
+
+        //    DbParameterInfo[] Paramters = new DbParameterInfo[]
+        //    {
+        //        new DbParameterInfo
+        //        {
+        //            Name = "@InvoiceID",
+        //            DbType = DbType.Int64,
+        //            Value = invoiceId,
+        //        },
+        //    };
+
+        //    return DataQueryService.FirstOrDefault<PurchaseInvoiceModel>(
+        //        CommandType.Text,
+        //        Query,
+        //        Paramters);
+        //}
 
         public static Result AddNew(
             IDbConnection con,
@@ -355,23 +377,50 @@ namespace StorePilot.DAL
             return DataQueryService.Scalar<bool>(CommandType.Text, Query, Parameters);
         }
 
-        public static Result<bool> IsCancelled(int id)
+        public static Result<bool> IsReturnsTransaction(int transId)
         {
-            string Query = @"SELECT Cancelled FROM PurchasesInvoices
-                WHERE PurchaseInvoiceID = @PurchaseInvoiceID;";
+            string Query = @"SELECT EXISTS
+            (
+                SELECT 1 FROM SalesReturns WHERE SaleInvoiceID = 
+                (
+                    SELECT SaleInvoiceID FROM SalesInvoices WHERE InvoiceID = 
+                        (
+                            SELECT InvoiceID FROM Invoices 
+                            WHERE TransactionID = @TransactionID
+                        )
+                )
+            ) AS IsReturnsTransaction;";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
             {
                 new DbParameterInfo
                 {
-                    Name = "@PurchaseInvoiceID",
+                    Name = "@TransactionID",
                     DbType = DbType.Int64,
-                    Value = id,
+                    Value = transId,
                 },
             };
 
             return DataQueryService.Scalar<bool>(CommandType.Text, Query, Parameters);
         }
+
+        //public static Result<bool> IsCancelled(int id)
+        //{
+        //    string Query = @"SELECT Cancelled FROM PurchasesInvoices
+        //        WHERE PurchaseInvoiceID = @PurchaseInvoiceID;";
+
+        //    DbParameterInfo[] Parameters = new DbParameterInfo[]
+        //    {
+        //        new DbParameterInfo
+        //        {
+        //            Name = "@PurchaseInvoiceID",
+        //            DbType = DbType.Int64,
+        //            Value = id,
+        //        },
+        //    };
+
+        //    return DataQueryService.Scalar<bool>(CommandType.Text, Query, Parameters);
+        //}
 
         public static Result<decimal> GetDebtsSum()
         {

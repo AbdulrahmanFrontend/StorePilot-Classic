@@ -148,7 +148,7 @@ namespace StorePilot.BLL
         }
 
         public Result ValidateGroupID()
-            => GroupService.IsFound(this.Model.GroupID);
+            => GroupService.IsExist(this.Model.GroupID);
 
         public Result ValidateUnitID()
             => UnitService.IsFound(this.Model.UnitID);
@@ -185,21 +185,21 @@ namespace StorePilot.BLL
                 "فشلت عملية التحقق من وجود هذا المنتج في النظام!");
         }
 
-        public static Result<bool> IsActive(int id)
-        {
-            Result IsFoundResult = IsFound(id);
+        //public static Result<bool> IsActive(int id)
+        //{
+        //    Result IsFoundResult = IsFound(id);
 
-            if (!IsFoundResult.IsSuccess)
-                return Result<bool>.Failure(IsFoundResult.Message);
+        //    if (!IsFoundResult.IsSuccess)
+        //        return Result<bool>.Failure(IsFoundResult.Message);
 
-            Result<bool> result = ProductData.IsActive(id);
+        //    Result<bool> result = ProductData.IsActive(id);
 
-            if (result.IsSuccess)
-                return Result<bool>.Success(result.Data);
+        //    if (result.IsSuccess)
+        //        return Result<bool>.Success(result.Data);
 
-            return Result<bool>.Failure(
-                "فشلت عملية التحقق من تفعيل هذا الصنف في النظام!");
-        }
+        //    return Result<bool>.Failure(
+        //        "فشلت عملية التحقق من تفعيل هذا الصنف في النظام!");
+        //}
 
         public static Result<int> GetCount()
         {

@@ -14,7 +14,7 @@ namespace StorePilot.DAL
 {
     public static class GroupData
     {
-        public static Result<GroupModel> GetByID(int id)
+        public static Result<GroupModel> Find(int id)
         {
             string Query = @"SELECT * FROM Groups WHERE GroupID = @GroupID;";
 
@@ -41,7 +41,7 @@ namespace StorePilot.DAL
             return DbManager.Current?.GetDataTable(CommandType.Text, Query);
         }
 
-        public static Result<bool> IsFound(int id)
+        public static Result<bool> IsExist(int id)
         {
             string Query = @"SELECT EXISTS
             (

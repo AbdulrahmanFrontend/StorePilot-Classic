@@ -14,7 +14,7 @@ namespace StorePilot.DAL
 {
     public static class SaleInvoiceData
     {
-        public static Result<SaleInvoiceModel> GetByID(int id)
+        public static Result<SaleInvoiceModel> Find(int saleInvoiceId)
         {
             string Query = @"SELECT * FROM view_SalesInvoicesDetails 
                 WHERE SaleInvoiceID = @SaleInvoiceID;";
@@ -25,7 +25,7 @@ namespace StorePilot.DAL
                 {
                     Name = "@SaleInvoiceID",
                     DbType = DbType.Int64,
-                    Value = id,
+                    Value = saleInvoiceId,
                 },
             };
 
@@ -34,6 +34,27 @@ namespace StorePilot.DAL
                 Query,
                 Paramters);
         }
+
+        //public static Result<SaleInvoiceModel> FindByInvoiceID(int invoiceId)
+        //{
+        //    string Query = @"SELECT * FROM view_SalesInvoicesDetails 
+        //        WHERE InvoiceID = @InvoiceID;";
+
+        //    DbParameterInfo[] Paramters = new DbParameterInfo[]
+        //    {
+        //        new DbParameterInfo
+        //        {
+        //            Name = "@InvoiceID",
+        //            DbType = DbType.Int64,
+        //            Value = invoiceId,
+        //        },
+        //    };
+
+        //    return DataQueryService.FirstOrDefault<SaleInvoiceModel>(
+        //        CommandType.Text,
+        //        Query,
+        //        Paramters);
+        //}
 
         public static Result AddNew(
             IDbConnection con,
@@ -138,7 +159,7 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية تحديث بيانات فاتورة البيع!");
         }
         
-        public static Result UpdatePaidAmount(
+        public static Result UpdateTotalAmountAfterCreatingReturns(
             IDbConnection con,
             IDbTransaction trans,
             int returnId)
@@ -150,6 +171,45 @@ namespace StorePilot.DAL
                         SELECT TotalReturnAmount FROM SalesReturns 
                         WHERE ReturnID = @ReturnID AND Cancelled = 0
                     )
+                WHERE InvoiceID = 
+                (
+                    SELECT InvoiceID FROM SalesInvoices WHERE SaleInvoiceID =
+                    (
+                        SELECT SaleInvoiceID FROM SalesReturns WHERE ReturnID = @ReturnID
+                    )
+                );";
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@ReturnID",
+                    DbType = DbType.Int64,
+                    Value = returnId,
+                },
+            };
+
+            Result<int> result = DbManager.Current?.ExecuteNonQuery(
+                con,
+                trans,
+                CommandType.Text,
+                Query,
+                Parameters);
+
+            if (result.IsSuccess)
+                return Result.Success();
+
+            return Result.Failure("فشلت عملية تحديث مبلغ السداد من الفاتورة");
+        }
+
+        public static Result UpdatePaidAmount(
+            IDbConnection con,
+            IDbTransaction trans,
+            int returnId)
+        {
+            string Query = @"UPDATE Invoices
+                SET
+                    PaidAmount = TotalAmount
                 WHERE InvoiceID = 
                 (
                     SELECT InvoiceID FROM SalesInvoices WHERE SaleInvoiceID =
@@ -447,23 +507,23 @@ namespace StorePilot.DAL
             return DataQueryService.Scalar<bool>(CommandType.Text, Query, Parameters);
         }
 
-        public static Result<bool> IsCancelled(int id)
-        {
-            string Query = @"SELECT Cancelled FROM SalesInvoices
-                WHERE SaleInvoiceID = @SaleInvoiceID;";
+        //public static Result<bool> IsCancelled(int id)
+        //{
+        //    string Query = @"SELECT Cancelled FROM SalesInvoices
+        //        WHERE SaleInvoiceID = @SaleInvoiceID;";
 
-            DbParameterInfo[] Parameters = new DbParameterInfo[]
-            {
-                new DbParameterInfo
-                {
-                    Name = "@SaleInvoiceID",
-                    DbType = DbType.Int64,
-                    Value = id,
-                },
-            };
+        //    DbParameterInfo[] Parameters = new DbParameterInfo[]
+        //    {
+        //        new DbParameterInfo
+        //        {
+        //            Name = "@SaleInvoiceID",
+        //            DbType = DbType.Int64,
+        //            Value = id,
+        //        },
+        //    };
 
-            return DataQueryService.Scalar<bool>(CommandType.Text, Query, Parameters);
-        }
+        //    return DataQueryService.Scalar<bool>(CommandType.Text, Query, Parameters);
+        //}
 
         public static Result<decimal> GetDebtsSum()
         {

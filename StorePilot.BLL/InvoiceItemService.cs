@@ -17,7 +17,7 @@ namespace StorePilot.BLL
 
             if (result.IsSuccess)
             {
-                if (result.Data != null && result.Data.Rows.Count != 0)
+                if (result.Data != null)
                     return result;
 
                 return Result<DataTable>.Failure(

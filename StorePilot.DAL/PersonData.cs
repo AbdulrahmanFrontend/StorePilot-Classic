@@ -21,7 +21,7 @@ namespace StorePilot.DAL
             string Query = @"INSERT INTO People (Name, Phone, Address)
                 VALUES (@Name, @Phone, @Address);
 
-                SELECT last_insert_rowid();";
+                SELECT LAST_INSERT_ROWID();";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
             {
@@ -114,7 +114,7 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية تحديث بيانات هذا الشخص!");
         }
 
-        public static Result<bool> IsFound(string name, int id)
+        public static Result<bool> IsNameExist(string name, int id)
         {
             string Query = @"SELECT EXISTS
                 (
@@ -145,7 +145,7 @@ namespace StorePilot.DAL
                 Parameters);
         }
 
-        public static Result<bool> IsPhoneFound(string phone, int id)
+        public static Result<bool> IsPhoneExist(string phone, int id)
         {
             string Query = @"SELECT EXISTS
                 (

@@ -429,23 +429,23 @@ namespace StorePilot.DAL
                 Parameters);
         }
 
-        public static Result<bool> IsCancelled(int id)
-        {
-            string Query = @"SELECT Cancelled FROM Payments
-                WHERE PaymentID = @PaymentID;";
+        //public static Result<bool> IsCancelled(int id)
+        //{
+        //    string Query = @"SELECT Cancelled FROM Payments
+        //        WHERE PaymentID = @PaymentID;";
 
-            DbParameterInfo[] Parameters = new DbParameterInfo[]
-            {
-                new DbParameterInfo
-                {
-                    Name = "@PaymentID",
-                    DbType = DbType.Int64,
-                    Value = id,
-                },
-            };
+        //    DbParameterInfo[] Parameters = new DbParameterInfo[]
+        //    {
+        //        new DbParameterInfo
+        //        {
+        //            Name = "@PaymentID",
+        //            DbType = DbType.Int64,
+        //            Value = id,
+        //        },
+        //    };
 
-            return DataQueryService.Scalar<bool>(CommandType.Text, Query, Parameters);
-        }
+        //    return DataQueryService.Scalar<bool>(CommandType.Text, Query, Parameters);
+        //}
 
         //public static Result<int> GetTransactionID(int paymentId)
         //{

@@ -30,9 +30,9 @@ namespace StorePilot.BLL
             this.Mode = Mode.Update;
         }
 
-        public static Result<CustomerService> GetByID(int id)
+        public static Result<CustomerService> Find(int id)
         {
-            Result<CustomerModel> result = CustomerData.GetByID(id);
+            Result<CustomerModel> result = CustomerData.Find(id);
 
             if (result.IsSuccess)
             {
@@ -41,17 +41,16 @@ namespace StorePilot.BLL
                         new CustomerService(result.Data)
                         );
 
-                return Result<CustomerService>.Failure("هذا العميل غير مسجل في النظام.");
+                return Result<CustomerService>.Failure("هذا العميل غير مسجل في النظام!");
             }
 
             return Result<CustomerService>.Failure(
-                "فشلت عملية الوصول لبيانات هذا العميل.");
+                "فشلت عملية الوصول لبيانات هذا العميل!");
         }
 
         protected override Result _AddNew()
         {
-            Result result = DbManager.Current?.ExecuteTransaction(
-                (con, trans) =>
+            Result result = DbManager.Current?.ExecuteTransaction((con, trans) =>
                 {
                     if (this.Model == null)
                         throw new InvalidOperationException("عميل غير صالح!");
@@ -79,6 +78,7 @@ namespace StorePilot.BLL
             {
                 LogManager.LogInfo(
                     $"تمت عملية إضافة هذا العميل {Model.CustomerID} بنجاح.");
+
                 return Result.Success("تمت عملية حفظ بيانات هذا العميل بنجاح.");
             }
 
@@ -87,8 +87,7 @@ namespace StorePilot.BLL
 
         protected override Result _Update()
         {
-            Result result = DbManager.Current?.ExecuteTransaction(
-                (con, trans) =>
+            Result result = DbManager.Current?.ExecuteTransaction((con, trans) =>
                 {
                     if (this.Model == null)
                         throw new InvalidOperationException("عميل غير صالح!");
@@ -117,6 +116,7 @@ namespace StorePilot.BLL
             {
                 LogManager.LogInfo(
                     $"تمت عملية تحديث بيانات هذا العميل {Model.CustomerID} بنجاح.");
+
                 return Result.Success("تمت عملية حفظ بيانات هذا العميل بنجاح.");
             }
 
@@ -157,7 +157,7 @@ namespace StorePilot.BLL
             if (!ValResult.IsSuccess)
                 return ValResult;
 
-            Result<bool> result = PersonData.IsFound(
+            Result<bool> result = PersonData.IsNameExist(
                 this.Model.Name,
                 this.Model.PersonID);
 
@@ -181,7 +181,7 @@ namespace StorePilot.BLL
             if (!ValResult.IsSuccess)
                 return ValResult;
 
-            Result<bool> result = PersonData.IsPhoneFound(
+            Result<bool> result = PersonData.IsPhoneExist(
                 this.Model.Phone,
                 this.Model.PersonID);
 
@@ -202,13 +202,45 @@ namespace StorePilot.BLL
         public Result ValidateNotes()
             => _ValidateProperty(nameof(this.Model.Notes), this.Model);
 
-        public static Result Activate(int id) => CustomerData.Activate(id);
-
-        public static Result Deactivate(int id) => CustomerData.Deactivate(id);
-
-        public static Result IsFound(int id)
+        public static Result Activate(int id)
         {
-            Result<bool> result = CustomerData.IsFound(id);
+            Result<CustomerModel> CustomerResult = CustomerData.Find(id);
+
+            if (CustomerResult.IsSuccess)
+            {
+                if (CustomerResult.Data == null)
+                    return Result.Failure("هذا العميل غير مسجل في النظام!");
+
+                if (CustomerResult.Data.Active)
+                    return Result.Failure("هذا العميل معطل بالفعل!");
+            }
+            else
+                return Result.Failure("فشلت عملية الوصول لبيانات هذا العميل!");
+
+            return CustomerData.Activate(id);
+        }
+
+        public static Result Deactivate(int id)
+        {
+            Result<CustomerModel> CustomerResult = CustomerData.Find(id);
+
+            if (CustomerResult.IsSuccess)
+            {
+                if (CustomerResult.Data == null)
+                    return Result.Failure("هذا العميل غير مسجل في النظام!");
+
+                if (!CustomerResult.Data.Active)
+                    return Result.Failure("هذا العميل معطل بالفعل!");
+            }
+            else
+                return Result.Failure("فشلت عملية الوصول لبيانات هذا العميل!");
+
+            return CustomerData.Deactivate(id);
+        }
+
+        public static Result IsExist(int id)
+        {
+            Result<bool> result = CustomerData.IsExist(id);
 
             if (result.IsSuccess)
             {
@@ -220,22 +252,6 @@ namespace StorePilot.BLL
 
             return Result.Failure(
                 "فشلت عملية التحقق من وجود هذا العميل في النظام!");
-        }
-
-        public static Result<bool> IsActive(int id)
-        {
-            Result IsFoundResult = IsFound(id);
-
-            if (!IsFoundResult.IsSuccess)
-                return Result<bool>.Failure(IsFoundResult.Message);
-
-            Result<bool> result = CustomerData.IsActive(id);
-
-            if (result.IsSuccess)
-                return Result<bool>.Success(result.Data);
-
-            return Result<bool>.Failure(
-                "فشلت عملية التحقق من تفعيل هذا العميل في النظام!");
         }
 
         public static Result<int> GetCount()
@@ -277,12 +293,7 @@ namespace StorePilot.BLL
                 filterValue);
 
             if (result.IsSuccess)
-            {
-                if (result.Data != null)
-                    return result;
-
-                return Result<DataTable>.Success(default);
-            }
+                return result;
 
             return Result<DataTable>.Failure(
                 "فشلت عملية الحصول على جميع العملاء!");

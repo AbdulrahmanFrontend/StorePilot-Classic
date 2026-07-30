@@ -14,6 +14,26 @@ namespace StorePilot.DAL
 {
     public static class InvoiceData
     {
+        public static Result<InvoiceModel> Find(int id)
+        {
+            string Query = @"SELECT * FROM Invoices WHERE InvoiceID = @InvoiceID;";
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@InvoiceID",
+                    DbType = DbType.Int64,
+                    Value = id,
+                },
+            };
+
+            return DataQueryService.FirstOrDefault<InvoiceModel>(
+                CommandType.Text,
+                Query, 
+                Parameters);
+        }
+
         public static Result AddNew(
             IDbConnection con,
             IDbTransaction trans,
@@ -165,6 +185,39 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية تحديث مبلغ السداد من الفاتورة");
         }
 
+        public static Result UpdatePaidAmountAfterCancellReturns(
+            IDbConnection con,
+            IDbTransaction trans,
+            int invoiceId)
+        {
+            string Query = @"UPDATE Invoices
+                SET
+                    PaidAmount = TotalAmount
+                WHERE InvoiceID = @InvoiceID;";
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@InvoiceID",
+                    DbType = DbType.Int64,
+                    Value = invoiceId,
+                },
+            };
+
+            Result<int> result = DbManager.Current?.ExecuteNonQuery(
+                con,
+                trans,
+                CommandType.Text,
+                Query,
+                Parameters);
+
+            if (result.IsSuccess)
+                return Result.Success();
+
+            return Result.Failure("فشلت عملية تحديث مبلغ السداد من الفاتورة");
+        }
+
         public static Result UpdateStatus(
             IDbConnection con,
             IDbTransaction trans,
@@ -214,62 +267,62 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية تحديث حالة الفاتورة!");
         }
 
-        public static Result<string> GetInvoiceStatus(int id)
-        {
-            string Query = @"SELECT InvoiceStatus FROM Invoices
-                WHERE InvoiceID = @InvoiceID";
+        //public static Result<string> GetInvoiceStatus(int id)
+        //{
+        //    string Query = @"SELECT InvoiceStatus FROM Invoices
+        //        WHERE InvoiceID = @InvoiceID";
 
-            DbParameterInfo[] Parameters = new DbParameterInfo[]
-            {
-                new DbParameterInfo
-                {
-                    Name = "@InvoiceID",
-                    DbType = DbType.Int64,
-                    Value = id,
-                },
-            };
+        //    DbParameterInfo[] Parameters = new DbParameterInfo[]
+        //    {
+        //        new DbParameterInfo
+        //        {
+        //            Name = "@InvoiceID",
+        //            DbType = DbType.Int64,
+        //            Value = id,
+        //        },
+        //    };
 
-            return DataQueryService.Scalar<string>(
-                CommandType.Text,
-                Query,
-                Parameters);
-        }
+        //    return DataQueryService.Scalar<string>(
+        //        CommandType.Text,
+        //        Query,
+        //        Parameters);
+        //}
 
-        public static Result<DateTime> GetInvoiceDate(int invoiceId)
-        {
-            string Query = @"SELECT InvoiceDate FROM Invoices
-                WHERE InvoiceID = @InvoiceID;";
+        //public static Result<DateTime> GetInvoiceDate(int invoiceId)
+        //{
+        //    string Query = @"SELECT InvoiceDate FROM Invoices
+        //        WHERE InvoiceID = @InvoiceID;";
 
-            DbParameterInfo[] Parameters = new DbParameterInfo[]
-            {
-                new DbParameterInfo
-                {
-                    Name = "@InvoiceID",
-                    DbType = DbType.DateTime,
-                    Value = invoiceId,
-                },
-            };
+        //    DbParameterInfo[] Parameters = new DbParameterInfo[]
+        //    {
+        //        new DbParameterInfo
+        //        {
+        //            Name = "@InvoiceID",
+        //            DbType = DbType.DateTime,
+        //            Value = invoiceId,
+        //        },
+        //    };
 
-            return DataQueryService.Scalar<DateTime>(CommandType.Text, Query, Parameters);
-        }
+        //    return DataQueryService.Scalar<DateTime>(CommandType.Text, Query, Parameters);
+        //}
 
-        public static Result<decimal> GetRemainingAmount(int invoiceId)
-        {
-            string Query = @"SELECT (TotalAmount - PaidAmount) AS RemainingAmount
-                FROM Invoices WHERE InvoiceID = @InvoiceID;";
+        //public static Result<decimal> GetRemainingAmount(int invoiceId)
+        //{
+        //    string Query = @"SELECT (TotalAmount - PaidAmount) AS RemainingAmount
+        //        FROM Invoices WHERE InvoiceID = @InvoiceID;";
 
-            DbParameterInfo[] Parameters = new DbParameterInfo[]
-            {
-                new DbParameterInfo
-                {
-                    Name = "@InvoiceID",
-                    DbType = DbType.Int64,
-                    Value = invoiceId,
-                }
-            };
+        //    DbParameterInfo[] Parameters = new DbParameterInfo[]
+        //    {
+        //        new DbParameterInfo
+        //        {
+        //            Name = "@InvoiceID",
+        //            DbType = DbType.Int64,
+        //            Value = invoiceId,
+        //        }
+        //    };
 
-            return DataQueryService.Scalar<decimal>(CommandType.Text, Query, Parameters);
-        }
+        //    return DataQueryService.Scalar<decimal>(CommandType.Text, Query, Parameters);
+        //}
 
         public static Result<bool> HasPayments(int id)
         {

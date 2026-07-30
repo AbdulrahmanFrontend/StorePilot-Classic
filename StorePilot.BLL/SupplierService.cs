@@ -162,7 +162,7 @@ namespace StorePilot.BLL
             if (!ValResult.IsSuccess)
                 return ValResult;
 
-            Result<bool> result = PersonData.IsFound(
+            Result<bool> result = PersonData.IsNameExist(
                 this.Model.Name,
                 this.Model.PersonID);
 
@@ -186,7 +186,7 @@ namespace StorePilot.BLL
             if (!ValResult.IsSuccess)
                 return ValResult;
 
-            Result<bool> result = PersonData.IsPhoneFound(
+            Result<bool> result = PersonData.IsPhoneExist(
                 this.Model.Phone,
                 this.Model.PersonID);
 
@@ -227,21 +227,21 @@ namespace StorePilot.BLL
                 "فشلت عملية التحقق من وجود هذا المورد في النظام!");
         }
 
-        public static Result<bool> IsActive(int id)
-        {
-            Result IsFoundResult = IsFound(id);
+        //public static Result<bool> IsActive(int id)
+        //{
+        //    Result IsFoundResult = IsFound(id);
 
-            if (!IsFoundResult.IsSuccess)
-                return Result<bool>.Failure(IsFoundResult.Message);
+        //    if (!IsFoundResult.IsSuccess)
+        //        return Result<bool>.Failure(IsFoundResult.Message);
 
-            Result<bool> result = SupplierData.IsActive(id);
+        //    Result<bool> result = SupplierData.IsActive(id);
 
-            if (result.IsSuccess)
-                return Result<bool>.Success(result.Data);
+        //    if (result.IsSuccess)
+        //        return Result<bool>.Success(result.Data);
 
-            return Result<bool>.Failure(
-                "فشلت عملية التحقق من تفعيل هذا المورد في النظام!");
-        }
+        //    return Result<bool>.Failure(
+        //        "فشلت عملية التحقق من تفعيل هذا المورد في النظام!");
+        //}
 
         public static Result<DataTable> GetSuppliers(
             int currentPage,

@@ -43,7 +43,7 @@ namespace StorePilot.BLL
 
         public static Result<SaleReturnService> GetByID(int id)
         {
-            Result<SaleReturnModel> result = SaleReturnData.GetByID(id);
+            Result<SaleReturnModel> result = SaleReturnData.Find(id);
 
             if (result.IsSuccess)
             {
@@ -62,7 +62,7 @@ namespace StorePilot.BLL
 
         protected override Result _AddNew()
         {
-            var SaleInvoiceResult = SaleInvoiceData.GetByID(this.Model.SaleInvoiceID);
+            var SaleInvoiceResult = SaleInvoiceData.Find(this.Model.SaleInvoiceID);
 
             if (!SaleInvoiceResult.IsSuccess || SaleInvoiceResult.Data == null)
                 return Result.Failure(SaleInvoiceResult.Message);
@@ -99,7 +99,7 @@ namespace StorePilot.BLL
                         _ThrowException(result);
                     }
 
-                    result = SaleInvoiceData.UpdatePaidAmount(
+                    result = SaleInvoiceData.UpdateTotalAmount(
                         con,
                         trans,
                         this.Model.ReturnID);
@@ -188,7 +188,7 @@ namespace StorePilot.BLL
 
         public Result ValidateReturnDate()
         {
-            var result = SaleInvoiceData.GetByID(this.Model.SaleInvoiceID);
+            var result = SaleInvoiceData.Find(this.Model.SaleInvoiceID);
 
             if (result.IsSuccess)
             {
@@ -208,7 +208,7 @@ namespace StorePilot.BLL
 
         public Result ValidateTotalReturnAmount()
         {
-            var result = SaleInvoiceData.GetByID(this.Model.SaleInvoiceID);
+            var result = SaleInvoiceData.Find(this.Model.SaleInvoiceID);
 
             if (result.IsSuccess)
             {
@@ -226,28 +226,84 @@ namespace StorePilot.BLL
             return Result.Success();
         }
 
-        //public static Result Cancell(int id)
-        //{
-        //    var SaleReturnResult = SaleReturnData.GetByID(id);
+        public static Result Cancell(int id)
+        {
+            Result<SaleReturnModel> SaleReturnResult = SaleReturnData.Find(id);
 
-        //    if (!SaleReturnResult.IsSuccess || SaleReturnResult.Data == null)
-        //        return Result.Failure(SaleReturnResult.Message);
+            if (!SaleReturnResult.IsSuccess || SaleReturnResult.Data == null)
+                return Result.Failure("فشلت عملية الوصول لبيانات فاتورة المرتجع " +
+                    "أو أن الفاتورة غير مسجلة في النظام!");
 
-        //    if (SaleReturnResult.Data.Cancelled)
-        //        return Result.Failure("فاتورة المرتجع هذه ملغية بالفعل!");
+            if (SaleReturnResult.Data.Cancelled)
+                return Result.Failure("فاتورة المرتجع هذه ملغية بالفعل!");
 
-        //    Result TransResult = DbManager.Current?.ExecuteTransaction((con, trans) =>
-        //    {
-        //        /*
-        //         لو مدفوع وليس لها سجل دفع يتم تحدث إجمالي الفاتورة والمبلغ المدفوع
-        //        لو مدفوع ولها سجل دفع يتم تحديث إجمالي الفاتورة وحالة الفاتورة لآجل
-        //        لو آجل يتم تحديث إجمالي الفاتورة 
-        //         */
-        //        Result result = CashTransactionData.Cancell(
-        //            con, 
-        //            trans, 
-        //            SaleReturnResult.Data.TransactionID.Value);
-        //    });
-        //}
+            Result<bool> HasPaymentsResult = InvoiceData.HasPayments(id);
+
+            if (HasPaymentsResult.IsSuccess)
+                return Result.Failure("فشلت عملية التحقق من كون الفاتورة لها سجل دفع!");
+
+            Result<SaleInvoiceModel> SaleInvoiceResult = 
+                SaleInvoiceData.Find(SaleReturnResult.Data.SaleInvoiceID);
+
+            if (!SaleInvoiceResult.IsSuccess || SaleInvoiceResult.Data == null)
+                return Result.Failure("فشلت عملية الوصول لبيانات فاتورة البيع " +
+                    "أو أن الفاتورة غير مسجلة في النظام!");
+
+            Result TransResult = DbManager.Current?.ExecuteTransaction((con, trans) =>
+            {
+                /*
+                 * لو مدفوع وليس لها سجل دفع يتم تحدث إجمالي الفاتورة والمبلغ المدفوع
+                 * لو مدفوع ولها سجل دفع يتم تحديث إجمالي الفاتورة وحالة الفاتورة لآجل
+                 * لو آجل يتم تحديث إجمالي الفاتورة
+                 */
+                Result result = CashTransactionData.Cancell(
+                    con,
+                    trans,
+                    SaleReturnResult.Data.TransactionID.Value);
+
+                _ThrowException(result);
+
+                result = ProductData.DecreaseStockAfterCancellReturns(
+                    con,
+                    trans,
+                    id);
+
+                _ThrowException(result);
+
+                result = SaleInvoiceData.UpdateTotalAmount(
+                    con,
+                    trans,
+                    id);
+
+                _ThrowException(result);
+
+                if (SaleInvoiceResult.Data.InvoiceStatus == InvoiceStatus.Paid.ToArabic())
+                {
+                    if (HasPaymentsResult.Data)
+                    {
+                        result = InvoiceData.UpdateStatus(
+                            con, 
+                            trans, 
+                            SaleInvoiceResult.Data.InvoiceID);
+
+                        _ThrowException(result);
+                    }
+                    else
+                    {
+                        result = InvoiceData.UpdatePaidAmountAfterCancellReturns(
+                            con, 
+                            trans, 
+                            SaleInvoiceResult.Data.InvoiceID);
+
+                        _ThrowException(result);
+                    }
+                }
+            });
+
+            if (!TransResult.IsSuccess)
+                return Result.Failure("فشلت عملية إلغاء فاتورة المرتجع!");
+
+            return Result.Success("تمت عملية إلغاء فاتورة المرتجع بنجاح.");
+        }
     }
 }

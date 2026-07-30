@@ -15,7 +15,7 @@ namespace StorePilot.DAL
 {
     public static class CustomerData
     {
-        public static Result<CustomerModel> GetByID(int id)
+        public static Result<CustomerModel> Find(int id)
         {
             string Query = @"SELECT * FROM view_CustomersDetails 
                 WHERE CustomerID = @CustomerID;";
@@ -44,7 +44,7 @@ namespace StorePilot.DAL
             string Query = @"INSERT INTO Customers (PersonID, Notes)
                 VALUES (@PersonID, @Notes);
 
-                SELECT last_insert_rowid();";
+                SELECT LAST_INSERT_ROWID();";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
             {
@@ -198,13 +198,12 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية تعطيل هذا العميل!");
         }
 
-        public static Result<bool> IsFound(int id)
+        public static Result<bool> IsExist(int id)
         {
             string Query = @"SELECT EXISTS
                 (
                     SELECT 1 FROM Customers WHERE CustomerID = @CustomerID
-                ) 
-                AS IsFound;";
+                ) AS IsFound;";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
             {
@@ -222,26 +221,26 @@ namespace StorePilot.DAL
                 Parameters);
         }
 
-        public static Result<bool> IsActive(int id)
-        {
-            string Query = @"SELECT Active FROM Customers 
-                WHERE CustomerID = @CustomerID;";
+        //public static Result<bool> IsActive(int id)
+        //{
+        //    string Query = @"SELECT Active FROM Customers 
+        //        WHERE CustomerID = @CustomerID;";
 
-            DbParameterInfo[] Parameters = new DbParameterInfo[]
-            {
-                new DbParameterInfo
-                {
-                    Name = "@CustomerID",
-                    DbType = DbType.Int64,
-                    Value = id,
-                },
-            };
+        //    DbParameterInfo[] Parameters = new DbParameterInfo[]
+        //    {
+        //        new DbParameterInfo
+        //        {
+        //            Name = "@CustomerID",
+        //            DbType = DbType.Int64,
+        //            Value = id,
+        //        },
+        //    };
 
-            return DataQueryService.Scalar<bool>(
-                CommandType.Text,
-                Query,
-                Parameters);
-        }
+        //    return DataQueryService.Scalar<bool>(
+        //        CommandType.Text,
+        //        Query,
+        //        Parameters);
+        //}
 
         public static Result<int> GetCount(
             int filterMethodIndex,
@@ -253,12 +252,12 @@ namespace StorePilot.DAL
             {
                 case (int)FilterMethodsPeople.Name:
                     Query = @"SELECT COUNT(CustomerID) FROM view_CustomersDetails
-                        WHERE PersonName LIKE @FilterValue || '%';";
+                        WHERE Name LIKE @FilterValue || '%';";
                     break;
 
                 case (int)FilterMethodsPeople.Phone:
                     Query = @"SELECT COUNT(CustomerID) FROM view_CustomersDetails
-                        WHERE PhoneNumber LIKE @FilterValue || '%';";
+                        WHERE Phone LIKE @FilterValue || '%';";
                     break;
 
                 case (int)FilterMethodsPeople.Address:
@@ -359,15 +358,16 @@ namespace StorePilot.DAL
 
         public static Result<int> GetCount()
         {
-            string Query = @"SELECT COUNT(CustomerID) FROM Customers;";
+            string Query = @"SELECT COUNT(CustomerID) FROM Customers
+                WHERE Active = 1;";
 
             return DataQueryService.Scalar<int>(CommandType.Text, Query);
         }
 
         public static Result<DataTable> GetForSelection()
         {
-            string Query = @"SELECT Name, CustomerID 
-                FROM view_CustomersDetails
+            string Query = @"SELECT CustomerID, Name FROM view_CustomersDetails
+                WHERE view_CustomersDetails.Active = 1
                 ORDER BY CustomerID ASC;";
 
             return DbManager.Current?.GetDataTable(CommandType.Text, Query);

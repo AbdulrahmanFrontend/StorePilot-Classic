@@ -15,7 +15,7 @@ namespace StorePilot.DAL
 {
     public static class CashTransactionData
     {
-        public static Result<CashTransactionModel> GetByID(int id)
+        public static Result<CashTransactionModel> Find(int id)
         {
             string Query = @"SELECT * FROM CashTransactions 
                 WHERE TransactionID = @TransactionID;";
@@ -483,49 +483,49 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية إلغاء حركات الدفع!");
         }
 
-        public static Result CancellPaymentTransaction(
-            IDbConnection con,
-            IDbTransaction trans,
-            int id)
-        {
-            string Query = @"UPDATE CashTransactions
-                SET
-                    Cancelled = CASE Cancelled
-                    WHEN 0 THEN 1
-                    ELSE 1
-                    END
-                WHERE TransactionID = 
-                (
-                    SELECT TransactionID FROM Payments WHERE PaymentID = @PaymentID
-                );";
+        //public static Result CancellPaymentTransaction(
+        //    IDbConnection con,
+        //    IDbTransaction trans,
+        //    int id)
+        //{
+        //    string Query = @"UPDATE CashTransactions
+        //        SET
+        //            Cancelled = CASE Cancelled
+        //            WHEN 0 THEN 1
+        //            ELSE 1
+        //            END
+        //        WHERE TransactionID = 
+        //        (
+        //            SELECT TransactionID FROM Payments WHERE PaymentID = @PaymentID
+        //        );";
 
-            DbParameterInfo[] Parameters = new DbParameterInfo[]
-            {
-                new DbParameterInfo
-                {
-                    Name = "@PaymentID",
-                    DbType = DbType.Int64,
-                    Value = id,
-                },
-            };
+        //    DbParameterInfo[] Parameters = new DbParameterInfo[]
+        //    {
+        //        new DbParameterInfo
+        //        {
+        //            Name = "@PaymentID",
+        //            DbType = DbType.Int64,
+        //            Value = id,
+        //        },
+        //    };
 
-            Result<int> result =  DbManager.Current?.ExecuteNonQuery(
-                con,
-                trans,
-                CommandType.Text, 
-                Query, 
-                Parameters);
+        //    Result<int> result =  DbManager.Current?.ExecuteNonQuery(
+        //        con,
+        //        trans,
+        //        CommandType.Text, 
+        //        Query, 
+        //        Parameters);
 
-            if (result.IsSuccess)
-            {
-                if (result.Data > 0)
-                    return Result.Success();
+        //    if (result.IsSuccess)
+        //    {
+        //        if (result.Data > 0)
+        //            return Result.Success();
 
-                return Result.Failure("لم يتم تحديث بيانات أي حركة صندوق!");
-            }
+        //        return Result.Failure("لم يتم تحديث بيانات أي حركة صندوق!");
+        //    }
 
-            return Result.Failure("فشلت عملية إلغاء حركة الصندوق!");
-        }
+        //    return Result.Failure("فشلت عملية إلغاء حركة الصندوق!");
+        //}
 
         public static Result Cancell(
             IDbConnection con,
@@ -572,7 +572,8 @@ namespace StorePilot.DAL
         {
             string Query = @"SELECT EXISTS
                 (
-                    SELECT 1 FROM CashTransactions WHERE TransactionID = @TransactionID
+                    SELECT 1 FROM CashTransactions 
+                    WHERE TransactionID = @TransactionID
                 ) AS IsFound;";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
@@ -647,7 +648,7 @@ namespace StorePilot.DAL
             {
                 case (int)FilterMethodsCash.TransactionDate:
                     Query = @"SELECT TransactionID, TransactionDate,
-                        TransactionType, Amount, Description, CreatedAt
+                        TransactionType, PaidAmount, Description, CreatedAt
                         Cancelled FROM CashTransactions
                         WHERE TransactionDate LIKE @FilterValue || '%'
                         ORDER BY Cancelled ASC, TransactionID DESC
@@ -657,7 +658,7 @@ namespace StorePilot.DAL
 
                 case (int)FilterMethodsCash.Type:
                     Query = @"SELECT TransactionID, TransactionDate,
-                        TransactionType, Amount, Description, CreatedAt
+                        TransactionType, PaidAmount, Description, CreatedAt
                         Cancelled FROM CashTransactions
                         WHERE TransactionType LIKE @FilterValue || '%'
                         ORDER BY Cancelled ASC, TransactionID DESC
@@ -667,7 +668,7 @@ namespace StorePilot.DAL
 
                 case (int)FilterMethodsCash.Description:
                     Query = @"SELECT TransactionID, TransactionDate,
-                        TransactionType, Amount, Description, CreatedAt
+                        TransactionType, PaidAmount, Description, CreatedAt
                         Cancelled FROM CashTransactions
                         WHERE Description LIKE '%' || @FilterValue || '%'
                         ORDER BY Cancelled ASC, TransactionID DESC
@@ -677,7 +678,7 @@ namespace StorePilot.DAL
 
                 default:
                     Query = @"SELECT TransactionID, TransactionDate,
-                        TransactionType, Amount, Description, CreatedAt
+                        TransactionType, PaidAmount, Description, CreatedAt
                         Cancelled FROM CashTransactions
                         ORDER BY Cancelled ASC, TransactionID DESC
                         LIMIT @PageSize
@@ -713,35 +714,35 @@ namespace StorePilot.DAL
                 Parameters);
         }
 
-        public static Result<bool> IsRevenue(int id)
-        {
-            string Query = @"SELECT EXISTS
-                (
-                    SELECT 1 FROM CashTransactions WHERE TransactionID = @TransactionID 
-                    AND TransactionType = @TransactionType
-                ) AS IsRevenue;";
+        //public static Result<bool> IsRevenue(int id)
+        //{
+        //    string Query = @"SELECT EXISTS
+        //        (
+        //            SELECT 1 FROM CashTransactions WHERE TransactionID = @TransactionID 
+        //            AND TransactionType = @TransactionType
+        //        ) AS IsRevenue;";
 
-            DbParameterInfo[] Parameters = new DbParameterInfo[]
-            {
-                new DbParameterInfo
-                {
-                    Name = "@TransactionID",
-                    DbType = DbType.Int64,
-                    Value = id,
-                },
-                new DbParameterInfo
-                {
-                    Name = "@TransactionType",
-                    DbType = DbType.String,
-                    Value = TransactionType.Revenue.ToArabic(),
-                }
-            };
+        //    DbParameterInfo[] Parameters = new DbParameterInfo[]
+        //    {
+        //        new DbParameterInfo
+        //        {
+        //            Name = "@TransactionID",
+        //            DbType = DbType.Int64,
+        //            Value = id,
+        //        },
+        //        new DbParameterInfo
+        //        {
+        //            Name = "@TransactionType",
+        //            DbType = DbType.String,
+        //            Value = TransactionType.Revenue.ToArabic(),
+        //        }
+        //    };
 
-            return DataQueryService.Scalar<bool>(
-                CommandType.Text,
-                Query,
-                Parameters);
-        }
+        //    return DataQueryService.Scalar<bool>(
+        //        CommandType.Text,
+        //        Query,
+        //        Parameters);
+        //}
 
         public static Result<decimal> GetCurrentBalance()
         {

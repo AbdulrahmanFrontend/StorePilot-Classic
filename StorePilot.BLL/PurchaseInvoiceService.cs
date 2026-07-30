@@ -38,9 +38,9 @@ namespace StorePilot.BLL
             this.Mode = Mode.Update;
         }
 
-        public static Result<PurchaseInvoiceService> GetByID(int id)
+        public static Result<PurchaseInvoiceService> Find(int id)
         {
-            Result<PurchaseInvoiceModel> result = PurchaseInvoiceData.GetByID(id);
+            Result<PurchaseInvoiceModel> result = PurchaseInvoiceData.Find(id);
 
             if (result.IsSuccess)
             {
@@ -209,51 +209,62 @@ namespace StorePilot.BLL
             }
         }
 
-        public static Result Cancell(int invoiceId)
+        public static Result Cancell(int id)
         {
-            Result<bool> IsCancelledResult = IsCancelled(invoiceId);
+            var InvoiceResult = PurchaseInvoiceData.Find(id);
 
-            if (IsCancelledResult.IsSuccess)
+            if (InvoiceResult.IsSuccess)
             {
-                if (IsCancelledResult.Data)
-                    return Result.Failure("هذه الفاتورة ملغية فعلا!");
+                if (InvoiceResult.Data == null)
+                    return Result.Failure("هذه الفاتورة غير مسجلة في النظام!");
+
+                if (InvoiceResult.Data.Cancelled)
+                    return Result.Failure("هذه الفاتورة ملغية بالفعل!");
             }
-            else
-                return Result.Failure(IsCancelledResult.Message);
 
             Result TransResult = DbManager.Current.ExecuteTransaction(
                 (con, trans) =>
                 {
-                    Result result = ProductData.DecreaseStock(con,trans, invoiceId);
+                    Result result = ProductData.DecreaseStock(
+                        con,
+                        trans, 
+                        InvoiceResult.Data.InvoiceID);
 
                     _ThrowException(result);
 
-                    result = PurchaseInvoiceData.Cancell(con, trans, invoiceId);
+                    result = PurchaseInvoiceData.Cancell(
+                        con, 
+                        trans,
+                        InvoiceResult.Data.InvoiceID);
 
                     _ThrowException(result);
 
-                    result = PaymentData.CancellInvoicePayments(con, trans, invoiceId);
+                    result = PaymentData.CancellInvoicePayments(
+                        con, 
+                        trans,
+                        InvoiceResult.Data.InvoiceID);
 
                     _ThrowException(result);
 
                     result = CashTransactionData.CancellInvoicePaymentsTransactions(
                         con,
                         trans,
-                        invoiceId);
+                        InvoiceResult.Data.InvoiceID);
 
                     _ThrowException(result);
 
-                    result = CashTransactionData.CancellInvoiceTransaction(
+                    result = CashTransactionData.Cancell(
                         con, 
                         trans, 
-                        invoiceId);
+                        InvoiceResult.Data.TransactionID.Value);
 
                     _ThrowException(result);
                 });
 
             if (TransResult.IsSuccess)
             {
-                LogManager.LogInfo($"تمت عملية إلغاء فاتورة الشراء {invoiceId} بنجاح.");
+                LogManager.LogInfo($"تمت عملية إلغاء فاتورة الشراء " +
+                    $"{id} بنجاح.");
 
                 return Result.Success("تمت عملية الإلغاء بنجاح.");
             }
@@ -327,14 +338,14 @@ namespace StorePilot.BLL
                 "فشلت عملية الحصول على جميع فواتير الشراء!");
         }
 
-        public static Result<bool> IsCancelled(int id)
-        {
-            Result<bool> result = PurchaseInvoiceData.IsCancelled(id);
+        //public static Result<bool> IsCancelled(int id)
+        //{
+        //    Result<bool> result = PurchaseInvoiceData.IsCancelled(id);
 
-            if (result.IsSuccess)
-                return result;
+        //    if (result.IsSuccess)
+        //        return result;
 
-            return Result<bool>.Failure("فشلت عملية التحقق من إلغاء هذه الفاتورة!");
-        }
+        //    return Result<bool>.Failure("فشلت عملية التحقق من إلغاء هذه الفاتورة!");
+        //}
     }
 }

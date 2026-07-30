@@ -1,12 +1,7 @@
 ﻿using DevToolkit.Core.Results;
 using StorePilot.Core.Models;
 using StorePilot.DAL;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StorePilot.BLL
 {
@@ -24,9 +19,9 @@ namespace StorePilot.BLL
             Model = model;
         }
 
-        public static Result<GroupService> GetByID(int id)
+        public static Result<GroupService> Find(int id)
         {
-            Result<GroupModel> result = GroupData.GetByID(id);
+            Result<GroupModel> result = GroupData.Find(id);
 
             if (result.IsSuccess)
             {
@@ -51,9 +46,9 @@ namespace StorePilot.BLL
             return Result<DataTable>.Failure("فشلت عملية الوصول لجميع المجموعات!");
         }
 
-        public static Result IsFound(int id)
+        public static Result IsExist(int id)
         {
-            Result<bool> result = GroupData.IsFound(id);
+            Result<bool> result = GroupData.IsExist(id);
 
             if (result.IsSuccess)
             {

@@ -2,6 +2,7 @@
 using DevToolkit.Core.Common;
 using DevToolkit.Core.Results;
 using DevToolkit.Core.Validation;
+using StorePilot.Core.Enums;
 using StorePilot.Core.Models;
 using StorePilot.DAL;
 using System;
@@ -29,9 +30,9 @@ namespace StorePilot.BLL
             this.Mode = Mode.Update;
         }
 
-        public static Result<CashTransactionService> GetByID(int id)
+        public static Result<CashTransactionService> Find(int id)
         {
-            Result<CashTransactionModel> result = CashTransactionData.GetByID(id);
+            Result<CashTransactionModel> result = CashTransactionData.Find(id);
 
             if (result.IsSuccess)
             {
@@ -60,7 +61,7 @@ namespace StorePilot.BLL
 
         protected override Result _AddNew() => CashTransactionData.AddNew(this.Model);
 
-        public Result ValidateAmount()
+        public Result ValidatePaidAmount()
             => _ValidateProperty(nameof(this.Model.PaidAmount), this.Model);
 
         public Result ValidateDescription()
@@ -71,27 +72,35 @@ namespace StorePilot.BLL
 
         private static Result _ValidateBusiness(int id)
         {
-            Result<bool> RevenueResult = CashTransactionData.IsRevenue(id);
+            Result<CashTransactionModel> GetTransResult = CashTransactionData.Find(id);
 
-            if (RevenueResult.IsSuccess)
+            if (GetTransResult.IsSuccess)
             {
-                if (RevenueResult.Data)
+                if (GetTransResult.Data == null)
+                    return Result.Failure("هذه الحركة غير مسجلة في النظام!");
+
+                if (GetTransResult.Data.TransactionType
+                    == TransactionType.Revenue.ToArabic())
                     return Result.Failure(
                         "ممنوع حذف او تعديل حركة إيرادات من شاشة الصندوق!");
             }
             else
-                return Result.Failure("فشلت عملية التحقق من نوع الحركة!");
+                return Result.Failure("فشلت عملية الوصول لبيانات حركة الصندوق هذه!");
 
-            //var result =
-            //    PurchaseInvoiceData.IsPurchaseTransaction(id);
+            Result<bool> IsValidTransResult = 
+                PurchaseInvoiceData.IsPurchaseTransaction(id);
 
-            //if (result.IsSuccess)
-            //{
-            //    if (result.Data)
-            //        return Result.Failure("لا يسمح بتعديل أو حذف حركة مصروفات شراء!");
-            //}
-            //else
-            //    return Result.Failure("فشلت عملية التحقق من كون الحركة مصروفات شراء!");
+            if (IsValidTransResult.IsSuccess && IsValidTransResult.Data)
+                return Result.Failure("لا يسمح بتعديل أو حذف حركة مصروفات شراء!");
+            else if(!IsValidTransResult.IsSuccess)
+                return Result.Failure("فشلت عملية التحقق من كون الحركة مصروفات شراء!");
+
+            IsValidTransResult = PurchaseInvoiceData.IsReturnsTransaction(id);
+
+            if (IsValidTransResult.IsSuccess && IsValidTransResult.Data)
+                return Result.Failure("لا يسمح بتعديل أو حذف حركة مصروفات مرتجعات!");
+            else if (!IsValidTransResult.IsSuccess)
+                return Result.Failure("فشلت عملية التحقق من كون الحركة مصروفات مرتجعات!");
 
             return Result.Success();
         }
@@ -99,17 +108,30 @@ namespace StorePilot.BLL
         protected override ValidationResult _Validate()
             => ObjectValidator.ValidateObject<CashTransactionModel>(Model);
 
-        public static Result Cancelled(int id)
+        public static Result Cancell(int id)
         {
             Result result = _ValidateBusiness(id);
 
             if (!result.IsSuccess)
                 return result;
 
+            Result<CashTransactionModel> GetTransResult = CashTransactionData.Find(id);
+
+            if (GetTransResult.IsSuccess)
+            {
+                if (GetTransResult.Data == null)
+                    return Result.Failure("هذه الحركة غير مسجلة في النظام!");
+
+                if (GetTransResult.Data.Cancelled)
+                    return Result.Failure("هذه الحركة ملغية بالفعل!");
+            }
+            else
+                return Result.Failure("فشلت عملية الوصول لبيانات هذه الحركة!");
+
             return CashTransactionData.Cancell(id);
         }
 
-        public static Result IsFound(int id)
+        public static Result IsExist(int id)
         {
             Result<bool> result = CashTransactionData.IsFound(id);
 
@@ -124,22 +146,6 @@ namespace StorePilot.BLL
             return Result.Failure(
                 "فشلت عملية التحقق من وجود هذه الحركة في النظام!");
         }
-
-        //public static Result IsPurchaseTransaction(int id)
-        //{
-        //    var result =
-        //        PurchaseInvoiceData.IsPurchaseTransaction(id);
-
-        //    if (result.IsSuccess)
-        //    {
-        //        if (result.Data)
-        //            return Result.Success();
-
-        //        return Result.Failure("هذه الحركة ليست مصروفات فاتورة شراء!");
-        //    }
-
-        //    return Result.Failure("فشلت عملية التحقق من كون هذه الحركة مصروفات شراء!");
-        //}
 
         public static Result<int> GetCount(
             int filterMethodIndex,
@@ -170,12 +176,7 @@ namespace StorePilot.BLL
                 filterValue);
 
             if (result.IsSuccess)
-            {
-                if (result.Data != null)
-                    return result;
-
-                return Result<DataTable>.Success(default);
-            }
+                return result;
 
             return Result<DataTable>.Failure(
                 "فشلت عملية الحصول على جميع حركات الصيدوق!");
