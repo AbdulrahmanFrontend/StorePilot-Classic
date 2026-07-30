@@ -14,7 +14,8 @@ namespace StorePilot.DAL
 {
     public static class PaymentData
     {
-        public static Result<PaymentModel> GetByID(int id)
+        //used
+        public static Result<PaymentModel> Find(int id)
         {
             string Query = @"SELECT * FROM Payments 
                 WHERE PaymentID = @PaymentID;";
@@ -35,6 +36,7 @@ namespace StorePilot.DAL
                 Paramters);
         }
 
+        //used
         public static Result AddNew(
             IDbConnection con,
             IDbTransaction trans,
@@ -118,6 +120,7 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية إضافة عملية الدفع هذه!");
         }
 
+        //used
         public static Result Cancell(
             IDbConnection con,
             IDbTransaction trans,
@@ -190,12 +193,13 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية حذف مدفوعات هذه الفاتورة!");
         }
 
-        public static Result<bool> IsFound(int id)
+        //used
+        public static Result<bool> IsExist(int id)
         {
             string Query = @"SELECT EXISTS
                 (
                     SELECT 1 FROM Payments WHERE PaymentID = @PaymentID
-                ) AS IsFound;";
+                ) AS IsExist;";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
             {
@@ -213,6 +217,7 @@ namespace StorePilot.DAL
                 Parameters);
         }
 
+        //used
         public static Result<int> GetPaymentsInvoiceCount(
             int invoiceId,
             int filterMethodIndex,
@@ -262,6 +267,7 @@ namespace StorePilot.DAL
                 Parameters);
         }
 
+        //used
         public static Result<DataTable> GetPaymentsInvoice(
             int invoiceId,
             int offset,
@@ -334,39 +340,40 @@ namespace StorePilot.DAL
                 Parameters);
         }
 
-        public static Result<bool> IsInvoiceDateLargerThanPaymentsDate(
-            int invoiceId,
-            DateTime invoiceDate)
-        {
-            string Query = @"SELECT EXISTS
-                (
-                    SELECT 1 FROM Payments 
-                    WHERE @invoiceDate < 
-                    (
-                        SELECT MIN(PaymentDate) FROM Payments 
-                        WHERE InvoiceID = @InvoiceID
-                    )
-                ) AS IsFound;";
+        //public static Result<bool> IsInvoiceDateLargerThanPaymentsDate(
+        //    int invoiceId,
+        //    DateTime invoiceDate)
+        //{
+        //    string Query = @"SELECT EXISTS
+        //        (
+        //            SELECT 1 FROM Payments 
+        //            WHERE @invoiceDate < 
+        //            (
+        //                SELECT MIN(PaymentDate) FROM Payments 
+        //                WHERE InvoiceID = @InvoiceID
+        //            )
+        //        ) AS IsFound;";
 
-            DbParameterInfo[] Parameters = new DbParameterInfo[]
-            {
-                new DbParameterInfo
-                {
-                    Name = "@InvoiceID",
-                    DbType = DbType.Int64,
-                    Value = invoiceId,
-                },
-                new DbParameterInfo
-                {
-                    Name = "@InvoiceDate",
-                    DbType = DbType.String,
-                    Value = invoiceDate.ToString("yyyy-MM-dd"),
-                },
-            };
+        //    DbParameterInfo[] Parameters = new DbParameterInfo[]
+        //    {
+        //        new DbParameterInfo
+        //        {
+        //            Name = "@InvoiceID",
+        //            DbType = DbType.Int64,
+        //            Value = invoiceId,
+        //        },
+        //        new DbParameterInfo
+        //        {
+        //            Name = "@InvoiceDate",
+        //            DbType = DbType.String,
+        //            Value = invoiceDate.ToString("yyyy-MM-dd"),
+        //        },
+        //    };
 
-            return DataQueryService.Scalar<bool>(CommandType.Text, Query, Parameters);
-        }
+        //    return DataQueryService.Scalar<bool>(CommandType.Text, Query, Parameters);
+        //}
 
+        //used
         public static Result<bool> IsForSales(int invoiceId)
         {
             string Query = @"SELECT EXISTS

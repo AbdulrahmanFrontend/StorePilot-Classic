@@ -19,21 +19,25 @@ namespace StorePilot.BLL
     {
         public PaymentModel Model { get; private set; }
 
+        private int _ID = 0;
+
         public PaymentService()
         {
             this.Model = new PaymentModel();
+            this._ID = this.Model.PaymentID;
             this.Mode = Mode.AddNew;
         }
 
         private PaymentService(PaymentModel model)
         {
             this.Model = model;
+            this._ID = this.Model.PaymentID;
             this.Mode = Mode.Update;
         }
 
-        public static Result<PaymentService> GetByID(int id)
+        public static Result<PaymentService> Find(int id)
         {
-            Result<PaymentModel> result = PaymentData.GetByID(id);
+            Result<PaymentModel> result = PaymentData.Find(id);
 
             if (result.IsSuccess)
             {
@@ -43,7 +47,7 @@ namespace StorePilot.BLL
                         );
 
                 return Result<PaymentService>.Failure(
-                    "عملية الدفع هذه غير مسجلة في هذا النظام!");
+                    "عملية الدفع هذه غير مسجلة في النظام!");
             }
 
             return Result<PaymentService>.Failure(
@@ -52,6 +56,8 @@ namespace StorePilot.BLL
 
         protected override Result _AddNew()
         {
+            this.Model.PaymentID = this._ID;
+
             CashTransactionModel TransModel = new CashTransactionModel();
 
             TransModel.TransactionDate = Model.PaymentDate;
@@ -117,9 +123,11 @@ namespace StorePilot.BLL
 
         protected override Result _Update()
         {
+            this.Model.PaymentID = this._ID;
+
             return Result.Failure(
                 "غير مسموح بتعديل بيانات " +
-                "عملية الدفع هذه يرجى إلغاؤها وإنشاء عملية جديدة!");
+                "عملية الدفع هذه, يرجى إلغاؤها وإنشاء عملية جديدة!");
         }
 
         public override Result Valid()
@@ -210,7 +218,7 @@ namespace StorePilot.BLL
 
         public static Result Cancell(int id)
         {
-            var PaymentResult = PaymentData.GetByID(id);
+            var PaymentResult = PaymentData.Find(id);
 
             if (PaymentResult.IsSuccess)
             {
@@ -224,7 +232,18 @@ namespace StorePilot.BLL
             Result CancellResult = DbManager.Current?.ExecuteTransaction(
                 (con, trans) =>
                 {
-                    Result result = InvoiceData.UpdatePaidAmount(
+                    Result result = PaymentData.Cancell(con, trans, id);
+
+                    _ThrowException(result);
+
+                    result = CashTransactionData.Cancell(
+                        con,
+                        trans,
+                        PaymentResult.Data.TransactionID.Value);
+
+                    _ThrowException(result);
+
+                    result = InvoiceData.UpdatePaidAmount(
                         con,
                         trans,
                         PaymentResult.Data.InvoiceID);
@@ -235,17 +254,6 @@ namespace StorePilot.BLL
                         con,
                         trans,
                         PaymentResult.Data.InvoiceID);
-
-                    _ThrowException(result);
-
-                    result = PaymentData.Cancell(con, trans, id);
-
-                    _ThrowException(result);
-
-                    result = CashTransactionData.Cancell(
-                        con, 
-                        trans,
-                        PaymentResult.Data.TransactionID.Value);
 
                     _ThrowException(result);
                 });
@@ -260,16 +268,16 @@ namespace StorePilot.BLL
             return Result.Failure("فشلت عملية إلغاء عملية الدفع هذه!");
         }
 
-        public static Result IsFound(int id)
+        public static Result IsExist(int id)
         {
-            Result<bool> result = PaymentData.IsFound(id);
+            Result<bool> result = PaymentData.IsExist(id);
 
             if (result.IsSuccess)
             {
                 if (result.Data)
                     return Result.Success();
 
-                return Result.Failure("هذه الدفعة غير مسجلة في هذا النظام!");
+                return Result.Failure("هذه الدفعة غير مسجلة في النظام!");
             }
 
             return Result.Failure(
@@ -310,25 +318,10 @@ namespace StorePilot.BLL
                 filterValue);
 
             if (result.IsSuccess)
-            {
-                if (result.Data != null)
-                    return result;
-
-                return Result<DataTable>.Success(default);
-            }
+                return result;
 
             return Result<DataTable>.Failure(
                 "فشلت عملية الحصول على جميع مدفوعات الفاتورة!");
         }
-
-        //public static Result<bool> IsCancelled(int id)
-        //{
-        //    Result<bool> result = PaymentData.IsCancelled(id);
-
-        //    if (result.IsSuccess)
-        //        return result;
-
-        //    return Result<bool>.Failure("فشلت عملية التحقق من إلغاء عملية الدفع هذه!");
-        //}
     }
 }

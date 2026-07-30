@@ -15,6 +15,7 @@ namespace StorePilot.DAL
 {
     public static class CashTransactionData
     {
+        //used
         public static Result<CashTransactionModel> Find(int id)
         {
             string Query = @"SELECT * FROM CashTransactions 
@@ -36,6 +37,7 @@ namespace StorePilot.DAL
                 Paramters);
         }
 
+        //used
         public static Result AddNew(CashTransactionModel model)
         {
             string Query = @"INSERT INTO CashTransactions 
@@ -108,6 +110,7 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية حفظ بيانات حركة الصندوق هذه!");
         }
 
+        //used
         public static Result AddNew(
             IDbConnection con,
             IDbTransaction trans,
@@ -297,6 +300,7 @@ namespace StorePilot.DAL
         //        "فشلت عملية إضافة حركة صندوق لعملية الدفع هذه!");
         //}
 
+        //used
         public static Result Update(CashTransactionModel model)
         {
             string Query = @"UPDATE CashTransactions
@@ -365,6 +369,7 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية حفظ بيانات حركة الصندوق هذه!");
         }
 
+        //used
         public static Result Cancell(int id)
         {
             string Query = @"UPDATE CashTransactions
@@ -527,6 +532,7 @@ namespace StorePilot.DAL
         //    return Result.Failure("فشلت عملية إلغاء حركة الصندوق!");
         //}
 
+        //used
         public static Result Cancell(
             IDbConnection con,
             IDbTransaction trans,
@@ -568,13 +574,14 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية إلغاء حركة الصندوق!");
         }
 
-        public static Result<bool> IsFound(int id)
+        //used
+        public static Result<bool> IsExist(int id)
         {
             string Query = @"SELECT EXISTS
                 (
                     SELECT 1 FROM CashTransactions 
                     WHERE TransactionID = @TransactionID
-                ) AS IsFound;";
+                ) AS IsExist;";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
             {
@@ -592,6 +599,7 @@ namespace StorePilot.DAL
                 Parameters);
         }
 
+        //used
         public static Result<int> GetCount(
             int filterMethodIndex,
             string filterValue)
@@ -636,6 +644,7 @@ namespace StorePilot.DAL
                 Parameters);
         }
 
+        //used
         public static Result<DataTable> GetCashTransactions(
             int offset,
             int pageSize,
@@ -744,6 +753,7 @@ namespace StorePilot.DAL
         //        Parameters);
         //}
 
+        //used
         public static Result<decimal> GetCurrentBalance()
         {
             string Query = @"SELECT

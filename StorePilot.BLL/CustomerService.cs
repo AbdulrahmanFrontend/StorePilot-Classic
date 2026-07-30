@@ -18,15 +18,19 @@ namespace StorePilot.BLL
     {
         public CustomerModel Model { get; private set; }
 
+        private int _ID = 0;
+
         public CustomerService()
         {
-            Model = new CustomerModel();
+            this.Model = new CustomerModel();
+            this._ID = this.Model.CustomerID;
             this.Mode = Mode.AddNew;
         }
 
         private CustomerService(CustomerModel model)
         {
             this.Model = model;
+            this._ID = this.Model.CustomerID;
             this.Mode = Mode.Update;
         }
 
@@ -50,6 +54,8 @@ namespace StorePilot.BLL
 
         protected override Result _AddNew()
         {
+            this.Model.CustomerID = this._ID;
+
             Result result = DbManager.Current?.ExecuteTransaction((con, trans) =>
                 {
                     if (this.Model == null)
@@ -87,6 +93,8 @@ namespace StorePilot.BLL
 
         protected override Result _Update()
         {
+            this.Model.CustomerID = this._ID;
+
             Result result = DbManager.Current?.ExecuteTransaction((con, trans) =>
                 {
                     if (this.Model == null)
@@ -176,7 +184,7 @@ namespace StorePilot.BLL
         {
             Result ValResult = _ValidateProperty(
                 nameof(this.Model.Phone),
-                this.Model); ;
+                this.Model);
 
             if (!ValResult.IsSuccess)
                 return ValResult;

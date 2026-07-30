@@ -9,14 +9,18 @@ namespace StorePilot.BLL
     {
         public GroupModel Model { get; private set; }
 
+        private int _ID = 0;
+
         public GroupService()
         {
-            Model = new GroupModel();
+            this.Model = new GroupModel();
+            this._ID = this.Model.GroupID;
         }
 
         public GroupService(GroupModel model)
         {
-            Model = model;
+            this.Model = model;
+            this._ID = this.Model.GroupID;
         }
 
         public static Result<GroupService> Find(int id)

@@ -15,7 +15,8 @@ namespace StorePilot.DAL
 {
     public static class ProductData
     {
-        public static Result<ProductModel> GetByID(int id)
+        //used
+        public static Result<ProductModel> Find(int id)
         {
             string Query = @"SELECT * FROM Products 
                 WHERE ProductID = @ProductID;";
@@ -36,6 +37,7 @@ namespace StorePilot.DAL
                 Paramters);
         }
 
+        //used
         public static Result AddNew(ProductModel model)
         {
             string Query = @"INSERT INTO Products 
@@ -61,7 +63,7 @@ namespace StorePilot.DAL
                 @Notes
             );
 
-            SELECT last_insert_rowid();";
+            SELECT LAST_INSERT_ROWID();";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
             {
@@ -136,15 +138,15 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية حفظ بيانات هذا الأصناف!");
         }
 
+        //used
         public static Result Update(ProductModel model)
         {
             string Query = @"Update Products
             SET 
                 ProductName = @ProductName, BarCode = @BarCode,
-                UnitID = @UnitID, GroupID = @GroupID, 
-                Quantity = @Quantity, MinQuantity = @MinQuantity, 
+                UnitID = @UnitID, GroupID = @GroupID, MinQuantity = @MinQuantity, 
                 PurchasePrice = @PurchasePrice, SalePrice = @SalePrice, 
-                Notes = @Notes
+                Active = @Active, Notes = @Notes
             WHERE ProductID = @ProductID;";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
@@ -181,12 +183,6 @@ namespace StorePilot.DAL
                 },
                 new DbParameterInfo
                 {
-                    Name = "@Quantity",
-                    DbType = DbType.Decimal,
-                    Value = model.Quantity,
-                },
-                new DbParameterInfo
-                {
                     Name = "@MinQuantity",
                     DbType = DbType.Decimal,
                     Value = model.MinQuantity,
@@ -202,6 +198,12 @@ namespace StorePilot.DAL
                     Name = "@SalePrice",
                     DbType = DbType.Decimal,
                     Value = model.SalePrice,
+                },
+                new DbParameterInfo
+                {
+                    Name = "@Active",
+                    DbType = DbType.Boolean,
+                    Value = model.Active,
                 },
                 new DbParameterInfo
                 {
@@ -415,6 +417,7 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية تحديث مخزن صنف!");
         }
 
+        //used
         public static Result Activate(int id)
         {
             string Query = @"UPDATE Products
@@ -455,6 +458,7 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية تفعيل هذا الصنف!");
         }
 
+        //used
         public static Result Deactivate(int id)
         {
             string Query = @"UPDATE Products
@@ -495,12 +499,13 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية تعطيل هذا الصنف!");
         }
 
-        public static Result<bool> IsFound(int id)
+        //used
+        public static Result<bool> IsExist(int id)
         {
             string Query = @"SELECT EXISTS
                 (
                     SELECT 1 FROM Products WHERE ProductID = @ProductID
-                ) AS IsFound;";
+                ) AS IsExist;";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
             {
@@ -539,6 +544,7 @@ namespace StorePilot.DAL
         //        Parameters);
         //}
 
+        //used
         public static Result<int> GetCount()
         {
             string Query = "SELECT COUNT(ProductID) AS ProductsCount FROM Products;";
@@ -546,6 +552,7 @@ namespace StorePilot.DAL
             return DataQueryService.Scalar<int>(CommandType.Text, Query);
         }
 
+        //used
         public static Result<DataTable> GetLowStockProducts()
         {
             string Query = @"SELECT ProductName, Quantity, MinQuantity FROM Products
@@ -555,6 +562,7 @@ namespace StorePilot.DAL
             return DbManager.Current.GetDataTable(CommandType.Text, Query);
         }
 
+        //used
         public static Result<int> GetCount(
             int filterMethodIndex,
             string filterValue)
@@ -604,6 +612,7 @@ namespace StorePilot.DAL
                 Parameters);
         }
 
+        //used
         public static Result<DataTable> GetForSelection()
         {
             string Query = @"SELECT ProductID, ProductName FROM Products
@@ -612,6 +621,7 @@ namespace StorePilot.DAL
             return DbManager.Current?.GetDataTable(CommandType.Text, Query);
         }
 
+        //used
         public static Result<DataTable> GetProducts(
             int offset,
             int pageSize,
@@ -695,13 +705,14 @@ namespace StorePilot.DAL
                 Parameters);
         }
 
-        public static Result<bool> IsBarCodeFound(string barCode, int id)
+        //used
+        public static Result<bool> IsBarCodeExist(string barCode, int id)
         {
             string Query = @"SELECT EXISTS
                 (
                 SELECT 1 FROM Products 
                 WHERE BarCode = @BarCode AND ProductID != @ProductID
-                ) AS IsBarCodeFound;";
+                ) AS IsBarCodeExist;";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
             {
@@ -725,13 +736,14 @@ namespace StorePilot.DAL
                 Parameters);
         }
 
-        public static Result<bool> IsProductNameFound(string productName, int id)
+        //used
+        public static Result<bool> IsProductNameExist(string productName, int id)
         {
             string Query = @"SELECT EXISTS
                 (
                 SELECT 1 FROM Products 
                 WHERE ProductName = @ProductName AND ProductID != @ProductID
-                ) AS IsProductNameFound;";
+                ) AS IsProductNameExist;";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
             {

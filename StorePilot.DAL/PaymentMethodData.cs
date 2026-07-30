@@ -13,7 +13,8 @@ namespace StorePilot.DAL
 {
     public static class PaymentMethodData
     {
-        public static Result<PaymentMethodModel> GetByID(int id)
+        //used
+        public static Result<PaymentMethodModel> Find(int id)
         {
             string Query = @"SELECT * FROM PaymentMethods
                 WHERE MethodID = @MethodID;";
@@ -34,6 +35,7 @@ namespace StorePilot.DAL
                 Parameters);
         }
 
+        //used
         public static Result<DataTable> GetAll()
         {
             string Query = @"SELECT * FROM PaymentMethods;";
@@ -41,7 +43,8 @@ namespace StorePilot.DAL
             return DbManager.Current?.GetDataTable(CommandType.Text, Query);
         }
 
-        public static Result<bool> IsFound(int id)
+        //used
+        public static Result<bool> IsExist(int id)
         {
             string Query = @"SELECT EXISTS
             (

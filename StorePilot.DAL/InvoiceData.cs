@@ -14,6 +14,7 @@ namespace StorePilot.DAL
 {
     public static class InvoiceData
     {
+        //used
         public static Result<InvoiceModel> Find(int id)
         {
             string Query = @"SELECT * FROM Invoices WHERE InvoiceID = @InvoiceID;";
@@ -148,6 +149,7 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية تحديث بيانات الفاتورة!");
         }
 
+        //used
         public static Result UpdatePaidAmount(
             IDbConnection con,
             IDbTransaction trans,
@@ -218,6 +220,7 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية تحديث مبلغ السداد من الفاتورة");
         }
 
+        //used
         public static Result UpdateStatus(
             IDbConnection con,
             IDbTransaction trans,

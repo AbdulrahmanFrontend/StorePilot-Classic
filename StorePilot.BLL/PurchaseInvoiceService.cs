@@ -50,7 +50,7 @@ namespace StorePilot.BLL
                         );
 
                 return Result<PurchaseInvoiceService>.Failure(
-                    "هذه الفاتورة غير مسجلة في هذا النظام!");
+                    "هذه الفاتورة غير مسجلة في النظام!");
             }
 
             return Result<PurchaseInvoiceService>.Failure(
@@ -170,7 +170,7 @@ namespace StorePilot.BLL
 
             foreach (InvoiceItemModel item in _Items)
             {
-                Result<ProductService> result = ProductService.GetByID(item.ProductID);
+                Result<ProductService> result = ProductService.Find(item.ProductID);
 
                 if (result.IsSuccess)
                     return Result.Failure("هذا الصنف غير مسجل في النظام!");
@@ -337,15 +337,5 @@ namespace StorePilot.BLL
             return Result<DataTable>.Failure(
                 "فشلت عملية الحصول على جميع فواتير الشراء!");
         }
-
-        //public static Result<bool> IsCancelled(int id)
-        //{
-        //    Result<bool> result = PurchaseInvoiceData.IsCancelled(id);
-
-        //    if (result.IsSuccess)
-        //        return result;
-
-        //    return Result<bool>.Failure("فشلت عملية التحقق من إلغاء هذه الفاتورة!");
-        //}
     }
 }

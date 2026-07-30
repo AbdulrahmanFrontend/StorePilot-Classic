@@ -2,6 +2,7 @@
 using DevToolkit.Data;
 using DevToolkit.Data.Core;
 using DevToolkit.Logging.Managers;
+using Microsoft.SqlServer.Server;
 using StorePilot.Core.Enums;
 using StorePilot.Core.Models;
 using System;
@@ -15,6 +16,7 @@ namespace StorePilot.DAL
 {
     public static class CustomerData
     {
+        //used
         public static Result<CustomerModel> Find(int id)
         {
             string Query = @"SELECT * FROM view_CustomersDetails 
@@ -36,6 +38,7 @@ namespace StorePilot.DAL
                 Paramters);
         }
 
+        //used
         public static Result AddNew(
             IDbConnection con,
             IDbTransaction trans,
@@ -79,6 +82,7 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية إضافة هذا العميل للنظام!");
         }
 
+        //used
         public static Result Update(
             IDbConnection con,
             IDbTransaction trans,
@@ -86,7 +90,7 @@ namespace StorePilot.DAL
         {
             string Query = @"UPDATE Customers
                 SET 
-                    Notes = @Notes
+                    Active = @Active, Notes = @Notes
                 WHERE CustomerID = @CustomerID;";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
@@ -96,6 +100,12 @@ namespace StorePilot.DAL
                     Name = "@CustomerID",
                     DbType = DbType.Int64,
                     Value = customer.CustomerID,
+                },
+                new DbParameterInfo
+                {
+                    Name = "@Active",
+                    DbType = DbType.Boolean,
+                    Value = customer.Active,
                 },
                 new DbParameterInfo
                 {
@@ -118,6 +128,7 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية تحديث بيانات هذا العميل!");
         }
 
+        //used
         public static Result Activate(int id)
         {
             string Query = @"UPDATE Customers
@@ -158,6 +169,7 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية تفعيل هذا العميل!");
         }
 
+        //used
         public static Result Deactivate(int id)
         {
             string Query = @"UPDATE Customers
@@ -198,12 +210,13 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية تعطيل هذا العميل!");
         }
 
+        //used
         public static Result<bool> IsExist(int id)
         {
             string Query = @"SELECT EXISTS
                 (
                     SELECT 1 FROM Customers WHERE CustomerID = @CustomerID
-                ) AS IsFound;";
+                ) AS IsExist;";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
             {
@@ -242,6 +255,7 @@ namespace StorePilot.DAL
         //        Parameters);
         //}
 
+        //used
         public static Result<int> GetCount(
             int filterMethodIndex,
             string filterValue)
@@ -286,6 +300,7 @@ namespace StorePilot.DAL
                 Parameters);
         }
 
+        //used
         public static Result<DataTable> GetCustomers(
             int offset,
             int pageSize,
@@ -356,6 +371,7 @@ namespace StorePilot.DAL
                 Parameters);
         }
 
+        //used
         public static Result<int> GetCount()
         {
             string Query = @"SELECT COUNT(CustomerID) FROM Customers
@@ -364,6 +380,7 @@ namespace StorePilot.DAL
             return DataQueryService.Scalar<int>(CommandType.Text, Query);
         }
 
+        //used
         public static Result<DataTable> GetForSelection()
         {
             string Query = @"SELECT CustomerID, Name FROM view_CustomersDetails

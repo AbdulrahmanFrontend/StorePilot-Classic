@@ -14,19 +14,23 @@ namespace StorePilot.BLL
     {
         public PaymentMethodModel Model { get; private set; }
 
+        private int _ID = 0;
+
         public PaymentMethodService()
         {
-            Model = new PaymentMethodModel();
+            this.Model = new PaymentMethodModel();
+            this._ID = this.Model.MethodID;
         }
 
         public PaymentMethodService(PaymentMethodModel model)
         {
-            Model = model;
+            this.Model = model;
+            this._ID = this.Model.MethodID;
         }
 
-        public static Result<PaymentMethodService> GetByID(int id)
+        public static Result<PaymentMethodService> Find(int id)
         {
-            Result<PaymentMethodModel> result = PaymentMethodData.GetByID(id);
+            Result<PaymentMethodModel> result = PaymentMethodData.Find(id);
 
             if (result.IsSuccess)
             {
@@ -53,9 +57,9 @@ namespace StorePilot.BLL
             return Result<DataTable>.Failure("فشلت عملية الوصول لجميع طرق الدفع!");
         }
 
-        public static Result IsFound(int id)
+        public static Result IsExist(int id)
         {
-            Result<bool> result = PaymentMethodData.IsFound(id);
+            Result<bool> result = PaymentMethodData.IsExist(id);
 
             if (result.IsSuccess)
             {

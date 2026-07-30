@@ -13,6 +13,7 @@ namespace StorePilot.DAL
 {
     public static class PersonData
     {
+        //used
         public static Result AddNew(
             IDbConnection con,
             IDbTransaction trans,
@@ -62,6 +63,7 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية إضافة هذا الشخص للنظام!");
         }
 
+        //used
         public static Result Update(
             IDbConnection con,
             IDbTransaction trans,
@@ -114,6 +116,7 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية تحديث بيانات هذا الشخص!");
         }
 
+        //used
         public static Result<bool> IsNameExist(string name, int id)
         {
             string Query = @"SELECT EXISTS
@@ -145,6 +148,7 @@ namespace StorePilot.DAL
                 Parameters);
         }
 
+        //used
         public static Result<bool> IsPhoneExist(string phone, int id)
         {
             string Query = @"SELECT EXISTS

@@ -167,7 +167,7 @@ namespace StorePilot.BLL
 
             foreach (InvoiceItemModel item in _Items)
             {
-                Result<ProductService> result = ProductService.GetByID(item.ProductID);
+                Result<ProductService> result = ProductService.Find(item.ProductID);
 
                 if (result.IsSuccess)
                     return Result.Failure("هذا الصنف غير مسجل في النظام!");

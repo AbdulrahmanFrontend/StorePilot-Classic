@@ -354,6 +354,7 @@ namespace StorePilot.DAL
                 Parameters);
         }
 
+        //used
         public static Result<bool> IsPurchaseTransaction(int transId)
         {
             string Query = @"SELECT EXISTS
@@ -377,6 +378,7 @@ namespace StorePilot.DAL
             return DataQueryService.Scalar<bool>(CommandType.Text, Query, Parameters);
         }
 
+        //used
         public static Result<bool> IsReturnsTransaction(int transId)
         {
             string Query = @"SELECT EXISTS

@@ -29,30 +29,5 @@ namespace StorePilot.BLL
             return Result<bool>.Failure(
                 "فشلت عملية التحقق من وجود سجل دفع لهذه الفاتورة!");
         }
-
-        //public static Result<string> GetInvoiceStatus(int invoiceId)
-        //{
-        //    Result<string> result = InvoiceData.GetInvoiceStatus(invoiceId);
-
-        //    if (result.IsSuccess)
-        //        return result;
-
-        //    return Result<string>.Failure("فشلت عملية الوصول لحالة الفاتورة!");
-        //}
-
-        //public static Result<bool> IsDeferred(int invoiceId)
-        //{
-        //    Result<string> result = GetInvoiceStatus(invoiceId);
-
-        //    if (result.IsSuccess)
-        //    {
-        //        if (result.Data == InvoiceStatus.Deferred.ToArabic())
-        //            return Result<bool>.Success(true);
-
-        //        return Result<bool>.Failure("هذه الفاتورة ليست آجل!");
-        //    }
-
-        //    return Result<bool>.Failure("فشلت عملية الوصول لحالة الفاتورة!");
-        //}
     }
 }

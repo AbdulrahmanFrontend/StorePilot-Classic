@@ -18,15 +18,19 @@ namespace StorePilot.BLL
     {
         public CashTransactionModel Model { get; private set; }
 
+        private int _ID = 0;
+
         public CashTransactionService()
         {
             this.Model = new CashTransactionModel();
+            this._ID = this.Model.TransactionID;
             this.Mode = Mode.AddNew;
         }
 
         public CashTransactionService(CashTransactionModel model)
         {
             this.Model = model;
+            this._ID = this.Model.TransactionID;
             this.Mode = Mode.Update;
         }
 
@@ -56,10 +60,17 @@ namespace StorePilot.BLL
             if (!result.IsSuccess)
                 return result;
 
+            this.Model.TransactionID = this._ID;
+
             return CashTransactionData.Update(this.Model);
         }
 
-        protected override Result _AddNew() => CashTransactionData.AddNew(this.Model);
+        protected override Result _AddNew()
+        {
+            this.Model.TransactionID = this._ID;
+
+            return CashTransactionData.AddNew(this.Model); 
+        }
 
         public Result ValidatePaidAmount()
             => _ValidateProperty(nameof(this.Model.PaidAmount), this.Model);
@@ -133,7 +144,7 @@ namespace StorePilot.BLL
 
         public static Result IsExist(int id)
         {
-            Result<bool> result = CashTransactionData.IsFound(id);
+            Result<bool> result = CashTransactionData.IsExist(id);
 
             if (result.IsSuccess)
             {
