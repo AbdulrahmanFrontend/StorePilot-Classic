@@ -16,23 +16,22 @@ namespace StorePilot.BLL
 
         public UnitService()
         {
-            Model = new UnitModel();
+            this.Model = new UnitModel();
         }
 
         public UnitService(UnitModel model)
         {
-            Model = model;
+            this.Model = model;
         }
 
-        public static Result<UnitService> GetByID(int id)
+        public static Result<UnitService> Find(int id)
         {
-            Result<UnitModel> result = UnitData.GetByID(id);
+            Result<UnitModel> result = UnitData.Find(id);
 
             if (result.IsSuccess)
             {
                 if (result.Data == null)
-                    return Result<UnitService>.Failure(
-                        "هذه الوحدة غير مسجلة في النظام!");
+                    return Result<UnitService>.Failure("هذه الوحدة غير مسجلة في النظام!");
 
                 return Result<UnitService>.Success(new UnitService(result.Data));
             }
@@ -50,9 +49,9 @@ namespace StorePilot.BLL
             return Result<DataTable>.Failure("فشلت عملية الوصول لجميع وحدات القياس!");
         }
 
-        public static Result IsFound(int id)
+        public static Result IsExist(int id)
         {
-            Result<bool> result = UnitData.IsFound(id);
+            Result<bool> result = UnitData.IsExist(id);
 
             if (result.IsSuccess)
             {

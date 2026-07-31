@@ -187,119 +187,6 @@ namespace StorePilot.DAL
                 "فشلت عملية إضافة حركة صندوق لهذه الفاتورة!");
         }
 
-        public static Result Update(
-            IDbConnection con,
-            IDbTransaction trans,
-            CashTransactionModel model)
-        {
-            string Query = @"UPDATE CashTransactions
-                SET
-                    TransactionDate = @TransactionDate
-                WHERE TransactionID = @TransactionID;";
-
-            DbParameterInfo[] Parameters = new DbParameterInfo[]
-            {
-                new DbParameterInfo
-                {
-                    Name = "@TransactionID",
-                    DbType = DbType.Int64,
-                    Value = model.TransactionID,
-                },
-                new DbParameterInfo
-                {
-                    Name = "@TransactionDate",
-                    DbType = DbType.DateTime,
-                    Value = model.TransactionDate,
-                },
-            };
-
-            Result<int> result = DbManager.Current?.ExecuteNonQuery(
-                con,
-                trans,
-                CommandType.Text,
-                Query,
-                Parameters);
-
-            if (result.IsSuccess)
-            {
-                if (result.Data > 0)
-                    return Result.Success();
-
-                return Result.Failure("لم يتم تحديث بيانات أي حركة!");
-            }
-
-            return Result.Failure(
-                "فشلت عملية إضافة حركة صندوق لهذه الفاتورة!");
-        }
-
-        //public static Result AddNewSalesTransaction(
-        //    IDbConnection con,
-        //    IDbTransaction trans,
-        //    CashTransactionModel model)
-        //{
-        //    string Query = @"INSERT INTO CashTransactions 
-        //        (
-        //            TransactionDate,
-        //            TransactionType,
-        //            Amount,
-        //            Description
-        //        )
-        //        VALUES
-        //        (
-        //            @TransactionDate,
-        //            @TransactionType,
-        //            @Amount,
-        //            @Description
-        //        );
-
-        //        SELECT last_insert_rowid();";
-
-        //    DbParameterInfo[] Parameters = new DbParameterInfo[]
-        //    {
-        //        new DbParameterInfo
-        //        {
-        //            Name = "@TransactionDate",
-        //            DbType = DbType.DateTime,
-        //            Value = model.TransactionDate,
-        //        },
-        //        new DbParameterInfo
-        //        {
-        //            Name = "@Amount",
-        //            DbType = DbType.Double,
-        //            Value = model.Amount,
-        //        },
-        //        new DbParameterInfo
-        //        {
-        //            Name = "@Description",
-        //            DbType = DbType.String,
-        //            Value = model.Description,
-        //        },
-        //        new DbParameterInfo
-        //        {
-        //            Name = "@TransactionType",
-        //            DbType = DbType.String,
-        //            Value = TransactionType.Revenue.ToArabic(),
-        //        }
-        //    };
-
-        //    var result = DbManager.Current?.GetScalar<int>(
-        //        con,
-        //        trans,
-        //        CommandType.Text,
-        //        Query,
-        //        Parameters);
-
-        //    if (result.IsSuccess)
-        //    {
-        //        model.TransactionID = result.Data;
-
-        //        return Result.Success();
-        //    }
-
-        //    return Result.Failure(
-        //        "فشلت عملية إضافة حركة صندوق لعملية الدفع هذه!");
-        //}
-
         //used
         public static Result Update(CashTransactionModel model)
         {
@@ -410,10 +297,11 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية إلغاء هذه الحركة!");
         }
 
-        public static Result CancellInvoiceTransaction(
+        //used
+        public static Result CancellSalesReturnsTransactions(
             IDbConnection con,
             IDbTransaction trans,
-            int invoiceId)
+            int saleInvoiceId)
         {
             string Query = @"UPDATE CashTransactions
                 SET
@@ -423,16 +311,17 @@ namespace StorePilot.DAL
                 END
                 WHERE TransactionID = 
                 (
-                    SELECT TransactionID FROM Invoices WHERE InvoiceID = @InvoiceID
+                    SELECT TransactionID FROM SalesReturns 
+                    WHERE SaleInvoiceID = @SaleInvoiceID
                 );";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
             {
                 new DbParameterInfo
                 {
-                    Name = "@InvoiceID",
+                    Name = "@SaleInvoiceID",
                     DbType = DbType.Int64,
-                    Value = invoiceId,
+                    Value = saleInvoiceId,
                 },
             };
 
@@ -488,50 +377,6 @@ namespace StorePilot.DAL
 
             return Result.Failure("فشلت عملية إلغاء حركات الدفع!");
         }
-
-        //public static Result CancellPaymentTransaction(
-        //    IDbConnection con,
-        //    IDbTransaction trans,
-        //    int id)
-        //{
-        //    string Query = @"UPDATE CashTransactions
-        //        SET
-        //            Cancelled = CASE Cancelled
-        //            WHEN 0 THEN 1
-        //            ELSE 1
-        //            END
-        //        WHERE TransactionID = 
-        //        (
-        //            SELECT TransactionID FROM Payments WHERE PaymentID = @PaymentID
-        //        );";
-
-        //    DbParameterInfo[] Parameters = new DbParameterInfo[]
-        //    {
-        //        new DbParameterInfo
-        //        {
-        //            Name = "@PaymentID",
-        //            DbType = DbType.Int64,
-        //            Value = id,
-        //        },
-        //    };
-
-        //    Result<int> result =  DbManager.Current?.ExecuteNonQuery(
-        //        con,
-        //        trans,
-        //        CommandType.Text, 
-        //        Query, 
-        //        Parameters);
-
-        //    if (result.IsSuccess)
-        //    {
-        //        if (result.Data > 0)
-        //            return Result.Success();
-
-        //        return Result.Failure("لم يتم تحديث بيانات أي حركة صندوق!");
-        //    }
-
-        //    return Result.Failure("فشلت عملية إلغاء حركة الصندوق!");
-        //}
 
         //used
         public static Result Cancell(
@@ -724,36 +569,6 @@ namespace StorePilot.DAL
                 Parameters);
         }
 
-        //public static Result<bool> IsRevenue(int id)
-        //{
-        //    string Query = @"SELECT EXISTS
-        //        (
-        //            SELECT 1 FROM CashTransactions WHERE TransactionID = @TransactionID 
-        //            AND TransactionType = @TransactionType
-        //        ) AS IsRevenue;";
-
-        //    DbParameterInfo[] Parameters = new DbParameterInfo[]
-        //    {
-        //        new DbParameterInfo
-        //        {
-        //            Name = "@TransactionID",
-        //            DbType = DbType.Int64,
-        //            Value = id,
-        //        },
-        //        new DbParameterInfo
-        //        {
-        //            Name = "@TransactionType",
-        //            DbType = DbType.String,
-        //            Value = TransactionType.Revenue.ToArabic(),
-        //        }
-        //    };
-
-        //    return DataQueryService.Scalar<bool>(
-        //        CommandType.Text,
-        //        Query,
-        //        Parameters);
-        //}
-
         //used
         public static Result<decimal> GetCurrentBalance()
         {
@@ -783,68 +598,5 @@ namespace StorePilot.DAL
                 Query,
                 Parameters);
         }
-
-        //public static Result<int> GetInvoiceTransaction(int invoiceId)
-        //{
-        //    string Query = @"SELECT TransactionID FROM SalesInvoices
-        //        WHERE InvoiceID = @InvoiceID;";
-
-        //    DbParameterInfo[] Parameters = new DbParameterInfo[]
-        //    {
-        //        new DbParameterInfo
-        //        {
-        //            Name = "@InvoiceID",
-        //            DbType = DbType.Int64,
-        //            Value = invoiceId
-        //        }
-        //    };
-
-        //    var result = DataQueryService.Scalar<int>(
-        //        CommandType.Text,
-        //        Query,
-        //        Parameters);
-
-        //    if (result.IsSuccess)
-        //        return result;
-
-        //    return Result<int>.Failure("فشلت عملية الوصول للحركة!");
-        //}
-
-        //public static Result<IEnumerable<int>> GetTransactionsPayments(int invoiceId)
-        //{
-        //    string Query = @"SELECT TransactionID FROM CreditPayments
-        //        WHERE InvoiceID = @InvoiceID;";
-
-        //    DbParameterInfo[] Parameters = new DbParameterInfo[]
-        //    {
-        //        new DbParameterInfo
-        //        {
-        //            Name = "@InvoiceID",
-        //            DbType = DbType.Int64,
-        //            Value = invoiceId,
-        //        },
-        //    };
-
-        //    var result = DbManager.Current?.GetDataTable(
-        //        CommandType.Text,
-        //        Query,
-        //        Parameters);
-
-        //    List<int> paymentsTransactions = new List<int>();
-
-        //    if (result.IsSuccess)
-        //    {
-        //        if (result.Data != null)
-        //            paymentsTransactions = result.Data
-        //                .AsEnumerable()
-        //                .Select(r => Convert.ToInt32(r["TransactionID"]))
-        //                .ToList();
-
-        //        return Result<IEnumerable<int>>.Success(paymentsTransactions);
-        //    }
-
-        //    return Result<IEnumerable<int>>.Failure(
-        //        "فشلت عملية الوصول لحركات مدفوعات هذه الفاتورة!");
-        //}
     }
 }

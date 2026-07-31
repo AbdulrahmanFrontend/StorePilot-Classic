@@ -167,7 +167,7 @@ namespace StorePilot.BLL
             => GroupService.IsExist(this.Model.GroupID);
 
         public Result ValidateUnitID()
-            => UnitService.IsFound(this.Model.UnitID);
+            => UnitService.IsExist(this.Model.UnitID);
 
         public Result ValidateMinQuantity()
             => _ValidateProperty(nameof(this.Model.MinQuantity), this.Model);
@@ -181,41 +181,41 @@ namespace StorePilot.BLL
         public Result ValidateNotes() =>
             _ValidateProperty(nameof(this.Model.Notes), this.Model);
 
-        public static Result Activate(int id)
-        {
-            Result<ProductModel> ProductResult = ProductData.Find(id);
+        //public static Result Activate(int id)
+        //{
+        //    Result<ProductModel> ProductResult = ProductData.Find(id);
 
-            if (ProductResult.IsSuccess)
-            {
-                if (ProductResult.Data == null)
-                    return Result.Failure("هذا الصنف غير مسجل في النظام!");
+        //    if (ProductResult.IsSuccess)
+        //    {
+        //        if (ProductResult.Data == null)
+        //            return Result.Failure("هذا الصنف غير مسجل في النظام!");
 
-                if (ProductResult.Data.Active)
-                    return Result.Failure("هذا الصنف مفعل بالفعل!");
-            }
-            else
-                return Result.Failure("فشلت عملية الوصول لبيانات هذا الصنف!");
+        //        if (ProductResult.Data.Active)
+        //            return Result.Failure("هذا الصنف مفعل بالفعل!");
+        //    }
+        //    else
+        //        return Result.Failure("فشلت عملية الوصول لبيانات هذا الصنف!");
 
-            return ProductData.Activate(id);
-        }
+        //    return ProductData.Activate(id);
+        //}
 
-        public static Result Deactivate(int id)
-        {
-            Result<ProductModel> ProductResult = ProductData.Find(id);
+        //public static Result Deactivate(int id)
+        //{
+        //    Result<ProductModel> ProductResult = ProductData.Find(id);
 
-            if (ProductResult.IsSuccess)
-            {
-                if (ProductResult.Data == null)
-                    return Result.Failure("هذا الصنف غير مسجل في النظام!");
+        //    if (ProductResult.IsSuccess)
+        //    {
+        //        if (ProductResult.Data == null)
+        //            return Result.Failure("هذا الصنف غير مسجل في النظام!");
 
-                if (!ProductResult.Data.Active)
-                    return Result.Failure("هذا الصنف معطل بالفعل!");
-            }
-            else
-                return Result.Failure("فشلت عملية الوصول لبيانات هذا الصنف!");
+        //        if (!ProductResult.Data.Active)
+        //            return Result.Failure("هذا الصنف معطل بالفعل!");
+        //    }
+        //    else
+        //        return Result.Failure("فشلت عملية الوصول لبيانات هذا الصنف!");
 
-            return ProductData.Deactivate(id);
-        }
+        //    return ProductData.Deactivate(id);
+        //}
 
         public static Result IsExist(int id)
         {

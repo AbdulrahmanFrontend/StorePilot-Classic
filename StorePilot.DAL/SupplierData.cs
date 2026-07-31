@@ -15,7 +15,8 @@ namespace StorePilot.DAL
 {
     public static class SupplierData
     {
-        public static Result<SupplierModel> GetByID(int ID)
+        //used
+        public static Result<SupplierModel> Find(int ID)
         {
             string Query = @"SELECT * FROM view_SuppliersDetails 
                 WHERE SupplierID = @SupplierID;";
@@ -36,6 +37,7 @@ namespace StorePilot.DAL
                 Paramters);
         }
 
+        //used
         public static Result AddNew(
             IDbConnection con,
             IDbTransaction trans,
@@ -44,7 +46,7 @@ namespace StorePilot.DAL
             string Query = @"INSERT INTO Suppliers (PersonID, Notes)
                 VALUES (@PersonID, @Notes);
 
-                SELECT last_insert_rowid();";
+                SELECT LAST_INSERT_ROWID();";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
             {
@@ -79,6 +81,7 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية إضافة هذا المورد للنظام!");
         }
 
+        //used
         public static Result Update(
             IDbConnection con,
             IDbTransaction trans,
@@ -86,7 +89,7 @@ namespace StorePilot.DAL
         {
             string Query = @"UPDATE Suppliers
                 SET 
-                    Notes = @Notes
+                    Active = @Active, Notes = @Notes
                 WHERE SupplierID = @SupplierID;";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
@@ -99,10 +102,16 @@ namespace StorePilot.DAL
                 },
                 new DbParameterInfo
                 {
+                    Name = "@Active",
+                    DbType = DbType.Boolean,
+                    Value = supplier.Active,
+                },
+                new DbParameterInfo
+                {
                     Name = "@Notes",
                     DbType = DbType.String,
                     Value = supplier.Notes,
-                }
+                },
             };
 
             Result<int> result = DbManager.Current?.ExecuteNonQuery(
@@ -118,92 +127,91 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية تحديث بيانات هذا المورد!");
         }
 
-        public static Result Activate(int id)
-        {
-            string Query = @"UPDATE Suppliers
-                SET 
-                    Active = CASE Active
-                    WHEN 0 THEN 1
-                    ELSE 1
-                END
-                WHERE SupplierID = @SupplierID;";
+        //public static Result Activate(int id)
+        //{
+        //    string Query = @"UPDATE Suppliers
+        //        SET 
+        //            Active = CASE Active
+        //            WHEN 0 THEN 1
+        //            ELSE 1
+        //        END
+        //        WHERE SupplierID = @SupplierID;";
 
-            DbParameterInfo[] Parameters = new DbParameterInfo[]
-            {
-                new DbParameterInfo
-                {
-                    Name = "@SupplierID",
-                    DbType = DbType.Int64,
-                    Value = id,
-                },
-            };
+        //    DbParameterInfo[] Parameters = new DbParameterInfo[]
+        //    {
+        //        new DbParameterInfo
+        //        {
+        //            Name = "@SupplierID",
+        //            DbType = DbType.Int64,
+        //            Value = id,
+        //        },
+        //    };
 
-            Result<int> result = DbManager.Current?.ExecuteNonQuery(
-                CommandType.Text,
-                Query,
-                Parameters);
+        //    Result<int> result = DbManager.Current?.ExecuteNonQuery(
+        //        CommandType.Text,
+        //        Query,
+        //        Parameters);
 
-            if (result.IsSuccess)
-            {
-                if (result.Data > 0)
-                {
-                    LogManager.LogInfo($"تمت عملية تفعيل هذا المورد {id} بنجاح.");
-                    return Result.Success("تمت عملية تفعيل هذا المورد بنجاح.");
-                }
+        //    if (result.IsSuccess)
+        //    {
+        //        if (result.Data > 0)
+        //        {
+        //            LogManager.LogInfo($"تمت عملية تفعيل هذا المورد {id} بنجاح.");
+        //            return Result.Success("تمت عملية تفعيل هذا المورد بنجاح.");
+        //        }
 
-                return Result.Failure("لم يتم تفعيل أي مورد!");
-            }
+        //        return Result.Failure("لم يتم تفعيل أي مورد!");
+        //    }
 
-            return Result.Failure("فشلت عملية تفعيل هذا المورد!");
-        }
+        //    return Result.Failure("فشلت عملية تفعيل هذا المورد!");
+        //}
 
-        public static Result Deactivate(int id)
-        {
-            string Query = @"UPDATE Suppliers
-                SET 
-                    Active = CASE Active
-                    WHEN 1 THEN 0
-                    ELSE 0
-                END
-                WHERE SupplierID = @SupplierID;";
+        //public static Result Deactivate(int id)
+        //{
+        //    string Query = @"UPDATE Suppliers
+        //        SET 
+        //            Active = CASE Active
+        //            WHEN 1 THEN 0
+        //            ELSE 0
+        //        END
+        //        WHERE SupplierID = @SupplierID;";
 
-            DbParameterInfo[] Parameters = new DbParameterInfo[]
-            {
-                new DbParameterInfo
-                {
-                    Name = "@SupplierID",
-                    DbType = DbType.Int64,
-                    Value = id,
-                },
-            };
+        //    DbParameterInfo[] Parameters = new DbParameterInfo[]
+        //    {
+        //        new DbParameterInfo
+        //        {
+        //            Name = "@SupplierID",
+        //            DbType = DbType.Int64,
+        //            Value = id,
+        //        },
+        //    };
 
-            Result<int> result = DbManager.Current?.ExecuteNonQuery(
-                CommandType.Text,
-                Query,
-                Parameters);
+        //    Result<int> result = DbManager.Current?.ExecuteNonQuery(
+        //        CommandType.Text,
+        //        Query,
+        //        Parameters);
 
-            if (result.IsSuccess)
-            {
-                if (result.Data > 0)
-                {
-                    LogManager.LogInfo($"تمت عملية تعطيل هذا المورد {id} بنجاح.");
+        //    if (result.IsSuccess)
+        //    {
+        //        if (result.Data > 0)
+        //        {
+        //            LogManager.LogInfo($"تمت عملية تعطيل هذا المورد {id} بنجاح.");
 
-                    return Result.Success("تمت عملية تعطيل هذا المورد بنجاح.");
-                }
+        //            return Result.Success("تمت عملية تعطيل هذا المورد بنجاح.");
+        //        }
 
-                return Result.Failure("لم يتم تعطيل أي مورد!");
-            }
+        //        return Result.Failure("لم يتم تعطيل أي مورد!");
+        //    }
 
-            return Result.Failure("فشلت عملية تعطيل هذا المورد!");
-        }
+        //    return Result.Failure("فشلت عملية تعطيل هذا المورد!");
+        //}
 
-        public static Result<bool> IsFound(int id)
+        public static Result<bool> IsExist(int id)
         {
             string Query = @"SELECT EXISTS
                 (
-                    SELECT 1 FROM Suppliers WHERE SupplierID = @SupplierID
-                ) 
-                AS IsFound;";
+                    SELECT 1 FROM view_SuppliersDetails WHERE SupplierID = @SupplierID
+                ) AS IsExist;";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
             {
@@ -221,34 +229,15 @@ namespace StorePilot.DAL
                 Parameters);
         }
 
-        //public static Result<bool> IsActive(int id)
-        //{
-        //    string Query = @"SELECT Active FROM Suppliers 
-        //        WHERE SupplierID = @SupplierID;";
-
-        //    DbParameterInfo[] Parameters = new DbParameterInfo[]
-        //    {
-        //        new DbParameterInfo
-        //        {
-        //            Name = "@SupplierID",
-        //            DbType = DbType.Int64,
-        //            Value = id,
-        //        },
-        //    };
-
-        //    return DataQueryService.Scalar<bool>(
-        //        CommandType.Text,
-        //        Query,
-        //        Parameters);
-        //}
-
+        //used
         public static Result<int> GetCount()
         {
-            string Query = "SELECT COUNT(SupplierID) FROM Suppliers;";
+            string Query = "SELECT COUNT(SupplierID) FROM view_SuppliersDetails;";
 
             return DataQueryService.Scalar<int>(CommandType.Text, Query);
         }
 
+        //used
         public static Result<int> GetCount(
             int filterMethodIndex,
             string filterValue)
@@ -264,7 +253,7 @@ namespace StorePilot.DAL
 
                 case (int)FilterMethodsPeople.Phone:
                     Query = @"SELECT COUNT(SupplierID) FROM view_SuppliersDetails
-                        WHERE PhoneNumber LIKE @FilterValue || '%';";
+                        WHERE Phone LIKE @FilterValue || '%';";
                     break;
 
                 case (int)FilterMethodsPeople.Address:
@@ -293,6 +282,7 @@ namespace StorePilot.DAL
                 Parameters);
         }
 
+        //used
         public static Result<DataTable> GetSuppliers(
             int offset,
             int pageSize,
@@ -363,10 +353,12 @@ namespace StorePilot.DAL
                 Parameters);
         }
 
+        //used
         public static Result<DataTable> GetForSelection()
         {
             string Query = @"SELECT Name, SupplierID 
                 FROM view_SuppliersDetails
+                WHERE Active = 1
                 ORDER BY SupplierID ASC;";
 
             return DbManager.Current?.GetDataTable(CommandType.Text, Query);

@@ -22,20 +22,16 @@ namespace StorePilot.BLL
 
         protected List<InvoiceItemModel> _Items { get; set; }
 
-        private int _SaleInvoiceID = 0;
-
         public SaleInvoiceService()
         {
             this.Model = new SaleInvoiceModel();
             this._Items = new List<InvoiceItemModel>();
-            this._SaleInvoiceID = this.Model.SaleInvoiceID;
             this.Mode = Mode.AddNew;
         }
 
         public SaleInvoiceService(SaleInvoiceModel model)
         {
             this.Model = model;
-            this._SaleInvoiceID = this.Model.SaleInvoiceID;
             this.Mode = Mode.Update;
         }
         
@@ -124,7 +120,7 @@ namespace StorePilot.BLL
                         _ThrowException(InnerResult);
                     }
 
-                    InnerResult = ProductData.IncreaseStock(
+                    InnerResult = ProductData.DecreaseStock(
                         con,
                         trans,
                         this.Model.InvoiceID);
@@ -234,7 +230,7 @@ namespace StorePilot.BLL
             Result TransResult = DbManager.Current.ExecuteTransaction(
                 (con, trans) =>
                 {
-                    Result result = ProductData.DecreaseStock(
+                    Result result = ProductData.IncreaseStock(
                         con, 
                         trans,
                         InvoiceResult.Data.InvoiceID);
@@ -266,6 +262,27 @@ namespace StorePilot.BLL
                         con,
                         trans,
                         InvoiceResult.Data.TransactionID.Value);
+
+                    _ThrowException(result);
+
+                    result = SaleReturnData.CancellSalesReturns(
+                        con, 
+                        trans, 
+                        InvoiceResult.Data.SaleInvoiceID);
+
+                    _ThrowException(result);
+
+                    result = CashTransactionData.CancellSalesReturnsTransactions(
+                        con,
+                        trans,
+                        InvoiceResult.Data.SaleInvoiceID);
+
+                    _ThrowException(result);
+
+                    result = ProductData.DecreaseStockAfterCancellInvoiceReturns(
+                        con,
+                        trans,
+                        InvoiceResult.Data.SaleInvoiceID);
 
                     _ThrowException(result);
                 });
@@ -340,15 +357,5 @@ namespace StorePilot.BLL
             return Result<DataTable>.Failure(
                 "فشلت عملية الحصول على جميع فواتير البيع!");
         }
-
-        //public static Result<bool> IsCancelled(int id)
-        //{
-        //    Result<bool> result = SaleInvoiceData.IsCancelled(id);
-
-        //    if (result.IsSuccess)
-        //        return result;
-
-        //    return Result<bool>.Failure("فشلت عملية التحقق من إلغاء هذه الفاتورة!");
-        //}
     }
 }

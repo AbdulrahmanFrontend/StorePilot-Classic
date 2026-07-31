@@ -106,7 +106,7 @@ namespace StorePilot.BLL
             else if(!IsValidTransResult.IsSuccess)
                 return Result.Failure("فشلت عملية التحقق من كون الحركة مصروفات شراء!");
 
-            IsValidTransResult = PurchaseInvoiceData.IsReturnsTransaction(id);
+            IsValidTransResult = SaleReturnData.IsReturnsTransaction(id);
 
             if (IsValidTransResult.IsSuccess && IsValidTransResult.Data)
                 return Result.Failure("لا يسمح بتعديل أو حذف حركة مصروفات مرتجعات!");

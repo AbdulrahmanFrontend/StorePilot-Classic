@@ -13,6 +13,7 @@ namespace StorePilot.DAL
 {
     public static class SaleReturnItemData
     {
+        //used
         public static Result AddNew(
             IDbConnection con,
             IDbTransaction trans,
@@ -80,6 +81,7 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية إضافة أصناف المرتجع!");
         }
 
+        //used
         public static Result<DataTable> GetSalesReturnItems(int returnId)
         {
             string Query = @"SELECT * FROM view_SalesReturnItemsDetails 

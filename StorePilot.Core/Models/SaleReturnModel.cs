@@ -20,7 +20,7 @@ namespace StorePilot.Core.Models
 
         public bool Cancelled { get; set; } = false;
 
-        public int? TransactionID { get; set; } = null;
+        public int TransactionID { get; set; } = 0;
 
         [MaxLength(500, "يجب ألا يتجاوز طول الملاحظات ال 500 حرف")]
         public string Notes { get; set; } = string.Empty;

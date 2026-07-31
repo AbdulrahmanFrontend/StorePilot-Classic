@@ -13,7 +13,8 @@ namespace StorePilot.DAL
 {
     public static class UnitData
     {
-        public static Result<UnitModel> GetByID(int id)
+        //used
+        public static Result<UnitModel> Find(int id)
         {
             string Query = @"SELECT * FROM Units WHERE UnitID = @UnitID;";
 
@@ -33,6 +34,7 @@ namespace StorePilot.DAL
                 Parameters);
         }
 
+        //used
         public static Result<DataTable> GetAll()
         {
             string Query = @"SELECT * FROM Units;";
@@ -40,12 +42,13 @@ namespace StorePilot.DAL
             return DbManager.Current?.GetDataTable(CommandType.Text, Query);
         }
 
-        public static Result<bool> IsFound(int id)
+        //used
+        public static Result<bool> IsExist(int id)
         {
             string Query = @"SELECT EXISTS
             (
                 SELECT 1 FROM Units WHERE UnitID = @UnitID
-            ) AS IsFound;";
+            ) AS IsExist;";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
             {

@@ -9,6 +9,7 @@ using StorePilot.Core.Models;
 using StorePilot.DAL;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,7 +25,7 @@ namespace StorePilot.BLL
         public SaleReturnService()
         {
             this.Model = new SaleReturnModel();
-            _Items = new List<SaleReturnItemModel>();
+            this._Items = new List<SaleReturnItemModel>();
             this.Mode = Mode.AddNew;
         }
 
@@ -41,7 +42,7 @@ namespace StorePilot.BLL
             _Items.AddRange(items);
         }
 
-        public static Result<SaleReturnService> GetByID(int id)
+        public static Result<SaleReturnService> Find(int id)
         {
             Result<SaleReturnModel> result = SaleReturnData.Find(id);
 
@@ -99,7 +100,7 @@ namespace StorePilot.BLL
                         _ThrowException(result);
                     }
 
-                    result = SaleInvoiceData.UpdateTotalAmount(
+                    result = InvoiceData.UpdateTotalAmountAfterCreatingReturns(
                         con,
                         trans,
                         this.Model.ReturnID);
@@ -110,6 +111,13 @@ namespace StorePilot.BLL
                         con,
                         trans,
                         SaleInvoiceResult.Data.InvoiceID);
+
+                    _ThrowException(result);
+
+                    result = ProductData.IncreaseStockAfterReturns(
+                        con,
+                        trans,
+                        this.Model.ReturnID);
 
                     _ThrowException(result);
                 });
@@ -256,10 +264,17 @@ namespace StorePilot.BLL
                  * لو مدفوع ولها سجل دفع يتم تحديث إجمالي الفاتورة وحالة الفاتورة لآجل
                  * لو آجل يتم تحديث إجمالي الفاتورة
                  */
-                Result result = CashTransactionData.Cancell(
+                Result result = SaleReturnData.Cancell(
+                            con,
+                            trans,
+                            id);
+
+                _ThrowException(result);
+
+                result = CashTransactionData.Cancell(
                     con,
                     trans,
-                    SaleReturnResult.Data.TransactionID.Value);
+                    SaleReturnResult.Data.TransactionID);
 
                 _ThrowException(result);
 
@@ -270,7 +285,7 @@ namespace StorePilot.BLL
 
                 _ThrowException(result);
 
-                result = SaleInvoiceData.UpdateTotalAmount(
+                result = InvoiceData.UpdateTotalAmountAfterCancellingReturns(
                     con,
                     trans,
                     id);
@@ -304,6 +319,61 @@ namespace StorePilot.BLL
                 return Result.Failure("فشلت عملية إلغاء فاتورة المرتجع!");
 
             return Result.Success("تمت عملية إلغاء فاتورة المرتجع بنجاح.");
+        }
+
+        public static Result IsExist(int id)
+        {
+            Result<bool> result = SaleReturnData.IsExist(id);
+
+            if (result.IsSuccess)
+            {
+                if (result.Data)
+                    return Result.Success();
+
+                return Result.Failure("هذه الفاتورة غير مسجلة في هذا النظام!");
+            }
+
+            return Result.Failure(
+                "فشلت عملية التحقق من وجود هذه الفاتورة في النظام!");
+        }
+
+        public static Result<int> GetCount(
+            int saleInvoiceId,
+            int filterMethodIndex,
+            string filterValue)
+        {
+            Result<int> result = SaleReturnData.GetCount(
+                saleInvoiceId,
+                filterMethodIndex,
+                filterValue);
+
+            if (result.IsSuccess)
+                return result;
+
+            return Result<int>.Failure("فشلت عملية الحصول على عدد فواتير المرتجعات!");
+        }
+
+        public static Result<DataTable> GetReturns(
+            int saleInvoiceId,
+            int currentPage,
+            int pageSize,
+            int filterMethodIndex,
+            string filterValue)
+        {
+            int offset = (currentPage - 1) * pageSize;
+
+            Result<DataTable> result = SaleReturnData.GetInvoices(
+                saleInvoiceId,
+                offset,
+                pageSize,
+                filterMethodIndex,
+                filterValue);
+
+            if (result.IsSuccess)
+                return result;
+
+            return Result<DataTable>.Failure(
+                "فشلت عملية الحصول على جميع فواتير البيع!");
         }
     }
 }

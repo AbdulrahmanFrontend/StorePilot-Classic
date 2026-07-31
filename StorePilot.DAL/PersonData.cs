@@ -123,8 +123,7 @@ namespace StorePilot.DAL
                 (
                     SELECT 1 FROM People 
                     WHERE Name = @Name AND PersonID != @PersonID
-                ) 
-                AS IsFound;";
+                ) AS IsExist;";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
             {
@@ -155,8 +154,7 @@ namespace StorePilot.DAL
                 (
                     SELECT 1 FROM People 
                     WHERE Phone = @Phone AND PersonID != @PersonID
-                ) 
-                AS IsFound;";
+                ) AS IsExist;";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
             {

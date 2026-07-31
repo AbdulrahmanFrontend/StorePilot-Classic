@@ -111,45 +111,6 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية إضافة فاتورة!");
         }
 
-        public static Result Update(
-            IDbConnection con,
-            IDbTransaction trans,
-            InvoiceModel model)
-        {
-            string Query = @"UPDATE Invoices
-                SET
-                    InvoiceDate = @InvoiceDate
-                WHERE InvoiceID = @InvoiceID;";
-
-            DbParameterInfo[] Parameters = new DbParameterInfo[]
-            {
-                new DbParameterInfo
-                {
-                    Name = "@InvoiceID",
-                    DbType = DbType.Int64,
-                    Value = model.InvoiceID,
-                },
-                new DbParameterInfo
-                {
-                    Name = "@InvoiceDate",
-                    DbType = DbType.DateTime,
-                    Value = model.InvoiceDate,
-                },
-            };
-
-            Result<int> result = DbManager.Current?.ExecuteNonQuery(
-                con,
-                trans,
-                CommandType.Text,
-                Query,
-                Parameters);
-
-            if (result.IsSuccess)
-                return Result.Success("تمت عملية تحديث بيانات الفاتورة بنجاح.");
-
-            return Result.Failure("فشلت عملية تحديث بيانات الفاتورة!");
-        }
-
         //used
         public static Result UpdatePaidAmount(
             IDbConnection con,
@@ -188,6 +149,107 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية تحديث مبلغ السداد من الفاتورة");
         }
 
+        //used
+        public static Result UpdateTotalAmountAfterCancellingReturns(
+            IDbConnection con,
+            IDbTransaction trans,
+            int returnId)
+        {
+            string Query = @"UPDATE Invoices
+                SET
+                    TotalAmount = TotalAmount + 
+                    (
+                        SELECT TotalReturnAmount FROM SalesReturns
+                        WHERE ReturnID = @ReturnID
+                    )
+                WHERE InvoiceID = 
+                (
+                    SELECT InvoiceID FROM SalesInvoices WHERE SaleInvoiceID = 
+                    (
+                        SELECT SaleInvoiceID FROM SalesReturns
+                        WHERE ReturnID = @ReturnID
+                    )
+                );";
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@ReturnID",
+                    DbType = DbType.Int64,
+                    Value = returnId,
+                },
+            };
+
+            Result<int> result = DbManager.Current?.ExecuteNonQuery(
+                con,
+                trans,
+                CommandType.Text,
+                Query,
+                Parameters);
+
+            if (result.IsSuccess)
+            {
+                if (result.Data > 0)
+                    return Result.Success();
+
+                return Result.Failure("لم يتم تحديث إجمالي أي فاتورة!");
+            }
+
+            return Result.Failure("فشلت عملية تحديث إجمالي الفاتورة!");
+        }
+
+        //used
+        public static Result UpdateTotalAmountAfterCreatingReturns(
+            IDbConnection con,
+            IDbTransaction trans,
+            int returnId)
+        {
+            string Query = @"UPDATE Invoices
+                SET
+                    TotalAmount = TotalAmount - 
+                    (
+                        SELECT TotalReturnAmount FROM SalesReturns
+                        WHERE ReturnID = @ReturnID
+                    )
+                WHERE InvoiceID = 
+                (
+                    SELECT InvoiceID FROM SalesInvoices WHERE SaleInvoiceID = 
+                    (
+                        SELECT SaleInvoiceID FROM SalesReturns
+                        WHERE ReturnID = @ReturnID
+                    )
+                );";
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@ReturnID",
+                    DbType = DbType.Int64,
+                    Value = returnId,
+                },
+            };
+
+            Result<int> result = DbManager.Current?.ExecuteNonQuery(
+                con,
+                trans,
+                CommandType.Text,
+                Query,
+                Parameters);
+
+            if (result.IsSuccess)
+            {
+                if (result.Data > 0)
+                    return Result.Success();
+
+                return Result.Failure("لم يتم تحديث إجمالي أي فاتورة!");
+            }
+
+            return Result.Failure("فشلت عملية تحديث إجمالي الفاتورة!");
+        }
+
+        //used
         public static Result UpdatePaidAmountAfterCancellReturns(
             IDbConnection con,
             IDbTransaction trans,
@@ -270,63 +332,6 @@ namespace StorePilot.DAL
 
             return Result.Failure("فشلت عملية تحديث حالة الفاتورة!");
         }
-
-        //public static Result<string> GetInvoiceStatus(int id)
-        //{
-        //    string Query = @"SELECT InvoiceStatus FROM Invoices
-        //        WHERE InvoiceID = @InvoiceID";
-
-        //    DbParameterInfo[] Parameters = new DbParameterInfo[]
-        //    {
-        //        new DbParameterInfo
-        //        {
-        //            Name = "@InvoiceID",
-        //            DbType = DbType.Int64,
-        //            Value = id,
-        //        },
-        //    };
-
-        //    return DataQueryService.Scalar<string>(
-        //        CommandType.Text,
-        //        Query,
-        //        Parameters);
-        //}
-
-        //public static Result<DateTime> GetInvoiceDate(int invoiceId)
-        //{
-        //    string Query = @"SELECT InvoiceDate FROM Invoices
-        //        WHERE InvoiceID = @InvoiceID;";
-
-        //    DbParameterInfo[] Parameters = new DbParameterInfo[]
-        //    {
-        //        new DbParameterInfo
-        //        {
-        //            Name = "@InvoiceID",
-        //            DbType = DbType.DateTime,
-        //            Value = invoiceId,
-        //        },
-        //    };
-
-        //    return DataQueryService.Scalar<DateTime>(CommandType.Text, Query, Parameters);
-        //}
-
-        //public static Result<decimal> GetRemainingAmount(int invoiceId)
-        //{
-        //    string Query = @"SELECT (TotalAmount - PaidAmount) AS RemainingAmount
-        //        FROM Invoices WHERE InvoiceID = @InvoiceID;";
-
-        //    DbParameterInfo[] Parameters = new DbParameterInfo[]
-        //    {
-        //        new DbParameterInfo
-        //        {
-        //            Name = "@InvoiceID",
-        //            DbType = DbType.Int64,
-        //            Value = invoiceId,
-        //        }
-        //    };
-
-        //    return DataQueryService.Scalar<decimal>(CommandType.Text, Query, Parameters);
-        //}
 
         //used
         public static Result<bool> HasPayments(int id)

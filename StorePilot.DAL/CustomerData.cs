@@ -128,87 +128,88 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية تحديث بيانات هذا العميل!");
         }
 
-        //used
-        public static Result Activate(int id)
-        {
-            string Query = @"UPDATE Customers
-                SET 
-                    Active = CASE Active
-                    WHEN 0 THEN 1
-                    ELSE 1
-                END
-                WHERE CustomerID = @CustomerID;";
+        //// used
+        //public static Result Activate(int id)
+        //{
+        //    string Query = @"UPDATE Customers
+        //        SET 
+        //            Active = CASE Active
+        //            WHEN 0 THEN 1
+        //            ELSE 1
+        //        END
+        //        WHERE CustomerID = @CustomerID;";
 
-            DbParameterInfo[] Parameters = new DbParameterInfo[]
-            {
-                new DbParameterInfo
-                {
-                    Name = "@CustomerID",
-                    DbType = DbType.Int64,
-                    Value = id,
-                },
-            };
+        //    DbParameterInfo[] Parameters = new DbParameterInfo[]
+        //    {
+        //        new DbParameterInfo
+        //        {
+        //            Name = "@CustomerID",
+        //            DbType = DbType.Int64,
+        //            Value = id,
+        //        },
+        //    };
 
-            Result<int> result = DbManager.Current?.ExecuteNonQuery(
-                CommandType.Text,
-                Query,
-                Parameters);
+        //    Result<int> result = DbManager.Current?.ExecuteNonQuery(
+        //        CommandType.Text,
+        //        Query,
+        //        Parameters);
 
-            if (result.IsSuccess)
-            {
-                if (result.Data > 0)
-                {
-                    LogManager.LogInfo($"تمت عملية تفعيل هذا العميل {id} بنجاح.");
+        //    if (result.IsSuccess)
+        //    {
+        //        if (result.Data > 0)
+        //        {
+        //            LogManager.LogInfo($"تمت عملية تفعيل هذا العميل {id} بنجاح.");
 
-                    return Result.Success("تمت عملية تفعيل هذا العميل بنجاح.");
-                }
+        //            return Result.Success("تمت عملية تفعيل هذا العميل بنجاح.");
+        //        }
 
-                return Result.Failure("لم يتم تفعيل أي عميل!");
-            }
+        //        return Result.Failure("لم يتم تفعيل أي عميل!");
+        //    }
 
-            return Result.Failure("فشلت عملية تفعيل هذا العميل!");
-        }
+        //    return Result.Failure("فشلت عملية تفعيل هذا العميل!");
+        //}
 
-        //used
-        public static Result Deactivate(int id)
-        {
-            string Query = @"UPDATE Customers
-                SET 
-                    Active = CASE Active
-                    WHEN 1 THEN 0
-                    ELSE 0
-                END
-                WHERE CustomerID = @CustomerID;";
+        ////used
+        //public static Result Deactivate(int id)
+        //{
+        //    string Query = @"UPDATE Customers
+        //        SET 
+        //            Active = CASE Active
+        //            WHEN 1 THEN 0
+        //            ELSE 0
+        //        END
+        //        WHERE CustomerID = @CustomerID;";
 
-            DbParameterInfo[] Parameters = new DbParameterInfo[]
-            {
-                new DbParameterInfo
-                {
-                    Name = "@CustomerID",
-                    DbType = DbType.Int64,
-                    Value = id,
-                },
-            };
+        //    DbParameterInfo[] Parameters = new DbParameterInfo[]
+        //    {
+        //        new DbParameterInfo
+        //        {
+        //            Name = "@CustomerID",
+        //            DbType = DbType.Int64,
+        //            Value = id,
+        //        },
+        //    };
 
-            Result<int> result = DbManager.Current?.ExecuteNonQuery(
-                CommandType.Text,
-                Query,
-                Parameters);
+        //    Result<int> result = DbManager.Current?.ExecuteNonQuery(
+        //        CommandType.Text,
+        //        Query,
+        //        Parameters);
 
-            if (result.IsSuccess)
-            {
-                if (result.Data > 0)
-                {
-                    LogManager.LogInfo($"تمت عملية تعطيل هذا العميل {id} بنجاح.");
+        //    if (result.IsSuccess)
+        //    {
+        //        if (result.Data > 0)
+        //        {
+        //            LogManager.LogInfo($"تمت عملية تعطيل هذا العميل {id} بنجاح.");
 
-                    return Result.Success("تمت عملية تعطيل هذا العميل بنجاح.");
-                }
+        //            return Result.Success("تمت عملية تعطيل هذا العميل بنجاح.");
+        //        }
 
-                return Result.Failure("لم يتم تعطيل أي عميل!");
-            }
+        //        return Result.Failure("لم يتم تعطيل أي عميل!");
+        //    }
 
-            return Result.Failure("فشلت عملية تعطيل هذا العميل!");
-        }
+        //    return Result.Failure("فشلت عملية تعطيل هذا العميل!");
+        //}
+        ////used
 
         //used
         public static Result<bool> IsExist(int id)
@@ -233,27 +234,6 @@ namespace StorePilot.DAL
                 Query,
                 Parameters);
         }
-
-        //public static Result<bool> IsActive(int id)
-        //{
-        //    string Query = @"SELECT Active FROM Customers 
-        //        WHERE CustomerID = @CustomerID;";
-
-        //    DbParameterInfo[] Parameters = new DbParameterInfo[]
-        //    {
-        //        new DbParameterInfo
-        //        {
-        //            Name = "@CustomerID",
-        //            DbType = DbType.Int64,
-        //            Value = id,
-        //        },
-        //    };
-
-        //    return DataQueryService.Scalar<bool>(
-        //        CommandType.Text,
-        //        Query,
-        //        Parameters);
-        //}
 
         //used
         public static Result<int> GetCount(
@@ -374,7 +354,7 @@ namespace StorePilot.DAL
         //used
         public static Result<int> GetCount()
         {
-            string Query = @"SELECT COUNT(CustomerID) FROM Customers
+            string Query = @"SELECT COUNT(CustomerID) FROM view_CustomersDetails
                 WHERE Active = 1;";
 
             return DataQueryService.Scalar<int>(CommandType.Text, Query);
@@ -384,7 +364,7 @@ namespace StorePilot.DAL
         public static Result<DataTable> GetForSelection()
         {
             string Query = @"SELECT CustomerID, Name FROM view_CustomersDetails
-                WHERE view_CustomersDetails.Active = 1
+                WHERE Active = 1
                 ORDER BY CustomerID ASC;";
 
             return DbManager.Current?.GetDataTable(CommandType.Text, Query);

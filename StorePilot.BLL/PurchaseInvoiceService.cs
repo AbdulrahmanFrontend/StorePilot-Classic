@@ -25,20 +25,16 @@ namespace StorePilot.BLL
 
         private List<InvoiceItemModel> _Items { get; set; }
 
-        private int _ID = 0;
-
         public PurchaseInvoiceService()
         {
             this.Model = new PurchaseInvoiceModel();
             this._Items = new List<InvoiceItemModel>();
-            this._ID = this.Model.PurchaseInvoiceID;
             this.Mode = Mode.AddNew;
         }
 
         public PurchaseInvoiceService(PurchaseInvoiceModel model)
         {
             this.Model = model;
-            this._ID = this.Model.PurchaseInvoiceID;
             this.Mode = Mode.Update;
         }
 
@@ -335,6 +331,16 @@ namespace StorePilot.BLL
 
             return Result<DataTable>.Failure(
                 "فشلت عملية الحصول على جميع فواتير الشراء!");
+        }
+
+        public static Result<decimal> GetSumOfDebts()
+        {
+            Result<decimal> result = PurchaseInvoiceData.GetSumOfDebts();
+
+            if (result.IsSuccess)
+                return result;
+
+            return Result<decimal>.Failure("فشلت عملية الوصول لمجموع ديون فواتير الشراء!");
         }
     }
 }

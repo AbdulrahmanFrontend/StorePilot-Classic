@@ -40,16 +40,36 @@ namespace StorePilot.Core.Enums
         Description = 3,
     }
 
-    public enum FilterMethodsInvoices
+    public enum FilterMethodsSalesInvoices
     {
-        Name = 1,
-        InvoiceDate = 2,
-        InvoiceStatus = 3,
+        SaleInvoiceID = 1,
+        InvoiceID = 2,
+        CustomerName = 3,
+        InvoiceDate = 4,
+        InvoiceStatus = 5,
+    }
+
+    public enum FilterMethodsPurchasesInvoices
+    {
+        PurchaseInvoiceID = 1,
+        InvoiceID = 2,
+        SupplierName = 3,
+        InvoiceDate = 4,
+        InvoiceStatus = 5,
     }
 
     public enum FilterMethodsPayments 
     { 
-        PaymentDate = 1,
-        PaymentMethod = 2,
+        PaymentID = 1,
+        InvoiceID = 2,
+        PaymentDate = 3,
+        PaymentMethod = 4,
+    }
+
+    public enum FilterMethodsSalesReturns
+    {
+        ReturnID = 1,
+        SaleInvoiceID = 2,
+        ReturnDate = 3,
     }
 }

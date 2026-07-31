@@ -14,18 +14,14 @@ namespace StorePilot.BLL
     {
         public PaymentMethodModel Model { get; private set; }
 
-        private int _ID = 0;
-
         public PaymentMethodService()
         {
             this.Model = new PaymentMethodModel();
-            this._ID = this.Model.MethodID;
         }
 
         public PaymentMethodService(PaymentMethodModel model)
         {
             this.Model = model;
-            this._ID = this.Model.MethodID;
         }
 
         public static Result<PaymentMethodService> Find(int id)

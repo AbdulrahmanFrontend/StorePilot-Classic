@@ -204,94 +204,7 @@ namespace StorePilot.DAL
             return Result.Failure("فشلت عملية تحديث مبلغ السداد من الفاتورة");
         }
 
-        public static Result UpdatePaidAmount(
-            IDbConnection con,
-            IDbTransaction trans,
-            int returnId)
-        {
-            string Query = @"UPDATE Invoices
-                SET
-                    PaidAmount = TotalAmount
-                WHERE InvoiceID = 
-                (
-                    SELECT InvoiceID FROM SalesInvoices WHERE SaleInvoiceID =
-                    (
-                        SELECT SaleInvoiceID FROM SalesReturns WHERE ReturnID = @ReturnID
-                    )
-                );";
-
-            DbParameterInfo[] Parameters = new DbParameterInfo[]
-            {
-                new DbParameterInfo
-                {
-                    Name = "@ReturnID",
-                    DbType = DbType.Int64,
-                    Value = returnId,
-                },
-            };
-
-            Result<int> result = DbManager.Current?.ExecuteNonQuery(
-                con,
-                trans,
-                CommandType.Text,
-                Query,
-                Parameters);
-
-            if (result.IsSuccess)
-                return Result.Success();
-
-            return Result.Failure("فشلت عملية تحديث مبلغ السداد من الفاتورة");
-        }
-
-        public static Result UpdateTotalAmount(
-            IDbConnection con,
-            IDbTransaction trans,
-            int returnId)
-        {
-            string Query = @"UPDATE Invoices
-                SET
-                    TotalAmount = TotalAmount + 
-                    (
-                        SELECT TotalReturnAmount FROM SalesReturns
-                        WHERE ReturnID = @ReturnID
-                    )
-                WHERE InvoiceID = 
-                (
-                    SELECT InvoiceID FROM SalesInvoices WHERE SaleInvoiceID = 
-                    (
-                        SELECT SaleInvoiceID FROM SalesReturns
-                        WHERE ReturnID = @ReturnID
-                    )
-                );";
-
-            DbParameterInfo[] Parameters = new DbParameterInfo[]
-            {
-                new DbParameterInfo
-                {
-                    Name = "@ReturnID",
-                    DbType = DbType.Int64,
-                    Value = returnId,
-                },
-            };
-
-            Result<int> result=DbManager.Current?.ExecuteNonQuery(
-                con,
-                trans,
-                CommandType.Text,
-                Query,
-                Parameters);
-
-            if (result.IsSuccess)
-            {
-                if (result.Data > 0)
-                    return Result.Success();
-
-                return Result.Failure("لم يتم تحديث إجمالي أي فاتورة!");
-            }
-
-            return Result.Failure("فشلت عملية تحديث إجمالي الفاتورة!");
-        }
-
+        //used
         public static Result Cancell(
             IDbConnection con,
             IDbTransaction trans,
@@ -333,7 +246,7 @@ namespace StorePilot.DAL
         {
             string Query = @"SELECT EXISTS
                 (
-                    SELECT 1 FROM SalesInvoices 
+                    SELECT 1 FROM view_SalesInvoicesDetails 
                     WHERE SaleInvoiceID = @SaleInvoiceID
                 ) AS IsExist;";
 
@@ -357,7 +270,7 @@ namespace StorePilot.DAL
         public static Result<int> GetCount()
         {
             string Query = @"SELECT COUNT(SaleInvoiceID) AS SalesInvoicesCount 
-                    FROM SalesInvoices WHERE Cancelled = 0;";
+                    FROM view_SalesInvoicesDetails WHERE Cancelled = 0;";
 
             return DataQueryService.Scalar<int>(CommandType.Text, Query);
         }
@@ -369,21 +282,69 @@ namespace StorePilot.DAL
         {
             string Query = string.Empty;
 
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@FilterValue",
+                    DbType = DbType.String,
+                    Value = filterValue,
+                },
+            };
+
             switch (filterMethodIndex)
             {
-                case (int)FilterMethodsInvoices.Name:
+                case (int)FilterMethodsSalesInvoices.SaleInvoiceID:
+                    Query = @"SELECT COUNT(SaleInvoiceID)
+                        FROM view_SalesInvoicesDetails
+                        WHERE SaleInvoiceID = @FilterValue;";
+                    
+                    Parameters = new DbParameterInfo[]
+                    {
+                        new DbParameterInfo
+                        {
+                            Name = "@FilterValue",
+                            DbType = DbType.Int64,
+                            Value = int.TryParse(filterValue?.ToString(),
+                                out int SaleInvoiceID) ?
+                                SaleInvoiceID : 0,
+                        },
+                    };
+
+                    break;
+
+                case (int)FilterMethodsSalesInvoices.InvoiceID:
+                    Query = @"SELECT COUNT(SaleInvoiceID)
+                        FROM view_SalesInvoicesDetails
+                        WHERE InvoiceID = @FilterValue;";
+
+                    Parameters = new DbParameterInfo[]
+                    {
+                        new DbParameterInfo
+                        {
+                            Name = "@FilterValue",
+                            DbType = DbType.Int64,
+                            Value = int.TryParse(filterValue?.ToString(),
+                                out int InvoiceID) ?
+                                InvoiceID : 0
+                        },
+                    };
+
+                    break;
+
+                case (int)FilterMethodsSalesInvoices.CustomerName:
                     Query = @"SELECT COUNT(SaleInvoiceID)
                         FROM view_SalesInvoicesDetails
                         WHERE CustomerName LIKE @FilterValue || '%';";
                     break;
 
-                case (int)FilterMethodsInvoices.InvoiceDate:
+                case (int)FilterMethodsSalesInvoices.InvoiceDate:
                     Query = @"SELECT COUNT(SaleInvoiceID)
                         FROM view_SalesInvoicesDetails
                         WHERE InvoiceDate LIKE @FilterValue || '%';";
                     break;
 
-                case (int)FilterMethodsInvoices.InvoiceStatus:
+                case (int)FilterMethodsSalesInvoices.InvoiceStatus:
                     Query = @"SELECT COUNT(SaleInvoiceID)
                         FROM view_SalesInvoicesDetails
                         WHERE InvoiceStatus LIKE @FilterValue || '%';";
@@ -394,16 +355,6 @@ namespace StorePilot.DAL
                         FROM view_SalesInvoicesDetails;";
                     break;
             }
-
-            DbParameterInfo[] Parameters = new DbParameterInfo[]
-            {
-                new DbParameterInfo
-                {
-                    Name = "@FilterValue",
-                    DbType = DbType.String,
-                    Value = filterValue,
-                },
-            };
 
             return DataQueryService.Scalar<int>(
                 CommandType.Text,
@@ -420,11 +371,61 @@ namespace StorePilot.DAL
         {
             string Query = string.Empty;
 
+            DbParameterInfo parameter = new DbParameterInfo
+            {
+                Name = "@FilterValue",
+                DbType = DbType.String,
+                Value = filterValue,
+            };
+
             switch (filterMethodIndex)
             {
-                case (int)FilterMethodsInvoices.Name:
-                    Query = @"SELECT SaleInvoiceID, InvoiceDate, InvoiceStatus,
-                        PaidAmount, (TotalAmount - PaidAmount) AS RemainingAmount,
+                case (int)FilterMethodsSalesInvoices.SaleInvoiceID:
+                    Query = @"SELECT SaleInvoiceID, InvoiceID, InvoiceDate,
+                        InvoiceStatus, PaidAmount, 
+                        (TotalAmount - PaidAmount) AS RemainingAmount,
+                        CustomerName, TotalAmount, CreatedAt
+                        FROM view_SalesInvoicesDetails
+                        WHERE SaleInvoiceID = @FilterValue
+                        LIMIT @PageSize
+                        OFFSET @Offset;";
+
+                    parameter = new DbParameterInfo
+                    {
+                        Name = "@FilterValue",
+                        DbType = DbType.Int64,
+                        Value = int.TryParse(filterValue?.ToString(),
+                            out int SaleInvoiceID) ?
+                            SaleInvoiceID : 0
+                    };
+
+                    break;
+
+                case (int)FilterMethodsSalesInvoices.InvoiceID:
+                    Query = @"SELECT SaleInvoiceID, InvoiceID, InvoiceDate,
+                        InvoiceStatus, PaidAmount, 
+                        (TotalAmount - PaidAmount) AS RemainingAmount,
+                        CustomerName, TotalAmount, CreatedAt
+                        FROM view_SalesInvoicesDetails
+                        WHERE InvoiceID = @FilterValue
+                        LIMIT @PageSize
+                        OFFSET @Offset;";
+
+                    parameter = new DbParameterInfo
+                    {
+                        Name = "@FilterValue",
+                        DbType = DbType.Int64,
+                        Value = int.TryParse(filterValue?.ToString(),
+                            out int InvoiceID) ?
+                            InvoiceID : 0
+                    };
+
+                    break;
+
+                case (int)FilterMethodsSalesInvoices.CustomerName:
+                    Query = @"SELECT SaleInvoiceID, InvoiceID, InvoiceDate,
+                        InvoiceStatus, PaidAmount, 
+                        (TotalAmount - PaidAmount) AS RemainingAmount,
                         CustomerName, TotalAmount, CreatedAt
                         FROM view_SalesInvoicesDetails
                         WHERE CustomerName LIKE @FilterValue || '%'
@@ -432,9 +433,10 @@ namespace StorePilot.DAL
                         OFFSET @Offset;";
                     break;
 
-                case (int)FilterMethodsInvoices.InvoiceDate:
-                    Query = @"SELECT SaleInvoiceID, InvoiceDate, InvoiceStatus,
-                        PaidAmount, (TotalAmount - PaidAmount) AS RemainingAmount,
+                case (int)FilterMethodsSalesInvoices.InvoiceDate:
+                    Query = @"SELECT SELECT SaleInvoiceID, InvoiceID, InvoiceDate,
+                        InvoiceStatus, PaidAmount, 
+                        (TotalAmount - PaidAmount) AS RemainingAmount,
                         CustomerName, TotalAmount, CreatedAt
                         FROM view_SalesInvoicesDetails
                         WHERE InvoiceDate LIKE @FilterValue || '%'
@@ -442,9 +444,10 @@ namespace StorePilot.DAL
                         OFFSET @Offset;";
                     break;
 
-                case (int)FilterMethodsInvoices.InvoiceStatus:
-                    Query = @"SELECT SaleInvoiceID, InvoiceDate, InvoiceStatus,
-                        PaidAmount, (TotalAmount - PaidAmount) AS RemainingAmount,
+                case (int)FilterMethodsSalesInvoices.InvoiceStatus:
+                    Query = @"SELECT SaleInvoiceID, InvoiceID, InvoiceDate,
+                        InvoiceStatus, PaidAmount, 
+                        (TotalAmount - PaidAmount) AS RemainingAmount,
                         CustomerName, TotalAmount, CreatedAt
                         FROM view_SalesInvoicesDetails
                         WHERE InvoiceStatus LIKE @FilterValue || '%'
@@ -453,8 +456,9 @@ namespace StorePilot.DAL
                     break;
 
                 default:
-                    Query = @"SELECT SaleInvoiceID, InvoiceDate, InvoiceStatus,
-                        PaidAmount, (TotalAmount - PaidAmount) AS RemainingAmount,
+                    Query = @"SELECT SaleInvoiceID, InvoiceID, InvoiceDate,
+                        InvoiceStatus, PaidAmount, 
+                        (TotalAmount - PaidAmount) AS RemainingAmount,
                         CustomerName, TotalAmount, CreatedAt
                         FROM view_SalesInvoicesDetails
                         LIMIT @PageSize
@@ -462,14 +466,8 @@ namespace StorePilot.DAL
                     break;
             }
 
-            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            List<DbParameterInfo> Parameters = new List<DbParameterInfo>
             {
-                new DbParameterInfo
-                {
-                    Name = "@FilterValue",
-                    DbType = DbType.String,
-                    Value = filterValue,
-                },
                 new DbParameterInfo
                 {
                     Name = "@PageSize",
@@ -484,54 +482,16 @@ namespace StorePilot.DAL
                 }
             };
 
+            Parameters.Add(parameter);
+
             return DbManager.Current?.GetDataTable(
                 CommandType.Text,
                 Query,
                 Parameters);
         }
 
-        public static Result<bool> IsRevenu(int transId)
-        {
-            string Query = @"SELECT EXISTS
-            (
-                SELECT 1 FROM SalesInvoices WHERE InvoiceID = 
-                (
-                    SELECT InvoiceID FROM Invoices WHERE TransactionID = @TransactionID
-                )
-            ) AS IsRevenu;";
-
-            DbParameterInfo[] Parameters = new DbParameterInfo[]
-            {
-                new DbParameterInfo
-                {
-                    Name = "@TransactionID",
-                    DbType = DbType.Int64,
-                    Value = transId,
-                },
-            };
-
-            return DataQueryService.Scalar<bool>(CommandType.Text, Query, Parameters);
-        }
-
-        //public static Result<bool> IsCancelled(int id)
-        //{
-        //    string Query = @"SELECT Cancelled FROM SalesInvoices
-        //        WHERE SaleInvoiceID = @SaleInvoiceID;";
-
-        //    DbParameterInfo[] Parameters = new DbParameterInfo[]
-        //    {
-        //        new DbParameterInfo
-        //        {
-        //            Name = "@SaleInvoiceID",
-        //            DbType = DbType.Int64,
-        //            Value = id,
-        //        },
-        //    };
-
-        //    return DataQueryService.Scalar<bool>(CommandType.Text, Query, Parameters);
-        //}
-
-        public static Result<decimal> GetDebtsSum()
+        //used
+        public static Result<decimal> GetSumOfDebts()
         {
             string Query = @"SELECT COALESCE(
                 SUM(

@@ -64,7 +64,7 @@ CREATE TABLE "Invoices" (
 	"PaidAmount"	REAL NOT NULL DEFAULT 0 CHECK("PaidAmount" >= 0),
 	"TotalAmount"	REAL NOT NULL CHECK("TotalAmount" > 0),
 	"CreatedAt"	TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	"TransactionID"	INTEGER,
+	"TransactionID"	INTEGER UNIQUE,
 	PRIMARY KEY("InvoiceID" AUTOINCREMENT),
 	FOREIGN KEY("TransactionID") REFERENCES "CashTransactions"("TransactionID")
 ) STRICT;
@@ -86,7 +86,7 @@ CREATE TABLE "Payments" (
 	"PaymentDate"	TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	"PaidAmount"	REAL NOT NULL CHECK("PaidAmount" > 0),
 	"MethodID"	INTEGER NOT NULL,
-	"TransactionID"	INTEGER,
+	"TransactionID"	INTEGER NOT NULL UNIQUE,
 	"Notes"	TEXT,
 	"Cancelled"	INTEGER NOT NULL DEFAULT 0 CHECK("Cancelled" IN (1, 0)),
 	PRIMARY KEY("PaymentID" AUTOINCREMENT),
@@ -141,7 +141,7 @@ CREATE TABLE "SalesReturns" (
 	"ReturnDate"	TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	"TotalReturnAmount"	REAL NOT NULL CHECK("TotalReturnAmount" > 0),
 	"Cancelled"	INT NOT NULL DEFAULT 0 CHECK("Cancelled" IN (1, 0)),
-	"TransactionID"	INTEGER,
+	"TransactionID"	INTEGER NOT NULL UNIQUE,
 	"Notes"	TEXT,
 	PRIMARY KEY("ReturnID" AUTOINCREMENT),
 	FOREIGN KEY("SalesInvoiceID") REFERENCES "SalesInvoices"("SaleInvoiceID"),
@@ -220,7 +220,7 @@ JOIN Invoices
 ON SalesInvoices.InvoiceID = Invoices.InvoiceID
 LEFT JOIN view_CustomersDetails
 ON SalesInvoices.CustomerID = view_CustomersDetails.CustomerID
-ORDER BY SalesInvoices.Cancelled ASC, SalesInvoices.PurchaseInvoiceID DESC;
+ORDER BY SalesInvoices.Cancelled ASC, SalesInvoices.SaleInvoiceID DESC;
 
 CREATE VIEW view_PaymentsDetails AS
 SELECT Payments.PaymentID, Payments.InvoiceID, Payments.PaymentDate, Payments.PaidAmount, Payments.MethodID, PaymentMethods.MethodName,

@@ -96,7 +96,8 @@ namespace StorePilot.DAL
                 Query,
                 Parameters);
         }
-
+        
+        //used
         public static Result<InvoiceItemModel> GetSaleInvoiceItem(
             int saleInvoiceId,
             int productId)

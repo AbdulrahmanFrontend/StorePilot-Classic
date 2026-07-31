@@ -25,6 +25,6 @@ namespace StorePilot.Core.Models
         [MaxLength(500, "يجب ألا يتجاوز عدد حروف الملاحظات 500 حرف")]
         public string Notes { get; set; } = string.Empty;
 
-        public int? TransactionID { get; set; } = null;
+        public int TransactionID { get; set; } = 0;
     }
 }

@@ -19,19 +19,15 @@ namespace StorePilot.BLL
     {
         public PaymentModel Model { get; private set; }
 
-        private int _ID = 0;
-
         public PaymentService()
         {
             this.Model = new PaymentModel();
-            this._ID = this.Model.PaymentID;
             this.Mode = Mode.AddNew;
         }
 
         private PaymentService(PaymentModel model)
         {
             this.Model = model;
-            this._ID = this.Model.PaymentID;
             this.Mode = Mode.Update;
         }
 
@@ -56,8 +52,6 @@ namespace StorePilot.BLL
 
         protected override Result _AddNew()
         {
-            this.Model.PaymentID = this._ID;
-
             CashTransactionModel TransModel = new CashTransactionModel();
 
             TransModel.TransactionDate = Model.PaymentDate;
@@ -123,8 +117,6 @@ namespace StorePilot.BLL
 
         protected override Result _Update()
         {
-            this.Model.PaymentID = this._ID;
-
             return Result.Failure(
                 "غير مسموح بتعديل بيانات " +
                 "عملية الدفع هذه, يرجى إلغاؤها وإنشاء عملية جديدة!");
@@ -239,7 +231,7 @@ namespace StorePilot.BLL
                     result = CashTransactionData.Cancell(
                         con,
                         trans,
-                        PaymentResult.Data.TransactionID.Value);
+                        PaymentResult.Data.TransactionID);
 
                     _ThrowException(result);
 

@@ -18,21 +18,29 @@ namespace StorePilot.BLL
     {
         public SupplierModel Model { get; private set; }
 
+        private int _SupplierID = 0;
+
+        private int _PersonID = 0;
+
         public SupplierService()
         {
-            Model = new SupplierModel();
+            this.Model = new SupplierModel();
+            this._SupplierID = this.Model.SupplierID;
+            this._PersonID = this.Model.PersonID;
             this.Mode = Mode.AddNew;
         }
 
         private SupplierService(SupplierModel model)
         {
             this.Model = model;
+            this._SupplierID = this.Model.SupplierID;
+            this._PersonID = this.Model.PersonID;
             this.Mode = Mode.Update;
         }
 
-        public static Result<SupplierService> GetByID(int id)
+        public static Result<SupplierService> Find(int id)
         {
-            Result<SupplierModel> result = SupplierData.GetByID(id);
+            Result<SupplierModel> result = SupplierData.Find(id);
 
             if (result.IsSuccess)
             {
@@ -51,6 +59,8 @@ namespace StorePilot.BLL
 
         protected override Result _AddNew()
         {
+            this.Model.SupplierID = this._SupplierID;
+
             Result result = DbManager.Current?.ExecuteTransaction(
                 (con, trans) =>
                 {
@@ -91,6 +101,14 @@ namespace StorePilot.BLL
 
         protected override Result _Update()
         {
+            this.Model.SupplierID = this._SupplierID;
+            this.Model.PersonID = this._PersonID;
+
+            Result IsExistResult = IsExist(this.Model.SupplierID);
+
+            if (!IsExistResult.IsSuccess)
+                return IsExistResult;
+
             Result result = DbManager.Current?.ExecuteTransaction(
                 (con, trans) =>
                 {
@@ -105,16 +123,16 @@ namespace StorePilot.BLL
                         Address = Model.Address,
                     };
 
-                    Result AddNewResult = PersonData.Update(con, trans, person);
+                    Result UpdateResult = PersonData.Update(con, trans, person);
 
-                    _ThrowException(AddNewResult);
+                    _ThrowException(UpdateResult);
 
-                    AddNewResult = SupplierData.Update(
+                    UpdateResult = SupplierData.Update(
                         con,
                         trans,
                         this.Model);
 
-                    _ThrowException(AddNewResult);
+                    _ThrowException(UpdateResult);
                 });
 
             if (result.IsSuccess)
@@ -207,13 +225,45 @@ namespace StorePilot.BLL
         public Result ValidateNotes()
             => _ValidateProperty(nameof(this.Model.Notes), this.Model);
 
-        public static Result Activate(int id) => SupplierData.Activate(id);
+        //public static Result Activate(int id)
+        //{
+        //    Result<SupplierModel> SupplierResult = SupplierData.Find(id);
 
-        public static Result Deactivate(int id) => SupplierData.Deactivate(id);
+        //    if (SupplierResult.IsSuccess)
+        //    {
+        //        if (SupplierResult.Data == null)
+        //            return Result.Failure("هذا المورد غير مسجل في النظام!");
+
+        //        if (SupplierResult.Data.Active)
+        //            return Result.Failure("هذا المورد مفعل بالفعل!");
+        //    }
+        //    else
+        //        return Result.Failure("فشلت عملية الوصول لبيانات هذا المورد!");
+
+        //    return SupplierData.Activate(id);
+        //}
+
+        //public static Result Deactivate(int id)
+        //{
+        //    Result<SupplierModel> SupplierResult = SupplierData.Find(id);
+
+        //    if (SupplierResult.IsSuccess)
+        //    {
+        //        if (SupplierResult.Data == null)
+        //            return Result.Failure("هذا المورد غير مسجل في النظام!");
+
+        //        if (!SupplierResult.Data.Active)
+        //            return Result.Failure("هذا المورد معطل بالفعل!");
+        //    }
+        //    else
+        //        return Result.Failure("فشلت عملية الوصول لبيانات هذا المورد!");
+
+        //    return SupplierData.Deactivate(id);
+        //}
 
         public static Result IsExist(int id)
         {
-            Result<bool> result = SupplierData.IsFound(id);
+            Result<bool> result = SupplierData.IsExist(id);
 
             if (result.IsSuccess)
             {
@@ -226,22 +276,6 @@ namespace StorePilot.BLL
             return Result.Failure(
                 "فشلت عملية التحقق من وجود هذا المورد في النظام!");
         }
-
-        //public static Result<bool> IsActive(int id)
-        //{
-        //    Result IsFoundResult = IsFound(id);
-
-        //    if (!IsFoundResult.IsSuccess)
-        //        return Result<bool>.Failure(IsFoundResult.Message);
-
-        //    Result<bool> result = SupplierData.IsActive(id);
-
-        //    if (result.IsSuccess)
-        //        return Result<bool>.Success(result.Data);
-
-        //    return Result<bool>.Failure(
-        //        "فشلت عملية التحقق من تفعيل هذا المورد في النظام!");
-        //}
 
         public static Result<DataTable> GetSuppliers(
             int currentPage,
@@ -258,12 +292,7 @@ namespace StorePilot.BLL
                 filterValue);
 
             if (result.IsSuccess)
-            {
-                if (result.Data != null)
-                    return result;
-
-                return Result<DataTable>.Success(default);
-            }
+                return result;
 
             return Result<DataTable>.Failure(
                 "فشلت عملية الحصول على جميع الموردين!");
