@@ -2,7 +2,6 @@
 using DevToolkit.Data;
 using DevToolkit.Data.Core;
 using DevToolkit.Logging.Managers;
-using Microsoft.SqlServer.Server;
 using StorePilot.Core.Enums;
 using StorePilot.Core.Models;
 using System;
@@ -238,7 +237,8 @@ namespace StorePilot.DAL
         //used
         public static Result<int> GetCount(
             int filterMethodIndex,
-            string filterValue)
+            string filterValue,
+            bool active)
         {
             string Query = string.Empty;
 
@@ -246,21 +246,25 @@ namespace StorePilot.DAL
             {
                 case (int)FilterMethodsPeople.Name:
                     Query = @"SELECT COUNT(CustomerID) FROM view_CustomersDetails
-                        WHERE Name LIKE @FilterValue || '%';";
+                        WHERE Name LIKE @FilterValue || '%'
+                        AND Active = @Active;";
                     break;
 
                 case (int)FilterMethodsPeople.Phone:
                     Query = @"SELECT COUNT(CustomerID) FROM view_CustomersDetails
-                        WHERE Phone LIKE @FilterValue || '%';";
+                        WHERE Phone LIKE @FilterValue || '%'
+                        AND Active = @Active;";
                     break;
 
                 case (int)FilterMethodsPeople.Address:
                     Query = @"SELECT COUNT(CustomerID) FROM view_CustomersDetails
-                        WHERE Address LIKE @FilterValue || '%';";
+                        WHERE Address LIKE @FilterValue || '%'
+                        AND Active = @Active;";
                     break;
 
                 default:
-                    Query = @"SELECT COUNT(CustomerID) FROM view_CustomersDetails;";
+                    Query = @"SELECT COUNT(CustomerID) FROM view_CustomersDetails
+                        WHERE Active = @Active;";
                     break;
             }
 
@@ -271,6 +275,12 @@ namespace StorePilot.DAL
                     Name = "@FilterValue",
                     DbType = DbType.String,
                     Value = filterValue,
+                },
+                new DbParameterInfo
+                {
+                    Name = "@Active",
+                    DbType = DbType.Boolean,
+                    Value = active,
                 },
             };
 
@@ -285,7 +295,8 @@ namespace StorePilot.DAL
             int offset,
             int pageSize,
             int filterMethodIndex,
-            string filterValue)
+            string filterValue,
+            bool active)
         {
             string Query = string.Empty;
 
@@ -294,7 +305,7 @@ namespace StorePilot.DAL
                 case (int)FilterMethodsPeople.Name:
                     Query = @"SELECT CustomerID, Name, Phone, Address,
                         CreatedAt, Active FROM view_CustomersDetails
-                        WHERE Name LIKE @FilterValue || '%'
+                        WHERE Name LIKE @FilterValue || '%' AND Active = @Active
                         LIMIT @PageSize
                         OFFSET @Offset;";
                     break;
@@ -302,7 +313,7 @@ namespace StorePilot.DAL
                 case (int)FilterMethodsPeople.Phone:
                     Query = @"SELECT CustomerID, Name, Phone, Address,
                         CreatedAt, Active FROM view_CustomersDetails
-                        WHERE Phone LIKE @FilterValue || '%'
+                        WHERE Phone LIKE @FilterValue || '%' AND Active = @Active
                         LIMIT @PageSize
                         OFFSET @Offset;";
                     break;
@@ -310,7 +321,7 @@ namespace StorePilot.DAL
                 case (int)FilterMethodsPeople.Address:
                     Query = @"SELECT CustomerID, Name, Phone, Address,
                         CreatedAt, Active FROM view_CustomersDetails
-                        WHERE Address LIKE @FilterValue || '%'
+                        WHERE Address LIKE @FilterValue || '%' AND Active = @Active
                         LIMIT @PageSize
                         OFFSET @Offset;";
                     break;
@@ -318,6 +329,7 @@ namespace StorePilot.DAL
                 default:
                     Query = @"SELECT CustomerID, Name, Phone, Address,
                         CreatedAt, Active FROM view_CustomersDetails
+                        WHERE Active = @Active
                         LIMIT @PageSize
                         OFFSET @Offset;";
                     break;
@@ -342,7 +354,13 @@ namespace StorePilot.DAL
                     Name = "@Offset",
                     DbType = DbType.Int64,
                     Value = offset,
-                }
+                },
+                new DbParameterInfo
+                {
+                    Name = "@Active",
+                    DbType = DbType.Boolean,
+                    Value = active,
+                },
             };
 
             return DbManager.Current?.GetDataTable(

@@ -276,15 +276,17 @@ namespace StorePilot.BLL
                 "فشلت عملية التحقق من وجود هذه الدفعة في النظام.");
         }
 
-        public static Result<int> GetCountForInvoice(
+        public static Result<int> GetCount(
             int invoiceId,
             int filterMethodIndex,
-            string filterValue)
+            string filterValue,
+            bool cancelled)
         {
-            Result<int> result = PaymentData.GetPaymentsInvoiceCount(
+            Result<int> result = PaymentData.GetCount(
                 invoiceId,
                 filterMethodIndex,
-                filterValue);
+                filterValue,
+                cancelled);
 
             if (result.IsSuccess)
                 return result;
@@ -293,12 +295,13 @@ namespace StorePilot.BLL
                 "فشلت عملية الحصول على عدد مدفوعات الفاتورة!");
         }
 
-        public static Result<DataTable> GetForInvoice(
+        public static Result<DataTable> GetPaymentsInvoice(
             int invoiceId,
             int currentPage,
             int pageSize,
             int filterMethodIndex,
-            string filterValue)
+            string filterValue,
+            bool cancelled)
         {
             int offset = (currentPage - 1) * pageSize;
 
@@ -307,7 +310,8 @@ namespace StorePilot.BLL
                 offset,
                 pageSize,
                 filterMethodIndex,
-                filterValue);
+                filterValue,
+                cancelled);
 
             if (result.IsSuccess)
                 return result;

@@ -175,6 +175,9 @@ namespace StorePilot.BLL
                 if (result.IsSuccess)
                     return Result.Failure(result.Message);
 
+                if (_Items.Count(i => i.ProductID == item.ProductID) > 1)
+                    return Result.Failure("هناك صنف مكرر في الفاتورة!");
+
                 if (item.Quantity <= 0)
                     return Result.Failure(
                         "هنك صنف الكمية المطلوبة منه أصغر من أو تساوي الصفر!");
@@ -300,11 +303,13 @@ namespace StorePilot.BLL
 
         public static Result<int> GetCount(
             int filterMethodIndex,
-            string filterValue)
+            string filterValue,
+            bool cancelled)
         {
             Result<int> result = PurchaseInvoiceData.GetCount(
                 filterMethodIndex,
-                filterValue);
+                filterValue,
+                cancelled);
 
             if (result.IsSuccess)
                 return result;

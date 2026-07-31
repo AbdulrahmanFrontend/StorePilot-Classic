@@ -284,11 +284,13 @@ namespace StorePilot.BLL
 
         public static Result<int> GetCount(
             int filterMethodIndex,
-            string filterValue)
+            string filterValue,
+            bool active)
         {
             Result<int> result = CustomerData.GetCount(
                 filterMethodIndex,
-                filterValue);
+                filterValue,
+                active);
 
             if (result.IsSuccess)
                 return result;
@@ -300,7 +302,8 @@ namespace StorePilot.BLL
             int currentPage,
             int pageSize,
             int filterMethodIndex,
-            string filterValue)
+            string filterValue,
+            bool active)
         {
             int offset = (currentPage - 1) * pageSize;
 
@@ -308,7 +311,8 @@ namespace StorePilot.BLL
                 offset,
                 pageSize,
                 filterMethodIndex,
-                filterValue);
+                filterValue,
+                active);
 
             if (result.IsSuccess)
                 return result;

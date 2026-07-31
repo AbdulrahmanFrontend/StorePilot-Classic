@@ -31,7 +31,7 @@ CREATE TABLE "CashTransactions" (
 	"TransactionID"	INTEGER NOT NULL,
 	"TransactionDate"	TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	"TransactionType"	TEXT NOT NULL DEFAULT 'مصروفات' CHECK("TransactionType" IN ('ايرادات', 'مصروفات')),
-	"PaidAmount"	REAL NOT NULL CHECK("Amount" > 0),
+	"PaidAmount"	REAL NOT NULL CHECK("PaidAmount" > 0),
 	"Description"	TEXT NOT NULL,
 	"CreatedAt"	TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	"Cancelled"	INT NOT NULL DEFAULT 0 CHECK("Cancelled" IN (1, 0)),
@@ -46,7 +46,7 @@ CREATE TABLE "Products" (
 	"UnitID"	INTEGER NOT NULL,
 	"Quantity"	REAL NOT NULL DEFAULT 0 CHECK("Quantity" >= 0),
 	"MinQuantity"	REAL NOT NULL DEFAULT 0 CHECK("MinQuantity" >= 0),
-	"SalePrice"	REAL CHECK("SalePrice" > 0),
+	"SalePrice"	REAL NOT NULL CHECK("SalePrice" > 0),
 	"PurchasePrice"	REAL NOT NULL CHECK("PurchasePrice" > 0),
 	"GroupID"	INTEGER NOT NULL,
 	"CreatedAt"	TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -77,7 +77,8 @@ CREATE TABLE "InvoicesItems" (
 	"UnitPrice"	REAL NOT NULL CHECK("UnitPrice" > 0),
 	PRIMARY KEY("ItemID" AUTOINCREMENT),
 	FOREIGN KEY("InvoiceID") REFERENCES "Invoices"("InvoiceID"),
-	FOREIGN KEY("ProductID") REFERENCES "Products"("ProductID")
+	FOREIGN KEY("ProductID") REFERENCES "Products"("ProductID"),
+	UNIQUE (InvoiceID, ProductID)
 ) STRICT;
 
 CREATE TABLE "Payments" (
@@ -156,7 +157,8 @@ CREATE TABLE "SalesReturnItems" (
 	"UnitPrice"	REAL NOT NULL CHECK("UnitPrice" > 0),
 	PRIMARY KEY("ReturnItemID" AUTOINCREMENT),
 	FOREIGN KEY("ProductID") REFERENCES "Products"("ProductID"),
-	FOREIGN KEY("ReturnID") REFERENCES "SalesReturns"("ReturnID")
+	FOREIGN KEY("ReturnID") REFERENCES "SalesReturns"("ReturnID"),
+	UNIQUE (ReturnID, ProductID)
 ) STRICT;
 
 
@@ -169,7 +171,7 @@ Suppliers.Notes, Suppliers.Active
 FROM Suppliers
 JOIN People 
 ON Suppliers.PersonID = People.PersonID
-ORDER BY Suppliers.Active DESC, Suppliers.SupplierID DESC;
+ORDER BY Suppliers.SupplierID DESC;
 
 CREATE VIEW view_CustomersDetails AS
 SELECT Customers.CustomerID, People.PersonID, People.Name,
@@ -177,7 +179,7 @@ People.Phone, People.Address, People.CreatedAt,
 Customers.Notes, Customers.Active
 FROM Customers
 JOIN People ON Customers.PersonID = People.PersonID
-ORDER BY Customers.Active DESC, Customers.CustomerID DESC;
+ORDER BY Customers.CustomerID DESC;
 
 CREATE VIEW view_ProductsDetails AS
 SELECT Products.ProductID, Products.ProductName, 
@@ -190,7 +192,7 @@ JOIN Groups
 ON Products.GroupID = Groups.GroupID
 JOIN Units
 ON Products.UnitID = Units.UnitID
-ORDER BY Products.Active DESC, Products.ProductID DESC;
+ORDER BY Products.ProductID DESC;
 
 CREATE VIEW view_InvoicesItemsDetails AS
 SELECT InvoicesItems.ItemID, InvoicesItems.InvoiceID, InvoicesItems.ProductID, view_ProductsDetails.ProductName,
@@ -198,7 +200,8 @@ view_ProductsDetails.BarCode, view_ProductsDetails.GroupName, view_ProductsDetai
 InvoicesItems.UnitPrice
 FROM InvoicesItems
 JOIN view_ProductsDetails
-ON InvoicesItems.ProductID = view_ProductsDetails.ProductID;
+ON InvoicesItems.ProductID = view_ProductsDetails.ProductID
+ORDER BY InvoicesItems.ItemID DESC;
 
 CREATE VIEW view_PurchasesInvoicesDetails AS
 SELECT PurchasesInvoices.PurchaseInvoiceID, PurchasesInvoices.InvoiceID, Invoices.InvoiceDate, Invoices.InvoiceStatus, 
@@ -209,7 +212,7 @@ JOIN Invoices
 ON PurchasesInvoices.InvoiceID = Invoices.InvoiceID
 LEFT JOIN view_SuppliersDetails
 ON PurchasesInvoices.SupplierID = view_SuppliersDetails.SupplierID
-ORDER BY PurchasesInvoices.Cancelled ASC, PurchasesInvoices.PurchaseInvoiceID DESC;
+ORDER BY PurchasesInvoices.PurchaseInvoiceID DESC;
 
 CREATE VIEW view_SalesInvoicesDetails AS
 SELECT SalesInvoices.SaleInvoiceID, SalesInvoices.InvoiceID, Invoices.InvoiceDate, Invoices.InvoiceStatus, 
@@ -220,7 +223,7 @@ JOIN Invoices
 ON SalesInvoices.InvoiceID = Invoices.InvoiceID
 LEFT JOIN view_CustomersDetails
 ON SalesInvoices.CustomerID = view_CustomersDetails.CustomerID
-ORDER BY SalesInvoices.Cancelled ASC, SalesInvoices.SaleInvoiceID DESC;
+ORDER BY SalesInvoices.SaleInvoiceID DESC;
 
 CREATE VIEW view_PaymentsDetails AS
 SELECT Payments.PaymentID, Payments.InvoiceID, Payments.PaymentDate, Payments.PaidAmount, Payments.MethodID, PaymentMethods.MethodName,
@@ -228,7 +231,7 @@ Payments.Cancelled, Payments.Notes, Payments.TransactionID
 FROM Payments
 JOIN PaymentMethods
 ON Payments.MethodID = PaymentMethods.MethodID
-ORDER BY Payments.Cancelled ASC, Payments.PaymentID DESC;
+ORDER BY Payments.PaymentID DESC;
 
 CREATE VIEW view_SalesReturnItemsDetails AS
 SELECT SalesReturnItems.ReturnItemID, SalesReturnItems.ReturnID, SalesReturnItems.ProductID, view_ProductsDetails.ProductName,
@@ -236,4 +239,13 @@ view_ProductsDetails.BarCode, view_ProductsDetails.GroupName, view_ProductsDetai
 SalesReturnItems.UnitPrice
 FROM SalesReturnItems
 JOIN view_ProductsDetails
-ON SalesReturnItems.ProductID = view_ProductsDetails.ProductID;
+ON SalesReturnItems.ProductID = view_ProductsDetails.ProductID
+ORDER BY SalesReturnItems.ReturnItemID DESC;
+
+-- Seed Data
+
+INSERT INTO Units (UnitName) 
+VALUES ('متر'), ('قطعة');
+
+INSERT INTO PaymentMethods (MethodName)
+VALUES ('كاش'), ('انستاباي'), ('نقدي');

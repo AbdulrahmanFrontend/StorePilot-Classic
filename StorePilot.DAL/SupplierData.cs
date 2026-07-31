@@ -240,7 +240,8 @@ namespace StorePilot.DAL
         //used
         public static Result<int> GetCount(
             int filterMethodIndex,
-            string filterValue)
+            string filterValue,
+            bool active)
         {
             string Query = string.Empty;
 
@@ -248,21 +249,25 @@ namespace StorePilot.DAL
             {
                 case (int)FilterMethodsPeople.Name:
                     Query = @"SELECT COUNT(SupplierID) FROM view_SuppliersDetails
-                        WHERE Name LIKE @FilterValue || '%';";
+                        WHERE Name LIKE @FilterValue || '%'
+                        AND Active = @Active;";
                     break;
 
                 case (int)FilterMethodsPeople.Phone:
                     Query = @"SELECT COUNT(SupplierID) FROM view_SuppliersDetails
-                        WHERE Phone LIKE @FilterValue || '%';";
+                        WHERE Phone LIKE @FilterValue || '%'
+                        AND Active = @Active;";
                     break;
 
                 case (int)FilterMethodsPeople.Address:
                     Query = @"SELECT COUNT(SupplierID) FROM view_SuppliersDetails
-                        WHERE Address LIKE @FilterValue || '%';";
+                        WHERE Address LIKE @FilterValue || '%'
+                        AND Active = @Active;";
                     break;
 
                 default:
-                    Query = @"SELECT COUNT(*) FROM view_SuppliersDetails;";
+                    Query = @"SELECT COUNT(*) FROM view_SuppliersDetails
+                        WHERE Active = @Active;";
                     break;
             }
 
@@ -273,6 +278,12 @@ namespace StorePilot.DAL
                     Name = "@FilterValue",
                     DbType = DbType.String,
                     Value = filterValue,
+                },
+                new DbParameterInfo
+                {
+                    Name = "@Active",
+                    DbType = DbType.Boolean,
+                    Value = active,
                 },
             };
 
@@ -287,7 +298,8 @@ namespace StorePilot.DAL
             int offset,
             int pageSize,
             int filterMethodIndex,
-            string filterValue)
+            string filterValue,
+            bool active)
         {
             string Query = string.Empty;
 
@@ -297,6 +309,7 @@ namespace StorePilot.DAL
                     Query = @"SELECT SupplierID, Name, Phone, Address,
                         CreatedAt, Active FROM view_SuppliersDetails
                         WHERE Name LIKE @FilterValue || '%'
+                        AND Active = @Active
                         LIMIT @PageSize
                         OFFSET @Offset;";
                     break;
@@ -305,6 +318,7 @@ namespace StorePilot.DAL
                     Query = @"SELECT SupplierID, Name, Phone, Address,
                         CreatedAt, Active FROM view_SuppliersDetails
                         WHERE Phone LIKE @FilterValue || '%'
+                        AND Active = @Active
                         LIMIT @PageSize
                         OFFSET @Offset;";
                     break;
@@ -313,6 +327,7 @@ namespace StorePilot.DAL
                     Query = @"SELECT SupplierID, Name, Phone, Address,
                         CreatedAt, Active FROM view_SuppliersDetails
                         WHERE Address LIKE @FilterValue || '%'
+                        AND Active = @Active
                         LIMIT @PageSize
                         OFFSET @Offset;";
                     break;
@@ -320,6 +335,7 @@ namespace StorePilot.DAL
                 default:
                     Query = @"SELECT SupplierID, Name, Phone, Address,
                         CreatedAt, Active FROM view_SuppliersDetails
+                        WHERE Active = @Active
                         LIMIT @PageSize
                         OFFSET @Offset;";
                     break;
@@ -344,6 +360,12 @@ namespace StorePilot.DAL
                     Name = "@Offset",
                     DbType = DbType.Int64,
                     Value = offset,
+                },
+                new DbParameterInfo
+                {
+                    Name = "@Active",
+                    DbType = DbType.Boolean,
+                    Value = active,
                 }
             };
 

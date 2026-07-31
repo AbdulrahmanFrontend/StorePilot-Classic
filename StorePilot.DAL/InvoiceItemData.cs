@@ -20,7 +20,7 @@ namespace StorePilot.DAL
             IDbTransaction trans,
             InvoiceItemModel model)
         {
-            string Query = @"INSERT INTO InvoiceItems
+            string Query = @"INSERT INTO InvoicesItems
                 (
                     InvoiceID,
                     ProductID,
@@ -114,7 +114,7 @@ namespace StorePilot.DAL
             {
                 new DbParameterInfo
                 {
-                    Name = "@InvoiceID",
+                    Name = "@SaleInvoiceID",
                     DbType = DbType.Int64,
                     Value = saleInvoiceId,
                 },

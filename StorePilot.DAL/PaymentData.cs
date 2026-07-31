@@ -219,10 +219,11 @@ namespace StorePilot.DAL
         }
 
         //used
-        public static Result<int> GetPaymentsInvoiceCount(
+        public static Result<int> GetCount(
             int invoiceId,
             int filterMethodIndex,
-            string filterValue)
+            string filterValue,
+            bool cancelled)
         {
             string Query = string.Empty;
 
@@ -237,7 +238,8 @@ namespace StorePilot.DAL
             {
                 case (int)FilterMethodsPayments.PaymentID:
                     Query = @"SELECT COUNT(PaymentID) FROM view_PaymentsDetails
-                        WHERE PaymentID = @FilterValue
+                        WHERE PaymentID = @FilterValue 
+                        AND Cancelled = @Cancelled
                         AND InvoiceID = @InvoiceID;";
 
                     parameter = new DbParameterInfo
@@ -253,18 +255,20 @@ namespace StorePilot.DAL
                 case (int)FilterMethodsPayments.PaymentDate:
                     Query = @"SELECT COUNT(PaymentID) FROM view_PaymentsDetails
                         WHERE PaymentDate LIKE @FilterValue || '%'
+                        AND Cancelled = @Cancelled 
                         AND InvoiceID = @InvoiceID;";
                     break;
 
                 case (int)FilterMethodsPayments.PaymentMethod:
                     Query = @"SELECT COUNT(PaymentID) FROM view_PaymentsDetails
                         WHERE MethodName LIKE @FilterValue || '%'
+                        AND Cancelled = @Cancelled 
                         AND InvoiceID = @InvoiceID;";
                     break;
 
                 default:
                     Query = @"SELECT COUNT(PaymentID) FROM view_PaymentsDetails
-                        WHERE InvoiceID = @InvoiceID;";
+                        WHERE InvoiceID = @InvoiceID AND Cancelled = @Cancelled;";
                     break;
             }
 
@@ -275,6 +279,12 @@ namespace StorePilot.DAL
                     Name = "@InvoiceID",
                     DbType = DbType.Int64,
                     Value = invoiceId,
+                },
+                new DbParameterInfo
+                {
+                    Name = "@Cancelled",
+                    DbType = DbType.Boolean,
+                    Value = cancelled,
                 },
             };
 
@@ -292,7 +302,8 @@ namespace StorePilot.DAL
             int offset,
             int pageSize,
             int filterMethodIndex,
-            string filterValue)
+            string filterValue,
+            bool cancelled)
         {
             string Query = string.Empty;
 
@@ -310,6 +321,7 @@ namespace StorePilot.DAL
                         MethodName, Cancelled FROM Payments
                         WHERE PaymentID = @FilterValue
                         AND InvoiceID = @InvoiceID
+                        AND Cancelled = @Cancelled
                         LIMIT @PageSize
                         OFFSET @Offset;";
 
@@ -328,6 +340,7 @@ namespace StorePilot.DAL
                         MethodName, Cancelled FROM Payments
                         WHERE PaymentDate LIKE @FilterValue || '%'
                         AND InvoiceID = @InvoiceID
+                        AND Cancelled = @Cancelled
                         LIMIT @PageSize
                         OFFSET @Offset;";
                     break;
@@ -337,6 +350,7 @@ namespace StorePilot.DAL
                         MethodName, Cancelled FROM Payments
                         WHERE MethodName LIKE @FilterValue || '%'
                         AND InvoiceID = @InvoiceID
+                        AND Cancelled = @Cancelled
                         LIMIT @PageSize
                         OFFSET @Offset;";
                     break;
@@ -345,6 +359,7 @@ namespace StorePilot.DAL
                     Query = @"SELECT PaymentID, InvoiceID, PaymentDate, PaidAmount,
                         MethodName, Cancelled FROM Payments
                         WHERE InvoiceID = @InvoiceID
+                        AND Cancelled = @Cancelled
                         LIMIT @PageSize
                         OFFSET @Offset;";
                     break;
@@ -369,7 +384,13 @@ namespace StorePilot.DAL
                     Name = "@Offset",
                     DbType = DbType.Int64,
                     Value = offset,
-                }
+                },
+                new DbParameterInfo
+                {
+                    Name = "@Cancelled",
+                    DbType = DbType.Boolean,
+                    Value = cancelled,
+                },
             };
 
             Parameters.Add(parameter);

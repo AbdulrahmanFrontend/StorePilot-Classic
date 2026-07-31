@@ -177,6 +177,9 @@ namespace StorePilot.BLL
                 else
                     return Result.Failure("فشلت عملية الوصول لبيانات صنف!");
 
+                if (_Items.Count(i => i.ProductID == item.ProductID) > 1)
+                    return Result.Failure("هناك صنف مكرر في الفاتورة!");
+
                 if (item.Quantity <= 0)
                     return Result.Failure(
                         "هنك صنف الكمية المطلوبة منه أصغر من أو تساوي الصفر!");
@@ -325,11 +328,13 @@ namespace StorePilot.BLL
 
         public static Result<int> GetCount(
             int filterMethodIndex,
-            string filterValue)
+            string filterValue,
+            bool cancelled)
         {
             Result<int> result = SaleInvoiceData.GetCount(
                 filterMethodIndex,
-                filterValue);
+                filterValue,
+                cancelled);
 
             if (result.IsSuccess)
                 return result;
@@ -341,7 +346,8 @@ namespace StorePilot.BLL
             int currentPage,
             int pageSize,
             int filterMethodIndex,
-            string filterValue)
+            string filterValue,
+            bool cancelled)
         {
             int offset = (currentPage - 1) * pageSize;
 
@@ -349,7 +355,8 @@ namespace StorePilot.BLL
                 offset,
                 pageSize,
                 filterMethodIndex,
-                filterValue);
+                filterValue,
+                cancelled);
 
             if (result.IsSuccess)
                 return result;

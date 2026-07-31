@@ -36,27 +36,6 @@ namespace StorePilot.DAL
                 Paramters);
         }
 
-        //public static Result<SaleInvoiceModel> FindByInvoiceID(int invoiceId)
-        //{
-        //    string Query = @"SELECT * FROM view_SalesInvoicesDetails 
-        //        WHERE InvoiceID = @InvoiceID;";
-
-        //    DbParameterInfo[] Paramters = new DbParameterInfo[]
-        //    {
-        //        new DbParameterInfo
-        //        {
-        //            Name = "@InvoiceID",
-        //            DbType = DbType.Int64,
-        //            Value = invoiceId,
-        //        },
-        //    };
-
-        //    return DataQueryService.FirstOrDefault<SaleInvoiceModel>(
-        //        CommandType.Text,
-        //        Query,
-        //        Paramters);
-        //}
-
         //used
         public static Result AddNew(
             IDbConnection con,
@@ -115,93 +94,6 @@ namespace StorePilot.DAL
             }
 
             return Result.Failure("فشلت عملية إضافة فاتورة البيع!");
-        }
-
-        public static Result Update(
-            IDbConnection con,
-            IDbTransaction trans,
-            SaleInvoiceModel model)
-        {
-            string Query = @"UPDATE SalesInvoices
-                SET
-                    CustomerID = @CustomerID
-                WHERE SaleInvoiceID = @SaleInvoiceID;";
-
-            DbParameterInfo[] Parameters = new DbParameterInfo[]
-            {
-                new DbParameterInfo
-                {
-                    Name = "@SaleInvoiceID",
-                    DbType = DbType.Int64,
-                    Value = model.SaleInvoiceID,
-                },
-                new DbParameterInfo
-                {
-                    Name = "@CustomerID",
-                    DbType = DbType.Int64,
-                    Value = model.CustomerID,
-                },
-            };
-
-            Result<int> result = DbManager.Current?.ExecuteNonQuery(
-                con,
-                trans,
-                CommandType.Text,
-                Query,
-                Parameters);
-
-            if (result.IsSuccess)
-            {
-                if (result.Data == 0)
-                    return Result.Failure("لم تحديث بيانات أي فاتورة بيع!");
-
-                return Result.Success();
-            }
-
-            return Result.Failure("فشلت عملية تحديث بيانات فاتورة البيع!");
-        }
-        
-        public static Result UpdateTotalAmountAfterCreatingReturns(
-            IDbConnection con,
-            IDbTransaction trans,
-            int returnId)
-        {
-            string Query = @"UPDATE Invoices
-                SET
-                    PaidAmount = PaidAmount -
-                    (
-                        SELECT TotalReturnAmount FROM SalesReturns 
-                        WHERE ReturnID = @ReturnID AND Cancelled = 0
-                    )
-                WHERE InvoiceID = 
-                (
-                    SELECT InvoiceID FROM SalesInvoices WHERE SaleInvoiceID =
-                    (
-                        SELECT SaleInvoiceID FROM SalesReturns WHERE ReturnID = @ReturnID
-                    )
-                );";
-
-            DbParameterInfo[] Parameters = new DbParameterInfo[]
-            {
-                new DbParameterInfo
-                {
-                    Name = "@ReturnID",
-                    DbType = DbType.Int64,
-                    Value = returnId,
-                },
-            };
-
-            Result<int> result = DbManager.Current?.ExecuteNonQuery(
-                con,
-                trans,
-                CommandType.Text,
-                Query,
-                Parameters);
-
-            if (result.IsSuccess)
-                return Result.Success();
-
-            return Result.Failure("فشلت عملية تحديث مبلغ السداد من الفاتورة");
         }
 
         //used
@@ -278,18 +170,16 @@ namespace StorePilot.DAL
         //used
         public static Result<int> GetCount(
             int filterMethodIndex,
-            string filterValue)
+            string filterValue,
+            bool cancelled)
         {
             string Query = string.Empty;
 
-            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            DbParameterInfo parameter = new DbParameterInfo
             {
-                new DbParameterInfo
-                {
-                    Name = "@FilterValue",
-                    DbType = DbType.String,
-                    Value = filterValue,
-                },
+                Name = "@FilterValue",
+                DbType = DbType.String,
+                Value = filterValue,
             };
 
             switch (filterMethodIndex)
@@ -297,18 +187,16 @@ namespace StorePilot.DAL
                 case (int)FilterMethodsSalesInvoices.SaleInvoiceID:
                     Query = @"SELECT COUNT(SaleInvoiceID)
                         FROM view_SalesInvoicesDetails
-                        WHERE SaleInvoiceID = @FilterValue;";
+                        WHERE SaleInvoiceID = @FilterValue
+                        AND Cancelled = @Cancelled;";
                     
-                    Parameters = new DbParameterInfo[]
+                    parameter = new DbParameterInfo
                     {
-                        new DbParameterInfo
-                        {
-                            Name = "@FilterValue",
-                            DbType = DbType.Int64,
-                            Value = int.TryParse(filterValue?.ToString(),
+                        Name = "@FilterValue",
+                        DbType = DbType.Int64,
+                        Value = int.TryParse(filterValue?.ToString(),
                                 out int SaleInvoiceID) ?
                                 SaleInvoiceID : 0,
-                        },
                     };
 
                     break;
@@ -316,18 +204,16 @@ namespace StorePilot.DAL
                 case (int)FilterMethodsSalesInvoices.InvoiceID:
                     Query = @"SELECT COUNT(SaleInvoiceID)
                         FROM view_SalesInvoicesDetails
-                        WHERE InvoiceID = @FilterValue;";
+                        WHERE InvoiceID = @FilterValue
+                        AND Cancelled = @Cancelled;";
 
-                    Parameters = new DbParameterInfo[]
+                    parameter = new DbParameterInfo
                     {
-                        new DbParameterInfo
-                        {
-                            Name = "@FilterValue",
-                            DbType = DbType.Int64,
-                            Value = int.TryParse(filterValue?.ToString(),
+                        Name = "@FilterValue",
+                        DbType = DbType.Int64,
+                        Value = int.TryParse(filterValue?.ToString(),
                                 out int InvoiceID) ?
                                 InvoiceID : 0
-                        },
                     };
 
                     break;
@@ -335,26 +221,48 @@ namespace StorePilot.DAL
                 case (int)FilterMethodsSalesInvoices.CustomerName:
                     Query = @"SELECT COUNT(SaleInvoiceID)
                         FROM view_SalesInvoicesDetails
-                        WHERE CustomerName LIKE @FilterValue || '%';";
+                        WHERE CustomerName LIKE @FilterValue || '%'
+                        AND Cancelled = @Cancelled;";
                     break;
 
                 case (int)FilterMethodsSalesInvoices.InvoiceDate:
                     Query = @"SELECT COUNT(SaleInvoiceID)
                         FROM view_SalesInvoicesDetails
-                        WHERE InvoiceDate LIKE @FilterValue || '%';";
+                        WHERE InvoiceDate LIKE @FilterValue || '%'
+                        AND Cancelled = @Cancelled;";
                     break;
 
                 case (int)FilterMethodsSalesInvoices.InvoiceStatus:
                     Query = @"SELECT COUNT(SaleInvoiceID)
                         FROM view_SalesInvoicesDetails
-                        WHERE InvoiceStatus LIKE @FilterValue || '%';";
+                        WHERE InvoiceStatus LIKE @FilterValue || '%'
+                        AND Cancelled = @Cancelled;";
                     break;
 
                 default:
                     Query = @"SELECT COUNT(SaleInvoiceID)
-                        FROM view_SalesInvoicesDetails;";
+                        FROM view_SalesInvoicesDetails
+                        WHERE Cancelled = @Cancelled;";
                     break;
             }
+
+            List<DbParameterInfo> Parameters = new List<DbParameterInfo>
+            {
+                new DbParameterInfo
+                {
+                    Name = "@FilterValue",
+                    DbType = DbType.String,
+                    Value = filterValue,
+                },
+                new DbParameterInfo
+                {
+                    Name = "@Cancelled",
+                    DbType = DbType.Boolean,
+                    Value = cancelled,
+                },
+            };
+
+            Parameters.Add(parameter);
 
             return DataQueryService.Scalar<int>(
                 CommandType.Text,
@@ -367,7 +275,8 @@ namespace StorePilot.DAL
             int offset,
             int pageSize,
             int filterMethodIndex,
-            string filterValue)
+            string filterValue,
+            bool cancelled)
         {
             string Query = string.Empty;
 
@@ -387,6 +296,7 @@ namespace StorePilot.DAL
                         CustomerName, TotalAmount, CreatedAt
                         FROM view_SalesInvoicesDetails
                         WHERE SaleInvoiceID = @FilterValue
+                        AND Cancelled = @Cancelled
                         LIMIT @PageSize
                         OFFSET @Offset;";
 
@@ -408,6 +318,7 @@ namespace StorePilot.DAL
                         CustomerName, TotalAmount, CreatedAt
                         FROM view_SalesInvoicesDetails
                         WHERE InvoiceID = @FilterValue
+                        AND Cancelled = @Cancelled
                         LIMIT @PageSize
                         OFFSET @Offset;";
 
@@ -429,17 +340,19 @@ namespace StorePilot.DAL
                         CustomerName, TotalAmount, CreatedAt
                         FROM view_SalesInvoicesDetails
                         WHERE CustomerName LIKE @FilterValue || '%'
+                        AND Cancelled = @Cancelled
                         LIMIT @PageSize
                         OFFSET @Offset;";
                     break;
 
                 case (int)FilterMethodsSalesInvoices.InvoiceDate:
-                    Query = @"SELECT SELECT SaleInvoiceID, InvoiceID, InvoiceDate,
+                    Query = @"SELECT SaleInvoiceID, InvoiceID, InvoiceDate,
                         InvoiceStatus, PaidAmount, 
                         (TotalAmount - PaidAmount) AS RemainingAmount,
                         CustomerName, TotalAmount, CreatedAt
                         FROM view_SalesInvoicesDetails
                         WHERE InvoiceDate LIKE @FilterValue || '%'
+                        AND Cancelled = @Cancelled
                         LIMIT @PageSize
                         OFFSET @Offset;";
                     break;
@@ -451,6 +364,7 @@ namespace StorePilot.DAL
                         CustomerName, TotalAmount, CreatedAt
                         FROM view_SalesInvoicesDetails
                         WHERE InvoiceStatus LIKE @FilterValue || '%'
+                        AND Cancelled = @Cancelled
                         LIMIT @PageSize
                         OFFSET @Offset;";
                     break;
@@ -461,6 +375,7 @@ namespace StorePilot.DAL
                         (TotalAmount - PaidAmount) AS RemainingAmount,
                         CustomerName, TotalAmount, CreatedAt
                         FROM view_SalesInvoicesDetails
+                        WHERE Cancelled = @Cancelled
                         LIMIT @PageSize
                         OFFSET @Offset;";
                     break;
@@ -479,7 +394,13 @@ namespace StorePilot.DAL
                     Name = "@Offset",
                     DbType = DbType.Int64,
                     Value = offset,
-                }
+                },
+                new DbParameterInfo
+                {
+                    Name = "@Cancelled",
+                    DbType = DbType.Boolean,
+                    Value = cancelled,
+                },
             };
 
             Parameters.Add(parameter);

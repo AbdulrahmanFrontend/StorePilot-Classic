@@ -64,7 +64,7 @@ namespace StorePilot.DAL
                 new DbParameterInfo
                 {
                     Name = "@TransactionDate",
-                    DbType = DbType.Date,
+                    DbType = DbType.DateTime,
                     Value = model.TransactionDate,
                 },
                 new DbParameterInfo
@@ -140,7 +140,7 @@ namespace StorePilot.DAL
                 new DbParameterInfo
                 {
                     Name = "@TransactionDate",
-                    DbType = DbType.Date,
+                    DbType = DbType.DateTime,
                     Value = model.TransactionDate,
                 },
                 new DbParameterInfo
@@ -291,7 +291,7 @@ namespace StorePilot.DAL
                     return Result.Success("تمت عملية إلغاء هذه الحركة بنجاح.");
                 }
 
-                Result.Failure("لا يوجد حركات تم إلغاؤها من النظام!");
+                return Result.Failure("لا يوجد حركات تم إلغاؤها من النظام!");
             }
 
             return Result.Failure("فشلت عملية إلغاء هذه الحركة!");
@@ -448,7 +448,8 @@ namespace StorePilot.DAL
         //used
         public static Result<int> GetCount(
             int filterMethodIndex,
-            string filterValue)
+            string filterValue,
+            bool cancelled)
         {
             string Query = string.Empty;
 
@@ -456,21 +457,25 @@ namespace StorePilot.DAL
             {
                 case (int)FilterMethodsCash.TransactionDate:
                     Query = @"SELECT COUNT(TransactionID) FROM CashTransactions
-                        WHERE TransactionDate LIKE @FilterValue || '%';";
+                        WHERE TransactionDate LIKE @FilterValue || '%'
+                        AND Cancelled = @Cancelled;";
                     break;
 
-                case (int)FilterMethodsCash.Type:
+                case (int)FilterMethodsCash.TransactionType:
                     Query = @"SELECT COUNT(TransactionID) FROM CashTransactions
-                        WHERE TransactionType LIKE @FilterValue || '%';";
+                        WHERE TransactionType LIKE @FilterValue || '%'
+                        AND Cancelled = @Cancelled;";
                     break;
 
                 case (int)FilterMethodsCash.Description:
                     Query = @"SELECT COUNT(TransactionID) FROM CashTransactions
-                        WHERE Description LIKE @FilterValue || '%';";
+                        WHERE Description LIKE @FilterValue || '%'
+                        AND Cancelled = @Cancelled;";
                     break;
 
                 default:
-                    Query = @"SELECT COUNT(TransactionID) FROM CashTransactions;";
+                    Query = @"SELECT COUNT(TransactionID) FROM CashTransactions
+                        WHERE Cancelled = @Cancelled;";
                     break;
             }
 
@@ -481,6 +486,12 @@ namespace StorePilot.DAL
                     Name = "@FilterValue",
                     DbType = DbType.String,
                     Value = filterValue,
+                },
+                new DbParameterInfo
+                {
+                    Name = "@Cancelled",
+                    DbType = DbType.Boolean,
+                    Value = cancelled,
                 },
             };
 
@@ -495,7 +506,8 @@ namespace StorePilot.DAL
             int offset,
             int pageSize,
             int filterMethodIndex,
-            string filterValue)
+            string filterValue,
+            bool cancelled)
         {
             string Query = string.Empty;
 
@@ -503,39 +515,43 @@ namespace StorePilot.DAL
             {
                 case (int)FilterMethodsCash.TransactionDate:
                     Query = @"SELECT TransactionID, TransactionDate,
-                        TransactionType, PaidAmount, Description, CreatedAt
+                        TransactionType, PaidAmount, Description, CreatedAt,
                         Cancelled FROM CashTransactions
                         WHERE TransactionDate LIKE @FilterValue || '%'
-                        ORDER BY Cancelled ASC, TransactionID DESC
+                        AND Cancelled = @Cancelled
+                        ORDER BY TransactionID DESC
                         LIMIT @PageSize
                         OFFSET @Offset;";
                     break;
 
-                case (int)FilterMethodsCash.Type:
+                case (int)FilterMethodsCash.TransactionType:
                     Query = @"SELECT TransactionID, TransactionDate,
-                        TransactionType, PaidAmount, Description, CreatedAt
+                        TransactionType, PaidAmount, Description, CreatedAt,
                         Cancelled FROM CashTransactions
                         WHERE TransactionType LIKE @FilterValue || '%'
-                        ORDER BY Cancelled ASC, TransactionID DESC
+                        AND Cancelled = @Cancelled
+                        ORDER BY TransactionID DESC
                         LIMIT @PageSize
                         OFFSET @Offset;";
                     break;
 
                 case (int)FilterMethodsCash.Description:
                     Query = @"SELECT TransactionID, TransactionDate,
-                        TransactionType, PaidAmount, Description, CreatedAt
+                        TransactionType, PaidAmount, Description, CreatedAt,
                         Cancelled FROM CashTransactions
-                        WHERE Description LIKE '%' || @FilterValue || '%'
-                        ORDER BY Cancelled ASC, TransactionID DESC
+                        WHERE Description LIKE @FilterValue || '%'
+                        AND Cancelled = @Cancelled
+                        ORDER BY TransactionID DESC
                         LIMIT @PageSize
                         OFFSET @Offset;";
                     break;
 
                 default:
                     Query = @"SELECT TransactionID, TransactionDate,
-                        TransactionType, PaidAmount, Description, CreatedAt
+                        TransactionType, PaidAmount, Description, CreatedAt,
                         Cancelled FROM CashTransactions
-                        ORDER BY Cancelled ASC, TransactionID DESC
+                        WHERE Cancelled = @Cancelled
+                        ORDER BY TransactionID DESC
                         LIMIT @PageSize
                         OFFSET @Offset;";
                     break;
@@ -560,7 +576,13 @@ namespace StorePilot.DAL
                     Name = "@Offset",
                     DbType = DbType.Int64,
                     Value = offset,
-                }
+                },
+                new DbParameterInfo
+                {
+                    Name = "@Cancelled",
+                    DbType = DbType.Boolean,
+                    Value = cancelled,
+                },
             };
 
             return DbManager.Current?.GetDataTable(
@@ -576,12 +598,12 @@ namespace StorePilot.DAL
                 COALESCE(
                 SUM(
                 CASE
-                WHEN TransactionType = @TransactionType AND Cancelled = 0
+                WHEN TransactionType = @TransactionType
                 THEN PaidAmount
                 ELSE -PaidAmount
                 END
                 ), 0)
-                FROM CashTransactions;";
+                FROM CashTransactions WHERE Cancelled = 0;";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
             {

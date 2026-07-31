@@ -76,7 +76,7 @@ namespace StorePilot.DAL
                 },
                 new DbParameterInfo
                 {
-                    Name = "PaidAmount",
+                    Name = "@PaidAmount",
                     DbType = DbType.Decimal,
                     Value = model.PaidAmount,
                 },
@@ -121,7 +121,7 @@ namespace StorePilot.DAL
                 SET
                     PaidAmount = 
                     (
-                        SELECT SUM(PaidAmount) AS InvoicePayments FROM Payments 
+                        SELECT COALESCE(SUM(PaidAmount), 0) AS InvoicePayments FROM Payments 
                         WHERE InvoiceID = @InvoiceID AND Cancelled = 0
                     )
                 WHERE InvoiceID = @InvoiceID;";

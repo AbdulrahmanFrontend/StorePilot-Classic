@@ -13,6 +13,7 @@ namespace StorePilot.Core.Models
 
         public DateTime TransactionDate { get; set; } = DateTime.Now;
 
+        [Required("مطلوب إدخال نوع الحركة")]
         public string TransactionType { get; set; } = string.Empty;
 
         [Range(0.01, 999999, "يجب أن يكون المبلغ المدفوع أكبر من الصفر وأصغر من أو يساوي 999999")]
@@ -24,7 +25,7 @@ namespace StorePilot.Core.Models
 
         public bool Cancelled { get; set; } = false;
 
-        [MaxLength(500, "يجب ألا يتجاوز توصيف الحركة ال 500 حرف")]
+        [MaxLength(500, "يجب ألا يتجاوز طول الملاحظات ال 500 حرف")]
         public string Notes { get; set; } = string.Empty;
     }
 }

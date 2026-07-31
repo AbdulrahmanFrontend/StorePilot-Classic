@@ -595,7 +595,7 @@ namespace StorePilot.DAL
         public static Result<DataTable> GetLowStockProducts()
         {
             string Query = @"SELECT ProductName, Quantity, MinQuantity FROM Products
-                ORDER BY ProductID ASC, Quantity - MinQuantity ASC
+                ORDER BY ((Quantity - MinQuantity) ASC), ProductID ASC
                 LIMIT 10;";
 
             return DbManager.Current.GetDataTable(CommandType.Text, Query);
@@ -604,7 +604,8 @@ namespace StorePilot.DAL
         //used
         public static Result<int> GetCount(
             int filterMethodIndex,
-            string filterValue)
+            string filterValue,
+            bool active)
         {
             string Query = string.Empty;
 
@@ -612,26 +613,31 @@ namespace StorePilot.DAL
             {
                 case (int)FilterMethodsProducts.ProductName:
                     Query = @"SELECT COUNT(ProductID) FROM view_ProductsDetails
-                        WHERE ProductName LIKE @FilterValue || '%';";
+                        WHERE ProductName LIKE @FilterValue || '%'
+                        AND Active = @Active;";
                     break;
 
                 case (int)FilterMethodsProducts.Unit:
                     Query = @"SELECT COUNT(ProductID) FROM view_ProductsDetails
-                        WHERE UnitName LIKE @FilterValue || '%';";
+                        WHERE UnitName LIKE @FilterValue || '%'
+                        AND Active = @Active;";
                     break;
 
                 case (int)FilterMethodsProducts.Group:
                     Query = @"SELECT COUNT(ProductID) FROM view_ProductsDetails
-                        WHERE GroupName LIKE @FilterValue || '%';";
+                        WHERE GroupName LIKE @FilterValue || '%'
+                        AND Active = @Active;";
                     break;
 
                 case (int)FilterMethodsProducts.BarCode:
                     Query = @"SELECT COUNT(ProductID) FROM view_ProductsDetails
-                        WHERE BarCode LIKE @FilterValue || '%';";
+                        WHERE BarCode LIKE @FilterValue || '%'
+                        AND Active = @Active;";
                     break;
 
                 default:
-                    Query = @"SELECT COUNT(ProductID) FROM view_ProductsDetails;";
+                    Query = @"SELECT COUNT(ProductID) FROM view_ProductsDetails
+                        WHERE Active = @Active;";
                     break;
             }
 
@@ -642,6 +648,12 @@ namespace StorePilot.DAL
                     Name = "@FilterValue",
                     DbType = DbType.String,
                     Value = filterValue,
+                },
+                new DbParameterInfo
+                {
+                    Name = "@Active",
+                    DbType = DbType.Boolean,
+                    Value = active,
                 },
             };
 
@@ -665,7 +677,8 @@ namespace StorePilot.DAL
             int offset,
             int pageSize,
             int filterMethodIndex,
-            string filterValue)
+            string filterValue,
+            bool active)
         {
             string Query = string.Empty;
 
@@ -676,6 +689,7 @@ namespace StorePilot.DAL
                         UnitName, SalePrice, PurchasePrice, Quantity, MinQuantity, 
                         CreatedAt, Active FROM view_ProductsDetails
                         WHERE ProductName LIKE @FilterValue || '%'
+                        AND Active = @Active
                         LIMIT @PageSize
                         OFFSET @Offset;";
                     break;
@@ -685,6 +699,7 @@ namespace StorePilot.DAL
                         UnitName, SalePrice, PurchasePrice, Quantity, MinQuantity, 
                         CreatedAt, Active FROM view_ProductsDetails
                         WHERE UnitName LIKE @FilterValue || '%'
+                        AND Active = @Active
                         LIMIT @PageSize
                         OFFSET @Offset;";
                     break;
@@ -694,6 +709,7 @@ namespace StorePilot.DAL
                         UnitName, SalePrice, PurchasePrice, Quantity, MinQuantity, 
                         CreatedAt, Active FROM view_ProductsDetails
                         WHERE GroupName LIKE @FilterValue || '%'
+                        AND Active = @Active
                         LIMIT @PageSize
                         OFFSET @Offset;";
                     break;
@@ -703,6 +719,7 @@ namespace StorePilot.DAL
                         UnitName, SalePrice, PurchasePrice, Quantity, MinQuantity, 
                         CreatedAt, Active FROM view_ProductsDetails
                         WHERE BarCode LIKE @FilterValue || '%'
+                        AND Active = @Active
                         LIMIT @PageSize
                         OFFSET @Offset;";
                     break;
@@ -711,6 +728,7 @@ namespace StorePilot.DAL
                     Query = @"SELECT ProductID, ProductName, BarCode, GroupName,
                         UnitName, SalePrice, PurchasePrice, Quantity, MinQuantity, 
                         CreatedAt, Active FROM view_ProductsDetails
+                        WHERE Active = @Active
                         LIMIT @PageSize
                         OFFSET @Offset;";
                     break;
@@ -735,7 +753,13 @@ namespace StorePilot.DAL
                     Name = "@Offset",
                     DbType = DbType.Int64,
                     Value = offset,
-                }
+                },
+                new DbParameterInfo
+                {
+                    Name = "@Active",
+                    DbType = DbType.Boolean,
+                    Value = active,
+                },
             };
 
             return DbManager.Current?.GetDataTable(

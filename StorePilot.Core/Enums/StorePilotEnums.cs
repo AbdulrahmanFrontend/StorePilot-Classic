@@ -36,7 +36,7 @@ namespace StorePilot.Core.Enums
     public enum FilterMethodsCash
     {
         TransactionDate = 1,
-        Type = 2,
+        TransactionType = 2,
         Description = 3,
     }
 

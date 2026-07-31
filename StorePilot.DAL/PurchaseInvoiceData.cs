@@ -1,7 +1,6 @@
 ﻿using DevToolkit.Core.Results;
 using DevToolkit.Data;
 using DevToolkit.Data.Core;
-using Microsoft.SqlServer.Server;
 using StorePilot.Core.Enums;
 using StorePilot.Core.Models;
 using System;
@@ -43,7 +42,7 @@ namespace StorePilot.DAL
             IDbTransaction trans,
             PurchaseInvoiceModel model)
         {
-            string Query = @"INSERT INTO PurchaseInvoices
+            string Query = @"INSERT INTO PurchasesInvoices
                 (
                     InvoiceID,
                     SupplierID,
@@ -163,7 +162,7 @@ namespace StorePilot.DAL
         public static Result<int> GetCount()
         {
             string Query = @"SELECT COUNT(PurchaseInvoiceID) AS PurchasesInvoicesCount 
-                    FROM view_PurchaseInvoicesDetails WHERE Cancelled = 0;";
+                    FROM view_PurchasesInvoicesDetails WHERE Cancelled = 0;";
 
             return DataQueryService.Scalar<int>(CommandType.Text, Query);
         }
@@ -171,18 +170,16 @@ namespace StorePilot.DAL
         //used
         public static Result<int> GetCount(
             int filterMethodIndex,
-            string filterValue)
+            string filterValue,
+            bool cancalled)
         {
             string Query = string.Empty;
 
-            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            DbParameterInfo parameter = new DbParameterInfo
             {
-                new DbParameterInfo
-                {
-                    Name = "@FilterValue",
-                    DbType = DbType.String,
-                    Value = filterValue,
-                },
+                Name = "@FilterValue",
+                DbType = DbType.String,
+                Value = filterValue,
             };
 
             switch (filterMethodIndex)
@@ -190,18 +187,16 @@ namespace StorePilot.DAL
                 case (int)FilterMethodsPurchasesInvoices.PurchaseInvoiceID:
                     Query = @"SELECT COUNT(PurchaseInvoiceID)
                         FROM view_PurchasesInvoicesDetails
-                        WHERE PurchaseInvoiceID = @FilterValue;";
+                        WHERE PurchaseInvoiceID = @FilterValue
+                        AND Cancelled = @Cancelled;";
 
-                    Parameters = new DbParameterInfo[]
+                    parameter = new DbParameterInfo
                     {
-                        new DbParameterInfo
-                        {
-                            Name = "@FilterValue",
-                            DbType = DbType.Int64,
-                            Value = int.TryParse(filterValue?.ToString(),
+                        Name = "@FilterValue",
+                        DbType = DbType.Int64,
+                        Value = int.TryParse(filterValue?.ToString(),
                                 out int PurchaseInvoiceID) ?
                                 PurchaseInvoiceID : 0,
-                        },
                     };
 
                     break;
@@ -209,18 +204,16 @@ namespace StorePilot.DAL
                 case (int)FilterMethodsPurchasesInvoices.InvoiceID:
                     Query = @"SELECT COUNT(PurchaseInvoiceID)
                         FROM view_PurchasesInvoicesDetails
-                        WHERE InvoiceID = @FilterValue;";
+                        WHERE InvoiceID = @FilterValue
+                        AND Cancelled = @Cancelled;";
 
-                    Parameters = new DbParameterInfo[]
+                    parameter = new DbParameterInfo
                     {
-                        new DbParameterInfo
-                        {
-                            Name = "@FilterValue",
-                            DbType = DbType.Int64,
-                            Value = int.TryParse(filterValue?.ToString(),
+                        Name = "@FilterValue",
+                        DbType = DbType.Int64,
+                        Value = int.TryParse(filterValue?.ToString(),
                                 out int InvoiceID) ?
                                 InvoiceID : 0,
-                        },
                     };
 
                     break;
@@ -228,26 +221,48 @@ namespace StorePilot.DAL
                 case (int)FilterMethodsPurchasesInvoices.SupplierName:
                     Query = @"SELECT COUNT(PurchaseInvoiceID)
                         FROM view_PurchasesInvoicesDetails
-                        WHERE SupplierName LIKE @FilterValue || '%';";
+                        WHERE SupplierName LIKE @FilterValue || '%'
+                        AND Cancelled = @Cancelled;";
                     break;
 
                 case (int)FilterMethodsPurchasesInvoices.InvoiceDate:
                     Query = @"SELECT COUNT(PurchaseInvoiceID)
                         FROM view_PurchasesInvoicesDetails
-                        WHERE InvoiceDate LIKE @FilterValue || '%';";
+                        WHERE InvoiceDate LIKE @FilterValue || '%'
+                        AND Cancelled = @Cancelled;";
                     break;
 
                 case (int)FilterMethodsPurchasesInvoices.InvoiceStatus:
                     Query = @"SELECT COUNT(PurchaseInvoiceID)
                         FROM view_PurchasesInvoicesDetails
-                        WHERE InvoiceStatus LIKE @FilterValue || '%';";
+                        WHERE InvoiceStatus LIKE @FilterValue || '%'
+                        AND Cancelled = @Cancelled;";
                     break;
 
                 default:
                     Query = @"SELECT COUNT(PurchaseInvoiceID)
-                        FROM view_PurchasesInvoicesDetails;";
+                        FROM view_PurchasesInvoicesDetails
+                        WHERE Cancelled = @Cancelled;";
                     break;
             }
+
+            List<DbParameterInfo> Parameters = new List<DbParameterInfo>
+            {
+                new DbParameterInfo
+                {
+                    Name = "@FilterValue",
+                    DbType = DbType.String,
+                    Value = filterValue,
+                },
+                new DbParameterInfo
+                {
+                    Name = "@Cancelled",
+                    DbType = DbType.Boolean,
+                    Value = cancalled,
+                },
+            };
+
+            Parameters.Add(parameter);
 
             return DataQueryService.Scalar<int>(
                 CommandType.Text,

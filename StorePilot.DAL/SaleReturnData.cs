@@ -234,7 +234,8 @@ namespace StorePilot.DAL
         public static Result<int> GetCount(
             int saleInvoiceId,
             int filterMethodIndex,
-            string filterValue)
+            string filterValue,
+            bool cancelled)
         {
             string Query = string.Empty;
 
@@ -249,7 +250,9 @@ namespace StorePilot.DAL
             {
                 case (int)FilterMethodsSalesReturns.ReturnID:
                     Query = @"SELECT COUNT(ReturnID) FROM SalesReturns
-                        WHERE ReturnID = @ReturnID AND SaleInvoiceID = @SaleInvoiceID;";
+                        WHERE ReturnID = @ReturnID 
+                        AND SaleInvoiceID = @SaleInvoiceID
+                        AND Cancelled = @Cancelled;";
 
                     parameter = new DbParameterInfo
                     {
@@ -265,12 +268,14 @@ namespace StorePilot.DAL
                 case (int)FilterMethodsSalesReturns.ReturnDate:
                     Query = @"SELECT COUNT(ReturnID) FROM SalesReturns
                         WHERE ReturnDate LIKE @FilterValue || '%'
-                        AND SaleInvoiceID = @SaleInvoiceID;";
+                        AND SaleInvoiceID = @SaleInvoiceID
+                        AND Cancelled = @Cancelled;";
                     break;
 
                 default:
                     Query = @"SELECT COUNT(ReturnID) FROM SalesReturns
-                        AND SaleInvoiceID = @SaleInvoiceID;";
+                        WHERE SaleInvoiceID = @SaleInvoiceID
+                        AND Cancelled = @Cancelled;";
                     break;
             }
 
@@ -281,6 +286,12 @@ namespace StorePilot.DAL
                     Name = "@SaleInvoiceID",
                     DbType = DbType.Int64,
                     Value = saleInvoiceId,
+                },
+                new DbParameterInfo
+                {
+                    Name = "@Cancelled",
+                    DbType = DbType.Boolean,
+                    Value = cancelled,
                 },
             };
 
@@ -298,7 +309,8 @@ namespace StorePilot.DAL
             int offset,
             int pageSize,
             int filterMethodIndex,
-            string filterValue)
+            string filterValue,
+            bool cancelled)
         {
             string Query = string.Empty;
 
@@ -313,9 +325,11 @@ namespace StorePilot.DAL
             {
                 case (int)FilterMethodsSalesReturns.ReturnID:
                     Query = @"SELECT ReturnID, SaleInvoiceID, 
-                        ReturnDate, TotalReturnAmount, Cancelled,
+                        ReturnDate, TotalReturnAmount, Cancelled
                         FROM SalesReturns
-                        WHERE ReturnID = @FilterValue AND SaleInvoiceID = @SaleInvoiceID
+                        WHERE ReturnID = @FilterValue 
+                        AND SaleInvoiceID = @SaleInvoiceID
+                        AND Cancelled = @Cancelled
                         LIMIT @PageSize
                         OFFSET @Offset;";
 
@@ -332,19 +346,21 @@ namespace StorePilot.DAL
 
                 case (int)FilterMethodsSalesReturns.ReturnDate:
                     Query = @"SELECT ReturnID, SaleInvoiceID, 
-                        ReturnDate, TotalReturnAmount, Cancelled,
+                        ReturnDate, TotalReturnAmount, Cancelled
                         FROM SalesReturns
                         WHERE ReturnDate LIKE @FilterValue || '%'
                         AND SaleInvoiceID = @SaleInvoiceID
+                        AND Cancelled = @Cancelled
                         LIMIT @PageSize
                         OFFSET @Offset;";
                     break;
 
                 default:
                     Query = @"SELECT ReturnID, SaleInvoiceID, 
-                        ReturnDate, TotalReturnAmount, Cancelled,
+                        ReturnDate, TotalReturnAmount, Cancelled
                         FROM SalesReturns
                         WHERE SaleInvoiceID = @SaleInvoiceID
+                        AND Cancelled = @Cancelled
                         LIMIT @PageSize
                         OFFSET @Offset;";
                     break;
@@ -369,7 +385,13 @@ namespace StorePilot.DAL
                     Name = "@Offset",
                     DbType = DbType.Int64,
                     Value = offset,
-                }
+                },
+                new DbParameterInfo
+                {
+                    Name = "@Cancelled",
+                    DbType = DbType.Boolean,
+                    Value = cancelled,
+                },
             };
 
             Parameters.Add(parameter);
