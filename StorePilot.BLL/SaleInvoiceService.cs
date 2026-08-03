@@ -169,28 +169,32 @@ namespace StorePilot.BLL
             {
                 Result<ProductModel> result = ProductData.Find(item.ProductID);
 
-                if (result.IsSuccess)
-                {
-                    if (result.Data == null)
-                        return Result.Failure("هذا الصنف غير مسجل في النظام!");
-                }
-                else
-                    return Result.Failure("فشلت عملية الوصول لبيانات صنف!");
+                if (!result.IsSuccess || result.Data == null)
+                    return Result.Failure($"هناك صنف غير مسجل في النظام, " +
+                        $"أو عملية الوصول لبيانات الصنف فشلت!");
+
+                if(!result.Data.Active)
+                    return Result.Failure(
+                        $"الصنف {result.Data.ProductName} غير مفعل في النظام!");
 
                 if (_Items.Count(i => i.ProductID == item.ProductID) > 1)
-                    return Result.Failure("هناك صنف مكرر في الفاتورة!");
+                    return Result.Failure(
+                        $"الصنف {result.Data.ProductName} مكرر في الفاتورة!");
 
                 if (item.Quantity <= 0)
                     return Result.Failure(
-                        "هنك صنف الكمية المطلوبة منه أصغر من أو تساوي الصفر!");
+                        $"الصنف {result.Data.ProductName} الكمية المطلوبة منه أصغر من " +
+                        $"أو تساوي الصفر!");
 
                 if (item.Quantity > result.Data.Quantity)
                     return Result.Failure(
-                        "هنك صنف الكمية المطلوبة منه أكبر من الكمية المتوفرة في المخزن!");
+                        $"الصنف {result.Data.ProductName} الكمية المطلوبة منه أكبر من " +
+                        $"الكمية المتوفرة في المخزن!");
 
                 if (item.UnitPrice <= 0)
                     return Result.Failure(
-                        "هناك صنف سعر الوحدة له أصغر من أو يساوي الصفر!");
+                        $"الصنف {result.Data.ProductName} سعر الوحدة له أصغر من " +
+                        $"أو يساوي الصفر!");
             }
 
             return Result.Success();
@@ -201,13 +205,13 @@ namespace StorePilot.BLL
             switch (Model.InvoiceStatus.ToInvoiceStatus())
             {
                 case InvoiceStatus.Paid:
-                    if (Model.CustomerID.HasValue)
+                    if (!Model.CustomerID.HasValue)
                         return Result.Success();
 
                     return CustomerService.IsExist(Model.CustomerID.Value);
 
                 case InvoiceStatus.Deferred:
-                    if (Model.CustomerID.HasValue)
+                    if (!Model.CustomerID.HasValue)
                         return Result.Failure("يجب إدخال العميل لفاتورة الآجل!");
 
                     return CustomerService.IsExist(Model.CustomerID.Value);
@@ -221,16 +225,14 @@ namespace StorePilot.BLL
         {
             var InvoiceResult = SaleInvoiceData.Find(id);
 
-            if (InvoiceResult.IsSuccess)
-            {
-                if (InvoiceResult.Data == null)
-                    return Result.Failure("هذه الفاتورة غير مسجلة في النظام!");
+            if (!InvoiceResult.IsSuccess || InvoiceResult.Data == null)
+                return Result.Failure("هذه الفاتورة غير مسجلة في النظام," +
+                    " أو أن عملية الوصول لبيانات الفاتورة فشلت!");
 
-                if (InvoiceResult.Data.Cancelled)
-                    return Result.Failure("هذه الفاتورة ملغية بالفعل!");
-            }
+            if (InvoiceResult.Data.Cancelled)
+                return Result.Failure("هذه الفاتورة ملغية بالفعل!");
 
-            Result TransResult = DbManager.Current.ExecuteTransaction(
+            Result TransResult = DbManager.Current?.ExecuteTransaction(
                 (con, trans) =>
                 {
                     Result result = ProductData.IncreaseStock(

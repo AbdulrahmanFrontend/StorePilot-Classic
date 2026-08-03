@@ -212,14 +212,12 @@ namespace StorePilot.BLL
         {
             var PaymentResult = PaymentData.Find(id);
 
-            if (PaymentResult.IsSuccess)
-            {
-                if (PaymentResult.Data == null)
-                    return Result.Failure("عملية الدفع هذه غير مسجلة في النظام!");
+            if (!PaymentResult.IsSuccess || PaymentResult.Data == null)
+                return Result.Failure("عملية الدفع هذه غير مسجلة في النظام, " +
+                        "أو أن عملية الوصول لبيانات هذه الدفعة فشلت!");
 
-                if (PaymentResult.Data.Cancelled)
-                    return Result.Failure("عملية الدفع ملغية بالفعل!");
-            }
+            if (PaymentResult.Data.Cancelled)
+                return Result.Failure("عملية الدفع ملغية بالفعل!");
 
             Result CancellResult = DbManager.Current?.ExecuteTransaction(
                 (con, trans) =>

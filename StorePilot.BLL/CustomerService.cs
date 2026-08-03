@@ -220,42 +220,6 @@ namespace StorePilot.BLL
         public Result ValidateNotes()
             => _ValidateProperty(nameof(this.Model.Notes), this.Model);
 
-        //public static Result Activate(int id)
-        //{
-        //    Result<CustomerModel> CustomerResult = CustomerData.Find(id);
-
-        //    if (CustomerResult.IsSuccess)
-        //    {
-        //        if (CustomerResult.Data == null)
-        //            return Result.Failure("هذا العميل غير مسجل في النظام!");
-
-        //        if (CustomerResult.Data.Active)
-        //            return Result.Failure("هذا العميل معطل بالفعل!");
-        //    }
-        //    else
-        //        return Result.Failure("فشلت عملية الوصول لبيانات هذا العميل!");
-
-        //    return CustomerData.Activate(id);
-        //}
-
-        //public static Result Deactivate(int id)
-        //{
-        //    Result<CustomerModel> CustomerResult = CustomerData.Find(id);
-
-        //    if (CustomerResult.IsSuccess)
-        //    {
-        //        if (CustomerResult.Data == null)
-        //            return Result.Failure("هذا العميل غير مسجل في النظام!");
-
-        //        if (!CustomerResult.Data.Active)
-        //            return Result.Failure("هذا العميل معطل بالفعل!");
-        //    }
-        //    else
-        //        return Result.Failure("فشلت عملية الوصول لبيانات هذا العميل!");
-
-        //    return CustomerData.Deactivate(id);
-        //}
-
         public static Result IsExist(int id)
         {
             Result<bool> result = CustomerData.IsExist(id);

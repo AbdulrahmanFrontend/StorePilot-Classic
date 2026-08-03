@@ -48,7 +48,7 @@ namespace StorePilot.BLL
 
             if (result.IsSuccess)
             {
-                if (result.Data == null)
+                if (result.Data != null)
                     return Result<SaleReturnService>.Success(
                         new SaleReturnService(result.Data)
                         );
@@ -66,7 +66,8 @@ namespace StorePilot.BLL
             var SaleInvoiceResult = SaleInvoiceData.Find(this.Model.SaleInvoiceID);
 
             if (!SaleInvoiceResult.IsSuccess || SaleInvoiceResult.Data == null)
-                return Result.Failure(SaleInvoiceResult.Message);
+                return Result.Failure("فاتورة البيع هذه غير مسجلة في النظام," +
+                    " أو فشلت عملية الوصول لبيانات الفاتورة");
 
             Result TransResult = DbManager.Current?.ExecuteTransaction(
                 (con, trans) =>
@@ -118,6 +119,14 @@ namespace StorePilot.BLL
                         con,
                         trans,
                         this.Model.ReturnID);
+
+                    _ThrowException(result);
+
+                    result = InvoiceItemData.UpdateInvoiceItems(
+                        con,
+                        trans,
+                        this.Model.ReturnID,
+                        SaleInvoiceResult.Data.InvoiceID);
 
                     _ThrowException(result);
                 });
@@ -173,11 +182,9 @@ namespace StorePilot.BLL
                     this.Model.SaleInvoiceID,
                     item.ProductID);
 
-                if (result.IsSuccess && result.Data == null)
-                    return Result.Failure("هذا العنصر ليس موجودا ضمن فاتورة البيع!");
-                else if (!result.IsSuccess)
-                    return Result.Failure(
-                        "فشلت عملية الوصول لعنصر من عناصر فاتورة البيع!");
+                if (!result.IsSuccess || result.Data == null)
+                    return Result.Failure("فشلت عملية الوصول لبيانات صنف في المرتجع " +
+                        "أو أن الصنف غير مسجل في فاتورة البيع!");
 
                 if (_Items.Count(i => i.ProductID == item.ProductID) > 1)
                     return Result.Failure("هناك صنف مكرر في الفاتورة!");
@@ -189,7 +196,7 @@ namespace StorePilot.BLL
                 if (item.Quantity > result.Data.Quantity)
                     return Result.Failure(
                         "يوجد عنصر الكمية المطلوبة منه " +
-                        "أكبر من الكمية المتوفرة في المخزن!");
+                        "أكبر من الكمية المسجلة في الفاتورة!");
 
                 item.UnitPrice = result.Data.UnitPrice;
             }
@@ -224,7 +231,7 @@ namespace StorePilot.BLL
             if (result.IsSuccess)
             {
                 if (result.Data == null)
-                    return Result.Failure(result.Message);
+                    return Result.Failure("فاتورة البيع غير مسجلة في النظام!");
 
                 if (result.Data.InvoiceStatus == InvoiceStatus.Deferred.ToArabic()
                     && result.Data.TotalAmount - this.Model.TotalReturnAmount <
@@ -233,6 +240,8 @@ namespace StorePilot.BLL
                         "يجب أن يكون مجموع الدفعات أصغر من " +
                         "أو يساوي إجمالي الفاتورة بعد المرتجع!");
             }
+            if(!result.IsSuccess)
+                return Result.Failure("فشلت عملية الوصول لبيانات فاتورة البيع!");
 
             return Result.Success();
         }
@@ -250,7 +259,7 @@ namespace StorePilot.BLL
 
             Result<bool> HasPaymentsResult = InvoiceData.HasPayments(id);
 
-            if (HasPaymentsResult.IsSuccess)
+            if (!HasPaymentsResult.IsSuccess)
                 return Result.Failure("فشلت عملية التحقق من كون الفاتورة لها سجل دفع!");
 
             Result<SaleInvoiceModel> SaleInvoiceResult = 
