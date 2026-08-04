@@ -169,6 +169,30 @@
     <Folder Include="Settings\" />
     <Folder Include="Suppliers\" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\product-72.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\customers-72.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\suppliers-72.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\invoice-72.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sales-72.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\purchase-72.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\debt-72.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\earnings-72.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets" Condition="Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

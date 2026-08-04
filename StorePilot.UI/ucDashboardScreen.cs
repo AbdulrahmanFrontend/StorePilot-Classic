@@ -1,4 +1,6 @@
 ﻿using DevToolkit.BaseWinForms.Controls.CustomControls;
+using DevToolkit.BaseWinForms.Managers;
+using DevToolkit.Core.Common;
 using DevToolkit.Core.Results;
 using StorePilot.BLL;
 using StorePilot.UI.Global.Classes;
@@ -41,7 +43,15 @@ namespace StorePilot.UI
 
         private void ucDashboardScreen_Load(object sender, EventArgs e)
         {
-            _SetCardsData();
+            Result<DataSet> result = DashboardService.GetDashboardData();
+
+            if (!result.IsSuccess)
+            {
+                MessageBoxManager.ShowError(result.Message, Language.ar);
+                return;
+            }
+
+            _SetCardsData(result.Data.Tables["Summary"]);
 
             _SetCardsStyles();
 
@@ -54,25 +64,28 @@ namespace StorePilot.UI
             _LoadChartData();
         }
 
-        private void _SetCardsData()
+        private void _SetCardsData(DataTable summaryTable)
         {
-            //_SetLabelText(lblProductsCountValue, ProductService.GetCount());
+            lblProductsCountValue.Text = 
+                summaryTable.Rows[0]["ProductsCount"].ToString();
 
-            //_SetLabelText(
-            //    lblCustomersCountValue,
-            //    CustomerService.GetCount());
+            lblCustomersCountValue.Text =
+                summaryTable.Rows[0]["CustomersCount"].ToString();
 
-            //_SetLabelText(
-            //    lblSuppliersCountValue,
-            //    SupplierService.GetCount());
+            lblSuppliersCountValue.Text =
+                summaryTable.Rows[0]["SuppliersCount"].ToString();
 
-            //_SetLabelText(lblDebtsCountValue, CreditPaymentService.GetDebtsSum());
-        }
+            lblInvoicesTodayValue.Text =
+                summaryTable.Rows[0]["TodayInvoices"].ToString();
 
-        private void _SetLabelText(Label lbl, Result<int> result)
-        {
-            if (result.IsSuccess)
-                lbl.Text = result.Data.ToString();
+            lblSalesTodayValue.Text =
+                summaryTable.Rows[0]["TodaySales"].ToString();
+
+            lblPurchasesTodayValue.Text =
+                summaryTable.Rows[0]["TodayPurchases"].ToString();
+
+            lblDebtsCountValue.Text =
+                summaryTable.Rows[0]["TotalDebts"].ToString();
         }
 
         private void _SetCardsStyles()
@@ -82,12 +95,12 @@ namespace StorePilot.UI
 
         private void _SetQuickActions()
         {
-            //foreach (var btn in tlpQuickActions.Controls.OfType<Button>())
-            //{
-            //    btn.Size = new Size(130, 40);
-            //    btn.Padding = new Padding(0);
-            //    btn.Margin = new Padding(0);
-            //}
+            foreach (var btn in tlpQuickActions.Controls.OfType<Button>())
+            {
+                btn.Size = new Size(130, 40);
+                btn.Padding = new Padding(0);
+                btn.Margin = new Padding(0);
+            }
         }
 
         private void _ConfigureTablesSection()

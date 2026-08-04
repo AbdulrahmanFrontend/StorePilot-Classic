@@ -93,6 +93,36 @@ namespace StorePilot.UI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap customers_72 {
+            get {
+                object obj = ResourceManager.GetObject("customers-72", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap debt_72 {
+            get {
+                object obj = ResourceManager.GetObject("debt-72", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap earnings_72 {
+            get {
+                object obj = ResourceManager.GetObject("earnings-72", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap home {
             get {
                 object obj = ResourceManager.GetObject("home", resourceCulture);
@@ -103,9 +133,39 @@ namespace StorePilot.UI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap invoice_72 {
+            get {
+                object obj = ResourceManager.GetObject("invoice-72", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap product {
             get {
                 object obj = ResourceManager.GetObject("product", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap product_72 {
+            get {
+                object obj = ResourceManager.GetObject("product-72", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap purchase_72 {
+            get {
+                object obj = ResourceManager.GetObject("purchase-72", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -126,6 +186,16 @@ namespace StorePilot.UI.Properties {
         internal static System.Drawing.Bitmap sales {
             get {
                 object obj = ResourceManager.GetObject("sales", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap sales_72 {
+            get {
+                object obj = ResourceManager.GetObject("sales-72", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -156,6 +226,16 @@ namespace StorePilot.UI.Properties {
         internal static System.Drawing.Bitmap supplier {
             get {
                 object obj = ResourceManager.GetObject("supplier", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap suppliers_72 {
+            get {
+                object obj = ResourceManager.GetObject("suppliers-72", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

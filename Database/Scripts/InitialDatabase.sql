@@ -245,7 +245,22 @@ ORDER BY SalesReturnItems.ReturnItemID DESC;
 -- Seed Data
 
 INSERT INTO Units (UnitName) 
-VALUES ('متر'), ('قطعة');
+VALUES ('متر'), 
+('قطعة');
 
 INSERT INTO PaymentMethods (MethodName)
-VALUES ('كاش'), ('انستاباي'), ('نقدي');
+VALUES ('كاش'), 
+('انستاباي'),
+('نقدي');
+
+INSERT INTO Groups (GroupName)
+VALUES ('نواكل'), 
+('قطع بولي'),
+('قطع ابيض'), 
+('مواسير بولي'), 
+('مواسير ابيض'),
+('اطقم صيني'),
+('نواكل صيني'),
+('قطع ابيض صيني'), 
+('حدايد وبويات'), 
+('كهرباء');

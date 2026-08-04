@@ -28,10 +28,38 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle31 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle32 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle33 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle34 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle35 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle36 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend6 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tlpContainer = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpQuickActions = new System.Windows.Forms.TableLayoutPanel();
+            this.btnNewCustomer = new System.Windows.Forms.Button();
+            this.btnNewSupplier = new System.Windows.Forms.Button();
+            this.btnNewSale = new System.Windows.Forms.Button();
+            this.btnNewPurchase = new System.Windows.Forms.Button();
+            this.btnNewProduct = new System.Windows.Forms.Button();
+            this.tlpTables = new System.Windows.Forms.TableLayoutPanel();
+            this.pnlLowStockProducts = new System.Windows.Forms.Panel();
+            this.ctrlDgvLowStockProducts = new DevToolkit.BaseWinForms.Controls.CustomControls.ccDataGridView();
+            this.ProductName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Quantity = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MinQuantity = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.lblLowStockProducts = new System.Windows.Forms.Label();
+            this.pnlRecentSales = new System.Windows.Forms.Panel();
+            this.ctrlDgvRecentSales = new DevToolkit.BaseWinForms.Controls.CustomControls.ccDataGridView();
+            this.InvoiceID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SaleInvoiceID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.InvoiceDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CustomerName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NetTotal = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.lblRecentSales = new System.Windows.Forms.Label();
+            this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.flpStatsCards = new System.Windows.Forms.FlowLayoutPanel();
             this.tlpProductsCount = new System.Windows.Forms.TableLayoutPanel();
             this.tlpProductsCountContent = new System.Windows.Forms.TableLayoutPanel();
@@ -48,7 +76,6 @@
             this.lblSuppliersCountValue = new System.Windows.Forms.Label();
             this.lblSuppliersCountTitle = new System.Windows.Forms.Label();
             this.picbSuppliersCount = new System.Windows.Forms.PictureBox();
-            this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.tlpInvoicesCount = new System.Windows.Forms.TableLayoutPanel();
             this.tlpInvoicesCountContent = new System.Windows.Forms.TableLayoutPanel();
             this.lblInvoicesTodayValue = new System.Windows.Forms.Label();
@@ -75,6 +102,13 @@
             this.lblDebtsCountTitle = new System.Windows.Forms.Label();
             this.picbDebtsCount = new System.Windows.Forms.PictureBox();
             this.tlpContainer.SuspendLayout();
+            this.tlpQuickActions.SuspendLayout();
+            this.tlpTables.SuspendLayout();
+            this.pnlLowStockProducts.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ctrlDgvLowStockProducts)).BeginInit();
+            this.pnlRecentSales.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ctrlDgvRecentSales)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.flpStatsCards.SuspendLayout();
             this.tlpProductsCount.SuspendLayout();
             this.tlpProductsCountContent.SuspendLayout();
@@ -85,7 +119,6 @@
             this.tlpSuppliersCount.SuspendLayout();
             this.tlpSuppliersCountContent.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picbSuppliersCount)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.tlpInvoicesCount.SuspendLayout();
             this.tlpInvoicesCountContent.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picbInvoicesCount)).BeginInit();
@@ -107,17 +140,360 @@
             // 
             this.tlpContainer.ColumnCount = 1;
             this.tlpContainer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpContainer.Controls.Add(this.tlpQuickActions, 0, 3);
+            this.tlpContainer.Controls.Add(this.tlpTables, 0, 2);
             this.tlpContainer.Controls.Add(this.chart1, 0, 1);
             this.tlpContainer.Controls.Add(this.flpStatsCards, 0, 0);
-            this.tlpContainer.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tlpContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpContainer.Location = new System.Drawing.Point(0, 0);
             this.tlpContainer.Name = "tlpContainer";
             this.tlpContainer.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tlpContainer.RowCount = 2;
+            this.tlpContainer.RowCount = 4;
             this.tlpContainer.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpContainer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpContainer.Size = new System.Drawing.Size(971, 449);
+            this.tlpContainer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 399F));
+            this.tlpContainer.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tlpContainer.Size = new System.Drawing.Size(971, 851);
             this.tlpContainer.TabIndex = 2;
+            // 
+            // tlpQuickActions
+            // 
+            this.tlpQuickActions.ColumnCount = 5;
+            this.tlpQuickActions.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tlpQuickActions.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tlpQuickActions.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tlpQuickActions.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tlpQuickActions.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tlpQuickActions.Controls.Add(this.btnNewCustomer, 1, 0);
+            this.tlpQuickActions.Controls.Add(this.btnNewSupplier, 0, 0);
+            this.tlpQuickActions.Controls.Add(this.btnNewSale, 4, 0);
+            this.tlpQuickActions.Controls.Add(this.btnNewPurchase, 3, 0);
+            this.tlpQuickActions.Controls.Add(this.btnNewProduct, 2, 0);
+            this.tlpQuickActions.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tlpQuickActions.Location = new System.Drawing.Point(7, 801);
+            this.tlpQuickActions.Name = "tlpQuickActions";
+            this.tlpQuickActions.RowCount = 1;
+            this.tlpQuickActions.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpQuickActions.Size = new System.Drawing.Size(957, 42);
+            this.tlpQuickActions.TabIndex = 8;
+            // 
+            // btnNewCustomer
+            // 
+            this.btnNewCustomer.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnNewCustomer.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnNewCustomer.FlatAppearance.BorderSize = 0;
+            this.btnNewCustomer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNewCustomer.Image = global::StorePilot.UI.Properties.Resources.customer;
+            this.btnNewCustomer.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnNewCustomer.Location = new System.Drawing.Point(606, 8);
+            this.btnNewCustomer.Name = "btnNewCustomer";
+            this.btnNewCustomer.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.btnNewCustomer.Size = new System.Drawing.Size(130, 26);
+            this.btnNewCustomer.TabIndex = 4;
+            this.btnNewCustomer.Text = "عميل جديد";
+            this.btnNewCustomer.UseVisualStyleBackColor = false;
+            // 
+            // btnNewSupplier
+            // 
+            this.btnNewSupplier.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnNewSupplier.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnNewSupplier.FlatAppearance.BorderSize = 0;
+            this.btnNewSupplier.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNewSupplier.Image = global::StorePilot.UI.Properties.Resources.supplier;
+            this.btnNewSupplier.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnNewSupplier.Location = new System.Drawing.Point(797, 8);
+            this.btnNewSupplier.Name = "btnNewSupplier";
+            this.btnNewSupplier.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.btnNewSupplier.Size = new System.Drawing.Size(130, 26);
+            this.btnNewSupplier.TabIndex = 0;
+            this.btnNewSupplier.Text = "مورد جديد";
+            this.btnNewSupplier.UseVisualStyleBackColor = false;
+            // 
+            // btnNewSale
+            // 
+            this.btnNewSale.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnNewSale.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnNewSale.FlatAppearance.BorderSize = 0;
+            this.btnNewSale.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNewSale.Image = global::StorePilot.UI.Properties.Resources.sales;
+            this.btnNewSale.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnNewSale.Location = new System.Drawing.Point(32, 8);
+            this.btnNewSale.Name = "btnNewSale";
+            this.btnNewSale.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.btnNewSale.Size = new System.Drawing.Size(130, 26);
+            this.btnNewSale.TabIndex = 3;
+            this.btnNewSale.Text = "بيع جديد";
+            this.btnNewSale.UseVisualStyleBackColor = false;
+            // 
+            // btnNewPurchase
+            // 
+            this.btnNewPurchase.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnNewPurchase.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnNewPurchase.FlatAppearance.BorderSize = 0;
+            this.btnNewPurchase.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNewPurchase.Image = global::StorePilot.UI.Properties.Resources.purchases;
+            this.btnNewPurchase.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnNewPurchase.Location = new System.Drawing.Point(224, 8);
+            this.btnNewPurchase.Name = "btnNewPurchase";
+            this.btnNewPurchase.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.btnNewPurchase.Size = new System.Drawing.Size(130, 26);
+            this.btnNewPurchase.TabIndex = 2;
+            this.btnNewPurchase.Text = "شراء جديد";
+            this.btnNewPurchase.UseVisualStyleBackColor = false;
+            // 
+            // btnNewProduct
+            // 
+            this.btnNewProduct.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnNewProduct.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnNewProduct.FlatAppearance.BorderSize = 0;
+            this.btnNewProduct.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNewProduct.Image = global::StorePilot.UI.Properties.Resources.product;
+            this.btnNewProduct.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnNewProduct.Location = new System.Drawing.Point(415, 8);
+            this.btnNewProduct.Name = "btnNewProduct";
+            this.btnNewProduct.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.btnNewProduct.Size = new System.Drawing.Size(130, 26);
+            this.btnNewProduct.TabIndex = 1;
+            this.btnNewProduct.Text = "منتج جديد";
+            this.btnNewProduct.UseVisualStyleBackColor = false;
+            // 
+            // tlpTables
+            // 
+            this.tlpTables.ColumnCount = 2;
+            this.tlpTables.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpTables.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpTables.Controls.Add(this.pnlLowStockProducts, 0, 0);
+            this.tlpTables.Controls.Add(this.pnlRecentSales, 1, 0);
+            this.tlpTables.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tlpTables.Location = new System.Drawing.Point(7, 402);
+            this.tlpTables.Name = "tlpTables";
+            this.tlpTables.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tlpTables.RowCount = 1;
+            this.tlpTables.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpTables.Size = new System.Drawing.Size(957, 393);
+            this.tlpTables.TabIndex = 7;
+            // 
+            // pnlLowStockProducts
+            // 
+            this.pnlLowStockProducts.Controls.Add(this.ctrlDgvLowStockProducts);
+            this.pnlLowStockProducts.Controls.Add(this.lblLowStockProducts);
+            this.pnlLowStockProducts.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlLowStockProducts.Location = new System.Drawing.Point(482, 8);
+            this.pnlLowStockProducts.Name = "pnlLowStockProducts";
+            this.pnlLowStockProducts.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.pnlLowStockProducts.Size = new System.Drawing.Size(468, 377);
+            this.pnlLowStockProducts.TabIndex = 6;
+            // 
+            // ctrlDgvLowStockProducts
+            // 
+            this.ctrlDgvLowStockProducts.AllowUserToAddRows = false;
+            this.ctrlDgvLowStockProducts.AllowUserToDeleteRows = false;
+            this.ctrlDgvLowStockProducts.AllowUserToResizeRows = false;
+            dataGridViewCellStyle31.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(251)))), ((int)(((byte)(252)))));
+            this.ctrlDgvLowStockProducts.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle31;
+            this.ctrlDgvLowStockProducts.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.ctrlDgvLowStockProducts.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
+            this.ctrlDgvLowStockProducts.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.ctrlDgvLowStockProducts.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
+            this.ctrlDgvLowStockProducts.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            dataGridViewCellStyle32.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle32.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            dataGridViewCellStyle32.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle32.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle32.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle32.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle32.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.ctrlDgvLowStockProducts.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle32;
+            this.ctrlDgvLowStockProducts.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.ctrlDgvLowStockProducts.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ProductName,
+            this.Quantity,
+            this.MinQuantity});
+            this.ctrlDgvLowStockProducts.Cursor = System.Windows.Forms.Cursors.Hand;
+            dataGridViewCellStyle33.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle33.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle33.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle33.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
+            dataGridViewCellStyle33.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(240)))), ((int)(((byte)(254)))));
+            dataGridViewCellStyle33.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
+            dataGridViewCellStyle33.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.ctrlDgvLowStockProducts.DefaultCellStyle = dataGridViewCellStyle33;
+            this.ctrlDgvLowStockProducts.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ctrlDgvLowStockProducts.EnableHeadersVisualStyles = false;
+            this.ctrlDgvLowStockProducts.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(224)))), ((int)(((byte)(230)))));
+            this.ctrlDgvLowStockProducts.Location = new System.Drawing.Point(4, 35);
+            this.ctrlDgvLowStockProducts.MultiSelect = false;
+            this.ctrlDgvLowStockProducts.Name = "ctrlDgvLowStockProducts";
+            this.ctrlDgvLowStockProducts.ReadOnly = true;
+            this.ctrlDgvLowStockProducts.RowHeadersVisible = false;
+            this.ctrlDgvLowStockProducts.RowHeadersWidth = 51;
+            this.ctrlDgvLowStockProducts.RowTemplate.Height = 35;
+            this.ctrlDgvLowStockProducts.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.ctrlDgvLowStockProducts.Size = new System.Drawing.Size(460, 337);
+            this.ctrlDgvLowStockProducts.TabIndex = 5;
+            // 
+            // ProductName
+            // 
+            this.ProductName.DataPropertyName = "ProductName";
+            this.ProductName.HeaderText = "اسم المنتج";
+            this.ProductName.MinimumWidth = 6;
+            this.ProductName.Name = "ProductName";
+            this.ProductName.ReadOnly = true;
+            // 
+            // Quantity
+            // 
+            this.Quantity.DataPropertyName = "Quantity";
+            this.Quantity.HeaderText = "الكمية الحالية";
+            this.Quantity.MinimumWidth = 6;
+            this.Quantity.Name = "Quantity";
+            this.Quantity.ReadOnly = true;
+            // 
+            // MinQuantity
+            // 
+            this.MinQuantity.DataPropertyName = "MinQuantity";
+            this.MinQuantity.HeaderText = "الحد الأدنى";
+            this.MinQuantity.MinimumWidth = 6;
+            this.MinQuantity.Name = "MinQuantity";
+            this.MinQuantity.ReadOnly = true;
+            // 
+            // lblLowStockProducts
+            // 
+            this.lblLowStockProducts.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblLowStockProducts.Location = new System.Drawing.Point(4, 5);
+            this.lblLowStockProducts.Name = "lblLowStockProducts";
+            this.lblLowStockProducts.Size = new System.Drawing.Size(460, 30);
+            this.lblLowStockProducts.TabIndex = 4;
+            this.lblLowStockProducts.Text = "المنتجات الناقصة:";
+            this.lblLowStockProducts.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // pnlRecentSales
+            // 
+            this.pnlRecentSales.Controls.Add(this.ctrlDgvRecentSales);
+            this.pnlRecentSales.Controls.Add(this.lblRecentSales);
+            this.pnlRecentSales.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlRecentSales.Location = new System.Drawing.Point(7, 8);
+            this.pnlRecentSales.Name = "pnlRecentSales";
+            this.pnlRecentSales.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.pnlRecentSales.Size = new System.Drawing.Size(469, 377);
+            this.pnlRecentSales.TabIndex = 5;
+            // 
+            // ctrlDgvRecentSales
+            // 
+            this.ctrlDgvRecentSales.AllowUserToAddRows = false;
+            this.ctrlDgvRecentSales.AllowUserToDeleteRows = false;
+            this.ctrlDgvRecentSales.AllowUserToResizeRows = false;
+            dataGridViewCellStyle34.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(251)))), ((int)(((byte)(252)))));
+            this.ctrlDgvRecentSales.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle34;
+            this.ctrlDgvRecentSales.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.ctrlDgvRecentSales.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
+            this.ctrlDgvRecentSales.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.ctrlDgvRecentSales.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
+            this.ctrlDgvRecentSales.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            dataGridViewCellStyle35.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle35.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            dataGridViewCellStyle35.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle35.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle35.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle35.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle35.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.ctrlDgvRecentSales.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle35;
+            this.ctrlDgvRecentSales.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.ctrlDgvRecentSales.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.InvoiceID,
+            this.SaleInvoiceID,
+            this.InvoiceDate,
+            this.CustomerName,
+            this.NetTotal});
+            this.ctrlDgvRecentSales.Cursor = System.Windows.Forms.Cursors.Hand;
+            dataGridViewCellStyle36.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle36.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle36.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle36.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
+            dataGridViewCellStyle36.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(240)))), ((int)(((byte)(254)))));
+            dataGridViewCellStyle36.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
+            dataGridViewCellStyle36.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.ctrlDgvRecentSales.DefaultCellStyle = dataGridViewCellStyle36;
+            this.ctrlDgvRecentSales.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ctrlDgvRecentSales.EnableHeadersVisualStyles = false;
+            this.ctrlDgvRecentSales.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(224)))), ((int)(((byte)(230)))));
+            this.ctrlDgvRecentSales.Location = new System.Drawing.Point(4, 35);
+            this.ctrlDgvRecentSales.MultiSelect = false;
+            this.ctrlDgvRecentSales.Name = "ctrlDgvRecentSales";
+            this.ctrlDgvRecentSales.ReadOnly = true;
+            this.ctrlDgvRecentSales.RowHeadersVisible = false;
+            this.ctrlDgvRecentSales.RowHeadersWidth = 51;
+            this.ctrlDgvRecentSales.RowTemplate.Height = 35;
+            this.ctrlDgvRecentSales.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.ctrlDgvRecentSales.Size = new System.Drawing.Size(461, 337);
+            this.ctrlDgvRecentSales.TabIndex = 5;
+            // 
+            // InvoiceID
+            // 
+            this.InvoiceID.DataPropertyName = "InvoiceID";
+            this.InvoiceID.HeaderText = "رقم الفاتورة";
+            this.InvoiceID.MinimumWidth = 6;
+            this.InvoiceID.Name = "InvoiceID";
+            this.InvoiceID.ReadOnly = true;
+            this.InvoiceID.ToolTipText = "رقم الفاتورة سواء كانت شراء أو بيع";
+            // 
+            // SaleInvoiceID
+            // 
+            this.SaleInvoiceID.DataPropertyName = "SaleInvoiceID";
+            this.SaleInvoiceID.HeaderText = "رقم فاتورة البيع";
+            this.SaleInvoiceID.MinimumWidth = 6;
+            this.SaleInvoiceID.Name = "SaleInvoiceID";
+            this.SaleInvoiceID.ReadOnly = true;
+            // 
+            // InvoiceDate
+            // 
+            this.InvoiceDate.DataPropertyName = "InvoiceDate";
+            this.InvoiceDate.HeaderText = "تاريخ الفاتورة";
+            this.InvoiceDate.MinimumWidth = 6;
+            this.InvoiceDate.Name = "InvoiceDate";
+            this.InvoiceDate.ReadOnly = true;
+            // 
+            // CustomerName
+            // 
+            this.CustomerName.DataPropertyName = "CustomerName";
+            this.CustomerName.HeaderText = "اسم العميل";
+            this.CustomerName.MinimumWidth = 6;
+            this.CustomerName.Name = "CustomerName";
+            this.CustomerName.ReadOnly = true;
+            // 
+            // NetTotal
+            // 
+            this.NetTotal.DataPropertyName = "NetTotal";
+            this.NetTotal.HeaderText = "الإجمالي / الصافي";
+            this.NetTotal.MinimumWidth = 6;
+            this.NetTotal.Name = "NetTotal";
+            this.NetTotal.ReadOnly = true;
+            // 
+            // lblRecentSales
+            // 
+            this.lblRecentSales.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblRecentSales.Location = new System.Drawing.Point(4, 5);
+            this.lblRecentSales.Name = "lblRecentSales";
+            this.lblRecentSales.Size = new System.Drawing.Size(461, 30);
+            this.lblRecentSales.TabIndex = 4;
+            this.lblRecentSales.Text = "آخر فواتير البيع:";
+            this.lblRecentSales.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // chart1
+            // 
+            this.chart1.Anchor = System.Windows.Forms.AnchorStyles.None;
+            chartArea6.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea6);
+            legend6.Name = "Legend1";
+            this.chart1.Legends.Add(legend6);
+            this.chart1.Location = new System.Drawing.Point(127, 140);
+            this.chart1.Name = "chart1";
+            series6.ChartArea = "ChartArea1";
+            series6.Legend = "Legend1";
+            series6.Name = "Series1";
+            this.chart1.Series.Add(series6);
+            this.chart1.Size = new System.Drawing.Size(717, 255);
+            this.chart1.TabIndex = 3;
+            this.chart1.Text = "chart1";
             // 
             // flpStatsCards
             // 
@@ -131,24 +507,24 @@
             this.flpStatsCards.Controls.Add(this.tlpPurchasesToday);
             this.flpStatsCards.Controls.Add(this.tlpEarningToday);
             this.flpStatsCards.Controls.Add(this.tlpDebtsCount);
-            this.flpStatsCards.Location = new System.Drawing.Point(13, 8);
+            this.flpStatsCards.Location = new System.Drawing.Point(78, 8);
             this.flpStatsCards.Name = "flpStatsCards";
-            this.flpStatsCards.Size = new System.Drawing.Size(945, 172);
+            this.flpStatsCards.Size = new System.Drawing.Size(815, 126);
             this.flpStatsCards.TabIndex = 0;
             // 
             // tlpProductsCount
             // 
             this.tlpProductsCount.ColumnCount = 2;
-            this.tlpProductsCount.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
-            this.tlpProductsCount.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
+            this.tlpProductsCount.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.tlpProductsCount.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70F));
             this.tlpProductsCount.Controls.Add(this.tlpProductsCountContent, 1, 0);
             this.tlpProductsCount.Controls.Add(this.picbProductsCount, 0, 0);
-            this.tlpProductsCount.Location = new System.Drawing.Point(772, 3);
-            this.tlpProductsCount.Margin = new System.Windows.Forms.Padding(0, 3, 16, 3);
+            this.tlpProductsCount.Location = new System.Drawing.Point(662, 3);
+            this.tlpProductsCount.Margin = new System.Windows.Forms.Padding(0, 3, 10, 3);
             this.tlpProductsCount.Name = "tlpProductsCount";
             this.tlpProductsCount.RowCount = 1;
             this.tlpProductsCount.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpProductsCount.Size = new System.Drawing.Size(173, 80);
+            this.tlpProductsCount.Size = new System.Drawing.Size(153, 57);
             this.tlpProductsCount.TabIndex = 3;
             // 
             // tlpProductsCountContent
@@ -163,14 +539,14 @@
             this.tlpProductsCountContent.RowCount = 2;
             this.tlpProductsCountContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpProductsCountContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpProductsCountContent.Size = new System.Drawing.Size(98, 74);
+            this.tlpProductsCountContent.Size = new System.Drawing.Size(102, 51);
             this.tlpProductsCountContent.TabIndex = 0;
             // 
             // lblProductsCountValue
             // 
             this.lblProductsCountValue.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.lblProductsCountValue.AutoSize = true;
-            this.lblProductsCountValue.Location = new System.Drawing.Point(42, 37);
+            this.lblProductsCountValue.Location = new System.Drawing.Point(44, 25);
             this.lblProductsCountValue.Margin = new System.Windows.Forms.Padding(0);
             this.lblProductsCountValue.Name = "lblProductsCountValue";
             this.lblProductsCountValue.Size = new System.Drawing.Size(15, 17);
@@ -181,7 +557,7 @@
             // 
             this.lblProductsCountTitle.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.lblProductsCountTitle.AutoSize = true;
-            this.lblProductsCountTitle.Location = new System.Drawing.Point(8, 20);
+            this.lblProductsCountTitle.Location = new System.Drawing.Point(10, 8);
             this.lblProductsCountTitle.Margin = new System.Windows.Forms.Padding(0);
             this.lblProductsCountTitle.Name = "lblProductsCountTitle";
             this.lblProductsCountTitle.Size = new System.Drawing.Size(83, 17);
@@ -191,9 +567,10 @@
             // picbProductsCount
             // 
             this.picbProductsCount.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picbProductsCount.Location = new System.Drawing.Point(107, 3);
+            this.picbProductsCount.Image = global::StorePilot.UI.Properties.Resources.product_72;
+            this.picbProductsCount.Location = new System.Drawing.Point(111, 3);
             this.picbProductsCount.Name = "picbProductsCount";
-            this.picbProductsCount.Size = new System.Drawing.Size(63, 74);
+            this.picbProductsCount.Size = new System.Drawing.Size(39, 51);
             this.picbProductsCount.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picbProductsCount.TabIndex = 1;
             this.picbProductsCount.TabStop = false;
@@ -201,16 +578,16 @@
             // tlpCustomersCount
             // 
             this.tlpCustomersCount.ColumnCount = 2;
-            this.tlpCustomersCount.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
-            this.tlpCustomersCount.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
+            this.tlpCustomersCount.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.tlpCustomersCount.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70F));
             this.tlpCustomersCount.Controls.Add(this.tlpCustomersCountContent, 1, 0);
             this.tlpCustomersCount.Controls.Add(this.picbCustomersCount, 0, 0);
-            this.tlpCustomersCount.Location = new System.Drawing.Point(583, 3);
-            this.tlpCustomersCount.Margin = new System.Windows.Forms.Padding(0, 3, 16, 3);
+            this.tlpCustomersCount.Location = new System.Drawing.Point(499, 3);
+            this.tlpCustomersCount.Margin = new System.Windows.Forms.Padding(0, 3, 10, 3);
             this.tlpCustomersCount.Name = "tlpCustomersCount";
             this.tlpCustomersCount.RowCount = 1;
             this.tlpCustomersCount.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpCustomersCount.Size = new System.Drawing.Size(173, 80);
+            this.tlpCustomersCount.Size = new System.Drawing.Size(153, 57);
             this.tlpCustomersCount.TabIndex = 4;
             // 
             // tlpCustomersCountContent
@@ -225,14 +602,14 @@
             this.tlpCustomersCountContent.RowCount = 2;
             this.tlpCustomersCountContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpCustomersCountContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpCustomersCountContent.Size = new System.Drawing.Size(98, 74);
+            this.tlpCustomersCountContent.Size = new System.Drawing.Size(102, 51);
             this.tlpCustomersCountContent.TabIndex = 0;
             // 
             // lblCustomersCountValue
             // 
             this.lblCustomersCountValue.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.lblCustomersCountValue.AutoSize = true;
-            this.lblCustomersCountValue.Location = new System.Drawing.Point(42, 37);
+            this.lblCustomersCountValue.Location = new System.Drawing.Point(44, 25);
             this.lblCustomersCountValue.Margin = new System.Windows.Forms.Padding(0);
             this.lblCustomersCountValue.Name = "lblCustomersCountValue";
             this.lblCustomersCountValue.Size = new System.Drawing.Size(15, 17);
@@ -243,7 +620,7 @@
             // 
             this.lblCustomersCountTitle.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.lblCustomersCountTitle.AutoSize = true;
-            this.lblCustomersCountTitle.Location = new System.Drawing.Point(12, 20);
+            this.lblCustomersCountTitle.Location = new System.Drawing.Point(14, 8);
             this.lblCustomersCountTitle.Margin = new System.Windows.Forms.Padding(0);
             this.lblCustomersCountTitle.Name = "lblCustomersCountTitle";
             this.lblCustomersCountTitle.Size = new System.Drawing.Size(75, 17);
@@ -253,9 +630,10 @@
             // picbCustomersCount
             // 
             this.picbCustomersCount.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picbCustomersCount.Location = new System.Drawing.Point(107, 3);
+            this.picbCustomersCount.Image = global::StorePilot.UI.Properties.Resources.customers_72;
+            this.picbCustomersCount.Location = new System.Drawing.Point(111, 3);
             this.picbCustomersCount.Name = "picbCustomersCount";
-            this.picbCustomersCount.Size = new System.Drawing.Size(63, 74);
+            this.picbCustomersCount.Size = new System.Drawing.Size(39, 51);
             this.picbCustomersCount.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picbCustomersCount.TabIndex = 1;
             this.picbCustomersCount.TabStop = false;
@@ -263,16 +641,16 @@
             // tlpSuppliersCount
             // 
             this.tlpSuppliersCount.ColumnCount = 2;
-            this.tlpSuppliersCount.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
-            this.tlpSuppliersCount.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
+            this.tlpSuppliersCount.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.tlpSuppliersCount.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70F));
             this.tlpSuppliersCount.Controls.Add(this.tlpSuppliersCountContent, 1, 0);
             this.tlpSuppliersCount.Controls.Add(this.picbSuppliersCount, 0, 0);
-            this.tlpSuppliersCount.Location = new System.Drawing.Point(394, 3);
-            this.tlpSuppliersCount.Margin = new System.Windows.Forms.Padding(0, 3, 16, 3);
+            this.tlpSuppliersCount.Location = new System.Drawing.Point(336, 3);
+            this.tlpSuppliersCount.Margin = new System.Windows.Forms.Padding(0, 3, 10, 3);
             this.tlpSuppliersCount.Name = "tlpSuppliersCount";
             this.tlpSuppliersCount.RowCount = 1;
             this.tlpSuppliersCount.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpSuppliersCount.Size = new System.Drawing.Size(173, 80);
+            this.tlpSuppliersCount.Size = new System.Drawing.Size(153, 57);
             this.tlpSuppliersCount.TabIndex = 5;
             // 
             // tlpSuppliersCountContent
@@ -287,14 +665,14 @@
             this.tlpSuppliersCountContent.RowCount = 2;
             this.tlpSuppliersCountContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpSuppliersCountContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpSuppliersCountContent.Size = new System.Drawing.Size(98, 74);
+            this.tlpSuppliersCountContent.Size = new System.Drawing.Size(102, 51);
             this.tlpSuppliersCountContent.TabIndex = 0;
             // 
             // lblSuppliersCountValue
             // 
             this.lblSuppliersCountValue.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.lblSuppliersCountValue.AutoSize = true;
-            this.lblSuppliersCountValue.Location = new System.Drawing.Point(42, 37);
+            this.lblSuppliersCountValue.Location = new System.Drawing.Point(44, 25);
             this.lblSuppliersCountValue.Margin = new System.Windows.Forms.Padding(0);
             this.lblSuppliersCountValue.Name = "lblSuppliersCountValue";
             this.lblSuppliersCountValue.Size = new System.Drawing.Size(15, 17);
@@ -305,7 +683,7 @@
             // 
             this.lblSuppliersCountTitle.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.lblSuppliersCountTitle.AutoSize = true;
-            this.lblSuppliersCountTitle.Location = new System.Drawing.Point(8, 20);
+            this.lblSuppliersCountTitle.Location = new System.Drawing.Point(10, 8);
             this.lblSuppliersCountTitle.Margin = new System.Windows.Forms.Padding(0);
             this.lblSuppliersCountTitle.Name = "lblSuppliersCountTitle";
             this.lblSuppliersCountTitle.Size = new System.Drawing.Size(83, 17);
@@ -315,42 +693,27 @@
             // picbSuppliersCount
             // 
             this.picbSuppliersCount.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picbSuppliersCount.Location = new System.Drawing.Point(107, 3);
+            this.picbSuppliersCount.Image = global::StorePilot.UI.Properties.Resources.suppliers_72;
+            this.picbSuppliersCount.Location = new System.Drawing.Point(111, 3);
             this.picbSuppliersCount.Name = "picbSuppliersCount";
-            this.picbSuppliersCount.Size = new System.Drawing.Size(63, 74);
+            this.picbSuppliersCount.Size = new System.Drawing.Size(39, 51);
             this.picbSuppliersCount.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picbSuppliersCount.TabIndex = 1;
             this.picbSuppliersCount.TabStop = false;
             // 
-            // chart1
-            // 
-            chartArea1.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.chart1.Legends.Add(legend1);
-            this.chart1.Location = new System.Drawing.Point(664, 186);
-            this.chart1.Name = "chart1";
-            series1.ChartArea = "ChartArea1";
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.chart1.Series.Add(series1);
-            this.chart1.Size = new System.Drawing.Size(300, 255);
-            this.chart1.TabIndex = 3;
-            this.chart1.Text = "chart1";
-            // 
             // tlpInvoicesCount
             // 
             this.tlpInvoicesCount.ColumnCount = 2;
-            this.tlpInvoicesCount.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
-            this.tlpInvoicesCount.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
+            this.tlpInvoicesCount.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.tlpInvoicesCount.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70F));
             this.tlpInvoicesCount.Controls.Add(this.tlpInvoicesCountContent, 1, 0);
             this.tlpInvoicesCount.Controls.Add(this.picbInvoicesCount, 0, 0);
-            this.tlpInvoicesCount.Location = new System.Drawing.Point(205, 3);
-            this.tlpInvoicesCount.Margin = new System.Windows.Forms.Padding(0, 3, 16, 3);
+            this.tlpInvoicesCount.Location = new System.Drawing.Point(173, 3);
+            this.tlpInvoicesCount.Margin = new System.Windows.Forms.Padding(0, 3, 10, 3);
             this.tlpInvoicesCount.Name = "tlpInvoicesCount";
             this.tlpInvoicesCount.RowCount = 1;
             this.tlpInvoicesCount.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpInvoicesCount.Size = new System.Drawing.Size(173, 80);
+            this.tlpInvoicesCount.Size = new System.Drawing.Size(153, 57);
             this.tlpInvoicesCount.TabIndex = 7;
             // 
             // tlpInvoicesCountContent
@@ -365,14 +728,14 @@
             this.tlpInvoicesCountContent.RowCount = 2;
             this.tlpInvoicesCountContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpInvoicesCountContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpInvoicesCountContent.Size = new System.Drawing.Size(98, 74);
+            this.tlpInvoicesCountContent.Size = new System.Drawing.Size(102, 51);
             this.tlpInvoicesCountContent.TabIndex = 0;
             // 
             // lblInvoicesTodayValue
             // 
             this.lblInvoicesTodayValue.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.lblInvoicesTodayValue.AutoSize = true;
-            this.lblInvoicesTodayValue.Location = new System.Drawing.Point(42, 37);
+            this.lblInvoicesTodayValue.Location = new System.Drawing.Point(44, 25);
             this.lblInvoicesTodayValue.Margin = new System.Windows.Forms.Padding(0);
             this.lblInvoicesTodayValue.Name = "lblInvoicesTodayValue";
             this.lblInvoicesTodayValue.Size = new System.Drawing.Size(15, 17);
@@ -383,7 +746,7 @@
             // 
             this.lblInvoicesTodayTitle.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.lblInvoicesTodayTitle.AutoSize = true;
-            this.lblInvoicesTodayTitle.Location = new System.Drawing.Point(1, 20);
+            this.lblInvoicesTodayTitle.Location = new System.Drawing.Point(3, 8);
             this.lblInvoicesTodayTitle.Margin = new System.Windows.Forms.Padding(0);
             this.lblInvoicesTodayTitle.Name = "lblInvoicesTodayTitle";
             this.lblInvoicesTodayTitle.Size = new System.Drawing.Size(97, 17);
@@ -393,9 +756,10 @@
             // picbInvoicesCount
             // 
             this.picbInvoicesCount.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picbInvoicesCount.Location = new System.Drawing.Point(107, 3);
+            this.picbInvoicesCount.Image = global::StorePilot.UI.Properties.Resources.invoice_72;
+            this.picbInvoicesCount.Location = new System.Drawing.Point(111, 3);
             this.picbInvoicesCount.Name = "picbInvoicesCount";
-            this.picbInvoicesCount.Size = new System.Drawing.Size(63, 74);
+            this.picbInvoicesCount.Size = new System.Drawing.Size(39, 51);
             this.picbInvoicesCount.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picbInvoicesCount.TabIndex = 1;
             this.picbInvoicesCount.TabStop = false;
@@ -403,16 +767,16 @@
             // tlpSalesToday
             // 
             this.tlpSalesToday.ColumnCount = 2;
-            this.tlpSalesToday.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
-            this.tlpSalesToday.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
+            this.tlpSalesToday.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.tlpSalesToday.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70F));
             this.tlpSalesToday.Controls.Add(this.tlpSalesTodayContent, 1, 0);
             this.tlpSalesToday.Controls.Add(this.picbSalesToday, 0, 0);
-            this.tlpSalesToday.Location = new System.Drawing.Point(16, 3);
-            this.tlpSalesToday.Margin = new System.Windows.Forms.Padding(0, 3, 16, 3);
+            this.tlpSalesToday.Location = new System.Drawing.Point(10, 3);
+            this.tlpSalesToday.Margin = new System.Windows.Forms.Padding(0, 3, 10, 3);
             this.tlpSalesToday.Name = "tlpSalesToday";
             this.tlpSalesToday.RowCount = 1;
             this.tlpSalesToday.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpSalesToday.Size = new System.Drawing.Size(173, 80);
+            this.tlpSalesToday.Size = new System.Drawing.Size(153, 57);
             this.tlpSalesToday.TabIndex = 8;
             // 
             // tlpSalesTodayContent
@@ -427,14 +791,14 @@
             this.tlpSalesTodayContent.RowCount = 2;
             this.tlpSalesTodayContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpSalesTodayContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpSalesTodayContent.Size = new System.Drawing.Size(98, 74);
+            this.tlpSalesTodayContent.Size = new System.Drawing.Size(102, 51);
             this.tlpSalesTodayContent.TabIndex = 0;
             // 
             // lblSalesTodayValue
             // 
             this.lblSalesTodayValue.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.lblSalesTodayValue.AutoSize = true;
-            this.lblSalesTodayValue.Location = new System.Drawing.Point(42, 37);
+            this.lblSalesTodayValue.Location = new System.Drawing.Point(44, 25);
             this.lblSalesTodayValue.Margin = new System.Windows.Forms.Padding(0);
             this.lblSalesTodayValue.Name = "lblSalesTodayValue";
             this.lblSalesTodayValue.Size = new System.Drawing.Size(15, 17);
@@ -445,7 +809,7 @@
             // 
             this.lblSalesTodayTitle.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.lblSalesTodayTitle.AutoSize = true;
-            this.lblSalesTodayTitle.Location = new System.Drawing.Point(9, 20);
+            this.lblSalesTodayTitle.Location = new System.Drawing.Point(11, 8);
             this.lblSalesTodayTitle.Margin = new System.Windows.Forms.Padding(0);
             this.lblSalesTodayTitle.Name = "lblSalesTodayTitle";
             this.lblSalesTodayTitle.Size = new System.Drawing.Size(80, 17);
@@ -455,9 +819,10 @@
             // picbSalesToday
             // 
             this.picbSalesToday.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picbSalesToday.Location = new System.Drawing.Point(107, 3);
+            this.picbSalesToday.Image = global::StorePilot.UI.Properties.Resources.sales_72;
+            this.picbSalesToday.Location = new System.Drawing.Point(111, 3);
             this.picbSalesToday.Name = "picbSalesToday";
-            this.picbSalesToday.Size = new System.Drawing.Size(63, 74);
+            this.picbSalesToday.Size = new System.Drawing.Size(39, 51);
             this.picbSalesToday.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picbSalesToday.TabIndex = 1;
             this.picbSalesToday.TabStop = false;
@@ -465,16 +830,16 @@
             // tlpPurchasesToday
             // 
             this.tlpPurchasesToday.ColumnCount = 2;
-            this.tlpPurchasesToday.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
-            this.tlpPurchasesToday.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
+            this.tlpPurchasesToday.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.tlpPurchasesToday.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70F));
             this.tlpPurchasesToday.Controls.Add(this.tlpPurchasesTodayContent, 1, 0);
             this.tlpPurchasesToday.Controls.Add(this.picbPurchasesToday, 0, 0);
-            this.tlpPurchasesToday.Location = new System.Drawing.Point(772, 89);
-            this.tlpPurchasesToday.Margin = new System.Windows.Forms.Padding(0, 3, 16, 3);
+            this.tlpPurchasesToday.Location = new System.Drawing.Point(662, 66);
+            this.tlpPurchasesToday.Margin = new System.Windows.Forms.Padding(0, 3, 10, 3);
             this.tlpPurchasesToday.Name = "tlpPurchasesToday";
             this.tlpPurchasesToday.RowCount = 1;
             this.tlpPurchasesToday.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpPurchasesToday.Size = new System.Drawing.Size(173, 80);
+            this.tlpPurchasesToday.Size = new System.Drawing.Size(153, 57);
             this.tlpPurchasesToday.TabIndex = 9;
             // 
             // tlpPurchasesTodayContent
@@ -489,14 +854,14 @@
             this.tlpPurchasesTodayContent.RowCount = 2;
             this.tlpPurchasesTodayContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpPurchasesTodayContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpPurchasesTodayContent.Size = new System.Drawing.Size(98, 74);
+            this.tlpPurchasesTodayContent.Size = new System.Drawing.Size(102, 51);
             this.tlpPurchasesTodayContent.TabIndex = 0;
             // 
             // lblPurchasesTodayValue
             // 
             this.lblPurchasesTodayValue.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.lblPurchasesTodayValue.AutoSize = true;
-            this.lblPurchasesTodayValue.Location = new System.Drawing.Point(42, 37);
+            this.lblPurchasesTodayValue.Location = new System.Drawing.Point(44, 25);
             this.lblPurchasesTodayValue.Margin = new System.Windows.Forms.Padding(0);
             this.lblPurchasesTodayValue.Name = "lblPurchasesTodayValue";
             this.lblPurchasesTodayValue.Size = new System.Drawing.Size(15, 17);
@@ -507,19 +872,20 @@
             // 
             this.lblPurchasesTodayTitle.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.lblPurchasesTodayTitle.AutoSize = true;
-            this.lblPurchasesTodayTitle.Location = new System.Drawing.Point(8, 20);
+            this.lblPurchasesTodayTitle.Location = new System.Drawing.Point(7, 8);
             this.lblPurchasesTodayTitle.Margin = new System.Windows.Forms.Padding(0);
             this.lblPurchasesTodayTitle.Name = "lblPurchasesTodayTitle";
-            this.lblPurchasesTodayTitle.Size = new System.Drawing.Size(83, 17);
+            this.lblPurchasesTodayTitle.Size = new System.Drawing.Size(89, 17);
             this.lblPurchasesTodayTitle.TabIndex = 0;
-            this.lblPurchasesTodayTitle.Text = "عدد الموردين:";
+            this.lblPurchasesTodayTitle.Text = "مشتريات اليوم:";
             // 
             // picbPurchasesToday
             // 
             this.picbPurchasesToday.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picbPurchasesToday.Location = new System.Drawing.Point(107, 3);
+            this.picbPurchasesToday.Image = global::StorePilot.UI.Properties.Resources.purchase_72;
+            this.picbPurchasesToday.Location = new System.Drawing.Point(111, 3);
             this.picbPurchasesToday.Name = "picbPurchasesToday";
-            this.picbPurchasesToday.Size = new System.Drawing.Size(63, 74);
+            this.picbPurchasesToday.Size = new System.Drawing.Size(39, 51);
             this.picbPurchasesToday.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picbPurchasesToday.TabIndex = 1;
             this.picbPurchasesToday.TabStop = false;
@@ -527,17 +893,18 @@
             // tlpEarningToday
             // 
             this.tlpEarningToday.ColumnCount = 2;
-            this.tlpEarningToday.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
-            this.tlpEarningToday.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
+            this.tlpEarningToday.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.tlpEarningToday.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70F));
             this.tlpEarningToday.Controls.Add(this.tlpEarningsTodayContent, 1, 0);
             this.tlpEarningToday.Controls.Add(this.picbEarningsToday, 0, 0);
-            this.tlpEarningToday.Location = new System.Drawing.Point(583, 89);
-            this.tlpEarningToday.Margin = new System.Windows.Forms.Padding(0, 3, 16, 3);
+            this.tlpEarningToday.Location = new System.Drawing.Point(499, 66);
+            this.tlpEarningToday.Margin = new System.Windows.Forms.Padding(0, 3, 10, 3);
             this.tlpEarningToday.Name = "tlpEarningToday";
             this.tlpEarningToday.RowCount = 1;
             this.tlpEarningToday.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpEarningToday.Size = new System.Drawing.Size(173, 80);
+            this.tlpEarningToday.Size = new System.Drawing.Size(153, 57);
             this.tlpEarningToday.TabIndex = 10;
+            this.tlpEarningToday.Visible = false;
             // 
             // tlpEarningsTodayContent
             // 
@@ -551,14 +918,14 @@
             this.tlpEarningsTodayContent.RowCount = 2;
             this.tlpEarningsTodayContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpEarningsTodayContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpEarningsTodayContent.Size = new System.Drawing.Size(98, 74);
+            this.tlpEarningsTodayContent.Size = new System.Drawing.Size(102, 51);
             this.tlpEarningsTodayContent.TabIndex = 0;
             // 
             // lblEarningsTodayValue
             // 
             this.lblEarningsTodayValue.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.lblEarningsTodayValue.AutoSize = true;
-            this.lblEarningsTodayValue.Location = new System.Drawing.Point(42, 37);
+            this.lblEarningsTodayValue.Location = new System.Drawing.Point(44, 25);
             this.lblEarningsTodayValue.Margin = new System.Windows.Forms.Padding(0);
             this.lblEarningsTodayValue.Name = "lblEarningsTodayValue";
             this.lblEarningsTodayValue.Size = new System.Drawing.Size(15, 17);
@@ -569,7 +936,7 @@
             // 
             this.lblEarningsTodayTitle.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.lblEarningsTodayTitle.AutoSize = true;
-            this.lblEarningsTodayTitle.Location = new System.Drawing.Point(17, 20);
+            this.lblEarningsTodayTitle.Location = new System.Drawing.Point(19, 8);
             this.lblEarningsTodayTitle.Margin = new System.Windows.Forms.Padding(0);
             this.lblEarningsTodayTitle.Name = "lblEarningsTodayTitle";
             this.lblEarningsTodayTitle.Size = new System.Drawing.Size(64, 17);
@@ -579,9 +946,10 @@
             // picbEarningsToday
             // 
             this.picbEarningsToday.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picbEarningsToday.Location = new System.Drawing.Point(107, 3);
+            this.picbEarningsToday.Image = global::StorePilot.UI.Properties.Resources.earnings_72;
+            this.picbEarningsToday.Location = new System.Drawing.Point(111, 3);
             this.picbEarningsToday.Name = "picbEarningsToday";
-            this.picbEarningsToday.Size = new System.Drawing.Size(63, 74);
+            this.picbEarningsToday.Size = new System.Drawing.Size(39, 51);
             this.picbEarningsToday.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picbEarningsToday.TabIndex = 1;
             this.picbEarningsToday.TabStop = false;
@@ -589,16 +957,16 @@
             // tlpDebtsCount
             // 
             this.tlpDebtsCount.ColumnCount = 2;
-            this.tlpDebtsCount.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40.11628F));
-            this.tlpDebtsCount.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 59.88372F));
+            this.tlpDebtsCount.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.tlpDebtsCount.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70F));
             this.tlpDebtsCount.Controls.Add(this.tlpDebtsCountContent, 1, 0);
             this.tlpDebtsCount.Controls.Add(this.picbDebtsCount, 0, 0);
-            this.tlpDebtsCount.Location = new System.Drawing.Point(394, 89);
+            this.tlpDebtsCount.Location = new System.Drawing.Point(336, 66);
             this.tlpDebtsCount.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
             this.tlpDebtsCount.Name = "tlpDebtsCount";
             this.tlpDebtsCount.RowCount = 1;
             this.tlpDebtsCount.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpDebtsCount.Size = new System.Drawing.Size(173, 80);
+            this.tlpDebtsCount.Size = new System.Drawing.Size(153, 57);
             this.tlpDebtsCount.TabIndex = 11;
             // 
             // tlpDebtsCountContent
@@ -613,14 +981,14 @@
             this.tlpDebtsCountContent.RowCount = 2;
             this.tlpDebtsCountContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpDebtsCountContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpDebtsCountContent.Size = new System.Drawing.Size(98, 74);
+            this.tlpDebtsCountContent.Size = new System.Drawing.Size(102, 51);
             this.tlpDebtsCountContent.TabIndex = 0;
             // 
             // lblDebtsCountValue
             // 
             this.lblDebtsCountValue.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.lblDebtsCountValue.AutoSize = true;
-            this.lblDebtsCountValue.Location = new System.Drawing.Point(42, 37);
+            this.lblDebtsCountValue.Location = new System.Drawing.Point(44, 25);
             this.lblDebtsCountValue.Margin = new System.Windows.Forms.Padding(0);
             this.lblDebtsCountValue.Name = "lblDebtsCountValue";
             this.lblDebtsCountValue.Size = new System.Drawing.Size(15, 17);
@@ -631,7 +999,7 @@
             // 
             this.lblDebtsCountTitle.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.lblDebtsCountTitle.AutoSize = true;
-            this.lblDebtsCountTitle.Location = new System.Drawing.Point(6, 20);
+            this.lblDebtsCountTitle.Location = new System.Drawing.Point(8, 8);
             this.lblDebtsCountTitle.Margin = new System.Windows.Forms.Padding(0);
             this.lblDebtsCountTitle.Name = "lblDebtsCountTitle";
             this.lblDebtsCountTitle.Size = new System.Drawing.Size(86, 17);
@@ -641,9 +1009,10 @@
             // picbDebtsCount
             // 
             this.picbDebtsCount.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picbDebtsCount.Location = new System.Drawing.Point(107, 3);
+            this.picbDebtsCount.Image = global::StorePilot.UI.Properties.Resources.debt_72;
+            this.picbDebtsCount.Location = new System.Drawing.Point(111, 3);
             this.picbDebtsCount.Name = "picbDebtsCount";
-            this.picbDebtsCount.Size = new System.Drawing.Size(63, 74);
+            this.picbDebtsCount.Size = new System.Drawing.Size(39, 51);
             this.picbDebtsCount.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picbDebtsCount.TabIndex = 1;
             this.picbDebtsCount.TabStop = false;
@@ -657,9 +1026,16 @@
             this.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "ucDashboardScreen";
             this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.Size = new System.Drawing.Size(971, 548);
+            this.Size = new System.Drawing.Size(971, 851);
             this.tlpContainer.ResumeLayout(false);
             this.tlpContainer.PerformLayout();
+            this.tlpQuickActions.ResumeLayout(false);
+            this.tlpTables.ResumeLayout(false);
+            this.pnlLowStockProducts.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.ctrlDgvLowStockProducts)).EndInit();
+            this.pnlRecentSales.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.ctrlDgvRecentSales)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             this.flpStatsCards.ResumeLayout(false);
             this.tlpProductsCount.ResumeLayout(false);
             this.tlpProductsCountContent.ResumeLayout(false);
@@ -673,7 +1049,6 @@
             this.tlpSuppliersCountContent.ResumeLayout(false);
             this.tlpSuppliersCountContent.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picbSuppliersCount)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             this.tlpInvoicesCount.ResumeLayout(false);
             this.tlpInvoicesCountContent.ResumeLayout(false);
             this.tlpInvoicesCountContent.PerformLayout();
@@ -743,5 +1118,26 @@
         private System.Windows.Forms.Label lblDebtsCountValue;
         private System.Windows.Forms.Label lblDebtsCountTitle;
         private System.Windows.Forms.PictureBox picbDebtsCount;
+        private System.Windows.Forms.TableLayoutPanel tlpTables;
+        private System.Windows.Forms.Panel pnlLowStockProducts;
+        private DevToolkit.BaseWinForms.Controls.CustomControls.ccDataGridView ctrlDgvLowStockProducts;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ProductName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Quantity;
+        private System.Windows.Forms.DataGridViewTextBoxColumn MinQuantity;
+        private System.Windows.Forms.Label lblLowStockProducts;
+        private System.Windows.Forms.Panel pnlRecentSales;
+        private DevToolkit.BaseWinForms.Controls.CustomControls.ccDataGridView ctrlDgvRecentSales;
+        private System.Windows.Forms.Label lblRecentSales;
+        private System.Windows.Forms.TableLayoutPanel tlpQuickActions;
+        private System.Windows.Forms.Button btnNewSale;
+        private System.Windows.Forms.Button btnNewPurchase;
+        private System.Windows.Forms.Button btnNewSupplier;
+        private System.Windows.Forms.Button btnNewProduct;
+        private System.Windows.Forms.DataGridViewTextBoxColumn InvoiceID;
+        private System.Windows.Forms.DataGridViewTextBoxColumn SaleInvoiceID;
+        private System.Windows.Forms.DataGridViewTextBoxColumn InvoiceDate;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CustomerName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NetTotal;
+        private System.Windows.Forms.Button btnNewCustomer;
     }
 }

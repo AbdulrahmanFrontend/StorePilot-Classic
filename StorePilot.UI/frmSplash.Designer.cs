@@ -42,7 +42,7 @@
             this.SplashScreen.Logo = global::StorePilot.UI.Properties.Resources.sink;
             this.SplashScreen.Margin = new System.Windows.Forms.Padding(0);
             this.SplashScreen.Name = "SplashScreen";
-            this.SplashScreen.Size = new System.Drawing.Size(626, 428);
+            this.SplashScreen.Size = new System.Drawing.Size(512, 382);
             this.SplashScreen.SubTitle = "رقم الإصدار 1.0 | StorePilot";
             this.SplashScreen.SubTitleFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SplashScreen.TabIndex = 0;
@@ -55,7 +55,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(626, 428);
+            this.ClientSize = new System.Drawing.Size(512, 382);
             this.Controls.Add(this.SplashScreen);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
