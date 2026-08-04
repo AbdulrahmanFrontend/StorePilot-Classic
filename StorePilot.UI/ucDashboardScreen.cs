@@ -6,11 +6,13 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SQLite;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace StorePilot.UI
 {
@@ -46,6 +48,10 @@ namespace StorePilot.UI
             _SetQuickActions();
 
             _ConfigureTablesSection();
+
+            _ConfigureChartAppearance();
+
+            _LoadChartData();
         }
 
         private void _SetCardsData()
@@ -104,6 +110,53 @@ namespace StorePilot.UI
         {
             if (result.IsSuccess)
                 dgv.DataSource = result.Data;
+        }
+
+        private void _ConfigureChartAppearance()
+        {
+            chart1.Series.Clear();
+            chart1.ChartAreas.Clear();
+            chart1.Legends.Clear();
+
+            var area = new ChartArea("MainArea");
+            area.AxisX.Title = "الأقسام";
+            area.AxisY.Title = "المنتجات";
+            area.AxisX.MajorGrid.LineColor = Color.LightGray;
+            area.AxisY.MajorGrid.LineColor = Color.LightGray;
+            area.AxisX.LabelStyle.IsStaggered = true;
+            area.AxisX.Interval = 1;
+            chart1.ChartAreas.Add(area);
+
+            var legend = new Legend("MainLegend") { Docking = Docking.Bottom };
+            chart1.Legends.Add(legend);
+
+            var series = new Series("إجمالي المبيعات")
+            {
+                ChartArea = "MainArea",
+                Legend = "MainLegend",
+                ChartType = SeriesChartType.Column,
+                XValueMember = "ProductName",
+                YValueMembers = "Quantity",
+                IsValueShownAsLabel = true,
+                Font = new Font("Segoe UI", 9, FontStyle.Bold),
+                LabelForeColor = Color.DarkBlue,
+                Color = Color.FromArgb(46, 117, 182),
+            };
+            series["PointWidth"] = "0.6";
+            chart1.Series.Add(series);
+        }
+
+        private void _LoadChartData()
+        {
+            var result = ProductService.GetLowStockProducts();
+            if (!result.IsSuccess)
+            {
+                MessageBox.Show("فشل في جلب البيانات: " + result.Message);
+                return;
+            }
+
+            chart1.DataSource = result.Data;
+            chart1.DataBind();
         }
 
         //private void btnNewSale_Click(object sender, EventArgs e)

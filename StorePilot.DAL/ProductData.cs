@@ -513,7 +513,7 @@ namespace StorePilot.DAL
         public static Result<DataTable> GetLowStockProducts()
         {
             string Query = @"SELECT ProductName, Quantity, MinQuantity FROM Products
-                ORDER BY ((Quantity - MinQuantity) ASC), ProductID ASC
+                ORDER BY (Quantity - MinQuantity) ASC
                 LIMIT 10;";
 
             return DbManager.Current.GetDataTable(CommandType.Text, Query);
