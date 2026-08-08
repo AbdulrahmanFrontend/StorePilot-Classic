@@ -296,16 +296,6 @@ namespace StorePilot.BLL
                 "فشلت عملية التحقق من وجود هذه الفاتورة في النظام!");
         }
 
-        public static Result<int> GetCount()
-        {
-            Result<int> result = PurchaseInvoiceData.GetCount();
-
-            if (result.IsSuccess)
-                return result;
-
-            return Result<int>.Failure("فشلت عملية الحصول على عدد فواتير الشراء!");
-        }
-
         public static Result<int> GetCount(
             int filterMethodIndex,
             string filterValue,
@@ -341,16 +331,6 @@ namespace StorePilot.BLL
 
             return Result<DataTable>.Failure(
                 "فشلت عملية الحصول على جميع فواتير الشراء!");
-        }
-
-        public static Result<decimal> GetSumOfDebts()
-        {
-            Result<decimal> result = PurchaseInvoiceData.GetSumOfDebts();
-
-            if (result.IsSuccess)
-                return result;
-
-            return Result<decimal>.Failure("فشلت عملية الوصول لمجموع ديون فواتير الشراء!");
         }
     }
 }

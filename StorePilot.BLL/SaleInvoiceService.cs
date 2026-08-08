@@ -318,16 +318,6 @@ namespace StorePilot.BLL
                 "فشلت عملية التحقق من وجود هذه الفاتورة في النظام!");
         }
 
-        public static Result<int> GetCount()
-        {
-            Result<int> result = SaleInvoiceData.GetCount();
-
-            if (result.IsSuccess)
-                return result;
-
-            return Result<int>.Failure("فشلت عملية الحصول على عدد فواتير البيع!");
-        }
-
         public static Result<int> GetCount(
             int filterMethodIndex,
             string filterValue,

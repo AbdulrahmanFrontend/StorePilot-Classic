@@ -1,10 +1,13 @@
-﻿using DevToolkit.Data.Core;
+﻿using DevToolkit.BaseWinForms.Theming;
+using DevToolkit.Data.Core;
+using DevToolkit.Infrastructure.Startup;
 using DevToolkit.Logging.Managers;
 using DevToolkit.Logging.Providers;
-using StorePilot.Core.Database;
-using StorePilot.Core.Helpers;
+using StorePilot.UI.Global.Classes;
+using DevToolkit.Infrastructure.Database;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,21 +23,23 @@ namespace StorePilot.UI
         [STAThread]
         static void Main()
         {
-            StartupManager.Initialize();
+            ThemeManager.CurrentTheme = Themes.Light;
 
-            FileLogger.LogFilePath = Path.Combine(
-                AppPaths.LogsFolder,
-                $"{DateTime.Today:yyyy-MM-dd}.log");
+            ThemeManager.ApplyTheme();
 
-            LogManager.Current = new FileLogger();
-
-            DbManager.Initialize(
-                DevToolkit.Data.Core.DbProviderFactory.DbProvider.SQLite);
-
-            DatabaseInitializer.Initialize();
-
-            DataConfiguration.Configure($@"Data Source={AppPaths.DatabasePath};
-                Foreign Keys=True;");
+            StartupManager.Initialize(new StartupOptions
+            {
+                ApplicationName = "StorePilot",
+                CompanyName = "DevToolkit",
+                EnableFileLogging = true,
+            },
+            new DatabaseOptions
+            {
+                CreateIfNotExists = true,
+                RunScripts = true,
+                DatabaseName = "StorePilotDB",
+                Provider = DbProviderFactory.DbProvider.SQLite
+            });
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

@@ -28,15 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle31 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle32 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle33 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle34 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle35 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle36 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend6 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tlpContainer = new System.Windows.Forms.TableLayoutPanel();
             this.tlpQuickActions = new System.Windows.Forms.TableLayoutPanel();
             this.btnNewCustomer = new System.Windows.Forms.Button();
@@ -59,7 +59,7 @@
             this.CustomerName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NetTotal = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.lblRecentSales = new System.Windows.Forms.Label();
-            this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.chtYearlySales = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.flpStatsCards = new System.Windows.Forms.FlowLayoutPanel();
             this.tlpProductsCount = new System.Windows.Forms.TableLayoutPanel();
             this.tlpProductsCountContent = new System.Windows.Forms.TableLayoutPanel();
@@ -108,7 +108,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.ctrlDgvLowStockProducts)).BeginInit();
             this.pnlRecentSales.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ctrlDgvRecentSales)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chtYearlySales)).BeginInit();
             this.flpStatsCards.SuspendLayout();
             this.tlpProductsCount.SuspendLayout();
             this.tlpProductsCountContent.SuspendLayout();
@@ -142,7 +142,7 @@
             this.tlpContainer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpContainer.Controls.Add(this.tlpQuickActions, 0, 3);
             this.tlpContainer.Controls.Add(this.tlpTables, 0, 2);
-            this.tlpContainer.Controls.Add(this.chart1, 0, 1);
+            this.tlpContainer.Controls.Add(this.chtYearlySales, 0, 1);
             this.tlpContainer.Controls.Add(this.flpStatsCards, 0, 0);
             this.tlpContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpContainer.Location = new System.Drawing.Point(0, 0);
@@ -289,35 +289,35 @@
             this.ctrlDgvLowStockProducts.AllowUserToAddRows = false;
             this.ctrlDgvLowStockProducts.AllowUserToDeleteRows = false;
             this.ctrlDgvLowStockProducts.AllowUserToResizeRows = false;
-            dataGridViewCellStyle31.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(251)))), ((int)(((byte)(252)))));
-            this.ctrlDgvLowStockProducts.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle31;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(251)))), ((int)(((byte)(252)))));
+            this.ctrlDgvLowStockProducts.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.ctrlDgvLowStockProducts.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.ctrlDgvLowStockProducts.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
             this.ctrlDgvLowStockProducts.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.ctrlDgvLowStockProducts.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.ctrlDgvLowStockProducts.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle32.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle32.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            dataGridViewCellStyle32.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle32.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle32.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle32.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle32.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.ctrlDgvLowStockProducts.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle32;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.ctrlDgvLowStockProducts.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.ctrlDgvLowStockProducts.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.ctrlDgvLowStockProducts.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ProductName,
             this.Quantity,
             this.MinQuantity});
             this.ctrlDgvLowStockProducts.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle33.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle33.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle33.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle33.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
-            dataGridViewCellStyle33.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(240)))), ((int)(((byte)(254)))));
-            dataGridViewCellStyle33.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
-            dataGridViewCellStyle33.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.ctrlDgvLowStockProducts.DefaultCellStyle = dataGridViewCellStyle33;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(240)))), ((int)(((byte)(254)))));
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.ctrlDgvLowStockProducts.DefaultCellStyle = dataGridViewCellStyle3;
             this.ctrlDgvLowStockProducts.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ctrlDgvLowStockProducts.EnableHeadersVisualStyles = false;
             this.ctrlDgvLowStockProducts.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(224)))), ((int)(((byte)(230)))));
@@ -382,21 +382,21 @@
             this.ctrlDgvRecentSales.AllowUserToAddRows = false;
             this.ctrlDgvRecentSales.AllowUserToDeleteRows = false;
             this.ctrlDgvRecentSales.AllowUserToResizeRows = false;
-            dataGridViewCellStyle34.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(251)))), ((int)(((byte)(252)))));
-            this.ctrlDgvRecentSales.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle34;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(251)))), ((int)(((byte)(252)))));
+            this.ctrlDgvRecentSales.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
             this.ctrlDgvRecentSales.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.ctrlDgvRecentSales.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
             this.ctrlDgvRecentSales.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.ctrlDgvRecentSales.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.ctrlDgvRecentSales.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle35.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle35.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            dataGridViewCellStyle35.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle35.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle35.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle35.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle35.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.ctrlDgvRecentSales.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle35;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.ctrlDgvRecentSales.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.ctrlDgvRecentSales.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.ctrlDgvRecentSales.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.InvoiceID,
@@ -405,14 +405,14 @@
             this.CustomerName,
             this.NetTotal});
             this.ctrlDgvRecentSales.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle36.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle36.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle36.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle36.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
-            dataGridViewCellStyle36.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(240)))), ((int)(((byte)(254)))));
-            dataGridViewCellStyle36.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
-            dataGridViewCellStyle36.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.ctrlDgvRecentSales.DefaultCellStyle = dataGridViewCellStyle36;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(240)))), ((int)(((byte)(254)))));
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.ctrlDgvRecentSales.DefaultCellStyle = dataGridViewCellStyle6;
             this.ctrlDgvRecentSales.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ctrlDgvRecentSales.EnableHeadersVisualStyles = false;
             this.ctrlDgvRecentSales.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(224)))), ((int)(((byte)(230)))));
@@ -480,20 +480,20 @@
             // 
             // chart1
             // 
-            this.chart1.Anchor = System.Windows.Forms.AnchorStyles.None;
-            chartArea6.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea6);
-            legend6.Name = "Legend1";
-            this.chart1.Legends.Add(legend6);
-            this.chart1.Location = new System.Drawing.Point(127, 140);
-            this.chart1.Name = "chart1";
-            series6.ChartArea = "ChartArea1";
-            series6.Legend = "Legend1";
-            series6.Name = "Series1";
-            this.chart1.Series.Add(series6);
-            this.chart1.Size = new System.Drawing.Size(717, 255);
-            this.chart1.TabIndex = 3;
-            this.chart1.Text = "chart1";
+            this.chtYearlySales.Anchor = System.Windows.Forms.AnchorStyles.None;
+            chartArea1.Name = "ChartArea1";
+            this.chtYearlySales.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chtYearlySales.Legends.Add(legend1);
+            this.chtYearlySales.Location = new System.Drawing.Point(127, 140);
+            this.chtYearlySales.Name = "chart1";
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.chtYearlySales.Series.Add(series1);
+            this.chtYearlySales.Size = new System.Drawing.Size(717, 255);
+            this.chtYearlySales.TabIndex = 3;
+            this.chtYearlySales.Text = "chart1";
             // 
             // flpStatsCards
             // 
@@ -1027,6 +1027,7 @@
             this.Name = "ucDashboardScreen";
             this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.Size = new System.Drawing.Size(971, 851);
+            this.Load += new System.EventHandler(this.ucDashboardScreen_Load);
             this.tlpContainer.ResumeLayout(false);
             this.tlpContainer.PerformLayout();
             this.tlpQuickActions.ResumeLayout(false);
@@ -1035,7 +1036,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.ctrlDgvLowStockProducts)).EndInit();
             this.pnlRecentSales.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ctrlDgvRecentSales)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chtYearlySales)).EndInit();
             this.flpStatsCards.ResumeLayout(false);
             this.tlpProductsCount.ResumeLayout(false);
             this.tlpProductsCountContent.ResumeLayout(false);
@@ -1092,7 +1093,7 @@
         private System.Windows.Forms.Label lblSuppliersCountValue;
         private System.Windows.Forms.Label lblSuppliersCountTitle;
         private System.Windows.Forms.PictureBox picbSuppliersCount;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chtYearlySales;
         private System.Windows.Forms.TableLayoutPanel tlpInvoicesCount;
         private System.Windows.Forms.TableLayoutPanel tlpInvoicesCountContent;
         private System.Windows.Forms.Label lblInvoicesTodayValue;

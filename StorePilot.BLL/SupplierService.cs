@@ -264,16 +264,6 @@ namespace StorePilot.BLL
                 "فشلت عملية الحصول على جميع الموردين!");
         }
 
-        public static Result<int> GetCount()
-        {
-            Result<int> result = SupplierData.GetCount();
-
-            if (result.IsSuccess)
-                return result;
-
-            return Result<int>.Failure("فشلت عملية الحصول على عدد الموردين!");
-        }
-
         public static Result<int> GetCount(
             int filterMethodIndex,
             string filterValue,

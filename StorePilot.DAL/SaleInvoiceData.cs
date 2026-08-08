@@ -159,15 +159,6 @@ namespace StorePilot.DAL
         }
 
         //used
-        public static Result<int> GetCount()
-        {
-            string Query = @"SELECT COUNT(SaleInvoiceID) AS SalesInvoicesCount 
-                    FROM view_SalesInvoicesDetails WHERE Cancelled = 0;";
-
-            return DataQueryService.Scalar<int>(CommandType.Text, Query);
-        }
-
-        //used
         public static Result<int> GetCount(
             int filterMethodIndex,
             string filterValue,
@@ -409,31 +400,6 @@ namespace StorePilot.DAL
                 CommandType.Text,
                 Query,
                 Parameters);
-        }
-
-        //used
-        public static Result<decimal> GetSumOfDebts()
-        {
-            string Query = @"SELECT COALESCE(
-                SUM(
-                    CASE
-                        WHEN InvoiceStatus = @InvoiceStatus
-                        THEN (TotalAmount - PaidAmount)
-                    END
-                ), 0) AS DebtsSum FROM view_SalesInvoicesDetails
-                WHERE Cancelled = 0;";
-
-            DbParameterInfo[] Parameters = new DbParameterInfo[]
-            {
-                new DbParameterInfo
-                {
-                    Name = "@InvoiceStatus",
-                    DbType = DbType.String,
-                    Value = InvoiceStatus.Deferred.ToArabic(),
-                }
-            };
-
-            return DataQueryService.Scalar<decimal>(CommandType.Text, Query, Parameters);
         }
     }
 }

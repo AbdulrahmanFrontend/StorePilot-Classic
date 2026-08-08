@@ -11,6 +11,7 @@ namespace StorePilot.DAL
 {
     public static class DashboardDAL
     {
+        //used
         public static Result<DataTable> GetSummary()
         {
             string Query = @"SELECT
@@ -55,19 +56,42 @@ namespace StorePilot.DAL
             return DbManager.Current?.GetDataTable(CommandType.Text, Query);
         }
 
-        public static Result<DataTable> GetSalesChart()
+        //used
+        public static Result<DataTable> GetChartData()
         {
-            return Result<DataTable>.Failure("");
+            string Query = @"SELECT
+                STRFTIME('%Y-%m', InvoiceDate) AS Period,
+                SUM(TotalAmount) AS TotalSales
+                FROM view_SalesInvoicesDetails
+                WHERE
+                    Cancelled = 0
+                    AND InvoiceDate >= DATETIME('now','-12 months')
+                GROUP BY STRFTIME('%Y-%m', InvoiceDate)
+                ORDER BY Period;";
+
+            return DbManager.Current?.GetDataTable(CommandType.Text, Query);
         }
 
+        //used
         public static Result<DataTable> GetLowStockProducts()
         {
-            return Result<DataTable>.Failure("");
+            string Query = @"SELECT ProductName, Quantity, MinQuantity FROM Products
+                WHERE Active = 1 AND Quantity <= MinQuantity
+                ORDER BY MinQuantity - Quantity DESC
+                LIMIT 10;";
+
+            return DbManager.Current.GetDataTable(CommandType.Text, Query);
         }
 
         public static Result<DataTable> GetRecentSales()
         {
-            return Result<DataTable>.Failure("");
+            string Query= @"SELECT InvoiceID, SaleInvoiceID, InvoiceDate, CustomerName,
+                TotalAmount FROM view_SalesInvoicesDetails
+                WHERE Cancelled = 0
+                ORDER BY SaleInvoiceID DESC
+                LIMIT 10;";
+
+            return DbManager.Current?.GetDataTable(CommandType.Text, Query);
         }
     }
 }

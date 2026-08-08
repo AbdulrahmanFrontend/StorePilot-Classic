@@ -502,24 +502,6 @@ namespace StorePilot.DAL
         }
 
         //used
-        public static Result<int> GetCount()
-        {
-            string Query = "SELECT COUNT(ProductID) AS ProductsCount FROM Products;";
-
-            return DataQueryService.Scalar<int>(CommandType.Text, Query);
-        }
-
-        //used
-        public static Result<DataTable> GetLowStockProducts()
-        {
-            string Query = @"SELECT ProductName, Quantity, MinQuantity FROM Products
-                ORDER BY (Quantity - MinQuantity) ASC
-                LIMIT 10;";
-
-            return DbManager.Current.GetDataTable(CommandType.Text, Query);
-        }
-
-        //used
         public static Result<int> GetCount(
             int filterMethodIndex,
             string filterValue,

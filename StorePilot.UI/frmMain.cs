@@ -3,8 +3,11 @@ using DevToolkit.BaseWinForms.Forms;
 using DevToolkit.BaseWinForms.Managers;
 using DevToolkit.BaseWinForms.Models;
 using DevToolkit.Core.Common;
-using StorePilot.BLL;
-using StorePilot.Core.Helpers;
+using DevToolkit.Core.Results;
+using DevToolkit.Data.Core;
+using DevToolkit.Infrastructure.Database;
+using DevToolkit.Infrastructure.FileSystem;
+using DevToolkit.Infrastructure.Startup;
 using StorePilot.UI.Global;
 using StorePilot.UI.Properties;
 using System;
@@ -108,8 +111,6 @@ namespace StorePilot.UI
             _Screen = _dashboardScreen;
 
             Sidebar.ScreenSelected += SelectScreen;
-
-            _dashboardScreen.ButtonClicked += DashboardButtonClicked;
         }
 
         private void SelectScreen(
@@ -186,34 +187,6 @@ namespace StorePilot.UI
             ScreenManager.ShowScreen(pnlContent, _Screen);
         }
 
-        private void DashboardButtonClicked(
-            object sender,
-            ucDashboardScreen.DashboardActionEventArgs e)
-        {
-            //switch (e.Action)
-            //{
-            //    case DashboardAction.AddProduct:
-            //        _OpenScreen(new ucProductsScreen(), 1);
-            //        break;
-
-            //    case DashboardAction.NewSale:
-            //        _OpenScreen(new ucSalesScreen(), 2);
-            //        break;
-
-            //    case DashboardAction.NewPayment:
-            //        _OpenScreen(new ucSalesScreen(), 2);
-            //        break;
-
-            //    case DashboardAction.NewPurchase:
-            //        _OpenScreen(new ucPurchasesScreen(), 4);
-            //        break;
-
-            //    default:
-            //        _ShowScreen();
-            //        break;
-            //}
-        }
-
         private void _ShowScreen(UserControl screen, int index)
         {
             _ShowScreen(screen);
@@ -237,46 +210,44 @@ namespace StorePilot.UI
             object sender,
             ucHeaderbar.ActionClickEventArgs e)
         {
-            sfdBackup.FileName =
-                $"Backup_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.db";
+            sfdBackup.FileName = $"Backup_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.db";
 
             string lastFolder = Settings.Default.LastBackupFolder;
 
             if (!string.IsNullOrWhiteSpace(lastFolder) &&
                 Directory.Exists(lastFolder))
-            {
                 sfdBackup.InitialDirectory = lastFolder;
-            }
             else
-            {
-                sfdBackup.InitialDirectory =
-                    Path.GetDirectoryName(AppPaths.BackupFolder);
-            }
+                sfdBackup.InitialDirectory = StartupManager.Folders.Backups;
 
             sfdBackup.RestoreDirectory = true;
 
             if (sfdBackup.ShowDialog() != DialogResult.OK)
                 return;
 
-            var result = BackupService.CreateBackup(sfdBackup.FileName);
+            string databaseName = Path.GetFileNameWithoutExtension(sfdBackup.FileName);
 
-            if (result.IsSuccess)
-            {
-                Settings.Default.LastBackupFolder =
-                    Path.GetDirectoryName(sfdBackup.FileName);
+            StartupManager.Folders.Backups = Path.GetDirectoryName(sfdBackup.FileName);
 
-                Settings.Default.Save();
+            Result<string> backupResult = DatabaseBackupManager.Backup(databaseName);
 
-                MessageBoxManager.ShowSuccess(
-                    result.Message,
-                    Language.ar);
-            }
-            else
+            if (!backupResult.IsSuccess)
             {
                 MessageBoxManager.ShowError(
-                    result.Message,
+                    "هذا الإسم موجود فعليا في المجلد ينبغي اختيار اسم آخر!",
                     Language.ar);
+
+                return;
             }
+
+            Settings.Default.LastBackupFolder = 
+                Path.GetDirectoryName(backupResult.Data);
+
+            Settings.Default.Save();
+
+            MessageBoxManager.ShowSuccess(
+                "تمت عملية النسخ الإحتياطي بنجاح.",
+                Language.ar);
         }
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)

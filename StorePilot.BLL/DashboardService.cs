@@ -11,30 +11,42 @@ namespace StorePilot.BLL
 {
     public static class DashboardService
     {
-        public static Result<DataSet> GetDashboardData()
+        public static Task<Result<DataSet>> GetDashboardData()
         {
             DataSet dataSet = new DataSet();
 
+            // Get summary data
             Result<DataTable> result = DashboardDAL.GetSummary();
-
-            if(!result.IsSuccess)
-                return Result<DataSet>.Failure("فشلت عملية الوصول لبيانات البطاقات!");
-
+            if (!result.IsSuccess)
+                return Task.Run(() => Result<DataSet>.Failure("فشلت عملية الوصول لبيانات البطاقات!"));
             result.Data.TableName = "Summary";
-
             dataSet.Tables.Add(result.Data);
 
-            //DataTable salesChartTable = new DataTable("SalesChart");
+            // Get chart data
+            result = DashboardDAL.GetChartData();
+            if (!result.IsSuccess)
+                return Task.Run(() => Result<DataSet>.Failure(
+                    "فشلت عملية الوصول لبيانات الرسم البياني!"));
+            result.Data.TableName = "ChartData";
+            dataSet.Tables.Add(result.Data);
 
-            //DataTable lowStockTable = new DataTable("LowStockProducts");
+            // Get low stock products data
+            result = DashboardDAL.GetLowStockProducts();
+            if (!result.IsSuccess)
+                return Task.Run(() => Result<DataSet>.Failure(
+                    "فشلت عملية الوصول لبيانات المنتجات منخفضة المخزون!"));
+            result.Data.TableName = "LowStockProducts";
+            dataSet.Tables.Add(result.Data); 
 
-            //DataTable recentSalesTable = new DataTable("RecentSales");
+            // Get recent sales data
+            result = DashboardDAL.GetRecentSales();
+            if (!result.IsSuccess)
+                return Task.Run(() => Result<DataSet>.Failure(
+                    "فشلت عملية الوصول لبيانات المنتجات منخفضة المخزون!"));
+            result.Data.TableName = "RecentSales";
+            dataSet.Tables.Add(result.Data);
 
-            //dataSet.Tables.Add(salesChartTable);
-            //dataSet.Tables.Add(lowStockTable);
-            //dataSet.Tables.Add(recentSalesTable);
-
-            return Result<DataSet>.Success(dataSet);
+            return Task.Run(() => Result<DataSet>.Success(dataSet));
         }
     }
 }

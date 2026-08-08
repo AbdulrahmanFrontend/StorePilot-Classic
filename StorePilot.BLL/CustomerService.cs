@@ -236,16 +236,6 @@ namespace StorePilot.BLL
                 "فشلت عملية التحقق من وجود هذا العميل في النظام!");
         }
 
-        public static Result<int> GetCount()
-        {
-            Result<int> result = CustomerData.GetCount();
-
-            if (result.IsSuccess)
-                return result;
-
-            return Result<int>.Failure("فشلت عملية الحصول على عدد العملاء!");
-        }
-
         public static Result<int> GetCount(
             int filterMethodIndex,
             string filterValue,

@@ -46,6 +46,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DevToolkit\DevToolkit.Data\bin\Debug\DevToolkit.Data.dll</HintPath>
     </Reference>
+    <Reference Include="DevToolkit.Infrastructure">
+      <HintPath>..\DevToolkit\DevToolkit.Infrastructure\bin\Debug\DevToolkit.Infrastructure.dll</HintPath>
+    </Reference>
     <Reference Include="DevToolkit.Logging, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DevToolkit\DevToolkit.Logging\bin\Debug\DevToolkit.Logging.dll</HintPath>
@@ -86,6 +89,8 @@
     <Compile Include="frmSplash.Designer.cs">
       <DependentUpon>frmSplash.cs</DependentUpon>
     </Compile>
+    <Compile Include="Global\Classes\Theme.cs" />
+    <Compile Include="Global\Classes\ThemeManager.cs" />
     <Compile Include="Global\Classes\UIEnums.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -152,14 +152,6 @@ namespace StorePilot.DAL
         }
 
         //used
-        public static Result<int> GetCount()
-        {
-            string Query = "SELECT COUNT(SupplierID) FROM view_SuppliersDetails;";
-
-            return DataQueryService.Scalar<int>(CommandType.Text, Query);
-        }
-
-        //used
         public static Result<int> GetCount(
             int filterMethodIndex,
             string filterValue,

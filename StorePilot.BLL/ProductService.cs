@@ -197,27 +197,6 @@ namespace StorePilot.BLL
                 "فشلت عملية التحقق من وجود هذا الصنف في النظام!");
         }
 
-        public static Result<int> GetCount()
-        {
-            Result<int> result = ProductData.GetCount();
-
-            if (result.IsSuccess)
-                return result;
-
-            return Result<int>.Failure("فشلت عملية الحصول على عدد الأصناف!");
-        }
-
-        public static Result<DataTable> GetLowStockProducts()
-        {
-            Result<DataTable> result = ProductData.GetLowStockProducts();
-
-            if (result.IsSuccess)
-                return result;
-
-            return Result<DataTable>.Failure(
-                "فشلت عملية الحصول على أكثر 10 أصناف نقصا من المخزن!");
-        }
-
         public static Result<DataTable> GetProducts(
             int currentPage,
             int pageSize,

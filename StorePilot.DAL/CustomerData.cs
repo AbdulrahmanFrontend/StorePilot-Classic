@@ -287,15 +287,6 @@ namespace StorePilot.DAL
         }
 
         //used
-        public static Result<int> GetCount()
-        {
-            string Query = @"SELECT COUNT(CustomerID) FROM view_CustomersDetails
-                WHERE Active = 1;";
-
-            return DataQueryService.Scalar<int>(CommandType.Text, Query);
-        }
-
-        //used
         public static Result<DataTable> GetForSelection()
         {
             string Query = @"SELECT CustomerID, Name FROM view_CustomersDetails
