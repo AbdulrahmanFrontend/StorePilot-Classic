@@ -6,13 +6,10 @@ using System.Threading.Tasks;
 
 namespace StorePilot.UI.Global.Classes
 {
-    public enum DashboardAction
+    public enum frmMode
     {
-        AddProduct = 0,
-        AddCustomer = 1,
-        AddSupplier = 2,
-        AddSalesInvoice = 3,
-        AddPurchaseInvoice = 4,
-        AddCashTransaction = 5,
+        AddNew = 0,
+        Update = 1,
+        Edit = 2,
     }
 }

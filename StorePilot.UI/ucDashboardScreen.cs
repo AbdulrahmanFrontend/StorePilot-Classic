@@ -3,7 +3,10 @@ using DevToolkit.BaseWinForms.Managers;
 using DevToolkit.Core.Common;
 using DevToolkit.Core.Results;
 using StorePilot.BLL;
+using StorePilot.UI.Customers;
 using StorePilot.UI.Global.Classes;
+using StorePilot.UI.Products;
+using StorePilot.UI.Suppliers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -27,15 +30,15 @@ namespace StorePilot.UI
 
         private async void ucDashboardScreen_Load(object sender, EventArgs e)
         {
-            Result<DataSet> result = await DashboardService.GetDashboardData();
-
             _ConfigureAppearance();
 
-            _LoadData(result);
+            await _LoadDataAsync();
         }
 
-        private void _LoadData(Result<DataSet> result)
+        private async Task _LoadDataAsync()
         {
+            Result<DataSet> result = await DashboardService.GetDashboardData();
+
             if (!result.IsSuccess)
             {
                 MessageBoxManager.ShowError(result.Message, Language.ar);
@@ -78,24 +81,57 @@ namespace StorePilot.UI
         {
             _SetCardsStyles();
             _SetQuickActions();
-            _ConfigureTablesAppearance();
             _ConfigureChartAppearance();
             _ConfigureTablesAppearance();
         }
 
         private void _SetCardsStyles()
         {
-            
+            tlpProductsCount.BackColor = Theme.Surface;
+            tlpProductsCount.ForeColor = Theme.TextSecondary;
+
+            tlpCustomersCount.BackColor = Theme.Surface;
+            tlpCustomersCount.ForeColor = Theme.TextSecondary;
+
+            tlpSuppliersCount.BackColor = Theme.Surface;
+            tlpSuppliersCount.ForeColor = Theme.TextSecondary;
+
+            tlpInvoicesCount.BackColor = Theme.Surface;
+            tlpInvoicesCount.ForeColor = Theme.TextSecondary;
+
+            tlpSalesToday.BackColor = Theme.Surface;
+            tlpSalesToday.ForeColor = Theme.TextSecondary;
+
+            tlpPurchasesToday.BackColor = Theme.Surface;
+            tlpPurchasesToday.ForeColor = Theme.TextSecondary;
+
+            tlpDebtsCount.BackColor = Theme.Surface;
+            tlpDebtsCount.ForeColor = Theme.TextSecondary;
         }
 
         private void _SetQuickActions()
         {
-            
+            foreach (Control ctrl in tlpQuickActions.Controls)
+            {
+                if (ctrl is Button btn)
+                {
+                    btn.BackColor = Theme.Primary;
+                    btn.ForeColor = Color.White;
+                }
+            }
+
+            tlpQuickActions.BackColor = Theme.Border;
         }
 
         private void _ConfigureTablesAppearance()
         {
-            
+            tlpTables.BackColor = Theme.Surface;
+
+            lblRecentSales.BackColor = Theme.Background;
+            lblRecentSales.ForeColor = Theme.TextSecondary;
+
+            lblLowStockProducts.BackColor = Theme.Background;
+            lblLowStockProducts.ForeColor = Theme.TextSecondary;
         }
 
         private void _ConfigureChartAppearance()
@@ -144,6 +180,42 @@ namespace StorePilot.UI
                     e.FormattingApplied = true;
                 }
             }
+        }
+
+        private void btnNewSupplier_Click(object sender, EventArgs e)
+        {
+            var frm = new frmAddEditUpdateSupplier();
+            frm.DataBack += Frm_DataBack;
+            frm.ShowDialog();
+        }
+
+        private async void Frm_DataBack(object sender)
+        {
+            await _LoadDataAsync();
+        }
+
+        private void btnNewCustomer_Click(object sender, EventArgs e)
+        {
+            var frm = new frmAddEditUpdateCustomer();
+            frm.DataBack += Frm_DataBack;
+            frm.ShowDialog();
+        }
+
+        private void btnNewProduct_Click(object sender, EventArgs e)
+        {
+            var frm = new frmAddEditUpdateProduct();
+            frm.DataBack += Frm_DataBack;
+            frm.ShowDialog();
+        }
+
+        private void btnNewPurchase_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnNewSale_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

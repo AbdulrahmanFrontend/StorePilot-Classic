@@ -27,20 +27,6 @@ namespace StorePilot.UI
 
             ThemeManager.ApplyTheme();
 
-            StartupManager.Initialize(new StartupOptions
-            {
-                ApplicationName = "StorePilot",
-                CompanyName = "DevToolkit",
-                EnableFileLogging = true,
-            },
-            new DatabaseOptions
-            {
-                CreateIfNotExists = true,
-                RunScripts = true,
-                DatabaseName = "StorePilotDB",
-                Provider = DbProviderFactory.DbProvider.SQLite
-            });
-
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new frmSplash());

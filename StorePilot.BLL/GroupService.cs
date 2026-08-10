@@ -41,7 +41,13 @@ namespace StorePilot.BLL
             Result<DataTable> result = GroupData.GetAll();
 
             if (result.IsSuccess)
-                return result;
+            {
+                if (result.Data != null)
+                    return result;
+
+                return Result<DataTable>.Failure(
+                    "لا يوجد أي مجموعات مسجلة في النظام!");
+            }
 
             return Result<DataTable>.Failure("فشلت عملية الوصول لجميع المجموعات!");
         }

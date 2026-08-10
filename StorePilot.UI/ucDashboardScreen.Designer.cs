@@ -28,15 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle25 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle26 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle27 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle28 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle29 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle30 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tlpContainer = new System.Windows.Forms.TableLayoutPanel();
             this.tlpQuickActions = new System.Windows.Forms.TableLayoutPanel();
             this.btnNewCustomer = new System.Windows.Forms.Button();
@@ -185,13 +185,14 @@
             this.btnNewCustomer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnNewCustomer.Image = global::StorePilot.UI.Properties.Resources.customer;
             this.btnNewCustomer.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnNewCustomer.Location = new System.Drawing.Point(606, 8);
+            this.btnNewCustomer.Location = new System.Drawing.Point(606, 3);
             this.btnNewCustomer.Name = "btnNewCustomer";
             this.btnNewCustomer.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.btnNewCustomer.Size = new System.Drawing.Size(130, 26);
+            this.btnNewCustomer.Size = new System.Drawing.Size(130, 36);
             this.btnNewCustomer.TabIndex = 4;
             this.btnNewCustomer.Text = "عميل جديد";
             this.btnNewCustomer.UseVisualStyleBackColor = false;
+            this.btnNewCustomer.Click += new System.EventHandler(this.btnNewCustomer_Click);
             // 
             // btnNewSupplier
             // 
@@ -201,13 +202,14 @@
             this.btnNewSupplier.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnNewSupplier.Image = global::StorePilot.UI.Properties.Resources.supplier;
             this.btnNewSupplier.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnNewSupplier.Location = new System.Drawing.Point(797, 8);
+            this.btnNewSupplier.Location = new System.Drawing.Point(797, 3);
             this.btnNewSupplier.Name = "btnNewSupplier";
             this.btnNewSupplier.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.btnNewSupplier.Size = new System.Drawing.Size(130, 26);
+            this.btnNewSupplier.Size = new System.Drawing.Size(130, 36);
             this.btnNewSupplier.TabIndex = 0;
             this.btnNewSupplier.Text = "مورد جديد";
             this.btnNewSupplier.UseVisualStyleBackColor = false;
+            this.btnNewSupplier.Click += new System.EventHandler(this.btnNewSupplier_Click);
             // 
             // btnNewSale
             // 
@@ -217,13 +219,14 @@
             this.btnNewSale.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnNewSale.Image = global::StorePilot.UI.Properties.Resources.sales;
             this.btnNewSale.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnNewSale.Location = new System.Drawing.Point(32, 8);
+            this.btnNewSale.Location = new System.Drawing.Point(32, 3);
             this.btnNewSale.Name = "btnNewSale";
             this.btnNewSale.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.btnNewSale.Size = new System.Drawing.Size(130, 26);
+            this.btnNewSale.Size = new System.Drawing.Size(130, 36);
             this.btnNewSale.TabIndex = 3;
             this.btnNewSale.Text = "بيع جديد";
             this.btnNewSale.UseVisualStyleBackColor = false;
+            this.btnNewSale.Click += new System.EventHandler(this.btnNewSale_Click);
             // 
             // btnNewPurchase
             // 
@@ -233,13 +236,14 @@
             this.btnNewPurchase.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnNewPurchase.Image = global::StorePilot.UI.Properties.Resources.purchases;
             this.btnNewPurchase.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnNewPurchase.Location = new System.Drawing.Point(224, 8);
+            this.btnNewPurchase.Location = new System.Drawing.Point(224, 3);
             this.btnNewPurchase.Name = "btnNewPurchase";
             this.btnNewPurchase.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.btnNewPurchase.Size = new System.Drawing.Size(130, 26);
+            this.btnNewPurchase.Size = new System.Drawing.Size(130, 36);
             this.btnNewPurchase.TabIndex = 2;
             this.btnNewPurchase.Text = "شراء جديد";
             this.btnNewPurchase.UseVisualStyleBackColor = false;
+            this.btnNewPurchase.Click += new System.EventHandler(this.btnNewPurchase_Click);
             // 
             // btnNewProduct
             // 
@@ -249,13 +253,14 @@
             this.btnNewProduct.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnNewProduct.Image = global::StorePilot.UI.Properties.Resources.product;
             this.btnNewProduct.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnNewProduct.Location = new System.Drawing.Point(415, 8);
+            this.btnNewProduct.Location = new System.Drawing.Point(415, 3);
             this.btnNewProduct.Name = "btnNewProduct";
             this.btnNewProduct.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.btnNewProduct.Size = new System.Drawing.Size(130, 26);
+            this.btnNewProduct.Size = new System.Drawing.Size(130, 36);
             this.btnNewProduct.TabIndex = 1;
             this.btnNewProduct.Text = "منتج جديد";
             this.btnNewProduct.UseVisualStyleBackColor = false;
+            this.btnNewProduct.Click += new System.EventHandler(this.btnNewProduct_Click);
             // 
             // tlpTables
             // 
@@ -289,35 +294,35 @@
             this.ctrlDgvLowStockProducts.AllowUserToAddRows = false;
             this.ctrlDgvLowStockProducts.AllowUserToDeleteRows = false;
             this.ctrlDgvLowStockProducts.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(251)))), ((int)(((byte)(252)))));
-            this.ctrlDgvLowStockProducts.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle25.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(251)))), ((int)(((byte)(252)))));
+            this.ctrlDgvLowStockProducts.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle25;
             this.ctrlDgvLowStockProducts.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.ctrlDgvLowStockProducts.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
             this.ctrlDgvLowStockProducts.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.ctrlDgvLowStockProducts.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.ctrlDgvLowStockProducts.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.ctrlDgvLowStockProducts.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle26.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            dataGridViewCellStyle26.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle26.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle26.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle26.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle26.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.ctrlDgvLowStockProducts.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle26;
             this.ctrlDgvLowStockProducts.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.ctrlDgvLowStockProducts.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ProductName,
             this.Quantity,
             this.MinQuantity});
             this.ctrlDgvLowStockProducts.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(240)))), ((int)(((byte)(254)))));
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.ctrlDgvLowStockProducts.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle27.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle27.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle27.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle27.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
+            dataGridViewCellStyle27.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(240)))), ((int)(((byte)(254)))));
+            dataGridViewCellStyle27.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
+            dataGridViewCellStyle27.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.ctrlDgvLowStockProducts.DefaultCellStyle = dataGridViewCellStyle27;
             this.ctrlDgvLowStockProducts.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ctrlDgvLowStockProducts.EnableHeadersVisualStyles = false;
             this.ctrlDgvLowStockProducts.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(224)))), ((int)(((byte)(230)))));
@@ -382,21 +387,21 @@
             this.ctrlDgvRecentSales.AllowUserToAddRows = false;
             this.ctrlDgvRecentSales.AllowUserToDeleteRows = false;
             this.ctrlDgvRecentSales.AllowUserToResizeRows = false;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(251)))), ((int)(((byte)(252)))));
-            this.ctrlDgvRecentSales.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle28.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(251)))), ((int)(((byte)(252)))));
+            this.ctrlDgvRecentSales.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle28;
             this.ctrlDgvRecentSales.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.ctrlDgvRecentSales.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
             this.ctrlDgvRecentSales.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.ctrlDgvRecentSales.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.ctrlDgvRecentSales.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.ctrlDgvRecentSales.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle29.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle29.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            dataGridViewCellStyle29.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle29.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle29.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle29.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle29.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.ctrlDgvRecentSales.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle29;
             this.ctrlDgvRecentSales.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.ctrlDgvRecentSales.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.InvoiceID,
@@ -405,14 +410,14 @@
             this.CustomerName,
             this.NetTotal});
             this.ctrlDgvRecentSales.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(240)))), ((int)(((byte)(254)))));
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.ctrlDgvRecentSales.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle30.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle30.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle30.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle30.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
+            dataGridViewCellStyle30.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(240)))), ((int)(((byte)(254)))));
+            dataGridViewCellStyle30.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
+            dataGridViewCellStyle30.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.ctrlDgvRecentSales.DefaultCellStyle = dataGridViewCellStyle30;
             this.ctrlDgvRecentSales.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ctrlDgvRecentSales.EnableHeadersVisualStyles = false;
             this.ctrlDgvRecentSales.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(224)))), ((int)(((byte)(230)))));
@@ -478,19 +483,19 @@
             this.lblRecentSales.Text = "آخر فواتير البيع:";
             this.lblRecentSales.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // chart1
+            // chtYearlySales
             // 
             this.chtYearlySales.Anchor = System.Windows.Forms.AnchorStyles.None;
-            chartArea1.Name = "ChartArea1";
-            this.chtYearlySales.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.chtYearlySales.Legends.Add(legend1);
+            chartArea5.Name = "ChartArea1";
+            this.chtYearlySales.ChartAreas.Add(chartArea5);
+            legend5.Name = "Legend1";
+            this.chtYearlySales.Legends.Add(legend5);
             this.chtYearlySales.Location = new System.Drawing.Point(127, 140);
-            this.chtYearlySales.Name = "chart1";
-            series1.ChartArea = "ChartArea1";
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.chtYearlySales.Series.Add(series1);
+            this.chtYearlySales.Name = "chtYearlySales";
+            series5.ChartArea = "ChartArea1";
+            series5.Legend = "Legend1";
+            series5.Name = "Series1";
+            this.chtYearlySales.Series.Add(series5);
             this.chtYearlySales.Size = new System.Drawing.Size(717, 255);
             this.chtYearlySales.TabIndex = 3;
             this.chtYearlySales.Text = "chart1";
@@ -546,8 +551,8 @@
             // 
             this.lblProductsCountValue.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.lblProductsCountValue.AutoSize = true;
-            this.lblProductsCountValue.Location = new System.Drawing.Point(44, 25);
-            this.lblProductsCountValue.Margin = new System.Windows.Forms.Padding(0);
+            this.lblProductsCountValue.Location = new System.Drawing.Point(44, 30);
+            this.lblProductsCountValue.Margin = new System.Windows.Forms.Padding(0, 5, 0, 0);
             this.lblProductsCountValue.Name = "lblProductsCountValue";
             this.lblProductsCountValue.Size = new System.Drawing.Size(15, 17);
             this.lblProductsCountValue.TabIndex = 1;
@@ -557,8 +562,8 @@
             // 
             this.lblProductsCountTitle.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.lblProductsCountTitle.AutoSize = true;
-            this.lblProductsCountTitle.Location = new System.Drawing.Point(10, 8);
-            this.lblProductsCountTitle.Margin = new System.Windows.Forms.Padding(0);
+            this.lblProductsCountTitle.Location = new System.Drawing.Point(10, 3);
+            this.lblProductsCountTitle.Margin = new System.Windows.Forms.Padding(0, 0, 0, 5);
             this.lblProductsCountTitle.Name = "lblProductsCountTitle";
             this.lblProductsCountTitle.Size = new System.Drawing.Size(83, 17);
             this.lblProductsCountTitle.TabIndex = 0;
@@ -609,8 +614,8 @@
             // 
             this.lblCustomersCountValue.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.lblCustomersCountValue.AutoSize = true;
-            this.lblCustomersCountValue.Location = new System.Drawing.Point(44, 25);
-            this.lblCustomersCountValue.Margin = new System.Windows.Forms.Padding(0);
+            this.lblCustomersCountValue.Location = new System.Drawing.Point(44, 30);
+            this.lblCustomersCountValue.Margin = new System.Windows.Forms.Padding(0, 5, 0, 0);
             this.lblCustomersCountValue.Name = "lblCustomersCountValue";
             this.lblCustomersCountValue.Size = new System.Drawing.Size(15, 17);
             this.lblCustomersCountValue.TabIndex = 1;
@@ -620,8 +625,8 @@
             // 
             this.lblCustomersCountTitle.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.lblCustomersCountTitle.AutoSize = true;
-            this.lblCustomersCountTitle.Location = new System.Drawing.Point(14, 8);
-            this.lblCustomersCountTitle.Margin = new System.Windows.Forms.Padding(0);
+            this.lblCustomersCountTitle.Location = new System.Drawing.Point(14, 3);
+            this.lblCustomersCountTitle.Margin = new System.Windows.Forms.Padding(0, 0, 0, 5);
             this.lblCustomersCountTitle.Name = "lblCustomersCountTitle";
             this.lblCustomersCountTitle.Size = new System.Drawing.Size(75, 17);
             this.lblCustomersCountTitle.TabIndex = 0;
@@ -672,8 +677,8 @@
             // 
             this.lblSuppliersCountValue.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.lblSuppliersCountValue.AutoSize = true;
-            this.lblSuppliersCountValue.Location = new System.Drawing.Point(44, 25);
-            this.lblSuppliersCountValue.Margin = new System.Windows.Forms.Padding(0);
+            this.lblSuppliersCountValue.Location = new System.Drawing.Point(44, 30);
+            this.lblSuppliersCountValue.Margin = new System.Windows.Forms.Padding(0, 5, 0, 0);
             this.lblSuppliersCountValue.Name = "lblSuppliersCountValue";
             this.lblSuppliersCountValue.Size = new System.Drawing.Size(15, 17);
             this.lblSuppliersCountValue.TabIndex = 1;
@@ -683,8 +688,8 @@
             // 
             this.lblSuppliersCountTitle.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.lblSuppliersCountTitle.AutoSize = true;
-            this.lblSuppliersCountTitle.Location = new System.Drawing.Point(10, 8);
-            this.lblSuppliersCountTitle.Margin = new System.Windows.Forms.Padding(0);
+            this.lblSuppliersCountTitle.Location = new System.Drawing.Point(10, 3);
+            this.lblSuppliersCountTitle.Margin = new System.Windows.Forms.Padding(0, 0, 0, 5);
             this.lblSuppliersCountTitle.Name = "lblSuppliersCountTitle";
             this.lblSuppliersCountTitle.Size = new System.Drawing.Size(83, 17);
             this.lblSuppliersCountTitle.TabIndex = 0;
@@ -735,8 +740,8 @@
             // 
             this.lblInvoicesTodayValue.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.lblInvoicesTodayValue.AutoSize = true;
-            this.lblInvoicesTodayValue.Location = new System.Drawing.Point(44, 25);
-            this.lblInvoicesTodayValue.Margin = new System.Windows.Forms.Padding(0);
+            this.lblInvoicesTodayValue.Location = new System.Drawing.Point(44, 30);
+            this.lblInvoicesTodayValue.Margin = new System.Windows.Forms.Padding(0, 5, 0, 0);
             this.lblInvoicesTodayValue.Name = "lblInvoicesTodayValue";
             this.lblInvoicesTodayValue.Size = new System.Drawing.Size(15, 17);
             this.lblInvoicesTodayValue.TabIndex = 1;
@@ -746,8 +751,8 @@
             // 
             this.lblInvoicesTodayTitle.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.lblInvoicesTodayTitle.AutoSize = true;
-            this.lblInvoicesTodayTitle.Location = new System.Drawing.Point(3, 8);
-            this.lblInvoicesTodayTitle.Margin = new System.Windows.Forms.Padding(0);
+            this.lblInvoicesTodayTitle.Location = new System.Drawing.Point(3, 3);
+            this.lblInvoicesTodayTitle.Margin = new System.Windows.Forms.Padding(0, 0, 0, 5);
             this.lblInvoicesTodayTitle.Name = "lblInvoicesTodayTitle";
             this.lblInvoicesTodayTitle.Size = new System.Drawing.Size(97, 17);
             this.lblInvoicesTodayTitle.TabIndex = 0;
@@ -798,8 +803,8 @@
             // 
             this.lblSalesTodayValue.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.lblSalesTodayValue.AutoSize = true;
-            this.lblSalesTodayValue.Location = new System.Drawing.Point(44, 25);
-            this.lblSalesTodayValue.Margin = new System.Windows.Forms.Padding(0);
+            this.lblSalesTodayValue.Location = new System.Drawing.Point(44, 30);
+            this.lblSalesTodayValue.Margin = new System.Windows.Forms.Padding(0, 5, 0, 0);
             this.lblSalesTodayValue.Name = "lblSalesTodayValue";
             this.lblSalesTodayValue.Size = new System.Drawing.Size(15, 17);
             this.lblSalesTodayValue.TabIndex = 1;
@@ -809,8 +814,8 @@
             // 
             this.lblSalesTodayTitle.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.lblSalesTodayTitle.AutoSize = true;
-            this.lblSalesTodayTitle.Location = new System.Drawing.Point(11, 8);
-            this.lblSalesTodayTitle.Margin = new System.Windows.Forms.Padding(0);
+            this.lblSalesTodayTitle.Location = new System.Drawing.Point(11, 3);
+            this.lblSalesTodayTitle.Margin = new System.Windows.Forms.Padding(0, 0, 0, 5);
             this.lblSalesTodayTitle.Name = "lblSalesTodayTitle";
             this.lblSalesTodayTitle.Size = new System.Drawing.Size(80, 17);
             this.lblSalesTodayTitle.TabIndex = 0;
@@ -861,8 +866,8 @@
             // 
             this.lblPurchasesTodayValue.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.lblPurchasesTodayValue.AutoSize = true;
-            this.lblPurchasesTodayValue.Location = new System.Drawing.Point(44, 25);
-            this.lblPurchasesTodayValue.Margin = new System.Windows.Forms.Padding(0);
+            this.lblPurchasesTodayValue.Location = new System.Drawing.Point(44, 30);
+            this.lblPurchasesTodayValue.Margin = new System.Windows.Forms.Padding(0, 5, 0, 0);
             this.lblPurchasesTodayValue.Name = "lblPurchasesTodayValue";
             this.lblPurchasesTodayValue.Size = new System.Drawing.Size(15, 17);
             this.lblPurchasesTodayValue.TabIndex = 1;
@@ -872,8 +877,8 @@
             // 
             this.lblPurchasesTodayTitle.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.lblPurchasesTodayTitle.AutoSize = true;
-            this.lblPurchasesTodayTitle.Location = new System.Drawing.Point(7, 8);
-            this.lblPurchasesTodayTitle.Margin = new System.Windows.Forms.Padding(0);
+            this.lblPurchasesTodayTitle.Location = new System.Drawing.Point(7, 3);
+            this.lblPurchasesTodayTitle.Margin = new System.Windows.Forms.Padding(0, 0, 0, 5);
             this.lblPurchasesTodayTitle.Name = "lblPurchasesTodayTitle";
             this.lblPurchasesTodayTitle.Size = new System.Drawing.Size(89, 17);
             this.lblPurchasesTodayTitle.TabIndex = 0;
@@ -925,8 +930,8 @@
             // 
             this.lblEarningsTodayValue.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.lblEarningsTodayValue.AutoSize = true;
-            this.lblEarningsTodayValue.Location = new System.Drawing.Point(44, 25);
-            this.lblEarningsTodayValue.Margin = new System.Windows.Forms.Padding(0);
+            this.lblEarningsTodayValue.Location = new System.Drawing.Point(44, 30);
+            this.lblEarningsTodayValue.Margin = new System.Windows.Forms.Padding(0, 5, 0, 0);
             this.lblEarningsTodayValue.Name = "lblEarningsTodayValue";
             this.lblEarningsTodayValue.Size = new System.Drawing.Size(15, 17);
             this.lblEarningsTodayValue.TabIndex = 1;
@@ -936,8 +941,8 @@
             // 
             this.lblEarningsTodayTitle.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.lblEarningsTodayTitle.AutoSize = true;
-            this.lblEarningsTodayTitle.Location = new System.Drawing.Point(19, 8);
-            this.lblEarningsTodayTitle.Margin = new System.Windows.Forms.Padding(0);
+            this.lblEarningsTodayTitle.Location = new System.Drawing.Point(19, 3);
+            this.lblEarningsTodayTitle.Margin = new System.Windows.Forms.Padding(0, 0, 0, 5);
             this.lblEarningsTodayTitle.Name = "lblEarningsTodayTitle";
             this.lblEarningsTodayTitle.Size = new System.Drawing.Size(64, 17);
             this.lblEarningsTodayTitle.TabIndex = 0;
@@ -988,8 +993,8 @@
             // 
             this.lblDebtsCountValue.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.lblDebtsCountValue.AutoSize = true;
-            this.lblDebtsCountValue.Location = new System.Drawing.Point(44, 25);
-            this.lblDebtsCountValue.Margin = new System.Windows.Forms.Padding(0);
+            this.lblDebtsCountValue.Location = new System.Drawing.Point(44, 30);
+            this.lblDebtsCountValue.Margin = new System.Windows.Forms.Padding(0, 5, 0, 0);
             this.lblDebtsCountValue.Name = "lblDebtsCountValue";
             this.lblDebtsCountValue.Size = new System.Drawing.Size(15, 17);
             this.lblDebtsCountValue.TabIndex = 1;
@@ -999,8 +1004,8 @@
             // 
             this.lblDebtsCountTitle.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.lblDebtsCountTitle.AutoSize = true;
-            this.lblDebtsCountTitle.Location = new System.Drawing.Point(8, 8);
-            this.lblDebtsCountTitle.Margin = new System.Windows.Forms.Padding(0);
+            this.lblDebtsCountTitle.Location = new System.Drawing.Point(8, 3);
+            this.lblDebtsCountTitle.Margin = new System.Windows.Forms.Padding(0, 0, 0, 5);
             this.lblDebtsCountTitle.Name = "lblDebtsCountTitle";
             this.lblDebtsCountTitle.Size = new System.Drawing.Size(86, 17);
             this.lblDebtsCountTitle.TabIndex = 0;

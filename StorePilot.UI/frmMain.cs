@@ -8,8 +8,16 @@ using DevToolkit.Data.Core;
 using DevToolkit.Infrastructure.Database;
 using DevToolkit.Infrastructure.FileSystem;
 using DevToolkit.Infrastructure.Startup;
+using StorePilot.UI.CashTransactions;
+using StorePilot.UI.Customers;
 using StorePilot.UI.Global;
+using StorePilot.UI.Global.Classes;
+using StorePilot.UI.Products;
 using StorePilot.UI.Properties;
+using StorePilot.UI.Purchases;
+using StorePilot.UI.Sales;
+using StorePilot.UI.Settings;
+using StorePilot.UI.Suppliers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -25,12 +33,21 @@ namespace StorePilot.UI
 {
     public partial class frmMain : frmMainLayout
     {
-        private ucDashboardScreen _dashboardScreen;
         private UserControl _Screen;
 
         public frmMain()
         {
             InitializeComponent();
+        }
+
+        protected override void ApplyTheme()
+        {
+            this.BackColor = Theme.Border;
+            this.Headerbar.BackColor = Theme.Primary;
+            this.Headerbar.ForeColor = Color.White;
+            this.Headerbar.ButtonColor = Theme.TextSecondary;
+            this.Sidebar.BackColor = Theme.Primary;
+            this.Sidebar.ForeColor = Color.White;
         }
 
         private void frmMain_Load(object sender, EventArgs e)
@@ -105,10 +122,7 @@ namespace StorePilot.UI
             };
 
             Sidebar.SelectButton(0);
-
-            _dashboardScreen = new ucDashboardScreen();
-            _ShowScreen(_dashboardScreen);
-            _Screen = _dashboardScreen;
+            _ShowScreen(new ucDashboardScreen());
 
             Sidebar.ScreenSelected += SelectScreen;
         }
@@ -117,81 +131,72 @@ namespace StorePilot.UI
             object sender,
             ucSidebar.ScreenSelectedEventArgs e)
         {
-            //switch (e.Index)
-            //{
-            //    case 0:
-            //        if (_Screen is ucDashboardScreen)
-            //            return;
-            //        _dashboardScreen = new ucDashboardScreen();
-            //        _ShowScreen(_dashboardScreen);
-            //        _dashboardScreen.ActionRequested += DashboardActionRequested;
-            //        break;
+            switch (e.Index)
+            {
+                case 0:
+                    if (_Screen is ucDashboardScreen)
+                        return;
+                    _ShowScreen(new ucDashboardScreen());
+                    break;
 
-            //    case 1:
-            //        if (_Screen is ucProductsScreen)
-            //            return;
-            //        _ShowScreen(new ucProductsScreen());
-            //        break;
+                case 1:
+                    if (_Screen is ucProductsScreen)
+                        return;
+                    _ShowScreen(new ucProductsScreen());
+                    break;
 
-            //    case 2:
-            //        if (_Screen is ucSalesScreen)
-            //            return;
-            //        _ShowScreen(new ucSalesScreen());
-            //        break;
+                case 2:
+                    if (_Screen is ucSalesScreen)
+                        return;
+                    _ShowScreen(new ucSalesScreen());
+                    break;
 
-            //    case 3:
-            //        if (_Screen is ucCustomersScreen)
-            //            return;
-            //        _ShowScreen(new ucCustomersScreen());
-            //        break;
+                case 3:
+                    if (_Screen is ucCustomersScreen)
+                        return;
+                    _ShowScreen(new ucCustomersScreen());
+                    break;
 
-            //    case 4:
-            //        if (_Screen is ucPurchasesScreen)
-            //            return;
-            //        _ShowScreen(new ucPurchasesScreen());
-            //        break;
+                case 4:
+                    if (_Screen is ucPurchasesScreen)
+                        return;
+                    _ShowScreen(new ucPurchasesScreen());
+                    break;
 
-            //    case 5:
-            //        if (_Screen is ucSuppliersScreen)
-            //            return;
-            //        _ShowScreen(new ucSuppliersScreen());
-            //        break;
+                case 5:
+                    if (_Screen is ucSuppliersScreen)
+                        return;
+                    _ShowScreen(new ucSuppliersScreen());
+                    break;
 
-            //    case 6:
-            //        if (_Screen is ucCashTransactionsScreen)
-            //            return;
-            //        _ShowScreen(new ucCashTransactionsScreen());
-            //        break;
+                case 6:
+                    if (_Screen is ucCashTransactionsScreen)
+                        return;
+                    _ShowScreen(new ucCashTransactionsScreen());
+                    break;
 
-            //    case 7:
-            //        if (_Screen is ucReportsScreen)
-            //            return;
-            //        _ShowScreen(new ucReportsScreen());
-            //        break;
+                //case 7:
+                //    if (_Screen is ucReportsScreen)
+                //        return;
+                //    _ShowScreen(new ucReportsScreen());
+                //    break;
 
-            //    case 8:
-            //        if (_Screen is ucSettingsScreen)
-            //            return;
-            //        _ShowScreen(new ucSettingsScreen());
-            //        break;
+                case 8:
+                    if (_Screen is ucSettingsScreen)
+                        return;
+                    _ShowScreen(new ucSettingsScreen());
+                    break;
 
-            //    default:
-            //        _ShowScreen();
-            //        break;
-            //}
+                default:
+                    _ShowScreen();
+                    break;
+            }
         }
 
         private void _ShowScreen(UserControl screen = null)
         {
             _Screen = screen;
             ScreenManager.ShowScreen(pnlContent, _Screen);
-        }
-
-        private void _ShowScreen(UserControl screen, int index)
-        {
-            _ShowScreen(screen);
-
-            Sidebar.SelectButton(index);
         }
 
         private void _InitializeHeaderbar()
@@ -206,13 +211,14 @@ namespace StorePilot.UI
             Headerbar.ActionClick += Headerbar_ButtonClicked;
         }
 
-        private void Headerbar_ButtonClicked(
+        private async void Headerbar_ButtonClicked(
             object sender,
             ucHeaderbar.ActionClickEventArgs e)
         {
             sfdBackup.FileName = $"Backup_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.db";
 
-            string lastFolder = Settings.Default.LastBackupFolder;
+            string lastFolder = 
+                StorePilot.UI.Properties.Settings.Default.LastBackupFolder;
 
             if (!string.IsNullOrWhiteSpace(lastFolder) &&
                 Directory.Exists(lastFolder))
@@ -229,21 +235,13 @@ namespace StorePilot.UI
 
             StartupManager.Folders.Backups = Path.GetDirectoryName(sfdBackup.FileName);
 
-            Result<string> backupResult = DatabaseBackupManager.Backup(databaseName);
+            string backupPath = await Task.Run(() => 
+                DatabaseBackupManager.Backup(databaseName));
 
-            if (!backupResult.IsSuccess)
-            {
-                MessageBoxManager.ShowError(
-                    "هذا الإسم موجود فعليا في المجلد ينبغي اختيار اسم آخر!",
-                    Language.ar);
+            StorePilot.UI.Properties.Settings.Default.LastBackupFolder = 
+                Path.GetDirectoryName(backupPath);
 
-                return;
-            }
-
-            Settings.Default.LastBackupFolder = 
-                Path.GetDirectoryName(backupResult.Data);
-
-            Settings.Default.Save();
+            StorePilot.UI.Properties.Settings.Default.Save();
 
             MessageBoxManager.ShowSuccess(
                 "تمت عملية النسخ الإحتياطي بنجاح.",

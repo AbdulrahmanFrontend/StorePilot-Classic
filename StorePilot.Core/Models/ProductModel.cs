@@ -15,7 +15,7 @@ namespace StorePilot.Core.Models
         [MaxLength(100, "يجب ألا يتجاوز طول اسم الصنف ال 100 حرف")]
         public string ProductName { get; set; } = string.Empty;
 
-        [MaxLength(50, "يجب ألا يتجاوز طول الباركود ال 50حرف")]
+        [MaxLength(50, "يجب ألا يتجاوز طول الباركود ال 50 حرف")]
         public string BarCode { get; set; } = string.Empty;
 
         public int UnitID { get; set; } = 0;
