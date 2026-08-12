@@ -17,11 +17,17 @@ namespace StorePilot.BLL
     {
         public ProductModel Model { get; private set; }
 
+        public GroupModel GroupModel { get; private set; }
+
+        public UnitModel UnitModel { get; private set; }
+
         private int _ID = 0;
 
         public ProductService()
         {
             this.Model = new ProductModel();
+            this.GroupModel = new GroupModel();
+            this.UnitModel = new UnitModel();
             this._ID = this.Model.ProductID;
             this.Mode = Mode.AddNew;
         }
@@ -29,6 +35,8 @@ namespace StorePilot.BLL
         private ProductService(ProductModel model)
         {
             this.Model = model;
+            this.GroupModel = GroupData.Find(model.GroupID)?.Data;
+            this.UnitModel = UnitData.Find(model.UnitID)?.Data;
             this._ID = this.Model.ProductID;
             this.Mode = Mode.Update;
         }
@@ -53,7 +61,15 @@ namespace StorePilot.BLL
             this.Model.Quantity = 0;
             this.Model.ProductID = this._ID;
 
-            return ProductData.AddNew(this.Model);
+            Result result = ProductData.AddNew(this.Model);
+
+            if (result.IsSuccess)
+            {
+                this.GroupModel = GroupData.Find(this.Model.GroupID)?.Data;
+                this.UnitModel = UnitData.Find(this.Model.UnitID)?.Data;
+            }
+
+            return result;
         }
 
         protected override Result _Update()
@@ -65,7 +81,15 @@ namespace StorePilot.BLL
             if (!IsExistResult.IsSuccess)
                 return IsExistResult;
 
-            return ProductData.Update(this.Model); 
+            Result result = ProductData.Update(this.Model);
+
+            if (result.IsSuccess)
+            {
+                this.GroupModel = GroupData.Find(this.Model.GroupID)?.Data;
+                this.UnitModel = UnitData.Find(this.Model.UnitID)?.Data;
+            }
+
+            return result;
         }
 
         public override Result Valid()

@@ -15,7 +15,6 @@ namespace StorePilot.Core.Models
 
         public DateTime ReturnDate { get; set; } = DateTime.Now;
 
-        [Range(0.01, 999999, "يجب أن يكون صافي المرتجع أكبر من الصفر وأصغر من أو يساوي 999999")]
         public decimal TotalReturnAmount { get; set; }
 
         public bool Cancelled { get; set; } = false;

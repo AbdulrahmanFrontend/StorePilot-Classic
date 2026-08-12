@@ -56,6 +56,7 @@
     <Compile Include="Models\CustomerModel.cs" />
     <Compile Include="Models\GroupModel.cs" />
     <Compile Include="Models\InvoiceItemModel.cs" />
+    <Compile Include="Models\InvoiceItemViewModel.cs" />
     <Compile Include="Models\InvoiceModel.cs" />
     <Compile Include="Models\PaymentMethodModel.cs" />
     <Compile Include="Models\PaymentModel.cs" />

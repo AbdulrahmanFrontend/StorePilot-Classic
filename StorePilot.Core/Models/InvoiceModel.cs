@@ -16,10 +16,8 @@ namespace StorePilot.Core.Models
         [Required("مطلوب إدخال حالة الفاتورة")]
         public string InvoiceStatus { get; set; } = string.Empty;
 
-        [Range(0.01, 999999, "يجب أن يكون المبلغ الإجمالي أكبر من الصفر وأصغر من أو يساوي 999999")]
         public decimal TotalAmount { get; set; } = 0;
 
-        [Range(0, 999999, "يجب أن يكون المبلغ المدفوع أكبر من أو يساوي الصفر وأصغر من أو يساوي 999999")]
         public decimal PaidAmount { get; set; } = 0;
 
         public decimal RemainingAmount => TotalAmount - PaidAmount;

@@ -62,7 +62,7 @@ CREATE TABLE "Invoices" (
 	"InvoiceDate"	TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	"InvoiceStatus"	TEXT NOT NULL CHECK("InvoiceStatus" IN ('مدفوع', 'آجل')),
 	"PaidAmount"	REAL NOT NULL DEFAULT 0 CHECK("PaidAmount" >= 0),
-	"TotalAmount"	REAL NOT NULL CHECK("TotalAmount" > 0),
+	"TotalAmount"	REAL NOT NULL CHECK("TotalAmount" >= 0),
 	"CreatedAt"	TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	"TransactionID"	INTEGER UNIQUE,
 	PRIMARY KEY("InvoiceID" AUTOINCREMENT),

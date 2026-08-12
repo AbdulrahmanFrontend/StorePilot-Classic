@@ -439,7 +439,7 @@
             this.cbGroups.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbGroups.FormattingEnabled = true;
             this.cbGroups.IntegralHeight = false;
-            this.cbGroups.Location = new System.Drawing.Point(20, 27);
+            this.cbGroups.Location = new System.Drawing.Point(20, 28);
             this.cbGroups.Margin = new System.Windows.Forms.Padding(3, 3, 20, 3);
             this.cbGroups.Name = "cbGroups";
             this.cbGroups.Size = new System.Drawing.Size(274, 25);
@@ -454,7 +454,7 @@
             this.lblGroup.Location = new System.Drawing.Point(5, 0);
             this.lblGroup.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.lblGroup.Name = "lblGroup";
-            this.lblGroup.Size = new System.Drawing.Size(287, 24);
+            this.lblGroup.Size = new System.Drawing.Size(287, 25);
             this.lblGroup.TabIndex = 1;
             this.lblGroup.Text = "المجموعة: ";
             this.lblGroup.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -569,7 +569,7 @@
             this.cbUnits.IntegralHeight = false;
             this.cbUnits.Items.AddRange(new object[] {
             ""});
-            this.cbUnits.Location = new System.Drawing.Point(20, 27);
+            this.cbUnits.Location = new System.Drawing.Point(20, 28);
             this.cbUnits.Margin = new System.Windows.Forms.Padding(3, 3, 20, 3);
             this.cbUnits.Name = "cbUnits";
             this.cbUnits.Size = new System.Drawing.Size(275, 25);
@@ -584,7 +584,7 @@
             this.lblUnit.Location = new System.Drawing.Point(5, 0);
             this.lblUnit.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.lblUnit.Name = "lblUnit";
-            this.lblUnit.Size = new System.Drawing.Size(288, 24);
+            this.lblUnit.Size = new System.Drawing.Size(288, 25);
             this.lblUnit.TabIndex = 1;
             this.lblUnit.Text = "وحدة القياس: ";
             this.lblUnit.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
