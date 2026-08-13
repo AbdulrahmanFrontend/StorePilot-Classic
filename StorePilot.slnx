@@ -1,4 +1,8 @@
 <Solution>
+  <Folder Name="/Database/" />
+  <Folder Name="/Database/Scripts/">
+    <File Path="../Database/Scripts/InitialDatabase.sql" />
+  </Folder>
   <Project Path="StorePilot.BLL/StorePilot.BLL.csproj" Id="511961c4-4dd2-47a1-82d6-daf83c44ff1e" />
   <Project Path="StorePilot.Core/StorePilot.Core.csproj" Id="9bc2b378-a1dd-48b2-ac1a-5047831a76ba" />
   <Project Path="StorePilot.DAL/StorePilot.DAL.csproj" Id="4288866f-7494-40b0-a3c9-8e80a74a911c" />

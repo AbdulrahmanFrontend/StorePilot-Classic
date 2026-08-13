@@ -102,7 +102,6 @@
             this.btnCancel.AutoSize = true;
             this.btnCancel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.btnCancel.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Enabled = false;
             this.btnCancel.FlatAppearance.BorderSize = 0;
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -260,6 +259,7 @@
             this.btnAddNew.Text = "صنف جديد";
             this.btnAddNew.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnAddNew.UseVisualStyleBackColor = true;
+            this.btnAddNew.Visible = false;
             this.btnAddNew.Click += new System.EventHandler(this.btnAddNew_Click);
             // 
             // cbProducts
@@ -268,7 +268,7 @@
             this.cbProducts.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cbProducts.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbProducts.FormattingEnabled = true;
-            this.cbProducts.Location = new System.Drawing.Point(3, 3);
+            this.cbProducts.Location = new System.Drawing.Point(3, 4);
             this.cbProducts.Margin = new System.Windows.Forms.Padding(3, 3, 3, 4);
             this.cbProducts.Name = "cbProducts";
             this.cbProducts.Size = new System.Drawing.Size(310, 28);
@@ -541,14 +541,14 @@
             this.tsmiDelete});
             this.ctrlCmsData.Name = "ctrlCmsData";
             this.ctrlCmsData.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.ctrlCmsData.Size = new System.Drawing.Size(128, 66);
+            this.ctrlCmsData.Size = new System.Drawing.Size(211, 94);
             // 
             // tsmiUpdate
             // 
             this.tsmiUpdate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(243)))), ((int)(((byte)(244)))));
             this.tsmiUpdate.Image = global::StorePilot.UI.Properties.Resources.update;
             this.tsmiUpdate.Name = "tsmiUpdate";
-            this.tsmiUpdate.Size = new System.Drawing.Size(127, 28);
+            this.tsmiUpdate.Size = new System.Drawing.Size(210, 28);
             this.tsmiUpdate.Text = "تحديث";
             this.tsmiUpdate.Click += new System.EventHandler(this.tsmiUpdate_Click);
             // 
@@ -556,18 +556,18 @@
             // 
             this.tss.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(243)))), ((int)(((byte)(244)))));
             this.tss.Name = "tss";
-            this.tss.Size = new System.Drawing.Size(124, 6);
+            this.tss.Size = new System.Drawing.Size(207, 6);
             // 
             // tsmiDelete
             // 
             this.tsmiDelete.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(243)))), ((int)(((byte)(244)))));
             this.tsmiDelete.Image = global::StorePilot.UI.Properties.Resources.delete;
             this.tsmiDelete.Name = "tsmiDelete";
-            this.tsmiDelete.Size = new System.Drawing.Size(127, 28);
+            this.tsmiDelete.Size = new System.Drawing.Size(210, 28);
             this.tsmiDelete.Text = "حذف";
             this.tsmiDelete.Click += new System.EventHandler(this.tsmiDelete_Click);
             // 
-            // frmAddUpdateSaleItems
+            // frmAddEditUpdateSaleItems
             // 
             this.AcceptButton = this.btnSaveList;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
@@ -584,12 +584,12 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "frmAddUpdateSaleItems";
+            this.Name = "frmAddEditUpdateSaleItems";
             this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.RightToLeftLayout = true;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmAddUpdateSaleItems";
-            this.Load += new System.EventHandler(this.frmAddUpdateSaleItems_Load);
+            this.Load += new System.EventHandler(this.frmAddEditUpdateSaleItems_Load);
             this.tlpHeader.ResumeLayout(false);
             this.tlpHeader.PerformLayout();
             this.tlpItem.ResumeLayout(false);

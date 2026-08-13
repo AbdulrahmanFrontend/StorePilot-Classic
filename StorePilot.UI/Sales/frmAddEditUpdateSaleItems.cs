@@ -27,6 +27,11 @@ namespace StorePilot.UI.Sales
         private InvoiceItemViewModel _InvoiceItem;
         private BindingList<InvoiceItemViewModel> _Items;
 
+        public delegate void DataBackEventHandler(
+            object sender,
+            BindingList<InvoiceItemViewModel> items);
+        public event DataBackEventHandler DataBack;
+
         public frmAddEditUpdateSaleItems()
         {
             InitializeComponent();
@@ -56,15 +61,14 @@ namespace StorePilot.UI.Sales
             this.BackColor = Theme.Border;
             this.ForeColor = Theme.Text;
 
-
             btnAddNew.BackColor = Theme.TextSecondary;
             btnAddNew.ForeColor = Theme.Text;
 
             btnSaveItem.BackColor = Theme.Success;
-            btnSaveItem.ForeColor = Theme.TextSecondary;
+            btnSaveItem.ForeColor = Theme.Text;
 
-            btnCancel.BackColor = Theme.Border;
-            btnCancel.ForeColor = Theme.TextSecondary;
+            btnCancel.BackColor = Theme.Surface;
+            btnCancel.ForeColor = Theme.Text;
 
             btnSaveList.BackColor = Theme.Success;
             btnSaveList.ForeColor = Theme.TextSecondary;
@@ -76,7 +80,7 @@ namespace StorePilot.UI.Sales
             btnResetList.ForeColor = Theme.TextSecondary;
         }
 
-        private void frmAddUpdateSaleItems_Load(object sender, EventArgs e)
+        private void frmAddEditUpdateSaleItems_Load(object sender, EventArgs e)
         {
             _SetDefaultValues();
 
@@ -107,9 +111,9 @@ namespace StorePilot.UI.Sales
             btnSaveItem.Enabled = false;
             btnCancel.Enabled = false;
 
-            tbQuantity.Text = string.Format("#,##0");
-            tbUnitPrice.Text = string.Format("#,##0");
-            tbTotalPrice.Text = string.Format("#,##0");
+            tbQuantity.Text = "0";
+            tbUnitPrice.Text = "0";
+            tbTotalPrice.Text = "0";
 
             cbProducts.SelectedIndex = -1;
 
@@ -125,8 +129,6 @@ namespace StorePilot.UI.Sales
                 MessageBoxManager.ShowError(result.Message, Language.ar);
                 this.Close();
             }
-
-            cbProducts.Items.Clear();
 
             cbProducts.DisplayMember = "ProductName";
             cbProducts.ValueMember = "ProductID";
@@ -176,11 +178,13 @@ namespace StorePilot.UI.Sales
 
         private void cbProducts_Validating(object sender, CancelEventArgs e)
         {
-            int ProductID = _GetIntValue(cbProducts.SelectedValue.ToString());
+            int ProductID = _GetIntValue(cbProducts.SelectedValue?.ToString());
             var result = ProductService.Find(ProductID);
 
-            tbQuantity.Enabled = result.IsSuccess;
-            tbUnitPrice.Enabled = result.IsSuccess;
+            tbQuantity.ReadOnly = !result.IsSuccess;
+            tbUnitPrice.ReadOnly = !result.IsSuccess;
+            btnSaveItem.Enabled = result.IsSuccess;
+            btnCancel.Enabled = result.IsSuccess;
 
             if (result.IsSuccess)
             { 
@@ -188,15 +192,17 @@ namespace StorePilot.UI.Sales
                 tbUnitPrice.Text = result.Data.Model.SalePrice.ToString("#,##0");
             }
 
-            tbQuantity.Text = string.Format("#,##0");
-            tbTotalPrice.Text = string.Format("#,##0");
+            tbQuantity.Text = "0";
+            tbTotalPrice.Text = "0";
         }
 
         private void btnAddNew_Click(object sender, EventArgs e)
         {
-            var frm = new frmAddEditUpdateProduct();
-            frm.DataBack += Frm_DataBack;
-            frm.ShowDialog();
+            using (var frm = new frmAddEditUpdateProduct())
+            {
+                frm.DataBack += Frm_DataBack;
+                frm.ShowDialog();
+            }
         }
 
         private void Frm_DataBack(object sender) => _FillProductsComboBox();
@@ -240,12 +246,12 @@ namespace StorePilot.UI.Sales
             if (Quantity <= 0)
                 return Result.Failure(
                     $"الصنف {result.Data.Model.ProductName} " +
-                    $"الكمية المطلوبة منه أصغر من !");
+                    $"الكمية المطلوبة منه أصغر من الصفر!");
 
             if (Quantity > result.Data.Model.Quantity)
                 return Result.Failure(
                     $"الصنف {result.Data.Model.ProductName}" +
-                    $" الكمية المطلوبة منه أكبر من المخزون!");
+                    $"الكمية المطلوبة منه أكبر من المخزون!");
 
             decimal UnitPrice = _GetDecimalValue(tbUnitPrice.Text?.ToString());
 
@@ -285,11 +291,6 @@ namespace StorePilot.UI.Sales
             this.Close();
         }
 
-        public delegate void DataBackEventHandler(
-            object sender, 
-            BindingList<InvoiceItemViewModel> items);
-        public event DataBackEventHandler DataBack;
-
         private void tsmiUpdate_Click(object sender, EventArgs e) => _Update();
 
         private void _Update()
@@ -298,8 +299,8 @@ namespace StorePilot.UI.Sales
 
             btnSaveItem.Enabled = true;
             btnCancel.Enabled = true;
-            tbQuantity.Enabled = true;
-            tbUnitPrice.Enabled = true;
+            tbQuantity.ReadOnly = false;
+            tbUnitPrice.ReadOnly = false;
 
             cbProducts.SelectedValue = Item.ProductID;
             tbQuantity.Text = Item.Quantity.ToString("#,##0");

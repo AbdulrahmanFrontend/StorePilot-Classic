@@ -117,8 +117,6 @@ namespace StorePilot.UI.Products
                 this.Close();
             }
 
-            cbGroups.Items.Clear();
-
             cbGroups.DisplayMember = "GroupName";
             cbGroups.ValueMember = "GroupID";
             cbGroups.DataSource = result.Data;
@@ -135,8 +133,6 @@ namespace StorePilot.UI.Products
                 MessageBoxManager.ShowError(result.Message, Language.ar);
                 this.Close();
             }
-
-            cbUnits.Items.Clear();
 
             cbUnits.DisplayMember = "UnitName";
             cbUnits.ValueMember = "UnitID";
@@ -284,8 +280,10 @@ namespace StorePilot.UI.Products
 
             if (Confirm == DialogResult.Yes)
             {
-                _Service.Model.GroupID = _GetIntValue(cbGroups.Text);
-                _Service.Model.UnitID = _GetIntValue(cbUnits.Text);
+                _Service.Model.GroupID = 
+                    _GetIntValue(cbGroups.SelectedValue?.ToString());
+                _Service.Model.UnitID = 
+                    _GetIntValue(cbUnits.SelectedValue?.ToString());
                 _Service.Model.Notes = tbNotes.Text;
 
                 if (!ValidateChildren())

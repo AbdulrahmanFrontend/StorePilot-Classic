@@ -6,6 +6,8 @@ using StorePilot.BLL;
 using StorePilot.UI.Customers;
 using StorePilot.UI.Global.Classes;
 using StorePilot.UI.Products;
+using StorePilot.UI.Purchases;
+using StorePilot.UI.Sales;
 using StorePilot.UI.Suppliers;
 using System;
 using System.Collections.Generic;
@@ -196,26 +198,38 @@ namespace StorePilot.UI
 
         private void btnNewCustomer_Click(object sender, EventArgs e)
         {
-            var frm = new frmAddEditUpdateCustomer();
-            frm.DataBack += Frm_DataBack;
-            frm.ShowDialog();
+            using (var frm = new frmAddEditUpdateCustomer())
+            {
+                frm.DataBack += Frm_DataBack;
+                frm.ShowDialog();
+            }
         }
 
         private void btnNewProduct_Click(object sender, EventArgs e)
         {
-            var frm = new frmAddEditUpdateProduct();
-            frm.DataBack += Frm_DataBack;
-            frm.ShowDialog();
+            using (var frm = new frmAddEditUpdateProduct())
+            {
+                frm.DataBack += Frm_DataBack;
+                frm.ShowDialog();
+            }
         }
 
         private void btnNewPurchase_Click(object sender, EventArgs e)
         {
-
+            using (var frm = new frmAddEditPurchaseInvoice())
+            {
+                frm.DataBack += Frm_DataBack;
+                frm.ShowDialog();
+            }
         }
 
         private void btnNewSale_Click(object sender, EventArgs e)
         {
-
+            using (var frm = new frmAddEditSaleInvoice())
+            {
+                frm.DataBack += Frm_DataBack;
+                frm.ShowDialog();
+            }
         }
     }
 }

@@ -129,17 +129,35 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Purchases\frmAddEditPurchaseInvoice.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Purchases\frmAddEditPurchaseInvoice.Designer.cs">
+      <DependentUpon>frmAddEditPurchaseInvoice.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Purchases\frmAddEditUpdatePurchaseItems.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Purchases\frmAddEditUpdatePurchaseItems.Designer.cs">
+      <DependentUpon>frmAddEditUpdatePurchaseItems.cs</DependentUpon>
+    </Compile>
     <Compile Include="Purchases\ucPurchasesScreen.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Purchases\ucPurchasesScreen.Designer.cs">
       <DependentUpon>ucPurchasesScreen.cs</DependentUpon>
     </Compile>
-    <Compile Include="Sales\frmAddSalesInvoice.cs">
+    <Compile Include="Returns\frmAddEditUpdateReturnItems.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Sales\frmAddSalesInvoice.Designer.cs">
-      <DependentUpon>frmAddSalesInvoice.cs</DependentUpon>
+    <Compile Include="Returns\frmAddEditUpdateReturnItems.Designer.cs">
+      <DependentUpon>frmAddEditUpdateReturnItems.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Sales\frmAddEditSaleInvoice.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Sales\frmAddEditSaleInvoice.Designer.cs">
+      <DependentUpon>frmAddEditSaleInvoice.cs</DependentUpon>
     </Compile>
     <Compile Include="Sales\frmAddEditUpdateSaleItems.cs">
       <SubType>Form</SubType>
@@ -193,8 +211,14 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Sales\frmAddSalesInvoice.resx">
-      <DependentUpon>frmAddSalesInvoice.cs</DependentUpon>
+    <EmbeddedResource Include="Purchases\frmAddEditPurchaseInvoice.resx">
+      <DependentUpon>frmAddEditPurchaseInvoice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Purchases\frmAddEditUpdatePurchaseItems.resx">
+      <DependentUpon>frmAddEditUpdatePurchaseItems.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sales\frmAddEditSaleInvoice.resx">
+      <DependentUpon>frmAddEditSaleInvoice.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Sales\frmAddEditUpdateSaleItems.resx">
       <DependentUpon>frmAddEditUpdateSaleItems.cs</DependentUpon>
@@ -223,7 +247,6 @@
     <Folder Include="Global\Controls\" />
     <Folder Include="Global\Forms\" />
     <Folder Include="Payments\" />
-    <Folder Include="Returns\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\sink.png" />
@@ -338,6 +361,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\list.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\payment.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\print.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cancel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="InitialDatabase.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets" Condition="Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" />
