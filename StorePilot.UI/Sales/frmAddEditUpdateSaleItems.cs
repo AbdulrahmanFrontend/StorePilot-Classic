@@ -61,9 +61,6 @@ namespace StorePilot.UI.Sales
             this.BackColor = Theme.Border;
             this.ForeColor = Theme.Text;
 
-            btnAddNew.BackColor = Theme.TextSecondary;
-            btnAddNew.ForeColor = Theme.Text;
-
             btnSaveItem.BackColor = Theme.Success;
             btnSaveItem.ForeColor = Theme.Text;
 
@@ -194,15 +191,6 @@ namespace StorePilot.UI.Sales
 
             tbQuantity.Text = "0";
             tbTotalPrice.Text = "0";
-        }
-
-        private void btnAddNew_Click(object sender, EventArgs e)
-        {
-            using (var frm = new frmAddEditUpdateProduct())
-            {
-                frm.DataBack += Frm_DataBack;
-                frm.ShowDialog();
-            }
         }
 
         private void Frm_DataBack(object sender) => _FillProductsComboBox();

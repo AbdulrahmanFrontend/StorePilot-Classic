@@ -159,6 +159,7 @@
             this.tbUnitPrice.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbUnitPrice.Location = new System.Drawing.Point(217, 33);
             this.tbUnitPrice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 0);
+            this.tbUnitPrice.MaxLength = 6;
             this.tbUnitPrice.Name = "tbUnitPrice";
             this.tbUnitPrice.ReadOnly = true;
             this.tbUnitPrice.Size = new System.Drawing.Size(206, 27);
@@ -255,7 +256,7 @@
             this.btnAddNew.Margin = new System.Windows.Forms.Padding(0);
             this.btnAddNew.Name = "btnAddNew";
             this.btnAddNew.Size = new System.Drawing.Size(103, 27);
-            this.btnAddNew.TabIndex = 1;
+            this.btnAddNew.TabIndex = 0;
             this.btnAddNew.Text = "صنف جديد";
             this.btnAddNew.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnAddNew.UseVisualStyleBackColor = true;
@@ -267,8 +268,10 @@
             this.cbProducts.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.cbProducts.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cbProducts.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cbProducts.DropDownHeight = 100;
             this.cbProducts.FormattingEnabled = true;
-            this.cbProducts.Location = new System.Drawing.Point(3, 4);
+            this.cbProducts.IntegralHeight = false;
+            this.cbProducts.Location = new System.Drawing.Point(3, 3);
             this.cbProducts.Margin = new System.Windows.Forms.Padding(3, 3, 3, 4);
             this.cbProducts.Name = "cbProducts";
             this.cbProducts.Size = new System.Drawing.Size(310, 28);
@@ -282,6 +285,7 @@
             this.tbQuantity.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbQuantity.Location = new System.Drawing.Point(429, 33);
             this.tbQuantity.Margin = new System.Windows.Forms.Padding(3, 4, 3, 0);
+            this.tbQuantity.MaxLength = 6;
             this.tbQuantity.Name = "tbQuantity";
             this.tbQuantity.ReadOnly = true;
             this.tbQuantity.Size = new System.Drawing.Size(206, 27);
@@ -462,7 +466,7 @@
             this.ctrlCmData.RowTemplate.Height = 35;
             this.ctrlCmData.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.ctrlCmData.Size = new System.Drawing.Size(1155, 471);
-            this.ctrlCmData.TabIndex = 20;
+            this.ctrlCmData.TabIndex = 6;
             this.ctrlCmData.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ctrlCmData_CellDoubleClick);
             // 
             // ProductID
@@ -569,9 +573,11 @@
             // 
             // frmAddEditUpdatePurchaseItems
             // 
+            this.AcceptButton = this.btnSaveList;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
+            this.CancelButton = this.btnExit;
             this.ClientSize = new System.Drawing.Size(1155, 590);
             this.Controls.Add(this.ctrlCmData);
             this.Controls.Add(this.tlpFooter);

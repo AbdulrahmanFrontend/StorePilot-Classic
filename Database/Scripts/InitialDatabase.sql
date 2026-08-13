@@ -73,7 +73,7 @@ CREATE TABLE "InvoicesItems" (
 	"ItemID"	INTEGER NOT NULL,
 	"InvoiceID"	INTEGER NOT NULL,
 	"ProductID"	INTEGER NOT NULL,
-	"Quantity"	REAL NOT NULL CHECK("Quantity" > 0),
+	"Quantity"	REAL NOT NULL CHECK("Quantity" >= 0),
 	"UnitPrice"	REAL NOT NULL CHECK("UnitPrice" > 0),
 	PRIMARY KEY("ItemID" AUTOINCREMENT),
 	FOREIGN KEY("InvoiceID") REFERENCES "Invoices"("InvoiceID"),

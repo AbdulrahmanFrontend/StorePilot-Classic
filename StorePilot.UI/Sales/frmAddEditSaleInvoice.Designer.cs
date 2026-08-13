@@ -30,38 +30,38 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAddEditSaleInvoice));
             this.flpFooter = new System.Windows.Forms.FlowLayoutPanel();
-            this.btnSavePrint = new DevToolkit.BaseWinForms.Controls.CustomControls.ccButton();
-            this.tlpContainer = new System.Windows.Forms.TableLayoutPanel();
-            this.tlpUp = new System.Windows.Forms.TableLayoutPanel();
-            this.tlpTotalAmount = new System.Windows.Forms.TableLayoutPanel();
-            this.tbTotalAmount = new System.Windows.Forms.TextBox();
-            this.tlpRemainingAmount = new System.Windows.Forms.TableLayoutPanel();
-            this.tbRemainingAmount = new System.Windows.Forms.TextBox();
-            this.tlpPaidAmount = new System.Windows.Forms.TableLayoutPanel();
-            this.tbPaidAmount = new System.Windows.Forms.TextBox();
-            this.tlpStatuses = new System.Windows.Forms.TableLayoutPanel();
-            this.cbStatuses = new System.Windows.Forms.ComboBox();
-            this.tlpCustomer = new System.Windows.Forms.TableLayoutPanel();
-            this.pnlCustomer = new System.Windows.Forms.Panel();
-            this.cbCustomers = new System.Windows.Forms.ComboBox();
-            this.tlpInvoiceDate = new System.Windows.Forms.TableLayoutPanel();
-            this.dtpInvoiceDate = new System.Windows.Forms.DateTimePicker();
-            this.tlpNotes = new System.Windows.Forms.TableLayoutPanel();
-            this.tbNotes = new System.Windows.Forms.TextBox();
-            this.object_20b9125e_7a09_429b_9d3c_e43ce6b6c816 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblTotalAmount = new System.Windows.Forms.Label();
-            this.lblRemainingAmount = new System.Windows.Forms.Label();
-            this.lblPaidAmount = new System.Windows.Forms.Label();
-            this.lblInvoiceStatus = new System.Windows.Forms.Label();
-            this.lblCustomer = new System.Windows.Forms.Label();
-            this.btnAddNew = new DevToolkit.BaseWinForms.Controls.CustomControls.ccButton();
-            this.lblInvoiceDate = new System.Windows.Forms.Label();
-            this.lblNotes = new System.Windows.Forms.Label();
-            this.lblTitle = new System.Windows.Forms.Label();
             this.btnClose = new DevToolkit.BaseWinForms.Controls.CustomControls.ccButton();
+            this.btnSavePrint = new DevToolkit.BaseWinForms.Controls.CustomControls.ccButton();
             this.btnInvoiceItems = new DevToolkit.BaseWinForms.Controls.CustomControls.ccButton();
             this.btnViewPayments = new DevToolkit.BaseWinForms.Controls.CustomControls.ccButton();
             this.btnCancel = new DevToolkit.BaseWinForms.Controls.CustomControls.ccButton();
+            this.tlpContainer = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpUp = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpTotalAmount = new System.Windows.Forms.TableLayoutPanel();
+            this.lblTotalAmount = new System.Windows.Forms.Label();
+            this.tbTotalAmount = new System.Windows.Forms.TextBox();
+            this.tlpRemainingAmount = new System.Windows.Forms.TableLayoutPanel();
+            this.lblRemainingAmount = new System.Windows.Forms.Label();
+            this.tbRemainingAmount = new System.Windows.Forms.TextBox();
+            this.tlpPaidAmount = new System.Windows.Forms.TableLayoutPanel();
+            this.lblPaidAmount = new System.Windows.Forms.Label();
+            this.tbPaidAmount = new System.Windows.Forms.TextBox();
+            this.tlpStatuses = new System.Windows.Forms.TableLayoutPanel();
+            this.cbStatuses = new System.Windows.Forms.ComboBox();
+            this.lblInvoiceStatus = new System.Windows.Forms.Label();
+            this.tlpCustomer = new System.Windows.Forms.TableLayoutPanel();
+            this.lblCustomer = new System.Windows.Forms.Label();
+            this.pnlCustomer = new System.Windows.Forms.Panel();
+            this.cbCustomers = new System.Windows.Forms.ComboBox();
+            this.btnAddNew = new DevToolkit.BaseWinForms.Controls.CustomControls.ccButton();
+            this.tlpInvoiceDate = new System.Windows.Forms.TableLayoutPanel();
+            this.lblInvoiceDate = new System.Windows.Forms.Label();
+            this.dtpInvoiceDate = new System.Windows.Forms.DateTimePicker();
+            this.tlpNotes = new System.Windows.Forms.TableLayoutPanel();
+            this.tbNotes = new System.Windows.Forms.TextBox();
+            this.lblNotes = new System.Windows.Forms.Label();
+            this.object_20b9125e_7a09_429b_9d3c_e43ce6b6c816 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblTitle = new System.Windows.Forms.Label();
             this.flpFooter.SuspendLayout();
             this.tlpContainer.SuspendLayout();
             this.tlpUp.SuspendLayout();
@@ -91,6 +91,29 @@
             this.flpFooter.Size = new System.Drawing.Size(963, 40);
             this.flpFooter.TabIndex = 8;
             // 
+            // btnClose
+            // 
+            this.btnClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
+            this.btnClose.ButtonStyle = DevToolkit.BaseWinForms.Theming.ButtonStyle.Primary;
+            this.btnClose.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnClose.FlatAppearance.BorderSize = 0;
+            this.btnClose.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(64)))), ((int)(((byte)(175)))));
+            this.btnClose.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(78)))), ((int)(((byte)(216)))));
+            this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnClose.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnClose.ForeColor = System.Drawing.Color.White;
+            this.btnClose.Image = global::StorePilot.UI.Properties.Resources.Close_32;
+            this.btnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnClose.Location = new System.Drawing.Point(6, 6);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
+            this.btnClose.Size = new System.Drawing.Size(99, 28);
+            this.btnClose.TabIndex = 9;
+            this.btnClose.Text = "إغلاق";
+            this.btnClose.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnClose.UseVisualStyleBackColor = false;
+            // 
             // btnSavePrint
             // 
             this.btnSavePrint.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(163)))), ((int)(((byte)(74)))));
@@ -107,10 +130,77 @@
             this.btnSavePrint.Name = "btnSavePrint";
             this.btnSavePrint.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.btnSavePrint.Size = new System.Drawing.Size(97, 28);
-            this.btnSavePrint.TabIndex = 5;
+            this.btnSavePrint.TabIndex = 8;
             this.btnSavePrint.Text = "حفظ";
             this.btnSavePrint.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnSavePrint.UseVisualStyleBackColor = false;
+            // 
+            // btnInvoiceItems
+            // 
+            this.btnInvoiceItems.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this.btnInvoiceItems.ButtonStyle = DevToolkit.BaseWinForms.Theming.ButtonStyle.Secondary;
+            this.btnInvoiceItems.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnInvoiceItems.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(213)))), ((int)(((byte)(225)))));
+            this.btnInvoiceItems.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(153)))), ((int)(((byte)(193)))));
+            this.btnInvoiceItems.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
+            this.btnInvoiceItems.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnInvoiceItems.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnInvoiceItems.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(41)))), ((int)(((byte)(59)))));
+            this.btnInvoiceItems.Image = global::StorePilot.UI.Properties.Resources.list;
+            this.btnInvoiceItems.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnInvoiceItems.Location = new System.Drawing.Point(214, 6);
+            this.btnInvoiceItems.Name = "btnInvoiceItems";
+            this.btnInvoiceItems.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
+            this.btnInvoiceItems.Size = new System.Drawing.Size(190, 28);
+            this.btnInvoiceItems.TabIndex = 7;
+            this.btnInvoiceItems.Text = "إضافة عناصر الفاتورة";
+            this.btnInvoiceItems.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnInvoiceItems.UseVisualStyleBackColor = false;
+            this.btnInvoiceItems.Click += new System.EventHandler(this.btnInvoiceItems_Click);
+            // 
+            // btnViewPayments
+            // 
+            this.btnViewPayments.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this.btnViewPayments.ButtonStyle = DevToolkit.BaseWinForms.Theming.ButtonStyle.Secondary;
+            this.btnViewPayments.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnViewPayments.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(213)))), ((int)(((byte)(225)))));
+            this.btnViewPayments.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(113)))), ((int)(((byte)(153)))), ((int)(((byte)(193)))));
+            this.btnViewPayments.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
+            this.btnViewPayments.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnViewPayments.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnViewPayments.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(41)))), ((int)(((byte)(59)))));
+            this.btnViewPayments.Image = global::StorePilot.UI.Properties.Resources.payment;
+            this.btnViewPayments.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnViewPayments.Location = new System.Drawing.Point(410, 6);
+            this.btnViewPayments.Name = "btnViewPayments";
+            this.btnViewPayments.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
+            this.btnViewPayments.Size = new System.Drawing.Size(156, 28);
+            this.btnViewPayments.TabIndex = 6;
+            this.btnViewPayments.Text = "عرض سجل الدفع";
+            this.btnViewPayments.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnViewPayments.UseVisualStyleBackColor = false;
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(38)))), ((int)(((byte)(38)))));
+            this.btnCancel.ButtonStyle = DevToolkit.BaseWinForms.Theming.ButtonStyle.Danger;
+            this.btnCancel.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnCancel.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(213)))), ((int)(((byte)(225)))));
+            this.btnCancel.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(135)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
+            this.btnCancel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(185)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCancel.ForeColor = System.Drawing.Color.White;
+            this.btnCancel.Image = global::StorePilot.UI.Properties.Resources.cancel;
+            this.btnCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnCancel.Location = new System.Drawing.Point(572, 6);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
+            this.btnCancel.Size = new System.Drawing.Size(88, 28);
+            this.btnCancel.TabIndex = 5;
+            this.btnCancel.Text = "إلغاء";
+            this.btnCancel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnCancel.UseVisualStyleBackColor = false;
             // 
             // tlpContainer
             // 
@@ -167,6 +257,20 @@
             this.tlpTotalAmount.Size = new System.Drawing.Size(473, 57);
             this.tlpTotalAmount.TabIndex = 5;
             // 
+            // lblTotalAmount
+            // 
+            this.lblTotalAmount.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblTotalAmount.Image = global::StorePilot.UI.Properties.Resources.money;
+            this.lblTotalAmount.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblTotalAmount.Location = new System.Drawing.Point(3, 0);
+            this.lblTotalAmount.Name = "lblTotalAmount";
+            this.lblTotalAmount.Size = new System.Drawing.Size(467, 21);
+            this.lblTotalAmount.TabIndex = 0;
+            this.lblTotalAmount.Text = "إجمالي الفاتورة:";
+            this.lblTotalAmount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // tbTotalAmount
             // 
             this.tbTotalAmount.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -197,6 +301,20 @@
             this.tlpRemainingAmount.Size = new System.Drawing.Size(472, 57);
             this.tlpRemainingAmount.TabIndex = 4;
             // 
+            // lblRemainingAmount
+            // 
+            this.lblRemainingAmount.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblRemainingAmount.Image = global::StorePilot.UI.Properties.Resources.money;
+            this.lblRemainingAmount.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblRemainingAmount.Location = new System.Drawing.Point(3, 0);
+            this.lblRemainingAmount.Name = "lblRemainingAmount";
+            this.lblRemainingAmount.Size = new System.Drawing.Size(466, 21);
+            this.lblRemainingAmount.TabIndex = 0;
+            this.lblRemainingAmount.Text = "المبلغ المتبقي:";
+            this.lblRemainingAmount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // tbRemainingAmount
             // 
             this.tbRemainingAmount.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -226,6 +344,20 @@
             this.tlpPaidAmount.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpPaidAmount.Size = new System.Drawing.Size(473, 62);
             this.tlpPaidAmount.TabIndex = 3;
+            // 
+            // lblPaidAmount
+            // 
+            this.lblPaidAmount.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblPaidAmount.Image = global::StorePilot.UI.Properties.Resources.money;
+            this.lblPaidAmount.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblPaidAmount.Location = new System.Drawing.Point(3, 0);
+            this.lblPaidAmount.Name = "lblPaidAmount";
+            this.lblPaidAmount.Size = new System.Drawing.Size(467, 26);
+            this.lblPaidAmount.TabIndex = 0;
+            this.lblPaidAmount.Text = "المبلغ المدفوع:";
+            this.lblPaidAmount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tbPaidAmount
             // 
@@ -273,8 +405,22 @@
             this.cbStatuses.Location = new System.Drawing.Point(3, 28);
             this.cbStatuses.Name = "cbStatuses";
             this.cbStatuses.Size = new System.Drawing.Size(466, 31);
-            this.cbStatuses.TabIndex = 2;
+            this.cbStatuses.TabIndex = 3;
             this.cbStatuses.SelectedIndexChanged += new System.EventHandler(this.cbStatuses_SelectedIndexChanged);
+            // 
+            // lblInvoiceStatus
+            // 
+            this.lblInvoiceStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblInvoiceStatus.Image = global::StorePilot.UI.Properties.Resources.status;
+            this.lblInvoiceStatus.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblInvoiceStatus.Location = new System.Drawing.Point(3, 0);
+            this.lblInvoiceStatus.Name = "lblInvoiceStatus";
+            this.lblInvoiceStatus.Size = new System.Drawing.Size(466, 25);
+            this.lblInvoiceStatus.TabIndex = 0;
+            this.lblInvoiceStatus.Text = "حالة الفاتورة:";
+            this.lblInvoiceStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tlpCustomer
             // 
@@ -292,6 +438,20 @@
             this.tlpCustomer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 58.46154F));
             this.tlpCustomer.Size = new System.Drawing.Size(473, 62);
             this.tlpCustomer.TabIndex = 1;
+            // 
+            // lblCustomer
+            // 
+            this.lblCustomer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblCustomer.Image = global::StorePilot.UI.Properties.Resources.customer;
+            this.lblCustomer.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblCustomer.Location = new System.Drawing.Point(3, 0);
+            this.lblCustomer.Name = "lblCustomer";
+            this.lblCustomer.Size = new System.Drawing.Size(467, 25);
+            this.lblCustomer.TabIndex = 0;
+            this.lblCustomer.Text = "العميل:";
+            this.lblCustomer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // pnlCustomer
             // 
@@ -319,6 +479,29 @@
             this.cbCustomers.Size = new System.Drawing.Size(339, 31);
             this.cbCustomers.TabIndex = 1;
             // 
+            // btnAddNew
+            // 
+            this.btnAddNew.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
+            this.btnAddNew.ButtonStyle = DevToolkit.BaseWinForms.Theming.ButtonStyle.Primary;
+            this.btnAddNew.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnAddNew.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btnAddNew.FlatAppearance.BorderSize = 0;
+            this.btnAddNew.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(64)))), ((int)(((byte)(175)))));
+            this.btnAddNew.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(78)))), ((int)(((byte)(216)))));
+            this.btnAddNew.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAddNew.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAddNew.ForeColor = System.Drawing.Color.White;
+            this.btnAddNew.Image = global::StorePilot.UI.Properties.Resources.customer;
+            this.btnAddNew.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnAddNew.Location = new System.Drawing.Point(0, 0);
+            this.btnAddNew.Name = "btnAddNew";
+            this.btnAddNew.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
+            this.btnAddNew.Size = new System.Drawing.Size(128, 31);
+            this.btnAddNew.TabIndex = 2;
+            this.btnAddNew.Text = "عميل جديد";
+            this.btnAddNew.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnAddNew.UseVisualStyleBackColor = false;
+            // 
             // tlpInvoiceDate
             // 
             this.tlpInvoiceDate.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -335,6 +518,20 @@
             this.tlpInvoiceDate.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpInvoiceDate.Size = new System.Drawing.Size(472, 62);
             this.tlpInvoiceDate.TabIndex = 0;
+            // 
+            // lblInvoiceDate
+            // 
+            this.lblInvoiceDate.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblInvoiceDate.Image = global::StorePilot.UI.Properties.Resources.Calendar_32;
+            this.lblInvoiceDate.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblInvoiceDate.Location = new System.Drawing.Point(3, 0);
+            this.lblInvoiceDate.Name = "lblInvoiceDate";
+            this.lblInvoiceDate.Size = new System.Drawing.Size(466, 26);
+            this.lblInvoiceDate.TabIndex = 0;
+            this.lblInvoiceDate.Text = "تاريخ البيع:";
+            this.lblInvoiceDate.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // dtpInvoiceDate
             // 
@@ -381,128 +578,7 @@
             this.tbNotes.Multiline = true;
             this.tbNotes.Name = "tbNotes";
             this.tbNotes.Size = new System.Drawing.Size(951, 170);
-            this.tbNotes.TabIndex = 2;
-            // 
-            // object_20b9125e_7a09_429b_9d3c_e43ce6b6c816
-            // 
-            this.object_20b9125e_7a09_429b_9d3c_e43ce6b6c816.ColumnCount = 1;
-            this.object_20b9125e_7a09_429b_9d3c_e43ce6b6c816.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.object_20b9125e_7a09_429b_9d3c_e43ce6b6c816.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.object_20b9125e_7a09_429b_9d3c_e43ce6b6c816.Location = new System.Drawing.Point(660, 4);
-            this.object_20b9125e_7a09_429b_9d3c_e43ce6b6c816.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.object_20b9125e_7a09_429b_9d3c_e43ce6b6c816.Name = "object_20b9125e_7a09_429b_9d3c_e43ce6b6c816";
-            this.object_20b9125e_7a09_429b_9d3c_e43ce6b6c816.RowCount = 2;
-            this.object_20b9125e_7a09_429b_9d3c_e43ce6b6c816.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.object_20b9125e_7a09_429b_9d3c_e43ce6b6c816.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.object_20b9125e_7a09_429b_9d3c_e43ce6b6c816.Size = new System.Drawing.Size(322, 81);
-            this.object_20b9125e_7a09_429b_9d3c_e43ce6b6c816.TabIndex = 1;
-            // 
-            // lblTotalAmount
-            // 
-            this.lblTotalAmount.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblTotalAmount.Image = global::StorePilot.UI.Properties.Resources.money;
-            this.lblTotalAmount.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblTotalAmount.Location = new System.Drawing.Point(3, 0);
-            this.lblTotalAmount.Name = "lblTotalAmount";
-            this.lblTotalAmount.Size = new System.Drawing.Size(467, 21);
-            this.lblTotalAmount.TabIndex = 0;
-            this.lblTotalAmount.Text = "إجمالي الفاتورة:";
-            this.lblTotalAmount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblRemainingAmount
-            // 
-            this.lblRemainingAmount.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblRemainingAmount.Image = global::StorePilot.UI.Properties.Resources.money;
-            this.lblRemainingAmount.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblRemainingAmount.Location = new System.Drawing.Point(3, 0);
-            this.lblRemainingAmount.Name = "lblRemainingAmount";
-            this.lblRemainingAmount.Size = new System.Drawing.Size(466, 21);
-            this.lblRemainingAmount.TabIndex = 0;
-            this.lblRemainingAmount.Text = "المبلغ المتبقي:";
-            this.lblRemainingAmount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblPaidAmount
-            // 
-            this.lblPaidAmount.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblPaidAmount.Image = global::StorePilot.UI.Properties.Resources.money;
-            this.lblPaidAmount.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblPaidAmount.Location = new System.Drawing.Point(3, 0);
-            this.lblPaidAmount.Name = "lblPaidAmount";
-            this.lblPaidAmount.Size = new System.Drawing.Size(467, 26);
-            this.lblPaidAmount.TabIndex = 0;
-            this.lblPaidAmount.Text = "المبلغ المدفوع:";
-            this.lblPaidAmount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblInvoiceStatus
-            // 
-            this.lblInvoiceStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblInvoiceStatus.Image = global::StorePilot.UI.Properties.Resources.status;
-            this.lblInvoiceStatus.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblInvoiceStatus.Location = new System.Drawing.Point(3, 0);
-            this.lblInvoiceStatus.Name = "lblInvoiceStatus";
-            this.lblInvoiceStatus.Size = new System.Drawing.Size(466, 25);
-            this.lblInvoiceStatus.TabIndex = 0;
-            this.lblInvoiceStatus.Text = "حالة الفاتورة:";
-            this.lblInvoiceStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblCustomer
-            // 
-            this.lblCustomer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblCustomer.Image = global::StorePilot.UI.Properties.Resources.customer;
-            this.lblCustomer.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblCustomer.Location = new System.Drawing.Point(3, 0);
-            this.lblCustomer.Name = "lblCustomer";
-            this.lblCustomer.Size = new System.Drawing.Size(467, 25);
-            this.lblCustomer.TabIndex = 0;
-            this.lblCustomer.Text = "العميل:";
-            this.lblCustomer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // btnAddNew
-            // 
-            this.btnAddNew.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
-            this.btnAddNew.ButtonStyle = DevToolkit.BaseWinForms.Theming.ButtonStyle.Primary;
-            this.btnAddNew.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnAddNew.Dock = System.Windows.Forms.DockStyle.Left;
-            this.btnAddNew.FlatAppearance.BorderSize = 0;
-            this.btnAddNew.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(64)))), ((int)(((byte)(175)))));
-            this.btnAddNew.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(78)))), ((int)(((byte)(216)))));
-            this.btnAddNew.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAddNew.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAddNew.ForeColor = System.Drawing.Color.White;
-            this.btnAddNew.Image = global::StorePilot.UI.Properties.Resources.customer;
-            this.btnAddNew.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAddNew.Location = new System.Drawing.Point(0, 0);
-            this.btnAddNew.Name = "btnAddNew";
-            this.btnAddNew.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
-            this.btnAddNew.Size = new System.Drawing.Size(128, 31);
-            this.btnAddNew.TabIndex = 0;
-            this.btnAddNew.Text = "عميل جديد";
-            this.btnAddNew.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnAddNew.UseVisualStyleBackColor = false;
-            // 
-            // lblInvoiceDate
-            // 
-            this.lblInvoiceDate.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblInvoiceDate.Image = global::StorePilot.UI.Properties.Resources.Calendar_32;
-            this.lblInvoiceDate.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblInvoiceDate.Location = new System.Drawing.Point(3, 0);
-            this.lblInvoiceDate.Name = "lblInvoiceDate";
-            this.lblInvoiceDate.Size = new System.Drawing.Size(466, 26);
-            this.lblInvoiceDate.TabIndex = 0;
-            this.lblInvoiceDate.Text = "تاريخ البيع:";
-            this.lblInvoiceDate.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.tbNotes.TabIndex = 4;
             // 
             // lblNotes
             // 
@@ -518,6 +594,20 @@
             this.lblNotes.Text = "ملاحظات:";
             this.lblNotes.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // object_20b9125e_7a09_429b_9d3c_e43ce6b6c816
+            // 
+            this.object_20b9125e_7a09_429b_9d3c_e43ce6b6c816.ColumnCount = 1;
+            this.object_20b9125e_7a09_429b_9d3c_e43ce6b6c816.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.object_20b9125e_7a09_429b_9d3c_e43ce6b6c816.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.object_20b9125e_7a09_429b_9d3c_e43ce6b6c816.Location = new System.Drawing.Point(660, 4);
+            this.object_20b9125e_7a09_429b_9d3c_e43ce6b6c816.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.object_20b9125e_7a09_429b_9d3c_e43ce6b6c816.Name = "object_20b9125e_7a09_429b_9d3c_e43ce6b6c816";
+            this.object_20b9125e_7a09_429b_9d3c_e43ce6b6c816.RowCount = 2;
+            this.object_20b9125e_7a09_429b_9d3c_e43ce6b6c816.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.object_20b9125e_7a09_429b_9d3c_e43ce6b6c816.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.object_20b9125e_7a09_429b_9d3c_e43ce6b6c816.Size = new System.Drawing.Size(322, 81);
+            this.object_20b9125e_7a09_429b_9d3c_e43ce6b6c816.TabIndex = 1;
+            // 
             // lblTitle
             // 
             this.lblTitle.Dock = System.Windows.Forms.DockStyle.Top;
@@ -531,101 +621,13 @@
             this.lblTitle.Text = "Title";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // btnClose
-            // 
-            this.btnClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
-            this.btnClose.ButtonStyle = DevToolkit.BaseWinForms.Theming.ButtonStyle.Primary;
-            this.btnClose.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnClose.FlatAppearance.BorderSize = 0;
-            this.btnClose.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(64)))), ((int)(((byte)(175)))));
-            this.btnClose.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(78)))), ((int)(((byte)(216)))));
-            this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnClose.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnClose.ForeColor = System.Drawing.Color.White;
-            this.btnClose.Image = global::StorePilot.UI.Properties.Resources.Close_32;
-            this.btnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClose.Location = new System.Drawing.Point(6, 6);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
-            this.btnClose.Size = new System.Drawing.Size(99, 28);
-            this.btnClose.TabIndex = 6;
-            this.btnClose.Text = "إغلاق";
-            this.btnClose.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnClose.UseVisualStyleBackColor = false;
-            // 
-            // btnInvoiceItems
-            // 
-            this.btnInvoiceItems.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(38)))), ((int)(((byte)(38)))));
-            this.btnInvoiceItems.ButtonStyle = DevToolkit.BaseWinForms.Theming.ButtonStyle.Danger;
-            this.btnInvoiceItems.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnInvoiceItems.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(213)))), ((int)(((byte)(225)))));
-            this.btnInvoiceItems.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(135)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
-            this.btnInvoiceItems.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(185)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-            this.btnInvoiceItems.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnInvoiceItems.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnInvoiceItems.ForeColor = System.Drawing.Color.White;
-            this.btnInvoiceItems.Image = global::StorePilot.UI.Properties.Resources.list;
-            this.btnInvoiceItems.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnInvoiceItems.Location = new System.Drawing.Point(214, 6);
-            this.btnInvoiceItems.Name = "btnInvoiceItems";
-            this.btnInvoiceItems.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
-            this.btnInvoiceItems.Size = new System.Drawing.Size(190, 28);
-            this.btnInvoiceItems.TabIndex = 4;
-            this.btnInvoiceItems.Text = "إضافة عناصر الفاتورة";
-            this.btnInvoiceItems.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnInvoiceItems.UseVisualStyleBackColor = false;
-            this.btnInvoiceItems.Click += new System.EventHandler(this.btnInvoiceItems_Click);
-            // 
-            // btnViewPayments
-            // 
-            this.btnViewPayments.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(38)))), ((int)(((byte)(38)))));
-            this.btnViewPayments.ButtonStyle = DevToolkit.BaseWinForms.Theming.ButtonStyle.Danger;
-            this.btnViewPayments.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnViewPayments.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(213)))), ((int)(((byte)(225)))));
-            this.btnViewPayments.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(135)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
-            this.btnViewPayments.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(185)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-            this.btnViewPayments.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnViewPayments.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnViewPayments.ForeColor = System.Drawing.Color.White;
-            this.btnViewPayments.Image = global::StorePilot.UI.Properties.Resources.payment;
-            this.btnViewPayments.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnViewPayments.Location = new System.Drawing.Point(410, 6);
-            this.btnViewPayments.Name = "btnViewPayments";
-            this.btnViewPayments.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
-            this.btnViewPayments.Size = new System.Drawing.Size(156, 28);
-            this.btnViewPayments.TabIndex = 8;
-            this.btnViewPayments.Text = "عرض سجل الدفع";
-            this.btnViewPayments.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnViewPayments.UseVisualStyleBackColor = false;
-            // 
-            // btnCancel
-            // 
-            this.btnCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(38)))), ((int)(((byte)(38)))));
-            this.btnCancel.ButtonStyle = DevToolkit.BaseWinForms.Theming.ButtonStyle.Danger;
-            this.btnCancel.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnCancel.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(213)))), ((int)(((byte)(225)))));
-            this.btnCancel.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(135)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
-            this.btnCancel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(185)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-            this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCancel.ForeColor = System.Drawing.Color.White;
-            this.btnCancel.Image = global::StorePilot.UI.Properties.Resources.cancel;
-            this.btnCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnCancel.Location = new System.Drawing.Point(572, 6);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
-            this.btnCancel.Size = new System.Drawing.Size(88, 28);
-            this.btnCancel.TabIndex = 9;
-            this.btnCancel.Text = "إلغاء";
-            this.btnCancel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnCancel.UseVisualStyleBackColor = false;
-            // 
             // frmAddEditSaleInvoice
             // 
+            this.AcceptButton = this.btnSavePrint;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
+            this.CancelButton = this.btnClose;
             this.ClientSize = new System.Drawing.Size(963, 497);
             this.Controls.Add(this.tlpContainer);
             this.Controls.Add(this.lblTitle);

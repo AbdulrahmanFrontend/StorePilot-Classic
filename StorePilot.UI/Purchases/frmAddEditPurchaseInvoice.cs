@@ -42,12 +42,12 @@ namespace StorePilot.UI.Purchases
             _Mode = frmMode.AddNew;
         }
 
-        public frmAddEditPurchaseInvoice(int invoiceId)
+        public frmAddEditPurchaseInvoice(int id)
         {
             InitializeComponent();
 
             _Mode = frmMode.Edit;
-            _Id = invoiceId;
+            _Id = id;
         }
 
         protected override void ApplyTheme()

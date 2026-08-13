@@ -147,6 +147,12 @@
     <Compile Include="Purchases\ucPurchasesScreen.Designer.cs">
       <DependentUpon>ucPurchasesScreen.cs</DependentUpon>
     </Compile>
+    <Compile Include="Returns\frmAddEditReturnInvoice.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Returns\frmAddEditReturnInvoice.Designer.cs">
+      <DependentUpon>frmAddEditReturnInvoice.cs</DependentUpon>
+    </Compile>
     <Compile Include="Returns\frmAddEditUpdateReturnItems.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -216,6 +222,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Purchases\frmAddEditUpdatePurchaseItems.resx">
       <DependentUpon>frmAddEditUpdatePurchaseItems.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Returns\frmAddEditReturnInvoice.resx">
+      <DependentUpon>frmAddEditReturnInvoice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Returns\frmAddEditUpdateReturnItems.resx">
+      <DependentUpon>frmAddEditUpdateReturnItems.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Sales\frmAddEditSaleInvoice.resx">
       <DependentUpon>frmAddEditSaleInvoice.cs</DependentUpon>
@@ -370,9 +382,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\cancel.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="InitialDatabase.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets" Condition="Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" />
