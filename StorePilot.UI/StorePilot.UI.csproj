@@ -77,6 +77,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CashTransactions\frmAddEditUpdateTransaction.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CashTransactions\frmAddEditUpdateTransaction.Designer.cs">
+      <DependentUpon>frmAddEditUpdateTransaction.cs</DependentUpon>
+    </Compile>
     <Compile Include="CashTransactions\ucCashTransactionsScreen.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -110,6 +116,12 @@
     <Compile Include="Global\Classes\Theme.cs" />
     <Compile Include="Global\Classes\ThemeManager.cs" />
     <Compile Include="Global\Classes\UIEnums.cs" />
+    <Compile Include="Payments\frmAddEditUpdatePayment.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Payments\frmAddEditUpdatePayment.Designer.cs">
+      <DependentUpon>frmAddEditUpdatePayment.cs</DependentUpon>
+    </Compile>
     <Compile Include="Products\frmAddEditUpdateProduct.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -201,6 +213,9 @@
     <Compile Include="ucDashboardScreen.Designer.cs">
       <DependentUpon>ucDashboardScreen.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="CashTransactions\frmAddEditUpdateTransaction.resx">
+      <DependentUpon>frmAddEditUpdateTransaction.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Customers\frmAddEditUpdateCustomer.resx">
       <DependentUpon>frmAddEditUpdateCustomer.cs</DependentUpon>
     </EmbeddedResource>
@@ -209,6 +224,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmSplash.resx">
       <DependentUpon>frmSplash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Payments\frmAddEditUpdatePayment.resx">
+      <DependentUpon>frmAddEditUpdatePayment.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Products\frmAddEditUpdateProduct.resx">
       <DependentUpon>frmAddEditUpdateProduct.cs</DependentUpon>
@@ -258,7 +276,6 @@
   <ItemGroup>
     <Folder Include="Global\Controls\" />
     <Folder Include="Global\Forms\" />
-    <Folder Include="Payments\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\sink.png" />
