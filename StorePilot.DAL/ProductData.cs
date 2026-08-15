@@ -46,6 +46,7 @@ namespace StorePilot.DAL
                 BarCode, 
                 UnitID,
                 GroupID, 
+                Quantity,
                 MinQuantity, 
                 PurchasePrice,
                 SalePrice,
@@ -57,6 +58,7 @@ namespace StorePilot.DAL
                 @BarCode, 
                 @UnitID,
                 @GroupID, 
+                @Quantity,
                 @MinQuantity, 
                 @PurchasePrice,
                 @SalePrice,
@@ -96,6 +98,12 @@ namespace StorePilot.DAL
                     Name = "@MinQuantity",
                     DbType = DbType.Decimal,
                     Value = model.MinQuantity,
+                },
+                new DbParameterInfo
+                {
+                    Name = "@Quantity",
+                    DbType = DbType.Decimal,
+                    Value = model.Quantity,
                 },
                 new DbParameterInfo
                 {

@@ -58,7 +58,6 @@ namespace StorePilot.BLL
 
         protected override Result _AddNew()
         {
-            this.Model.Quantity = 0;
             this.Model.ProductID = this._ID;
 
             Result result = ProductData.AddNew(this.Model);
@@ -115,6 +114,11 @@ namespace StorePilot.BLL
                 return result;
 
             result = ValidateMinQuantity();
+
+            if (!result.IsSuccess)
+                return result;
+
+            result = ValidateQuantity();
 
             if (!result.IsSuccess)
                 return result;
@@ -192,6 +196,9 @@ namespace StorePilot.BLL
 
         public Result ValidateUnitID()
             => UnitService.IsExist(this.Model.UnitID);
+
+        public Result ValidateQuantity()
+            => _ValidateProperty(nameof(this.Model.Quantity), this.Model);
 
         public Result ValidateMinQuantity()
             => _ValidateProperty(nameof(this.Model.MinQuantity), this.Model);

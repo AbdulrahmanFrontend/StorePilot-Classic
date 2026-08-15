@@ -74,6 +74,7 @@ namespace StorePilot.UI.Products
             {
                 case frmMode.AddNew:
                     lblTitle.Text = "إضافة بيانات صنف جديد";
+                    tbQuantity.ReadOnly = true;
                     btnActivate.Visible = false;
                     _Service = new ProductService();
                     break;
@@ -158,24 +159,23 @@ namespace StorePilot.UI.Products
             tbBarCode.Text = _Service.Model.BarCode;
             cbGroups.SelectedValue = _Service.Model.GroupID;
             cbUnits.SelectedValue = _Service.Model.UnitID;
-            tbQuantity.Text = _Service.Model.Quantity.ToString();
-            tbMinQuantity.Text = _Service.Model.MinQuantity.ToString();
-            tbSalePrice.Text = _Service.Model.SalePrice.ToString();
-            tbPurchasePrice.Text = _Service.Model.PurchasePrice.ToString();
+            tbQuantity.Text = _Service.Model.Quantity.ToString("#,##0");
+            tbMinQuantity.Text = _Service.Model.MinQuantity.ToString("#,##0");
+            tbSalePrice.Text = _Service.Model.SalePrice.ToString("#,##0");
+            tbPurchasePrice.Text = _Service.Model.PurchasePrice.ToString("#,##0");
             tbNotes.Text = _Service.Model.Notes;
         }
 
         private void EnableFields()
         {
-            tbProductName.Enabled = false;
-            tbBarCode.Enabled = false;
+            tbProductName.ReadOnly = true;
+            tbBarCode.ReadOnly = true;
             cbGroups.Enabled = false;
             cbUnits.Enabled = false;
-            tbQuantity.Enabled = false;
-            tbMinQuantity.Enabled = false;
-            tbSalePrice.Enabled = false;
-            tbPurchasePrice.Enabled = false;
-            tbNotes.Enabled = false;
+            tbMinQuantity.ReadOnly = true;
+            tbSalePrice.ReadOnly = true;
+            tbPurchasePrice.ReadOnly = true;
+            tbNotes.ReadOnly = true;
         }
 
         private void tbProductName_Validating(object sender, CancelEventArgs e)
@@ -209,6 +209,13 @@ namespace StorePilot.UI.Products
             _Validate(sender, e);
             _Service.Model.SalePrice = _GetDecimalValue(tbSalePrice.Text);
             _Validate((TextBox)sender, e, _Service.ValidateSalePrice());
+        }
+
+        private void tbQuantity_Validating(object sender, CancelEventArgs e)
+        {
+            _Validate(sender, e);
+            _Service.Model.Quantity = _GetDecimalValue(tbQuantity.Text);
+            _Validate((TextBox)sender, e, _Service.ValidateMinQuantity());
         }
 
         private decimal _GetDecimalValue(string value)

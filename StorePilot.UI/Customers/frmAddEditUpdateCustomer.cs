@@ -112,10 +112,10 @@ namespace StorePilot.UI.Customers
 
         private void EnableTextBoxes()
         {
-            tbName.Enabled = false;
-            tbPhone.Enabled = false;
-            tbAddress.Enabled = false;
-            tbNotes.Enabled = false;
+            tbName.ReadOnly = true;
+            tbPhone.ReadOnly = true;
+            tbAddress.ReadOnly = true;
+            tbNotes.ReadOnly = true;
         }
 
         private void tbName_Validating(object sender, CancelEventArgs e)

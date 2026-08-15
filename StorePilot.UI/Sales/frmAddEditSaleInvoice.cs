@@ -193,7 +193,7 @@ namespace StorePilot.UI.Sales
             dtpInvoiceDate.Enabled = ((_Mode == frmMode.AddNew) && _InvoiceItems.Any());
             cbCustomers.Enabled = ((_Mode == frmMode.AddNew) && _InvoiceItems.Any());
             cbStatuses.Enabled = ((_Mode == frmMode.AddNew) && _InvoiceItems.Any());
-            tbNotes.Enabled = ((_Mode == frmMode.AddNew) && _InvoiceItems.Any());
+            tbNotes.ReadOnly = !((_Mode == frmMode.AddNew) && _InvoiceItems.Any());
         }
 
         private void _LoadData()

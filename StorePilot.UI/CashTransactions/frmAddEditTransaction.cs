@@ -20,7 +20,7 @@ using System.Xml.Linq;
 
 namespace StorePilot.UI.CashTransactions
 {
-    public partial class frmAddEditUpdateTransaction : frmBase
+    public partial class frmAddEditTransaction : frmBase
     {
         private frmMode _Mode;
 
@@ -31,7 +31,7 @@ namespace StorePilot.UI.CashTransactions
         public delegate void DataBackEventHandler(object sender);
         public event DataBackEventHandler DataBack;
 
-        public frmAddEditUpdateTransaction(int id, frmMode mode)
+        public frmAddEditTransaction(int id, frmMode mode)
         {
             InitializeComponent();
 
@@ -39,7 +39,7 @@ namespace StorePilot.UI.CashTransactions
             _Mode = mode;
         }
 
-        public frmAddEditUpdateTransaction()
+        public frmAddEditTransaction()
         {
             InitializeComponent();
 
@@ -64,7 +64,7 @@ namespace StorePilot.UI.CashTransactions
             this.flpFooter.BackColor = Theme.Border;
         }
 
-        private void frmAddEditUpdateTransaction_Load(object sender, EventArgs e)
+        private void frmAddEditTransaction_Load(object sender, EventArgs e)
         {
             switch (_Mode)
             {
@@ -89,6 +89,7 @@ namespace StorePilot.UI.CashTransactions
             }
 
             this.Text = lblTitle.Text;
+            this.cbTransactionType.SelectedIndex = 0;
         }
 
         private void _LoadData()
@@ -118,15 +119,28 @@ namespace StorePilot.UI.CashTransactions
             cbTransactionType.Enabled = false;
             tbPaidAmount.ReadOnly = true;
             tbDescription.ReadOnly = true;
-            tbNotes.Enabled = false;
+            tbNotes.ReadOnly = true;
         }
 
         private void tbPaidAmount_Validating(object sender, CancelEventArgs e)
         {
-            _Service.Model.PaidAmount = 
-                decimal.TryParse(tbPaidAmount.Text?.ToString(), out decimal value) ?
-                value :
+            decimal Quantity = 
+                decimal.TryParse(tbPaidAmount.Text?.ToString(), out decimal value) ? 
+                value : 
                 0;
+
+            if (Quantity > 0)
+            {
+                e.Cancel = true;
+
+                epTransactionData.SetError(
+                    tbPaidAmount,
+                    "لا يسمح إلا بإدخال أرقام صحيحة أو عشرية فقط!");
+
+                tbPaidAmount.BackColor = Color.MistyRose;
+            }
+
+            _Service.Model.PaidAmount = Quantity;
 
             _Validate(tbPaidAmount, e, _Service.ValidatePaidAmount());
         }

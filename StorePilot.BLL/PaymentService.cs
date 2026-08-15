@@ -134,7 +134,7 @@ namespace StorePilot.BLL
             if (!result.IsSuccess)
                 return result;
 
-            result = ValidateInvoiceDate();
+            result = ValidatePaymentDate();
 
             if (!result.IsSuccess)
                 return result;
@@ -188,7 +188,7 @@ namespace StorePilot.BLL
             return Result.Success();
         }
 
-        public Result ValidateInvoiceDate()
+        public Result ValidatePaymentDate()
         {
             var result = InvoiceData.Find(this.Model.InvoiceID);
 

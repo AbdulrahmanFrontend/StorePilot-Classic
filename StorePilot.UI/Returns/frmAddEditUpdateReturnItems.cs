@@ -191,8 +191,6 @@ namespace StorePilot.UI.Returns
             tbTotalPrice.Text = "0";
         }
 
-        private void Frm_DataBack(object sender) => _FillProductsComboBox();
-
         private void btnSaveItem_Click(object sender, EventArgs e)
         {
             Result result = IsValid();

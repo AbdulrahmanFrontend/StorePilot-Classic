@@ -147,7 +147,7 @@ namespace StorePilot.UI.Returns
         private void _EnabledFields()
         {
             dtpInvoiceDate.Enabled = ((_Mode == frmMode.AddNew) && _InvoiceItems.Any());
-            tbNotes.Enabled = ((_Mode == frmMode.AddNew) && _InvoiceItems.Any());
+            tbNotes.ReadOnly = !((_Mode == frmMode.AddNew) && _InvoiceItems.Any());
         }
 
         private void _LoadData()

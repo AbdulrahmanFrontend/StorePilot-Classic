@@ -1,6 +1,6 @@
-﻿namespace StorePilot.UI.CashTransactions
+﻿namespace StorePilot.UI.Payments
 {
-    partial class frmAddEditUpdateTransaction
+    partial class frmAddEditPayment
     {
         /// <summary>
         /// Required designer variable.
@@ -29,8 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAddEditUpdateTransaction));
-            this.lblTitle = new System.Windows.Forms.Label();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAddEditPayment));
             this.flpFooter = new System.Windows.Forms.FlowLayoutPanel();
             this.btnClose = new DevToolkit.BaseWinForms.Controls.CustomControls.ccButton();
             this.btnSave = new DevToolkit.BaseWinForms.Controls.CustomControls.ccButton();
@@ -40,42 +39,30 @@
             this.lblNotes = new System.Windows.Forms.Label();
             this.tbNotes = new System.Windows.Forms.TextBox();
             this.tlpUp = new System.Windows.Forms.TableLayoutPanel();
-            this.tlpDescription = new System.Windows.Forms.TableLayoutPanel();
-            this.tbDescription = new System.Windows.Forms.TextBox();
-            this.lblDescription = new System.Windows.Forms.Label();
-            this.tlpTransactionType = new System.Windows.Forms.TableLayoutPanel();
-            this.lblTransactionType = new System.Windows.Forms.Label();
+            this.tlpInvoiceID = new System.Windows.Forms.TableLayoutPanel();
+            this.tbInvoiceID = new System.Windows.Forms.TextBox();
+            this.lblInvoiceID = new System.Windows.Forms.Label();
+            this.tlpPaymentMethods = new System.Windows.Forms.TableLayoutPanel();
+            this.lblPaymentMethod = new System.Windows.Forms.Label();
+            this.cbPaymentMethods = new System.Windows.Forms.ComboBox();
             this.tlpPaidAmount = new System.Windows.Forms.TableLayoutPanel();
             this.lblPaidAmount = new System.Windows.Forms.Label();
             this.tbPaidAmount = new System.Windows.Forms.TextBox();
-            this.tlpTransactionDate = new System.Windows.Forms.TableLayoutPanel();
-            this.lblTransactionDate = new System.Windows.Forms.Label();
-            this.dtpTransactionDate = new System.Windows.Forms.DateTimePicker();
-            this.cbTransactionType = new System.Windows.Forms.ComboBox();
-            this.epTransactionData = new System.Windows.Forms.ErrorProvider(this.components);
+            this.tlpPaymentDate = new System.Windows.Forms.TableLayoutPanel();
+            this.lblPaymentDate = new System.Windows.Forms.Label();
+            this.dtpPaymentDate = new System.Windows.Forms.DateTimePicker();
+            this.lblTitle = new System.Windows.Forms.Label();
+            this.epPaymentData = new System.Windows.Forms.ErrorProvider(this.components);
             this.flpFooter.SuspendLayout();
             this.tlpContainer.SuspendLayout();
             this.tlpNotes.SuspendLayout();
             this.tlpUp.SuspendLayout();
-            this.tlpDescription.SuspendLayout();
-            this.tlpTransactionType.SuspendLayout();
+            this.tlpInvoiceID.SuspendLayout();
+            this.tlpPaymentMethods.SuspendLayout();
             this.tlpPaidAmount.SuspendLayout();
-            this.tlpTransactionDate.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.epTransactionData)).BeginInit();
+            this.tlpPaymentDate.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.epPaymentData)).BeginInit();
             this.SuspendLayout();
-            // 
-            // lblTitle
-            // 
-            this.lblTitle.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitle.Image = global::StorePilot.UI.Properties.Resources.payment;
-            this.lblTitle.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblTitle.Location = new System.Drawing.Point(0, 0);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(800, 46);
-            this.lblTitle.TabIndex = 10;
-            this.lblTitle.Text = "Title";
-            this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // flpFooter
             // 
@@ -88,8 +75,8 @@
             this.flpFooter.Location = new System.Drawing.Point(0, 315);
             this.flpFooter.Name = "flpFooter";
             this.flpFooter.Padding = new System.Windows.Forms.Padding(3, 3, 0, 3);
-            this.flpFooter.Size = new System.Drawing.Size(800, 40);
-            this.flpFooter.TabIndex = 11;
+            this.flpFooter.Size = new System.Drawing.Size(700, 40);
+            this.flpFooter.TabIndex = 12;
             // 
             // btnClose
             // 
@@ -135,6 +122,7 @@
             this.btnSave.Text = "حفظ";
             this.btnSave.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnSave.UseVisualStyleBackColor = false;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // btnCancel
             // 
@@ -172,8 +160,8 @@
             this.tlpContainer.RowCount = 2;
             this.tlpContainer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpContainer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpContainer.Size = new System.Drawing.Size(800, 269);
-            this.tlpContainer.TabIndex = 12;
+            this.tlpContainer.Size = new System.Drawing.Size(700, 269);
+            this.tlpContainer.TabIndex = 13;
             // 
             // tlpNotes
             // 
@@ -188,7 +176,7 @@
             this.tlpNotes.RowCount = 2;
             this.tlpNotes.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpNotes.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpNotes.Size = new System.Drawing.Size(794, 127);
+            this.tlpNotes.Size = new System.Drawing.Size(694, 127);
             this.tlpNotes.TabIndex = 1;
             // 
             // lblNotes
@@ -200,7 +188,7 @@
             this.lblNotes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblNotes.Location = new System.Drawing.Point(3, 0);
             this.lblNotes.Name = "lblNotes";
-            this.lblNotes.Size = new System.Drawing.Size(788, 27);
+            this.lblNotes.Size = new System.Drawing.Size(688, 27);
             this.lblNotes.TabIndex = 0;
             this.lblNotes.Text = "ملاحظات:";
             this.lblNotes.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -213,7 +201,7 @@
             this.tbNotes.MaxLength = 500;
             this.tbNotes.Multiline = true;
             this.tbNotes.Name = "tbNotes";
-            this.tbNotes.Size = new System.Drawing.Size(771, 94);
+            this.tbNotes.Size = new System.Drawing.Size(671, 94);
             this.tbNotes.TabIndex = 4;
             // 
             // tlpUp
@@ -221,10 +209,10 @@
             this.tlpUp.ColumnCount = 2;
             this.tlpUp.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpUp.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpUp.Controls.Add(this.tlpDescription, 1, 1);
-            this.tlpUp.Controls.Add(this.tlpTransactionType, 1, 0);
+            this.tlpUp.Controls.Add(this.tlpInvoiceID, 1, 1);
+            this.tlpUp.Controls.Add(this.tlpPaymentMethods, 1, 0);
             this.tlpUp.Controls.Add(this.tlpPaidAmount, 0, 1);
-            this.tlpUp.Controls.Add(this.tlpTransactionDate, 0, 0);
+            this.tlpUp.Controls.Add(this.tlpPaymentDate, 0, 0);
             this.tlpUp.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpUp.Location = new System.Drawing.Point(3, 4);
             this.tlpUp.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -232,79 +220,91 @@
             this.tlpUp.RowCount = 2;
             this.tlpUp.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpUp.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpUp.Size = new System.Drawing.Size(794, 126);
+            this.tlpUp.Size = new System.Drawing.Size(694, 126);
             this.tlpUp.TabIndex = 0;
             // 
-            // tlpDescription
+            // tlpInvoiceID
             // 
-            this.tlpDescription.ColumnCount = 1;
-            this.tlpDescription.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpDescription.Controls.Add(this.tbDescription, 0, 1);
-            this.tlpDescription.Controls.Add(this.lblDescription, 0, 0);
-            this.tlpDescription.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpDescription.Location = new System.Drawing.Point(3, 67);
-            this.tlpDescription.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.tlpDescription.Name = "tlpDescription";
-            this.tlpDescription.RowCount = 2;
-            this.tlpDescription.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpDescription.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpDescription.Size = new System.Drawing.Size(391, 55);
-            this.tlpDescription.TabIndex = 6;
+            this.tlpInvoiceID.ColumnCount = 1;
+            this.tlpInvoiceID.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpInvoiceID.Controls.Add(this.tbInvoiceID, 0, 1);
+            this.tlpInvoiceID.Controls.Add(this.lblInvoiceID, 0, 0);
+            this.tlpInvoiceID.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpInvoiceID.Location = new System.Drawing.Point(3, 67);
+            this.tlpInvoiceID.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.tlpInvoiceID.Name = "tlpInvoiceID";
+            this.tlpInvoiceID.RowCount = 2;
+            this.tlpInvoiceID.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpInvoiceID.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tlpInvoiceID.Size = new System.Drawing.Size(341, 55);
+            this.tlpInvoiceID.TabIndex = 6;
             // 
-            // tbDescription
+            // tbInvoiceID
             // 
-            this.tbDescription.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbDescription.Location = new System.Drawing.Point(20, 27);
-            this.tbDescription.Margin = new System.Windows.Forms.Padding(3, 3, 20, 3);
-            this.tbDescription.MaxLength = 100;
-            this.tbDescription.Name = "tbDescription";
-            this.tbDescription.Size = new System.Drawing.Size(368, 25);
-            this.tbDescription.TabIndex = 3;
-            this.tbDescription.Validating += new System.ComponentModel.CancelEventHandler(this.tbDescription_Validating);
+            this.tbInvoiceID.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbInvoiceID.Location = new System.Drawing.Point(20, 27);
+            this.tbInvoiceID.Margin = new System.Windows.Forms.Padding(3, 3, 20, 3);
+            this.tbInvoiceID.Name = "tbInvoiceID";
+            this.tbInvoiceID.ReadOnly = true;
+            this.tbInvoiceID.Size = new System.Drawing.Size(318, 25);
+            this.tbInvoiceID.TabIndex = 3;
             // 
-            // lblDescription
+            // lblInvoiceID
             // 
-            this.lblDescription.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.lblInvoiceID.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblDescription.Image = global::StorePilot.UI.Properties.Resources.Notes_32;
-            this.lblDescription.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblDescription.Location = new System.Drawing.Point(3, 0);
-            this.lblDescription.Name = "lblDescription";
-            this.lblDescription.Size = new System.Drawing.Size(385, 24);
-            this.lblDescription.TabIndex = 0;
-            this.lblDescription.Text = "توصيف الحركة:";
-            this.lblDescription.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblInvoiceID.Image = global::StorePilot.UI.Properties.Resources.Number_32;
+            this.lblInvoiceID.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblInvoiceID.Location = new System.Drawing.Point(3, 0);
+            this.lblInvoiceID.Name = "lblInvoiceID";
+            this.lblInvoiceID.Size = new System.Drawing.Size(335, 24);
+            this.lblInvoiceID.TabIndex = 0;
+            this.lblInvoiceID.Text = "رقم الفاتورة:";
+            this.lblInvoiceID.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // tlpTransactionType
+            // tlpPaymentMethods
             // 
-            this.tlpTransactionType.ColumnCount = 1;
-            this.tlpTransactionType.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpTransactionType.Controls.Add(this.lblTransactionType, 0, 0);
-            this.tlpTransactionType.Controls.Add(this.cbTransactionType, 0, 1);
-            this.tlpTransactionType.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpTransactionType.Location = new System.Drawing.Point(3, 4);
-            this.tlpTransactionType.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.tlpTransactionType.Name = "tlpTransactionType";
-            this.tlpTransactionType.RowCount = 2;
-            this.tlpTransactionType.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpTransactionType.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpTransactionType.Size = new System.Drawing.Size(391, 55);
-            this.tlpTransactionType.TabIndex = 5;
+            this.tlpPaymentMethods.ColumnCount = 1;
+            this.tlpPaymentMethods.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpPaymentMethods.Controls.Add(this.lblPaymentMethod, 0, 0);
+            this.tlpPaymentMethods.Controls.Add(this.cbPaymentMethods, 0, 1);
+            this.tlpPaymentMethods.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpPaymentMethods.Location = new System.Drawing.Point(3, 4);
+            this.tlpPaymentMethods.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.tlpPaymentMethods.Name = "tlpPaymentMethods";
+            this.tlpPaymentMethods.RowCount = 2;
+            this.tlpPaymentMethods.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpPaymentMethods.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tlpPaymentMethods.Size = new System.Drawing.Size(341, 55);
+            this.tlpPaymentMethods.TabIndex = 5;
             // 
-            // lblTransactionType
+            // lblPaymentMethod
             // 
-            this.lblTransactionType.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.lblPaymentMethod.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblTransactionType.Image = global::StorePilot.UI.Properties.Resources.status;
-            this.lblTransactionType.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblTransactionType.Location = new System.Drawing.Point(3, 0);
-            this.lblTransactionType.Name = "lblTransactionType";
-            this.lblTransactionType.Size = new System.Drawing.Size(385, 25);
-            this.lblTransactionType.TabIndex = 0;
-            this.lblTransactionType.Text = "نوع الحركة:";
-            this.lblTransactionType.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblPaymentMethod.Image = global::StorePilot.UI.Properties.Resources.payment;
+            this.lblPaymentMethod.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblPaymentMethod.Location = new System.Drawing.Point(3, 0);
+            this.lblPaymentMethod.Name = "lblPaymentMethod";
+            this.lblPaymentMethod.Size = new System.Drawing.Size(335, 24);
+            this.lblPaymentMethod.TabIndex = 0;
+            this.lblPaymentMethod.Text = "طريقة الدفغ:";
+            this.lblPaymentMethod.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // cbPaymentMethods
+            // 
+            this.cbPaymentMethods.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbPaymentMethods.DropDownHeight = 100;
+            this.cbPaymentMethods.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbPaymentMethods.FormattingEnabled = true;
+            this.cbPaymentMethods.IntegralHeight = false;
+            this.cbPaymentMethods.Location = new System.Drawing.Point(20, 27);
+            this.cbPaymentMethods.Margin = new System.Windows.Forms.Padding(3, 3, 20, 3);
+            this.cbPaymentMethods.Name = "cbPaymentMethods";
+            this.cbPaymentMethods.Size = new System.Drawing.Size(318, 25);
+            this.cbPaymentMethods.TabIndex = 1;
             // 
             // tlpPaidAmount
             // 
@@ -313,13 +313,13 @@
             this.tlpPaidAmount.Controls.Add(this.lblPaidAmount, 0, 0);
             this.tlpPaidAmount.Controls.Add(this.tbPaidAmount, 0, 1);
             this.tlpPaidAmount.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpPaidAmount.Location = new System.Drawing.Point(400, 67);
+            this.tlpPaidAmount.Location = new System.Drawing.Point(350, 67);
             this.tlpPaidAmount.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tlpPaidAmount.Name = "tlpPaidAmount";
             this.tlpPaidAmount.RowCount = 2;
             this.tlpPaidAmount.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpPaidAmount.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpPaidAmount.Size = new System.Drawing.Size(391, 55);
+            this.tlpPaidAmount.Size = new System.Drawing.Size(341, 55);
             this.tlpPaidAmount.TabIndex = 4;
             // 
             // lblPaidAmount
@@ -331,7 +331,7 @@
             this.lblPaidAmount.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblPaidAmount.Location = new System.Drawing.Point(3, 0);
             this.lblPaidAmount.Name = "lblPaidAmount";
-            this.lblPaidAmount.Size = new System.Drawing.Size(385, 24);
+            this.lblPaidAmount.Size = new System.Drawing.Size(335, 24);
             this.lblPaidAmount.TabIndex = 0;
             this.lblPaidAmount.Text = "المبلغ المدفوع:";
             this.lblPaidAmount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -343,83 +343,81 @@
             this.tbPaidAmount.Margin = new System.Windows.Forms.Padding(3, 3, 20, 3);
             this.tbPaidAmount.MaxLength = 6;
             this.tbPaidAmount.Name = "tbPaidAmount";
-            this.tbPaidAmount.Size = new System.Drawing.Size(368, 25);
+            this.tbPaidAmount.Size = new System.Drawing.Size(318, 25);
             this.tbPaidAmount.TabIndex = 2;
             this.tbPaidAmount.Validating += new System.ComponentModel.CancelEventHandler(this.tbPaidAmount_Validating);
             // 
-            // tlpTransactionDate
+            // tlpPaymentDate
             // 
-            this.tlpTransactionDate.ColumnCount = 1;
-            this.tlpTransactionDate.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpTransactionDate.Controls.Add(this.lblTransactionDate, 0, 0);
-            this.tlpTransactionDate.Controls.Add(this.dtpTransactionDate, 0, 1);
-            this.tlpTransactionDate.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpTransactionDate.Location = new System.Drawing.Point(400, 4);
-            this.tlpTransactionDate.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.tlpTransactionDate.Name = "tlpTransactionDate";
-            this.tlpTransactionDate.RowCount = 2;
-            this.tlpTransactionDate.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpTransactionDate.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpTransactionDate.Size = new System.Drawing.Size(391, 55);
-            this.tlpTransactionDate.TabIndex = 2;
+            this.tlpPaymentDate.ColumnCount = 1;
+            this.tlpPaymentDate.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpPaymentDate.Controls.Add(this.lblPaymentDate, 0, 0);
+            this.tlpPaymentDate.Controls.Add(this.dtpPaymentDate, 0, 1);
+            this.tlpPaymentDate.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpPaymentDate.Location = new System.Drawing.Point(350, 4);
+            this.tlpPaymentDate.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.tlpPaymentDate.Name = "tlpPaymentDate";
+            this.tlpPaymentDate.RowCount = 2;
+            this.tlpPaymentDate.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpPaymentDate.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tlpPaymentDate.Size = new System.Drawing.Size(341, 55);
+            this.tlpPaymentDate.TabIndex = 2;
             // 
-            // lblTransactionDate
+            // lblPaymentDate
             // 
-            this.lblTransactionDate.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.lblPaymentDate.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblTransactionDate.Image = global::StorePilot.UI.Properties.Resources.Calendar_32;
-            this.lblTransactionDate.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblTransactionDate.Location = new System.Drawing.Point(3, 0);
-            this.lblTransactionDate.Name = "lblTransactionDate";
-            this.lblTransactionDate.Size = new System.Drawing.Size(385, 24);
-            this.lblTransactionDate.TabIndex = 0;
-            this.lblTransactionDate.Text = "تاريخ الحركة:";
-            this.lblTransactionDate.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblPaymentDate.Image = global::StorePilot.UI.Properties.Resources.Calendar_32;
+            this.lblPaymentDate.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblPaymentDate.Location = new System.Drawing.Point(3, 0);
+            this.lblPaymentDate.Name = "lblPaymentDate";
+            this.lblPaymentDate.Size = new System.Drawing.Size(335, 24);
+            this.lblPaymentDate.TabIndex = 0;
+            this.lblPaymentDate.Text = "تاريخ الدفع:";
+            this.lblPaymentDate.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // dtpTransactionDate
+            // dtpPaymentDate
             // 
-            this.dtpTransactionDate.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.dtpTransactionDate.CustomFormat = "dd/MM/yyyy   hh:mm tt";
-            this.dtpTransactionDate.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dtpTransactionDate.DropDownAlign = System.Windows.Forms.LeftRightAlignment.Right;
-            this.dtpTransactionDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpTransactionDate.Location = new System.Drawing.Point(20, 27);
-            this.dtpTransactionDate.Margin = new System.Windows.Forms.Padding(3, 3, 20, 3);
-            this.dtpTransactionDate.MaxDate = new System.DateTime(2999, 12, 31, 0, 0, 0, 0);
-            this.dtpTransactionDate.MinDate = new System.DateTime(1960, 1, 1, 0, 0, 0, 0);
-            this.dtpTransactionDate.Name = "dtpTransactionDate";
-            this.dtpTransactionDate.RightToLeftLayout = true;
-            this.dtpTransactionDate.Size = new System.Drawing.Size(368, 25);
-            this.dtpTransactionDate.TabIndex = 0;
+            this.dtpPaymentDate.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.dtpPaymentDate.CustomFormat = "dd/MM/yyyy   hh:mm tt";
+            this.dtpPaymentDate.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dtpPaymentDate.DropDownAlign = System.Windows.Forms.LeftRightAlignment.Right;
+            this.dtpPaymentDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpPaymentDate.Location = new System.Drawing.Point(20, 27);
+            this.dtpPaymentDate.Margin = new System.Windows.Forms.Padding(3, 3, 20, 3);
+            this.dtpPaymentDate.MaxDate = new System.DateTime(2999, 12, 31, 0, 0, 0, 0);
+            this.dtpPaymentDate.MinDate = new System.DateTime(1960, 1, 1, 0, 0, 0, 0);
+            this.dtpPaymentDate.Name = "dtpPaymentDate";
+            this.dtpPaymentDate.RightToLeftLayout = true;
+            this.dtpPaymentDate.Size = new System.Drawing.Size(318, 25);
+            this.dtpPaymentDate.TabIndex = 0;
+            this.dtpPaymentDate.Validating += new System.ComponentModel.CancelEventHandler(this.dtpPaymentDate_Validating);
             // 
-            // cbTransactionType
+            // lblTitle
             // 
-            this.cbTransactionType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbTransactionType.DropDownHeight = 100;
-            this.cbTransactionType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbTransactionType.FormattingEnabled = true;
-            this.cbTransactionType.IntegralHeight = false;
-            this.cbTransactionType.Items.AddRange(new object[] {
-            "ايرادات",
-            "مصروفات"});
-            this.cbTransactionType.Location = new System.Drawing.Point(20, 28);
-            this.cbTransactionType.Margin = new System.Windows.Forms.Padding(3, 3, 20, 3);
-            this.cbTransactionType.Name = "cbTransactionType";
-            this.cbTransactionType.Size = new System.Drawing.Size(368, 25);
-            this.cbTransactionType.TabIndex = 1;
+            this.lblTitle.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitle.Image = global::StorePilot.UI.Properties.Resources.payment;
+            this.lblTitle.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblTitle.Location = new System.Drawing.Point(0, 0);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.Size = new System.Drawing.Size(700, 46);
+            this.lblTitle.TabIndex = 11;
+            this.lblTitle.Text = "Title";
+            this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // epTransactionData
+            // epPaymentData
             // 
-            this.epTransactionData.ContainerControl = this;
-            this.epTransactionData.RightToLeft = true;
+            this.epPaymentData.ContainerControl = this;
+            this.epPaymentData.RightToLeft = true;
             // 
-            // frmAddEditUpdateTransaction
+            // frmAddEditUpdatePayment
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
-            this.ClientSize = new System.Drawing.Size(800, 355);
+            this.ClientSize = new System.Drawing.Size(700, 355);
             this.Controls.Add(this.tlpContainer);
             this.Controls.Add(this.flpFooter);
             this.Controls.Add(this.lblTitle);
@@ -429,24 +427,24 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "frmAddEditUpdateTransaction";
+            this.Name = "frmAddEditUpdatePayment";
             this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.RightToLeftLayout = true;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "frmAddEditUpdateTransaction";
-            this.Load += new System.EventHandler(this.frmAddEditUpdateTransaction_Load);
+            this.Text = "frmAddEditUpdatePayment";
+            this.Load += new System.EventHandler(this.frmAddEditPayment_Load);
             this.flpFooter.ResumeLayout(false);
             this.tlpContainer.ResumeLayout(false);
             this.tlpNotes.ResumeLayout(false);
             this.tlpNotes.PerformLayout();
             this.tlpUp.ResumeLayout(false);
-            this.tlpDescription.ResumeLayout(false);
-            this.tlpDescription.PerformLayout();
-            this.tlpTransactionType.ResumeLayout(false);
+            this.tlpInvoiceID.ResumeLayout(false);
+            this.tlpInvoiceID.PerformLayout();
+            this.tlpPaymentMethods.ResumeLayout(false);
             this.tlpPaidAmount.ResumeLayout(false);
             this.tlpPaidAmount.PerformLayout();
-            this.tlpTransactionDate.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.epTransactionData)).EndInit();
+            this.tlpPaymentDate.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.epPaymentData)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -464,18 +462,18 @@
         private System.Windows.Forms.Label lblNotes;
         private System.Windows.Forms.TextBox tbNotes;
         private System.Windows.Forms.TableLayoutPanel tlpUp;
-        private System.Windows.Forms.TableLayoutPanel tlpDescription;
-        private System.Windows.Forms.TextBox tbDescription;
-        private System.Windows.Forms.Label lblDescription;
-        private System.Windows.Forms.TableLayoutPanel tlpTransactionType;
-        private System.Windows.Forms.Label lblTransactionType;
+        private System.Windows.Forms.TableLayoutPanel tlpInvoiceID;
+        private System.Windows.Forms.TextBox tbInvoiceID;
+        private System.Windows.Forms.Label lblInvoiceID;
+        private System.Windows.Forms.TableLayoutPanel tlpPaymentMethods;
+        private System.Windows.Forms.Label lblPaymentMethod;
+        private System.Windows.Forms.ComboBox cbPaymentMethods;
         private System.Windows.Forms.TableLayoutPanel tlpPaidAmount;
         private System.Windows.Forms.Label lblPaidAmount;
         private System.Windows.Forms.TextBox tbPaidAmount;
-        private System.Windows.Forms.TableLayoutPanel tlpTransactionDate;
-        private System.Windows.Forms.Label lblTransactionDate;
-        private System.Windows.Forms.DateTimePicker dtpTransactionDate;
-        private System.Windows.Forms.ComboBox cbTransactionType;
-        private System.Windows.Forms.ErrorProvider epTransactionData;
+        private System.Windows.Forms.TableLayoutPanel tlpPaymentDate;
+        private System.Windows.Forms.Label lblPaymentDate;
+        private System.Windows.Forms.DateTimePicker dtpPaymentDate;
+        private System.Windows.Forms.ErrorProvider epPaymentData;
     }
 }

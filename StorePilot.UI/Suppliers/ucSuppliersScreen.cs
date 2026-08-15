@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DevToolkit.BaseWinForms.Controls.UserControls;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,7 +11,7 @@ using System.Windows.Forms;
 
 namespace StorePilot.UI.Suppliers
 {
-    public partial class ucSuppliersScreen : UserControl
+    public partial class ucSuppliersScreen : ucListScreenBase
     {
         public ucSuppliersScreen()
         {
