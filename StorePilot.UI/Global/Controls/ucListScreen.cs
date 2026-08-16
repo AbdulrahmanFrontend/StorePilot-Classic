@@ -2,6 +2,7 @@
 using DevToolkit.BaseWinForms.Managers;
 using DevToolkit.Core.Common;
 using DevToolkit.Core.Results;
+using StorePilot.UI.Global.Classes;
 using StorePilot.UI.Properties;
 using System;
 using System.Collections.Generic;
@@ -20,12 +21,33 @@ namespace StorePilot.UI.Global.Controls
         protected int _CurrentPage = 1;
         protected int _PageSize = 50;
 
-        protected int _FilterMethodIndex;
+        protected int _FilterMethodIndex = 0;
+        protected int _FilterValueIndex = 0;
         protected string _FilterValue = string.Empty;
 
         public ucListScreen()
         {
             InitializeComponent();
+        }
+
+        private void ucListScreen_Load(object sender, EventArgs e)
+        {
+            this.BackColor = Theme.Border;
+            this.ForeColor = Theme.Text;
+
+            this.TitleBackColor = Theme.Surface;
+            this.TitleTextColor = Theme.Text;
+
+            this.Grid.BackColor = Theme.Border;
+            this.Grid.ForeColor = Theme.Text;
+
+            this.Grid.AddNewButtonImage = Resources.add;
+            this.Grid.Size = new Size(1457, 600);
+
+            this.Grid.ImportButtonVisible = false;
+            this.Grid.Searchbar.ShowCancelButton = false;
+
+            Grid.SetPageSizes(new[] { 50, 100, 200, 300, 400 });
         }
 
         protected void _SetPagesCount(Result<int> result)
@@ -43,8 +65,14 @@ namespace StorePilot.UI.Global.Controls
                 MessageBoxManager.ShowError(result.Message, Language.ar);
         }
 
-        protected void _ConfigureSearch(params string[] methods)
-            => Grid.Searchbar.SetFilteringMethod(methods);
+        protected void _ConfigureSearch(
+            string[] filteringMethods, 
+            string[] filteringValues)
+        {
+            Grid.Searchbar.SetFilteringMethods(filteringMethods);
+
+            Grid.Searchbar.SetFilteringValues(filteringValues);
+        }
 
         protected void _BindData(Result<DataTable> result)
         {
@@ -58,6 +86,20 @@ namespace StorePilot.UI.Global.Controls
             }
 
             Grid.DataSource = result.Data.DefaultView;
+        }
+
+        protected bool _TrySelectedID(int columnIndex, out int id)
+        {
+            id = 0;
+
+            object value = Grid.GetSelectedRow(columnIndex);
+
+            if (value == null)
+                return false;
+
+            return int.TryParse(
+                value.ToString(),
+                out id);
         }
 
         protected bool _TrySelectedID(string columnName, out int id)
@@ -82,21 +124,6 @@ namespace StorePilot.UI.Global.Controls
                 return false;
 
             return value.ToString() == "1" ? true : false;
-        }
-
-        private void ucListScreen_Load(object sender, EventArgs e)
-        {
-            this.BackColor = AutoPartsColors.Border;
-            this.ForeColor = AutoPartsColors.TextLight;
-
-            Headerbar.ButtonBackgroundImage = Resources.add;
-            Headerbar.BackColor = AutoPartsColors.Surface;
-            Headerbar.ForeColor = AutoPartsColors.TextPrimary;
-
-            Grid.Size = new Size(1457, 600);
-            Grid.BackColor = AutoPartsColors.Border;
-            Grid.ForeColor = AutoPartsColors.TextPrimary;
-            Grid.Searchbar.ShowCancelButton = false;
         }
     }
 }

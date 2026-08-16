@@ -85,7 +85,7 @@ namespace StorePilot.UI
                 },
                 new NavigationItem
                 {
-                    Title = "الزبائن",
+                    Title = "العملاء",
                     Icon = Resources.customer,
                     Index = 3,
                 },
