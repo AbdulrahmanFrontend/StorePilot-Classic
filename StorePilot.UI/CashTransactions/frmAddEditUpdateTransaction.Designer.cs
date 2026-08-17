@@ -1,6 +1,6 @@
 ﻿namespace StorePilot.UI.CashTransactions
 {
-    partial class frmAddEditTransaction
+    partial class frmAddEditUpdateTransaction
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAddEditTransaction));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAddEditUpdateTransaction));
             this.lblTitle = new System.Windows.Forms.Label();
             this.flpFooter = new System.Windows.Forms.FlowLayoutPanel();
             this.btnClose = new DevToolkit.BaseWinForms.Controls.CustomControls.ccButton();
@@ -302,7 +302,7 @@
             this.lblTransactionType.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblTransactionType.Location = new System.Drawing.Point(3, 0);
             this.lblTransactionType.Name = "lblTransactionType";
-            this.lblTransactionType.Size = new System.Drawing.Size(385, 24);
+            this.lblTransactionType.Size = new System.Drawing.Size(385, 25);
             this.lblTransactionType.TabIndex = 0;
             this.lblTransactionType.Text = "نوع الحركة:";
             this.lblTransactionType.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -317,7 +317,7 @@
             this.cbTransactionType.Items.AddRange(new object[] {
             "ايرادات",
             "مصروفات"});
-            this.cbTransactionType.Location = new System.Drawing.Point(20, 27);
+            this.cbTransactionType.Location = new System.Drawing.Point(20, 28);
             this.cbTransactionType.Margin = new System.Windows.Forms.Padding(3, 3, 20, 3);
             this.cbTransactionType.Name = "cbTransactionType";
             this.cbTransactionType.Size = new System.Drawing.Size(368, 25);
@@ -435,7 +435,7 @@
             this.RightToLeftLayout = true;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmAddEditUpdateTransaction";
-            this.Load += new System.EventHandler(this.frmAddEditTransaction_Load);
+            this.Load += new System.EventHandler(this.frmAddEditUpdateTransaction_Load);
             this.flpFooter.ResumeLayout(false);
             this.tlpContainer.ResumeLayout(false);
             this.tlpNotes.ResumeLayout(false);

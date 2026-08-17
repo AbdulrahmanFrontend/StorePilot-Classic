@@ -62,18 +62,18 @@ namespace StorePilot.UI.Products
             object sender,
             ucDataGridView.FilterEventArgs e)
         {
-            _FilterMethodIndex = e.FilteringMethodIndex + 1;
+            _FilterMethodIndex = e.FilteringMethodIndex;
             _FilterValueIndex = e.FilteringValueIndex;
             _FilterValue = e.Input;
             _PageSize = e.PageSize;
-            _CurrentPage = 1;
+            _CurrentPage = e.PageNumber;
 
             await _RefreshData();
         }
 
         private async void Grid_Filter(object sender, ucDataGridView.FilterEventArgs e)
         {
-            _FilterMethodIndex = e.FilteringMethodIndex + 1;
+            _FilterMethodIndex = e.FilteringMethodIndex;
             _FilterValueIndex = e.FilteringValueIndex;
             _FilterValue = e.Input;
             _PageSize = e.PageSize;

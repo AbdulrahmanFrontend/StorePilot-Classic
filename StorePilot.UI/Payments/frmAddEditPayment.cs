@@ -22,7 +22,7 @@ namespace StorePilot.UI.Payments
     {
         private frmMode _Mode;
 
-        private int _Id;
+        private int _PaymentId;
         private int _InvoiceID;
         private PaymentService _Service;
         private PaymentModel _Model;
@@ -35,14 +35,16 @@ namespace StorePilot.UI.Payments
             InitializeComponent();
 
             _Mode = frmMode.AddNew;
+            _InvoiceID = invoiceId;
         }
 
-        public frmAddEditPayment(int id, frmMode mode)
+        public frmAddEditPayment(int paymentId, int invoiceId)
         {
             InitializeComponent();
 
-            _Id = id;
-            _Mode = mode;
+            _Mode = frmMode.Edit;
+            _PaymentId = paymentId;
+            _InvoiceID = invoiceId;
         }
 
         protected override void ApplyTheme()
@@ -73,11 +75,6 @@ namespace StorePilot.UI.Payments
                     lblTitle.Text = "إضافة بيانات دفعة جديدة";
                     btnCancel.Visible = false;
                     _Service = new PaymentService();
-                    break;
-
-                case frmMode.Update:
-                    lblTitle.Text = "تحديث بيانات الدفعة";
-                    _LoadData();
                     break;
 
                 case frmMode.Edit:
@@ -111,7 +108,7 @@ namespace StorePilot.UI.Payments
 
         private void _LoadData()
         {
-            var result = PaymentService.Find(_Id);
+            var result = PaymentService.Find(_PaymentId);
 
             if (!result.IsSuccess)
             {

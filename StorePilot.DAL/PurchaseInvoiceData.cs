@@ -266,7 +266,8 @@ namespace StorePilot.DAL
             int offset,
             int pageSize,
             int filterMethodIndex,
-            string filterValue)
+            string filterValue,
+            bool cancelled)
         {
             string Query = string.Empty;
 
@@ -283,9 +284,10 @@ namespace StorePilot.DAL
                     Query = @"SELECT PurchaseInvoiceID, InvoiceID, 
                         InvoiceDate, InvoiceStatus, PaidAmount,
                         (TotalAmount - PaidAmount) AS RemainingAmount,
-                        SupplierName, TotalAmount, CreatedAt
+                        SupplierName, TotalAmount, CreatedAt, Cancelled
                         FROM view_PurchasesInvoicesDetails
                         WHERE PurchaseInvoiceID = @FilterValue
+                        AND Cancelled = @Cancelled
                         LIMIT @PageSize
                         OFFSET @Offset;";
 
@@ -304,9 +306,10 @@ namespace StorePilot.DAL
                     Query = @"SELECT PurchaseInvoiceID, InvoiceID, 
                         InvoiceDate, InvoiceStatus, PaidAmount,
                         (TotalAmount - PaidAmount) AS RemainingAmount,
-                        SupplierName, TotalAmount, CreatedAt
+                        SupplierName, TotalAmount, CreatedAt, Cancelled
                         FROM view_PurchasesInvoicesDetails
                         WHERE InvoiceID = @FilterValue
+                        AND Cancelled = @Cancelled
                         LIMIT @PageSize
                         OFFSET @Offset;";
 
@@ -325,9 +328,10 @@ namespace StorePilot.DAL
                     Query = @"SELECT PurchaseInvoiceID, InvoiceID, 
                         InvoiceDate, InvoiceStatus, PaidAmount,
                         (TotalAmount - PaidAmount) AS RemainingAmount,
-                        SupplierName, TotalAmount, CreatedAt
+                        SupplierName, TotalAmount, CreatedAt, Cancelled
                         FROM view_PurchasesInvoicesDetails
                         WHERE SupplierName LIKE @FilterValue || '%'
+                        AND Cancelled = @Cancelled
                         LIMIT @PageSize
                         OFFSET @Offset;";
                     break;
@@ -336,9 +340,10 @@ namespace StorePilot.DAL
                     Query = @"SELECT PurchaseInvoiceID, InvoiceID, 
                         InvoiceDate, InvoiceStatus, PaidAmount,
                         (TotalAmount - PaidAmount) AS RemainingAmount,
-                        SupplierName, TotalAmount, CreatedAt
+                        SupplierName, TotalAmount, CreatedAt, Cancelled
                         FROM view_PurchasesInvoicesDetails
                         WHERE InvoiceDate LIKE @FilterValue || '%'
+                        AND Cancelled = @Cancelled
                         LIMIT @PageSize
                         OFFSET @Offset;";
                     break;
@@ -347,9 +352,10 @@ namespace StorePilot.DAL
                     Query = @"SELECT PurchaseInvoiceID, InvoiceID, 
                         InvoiceDate, InvoiceStatus, PaidAmount,
                         (TotalAmount - PaidAmount) AS RemainingAmount,
-                        SupplierName, TotalAmount, CreatedAt
+                        SupplierName, TotalAmount, CreatedAt, Cancelled
                         FROM view_PurchasesInvoicesDetails
                         WHERE InvoiceStatus LIKE @FilterValue || '%'
+                        AND Cancelled = @Cancelled
                         LIMIT @PageSize
                         OFFSET @Offset;";
                     break;
@@ -358,8 +364,9 @@ namespace StorePilot.DAL
                     Query = @"SELECT PurchaseInvoiceID, InvoiceID, 
                         InvoiceDate, InvoiceStatus, PaidAmount,
                         (TotalAmount - PaidAmount) AS RemainingAmount,
-                        SupplierName, TotalAmount, CreatedAt
+                        SupplierName, TotalAmount, CreatedAt, Cancelled
                         FROM view_PurchasesInvoicesDetails
+                        WHERE Cancelled = @Cancelled
                         LIMIT @PageSize
                         OFFSET @Offset;";
                     break;
@@ -378,6 +385,12 @@ namespace StorePilot.DAL
                     Name = "@Offset",
                     DbType = DbType.Int64,
                     Value = offset,
+                },
+                new DbParameterInfo
+                {
+                    Name = "@Cancelled",
+                    DbType = DbType.Boolean,
+                    Value = cancelled,
                 }
             };
 

@@ -356,5 +356,21 @@ namespace StorePilot.BLL
             return Result<DataTable>.Failure(
                 "فشلت عملية الحصول على جميع فواتير البيع!");
         }
+
+        public static Result<bool> HasReturns(int id)
+        {
+            Result<bool> result = SaleInvoiceData.HasReturns(id);
+
+            if (result.IsSuccess)
+            {
+                if (result.Data)
+                    return result;
+
+                return Result<bool>.Failure("هذه الفاتورة ليس لها مرتجعات!");
+            }
+
+            return Result<bool>.Failure(
+                "فشلت عملية التحقق من وجود مرتجعات لهذه الفاتورة!");
+        }
     }
 }

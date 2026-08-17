@@ -89,11 +89,6 @@ namespace StorePilot.BLL
             {
                 if (GetTransResult.Data == null)
                     return Result.Failure("هذه الحركة غير مسجلة في النظام!");
-
-                if (GetTransResult.Data.TransactionType
-                    == TransactionType.Revenue.ToArabic())
-                    return Result.Failure(
-                        "ممنوع حذف او تعديل حركة إيرادات من شاشة الصندوق!");
             }
             else
                 return Result.Failure("فشلت عملية الوصول لبيانات حركة الصندوق هذه!");
@@ -112,6 +107,20 @@ namespace StorePilot.BLL
                 return Result.Failure("لا يسمح بتعديل أو حذف حركة مصروفات مرتجعات!");
             else if (!IsValidTransResult.IsSuccess)
                 return Result.Failure("فشلت عملية التحقق من كون الحركة مصروفات مرتجعات!");
+
+            IsValidTransResult = SaleInvoiceData.IsSalesTransaction(id);
+
+            if (IsValidTransResult.IsSuccess && IsValidTransResult.Data)
+                return Result.Failure("لا يسمح بتعديل أو حذف حركة إيرادات مبيعات!");
+            else if (!IsValidTransResult.IsSuccess)
+                return Result.Failure("فشلت عملية التحقق من كون الحركة إيرادات مبيعات!");
+
+            IsValidTransResult = PaymentData.IsPaymentsTransaction(id);
+
+            if (IsValidTransResult.IsSuccess && IsValidTransResult.Data)
+                return Result.Failure("لا يسمح بتعديل أو حذف حركة تحصيل أو سداد ديون!");
+            else if (!IsValidTransResult.IsSuccess)
+                return Result.Failure("فشلت عملية التحقق من كون الحركة تحصيل أو سداد ديون!");
 
             return Result.Success();
         }

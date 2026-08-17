@@ -24,7 +24,7 @@ namespace StorePilot.UI.Customers
             InitializeComponent();
         }
 
-        private async Task ucCustomersScreen_Load(object sender, EventArgs e)
+        private async void ucCustomersScreen_Load(object sender, EventArgs e)
         {
             Title = "العملاء";
             Grid.AddNewClicked += Grid_AddNewClicked;
@@ -60,18 +60,18 @@ namespace StorePilot.UI.Customers
             object sender, 
             ucDataGridView.FilterEventArgs e)
         {
-            _FilterMethodIndex = e.FilteringMethodIndex + 1;
+            _FilterMethodIndex = e.FilteringMethodIndex;
             _FilterValueIndex = e.FilteringValueIndex;
             _FilterValue = e.Input;
             _PageSize = e.PageSize;
-            _CurrentPage = 1;
+            _CurrentPage = e.PageNumber;
 
             await _RefreshData();
         }
 
         private async void Grid_Filter(object sender, ucDataGridView.FilterEventArgs e)
         {
-            _FilterMethodIndex = e.FilteringMethodIndex + 1;
+            _FilterMethodIndex = e.FilteringMethodIndex;
             _FilterValueIndex = e.FilteringValueIndex;
             _FilterValue = e.Input;
             _PageSize = e.PageSize;
@@ -228,7 +228,7 @@ namespace StorePilot.UI.Customers
             }
         }
 
-        private async Task tsmiActivate_Click(object sender, EventArgs e)
+        private async void tsmiActivate_Click(object sender, EventArgs e)
         {
             if (!_TrySelectedID(0, out int ID))
                 return;

@@ -20,7 +20,7 @@ using System.Xml.Linq;
 
 namespace StorePilot.UI.CashTransactions
 {
-    public partial class frmAddEditTransaction : frmBase
+    public partial class frmAddEditUpdateTransaction : frmBase
     {
         private frmMode _Mode;
 
@@ -31,7 +31,7 @@ namespace StorePilot.UI.CashTransactions
         public delegate void DataBackEventHandler(object sender);
         public event DataBackEventHandler DataBack;
 
-        public frmAddEditTransaction(int id, frmMode mode)
+        public frmAddEditUpdateTransaction(int id, frmMode mode)
         {
             InitializeComponent();
 
@@ -39,7 +39,7 @@ namespace StorePilot.UI.CashTransactions
             _Mode = mode;
         }
 
-        public frmAddEditTransaction()
+        public frmAddEditUpdateTransaction()
         {
             InitializeComponent();
 
@@ -64,7 +64,7 @@ namespace StorePilot.UI.CashTransactions
             this.flpFooter.BackColor = Theme.Border;
         }
 
-        private void frmAddEditTransaction_Load(object sender, EventArgs e)
+        private void frmAddEditUpdateTransaction_Load(object sender, EventArgs e)
         {
             switch (_Mode)
             {
@@ -172,7 +172,7 @@ namespace StorePilot.UI.CashTransactions
             }
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
+        private async void btnSave_Click(object sender, EventArgs e)
         {
             DialogResult Confirm = MessageBoxManager.ShowConfirm(
                 "هل أنت متأكد من أنك تريد حفظ بيانات هذه الحركة؟",
@@ -192,7 +192,7 @@ namespace StorePilot.UI.CashTransactions
                     return;
                 }
 
-                var result = _Service.Save();
+                var result = await Task.Run(() => _Service.Save());
 
                 if (result.IsSuccess)
                 {
@@ -205,7 +205,7 @@ namespace StorePilot.UI.CashTransactions
             }
         }
 
-        private void btnCancel_Click(object sender, EventArgs e)
+        private async void btnCancel_Click(object sender, EventArgs e)
         {
             DialogResult Confirm = MessageBoxManager.ShowConfirm(
                 "هل أنت متأكد من أنك تريد حفظ بيانات هذه الحركة؟",
@@ -216,7 +216,9 @@ namespace StorePilot.UI.CashTransactions
                 _Service.Model.PaidAmount = _Model.PaidAmount;
                 _Service.Model.Description = _Model.Description;
 
-                var result = CashTransactionService.Cancell(_Model.TransactionID);
+                var result = await Task.Run(
+                    () => CashTransactionService.Cancell(_Model.TransactionID)
+                    );
 
                 if (result.IsSuccess)
                 {

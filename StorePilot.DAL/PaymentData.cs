@@ -421,5 +421,26 @@ namespace StorePilot.DAL
 
             return DataQueryService.Scalar<bool>(CommandType.Text, Query, Parameters);
         }
+
+        //used
+        public static Result<bool> IsPaymentsTransaction(int transId)
+        {
+            string Query = @"SELECT EXISTS
+            (
+                SELECT 1 FROM Payments WHERE TransactionID = @TransactionID
+            ) AS IsPurchaseTransaction;";
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@TransactionID",
+                    DbType = DbType.Int64,
+                    Value = transId,
+                },
+            };
+
+            return DataQueryService.Scalar<bool>(CommandType.Text, Query, Parameters);
+        }
     }
 }

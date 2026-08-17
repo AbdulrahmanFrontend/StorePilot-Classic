@@ -316,7 +316,8 @@ namespace StorePilot.BLL
             int currentPage,
             int pageSize,
             int filterMethodIndex,
-            string filterValue)
+            string filterValue,
+            bool cancelled)
         {
             int offset = (currentPage - 1) * pageSize;
 
@@ -324,7 +325,8 @@ namespace StorePilot.BLL
                 offset,
                 pageSize,
                 filterMethodIndex,
-                filterValue);
+                filterValue,
+                cancelled);
 
             if (result.IsSuccess)
                 return result;

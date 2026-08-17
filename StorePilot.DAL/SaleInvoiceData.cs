@@ -284,7 +284,7 @@ namespace StorePilot.DAL
                     Query = @"SELECT SaleInvoiceID, InvoiceID, InvoiceDate,
                         InvoiceStatus, PaidAmount, 
                         (TotalAmount - PaidAmount) AS RemainingAmount,
-                        CustomerName, TotalAmount, CreatedAt
+                        CustomerName, TotalAmount, CreatedAt, Cancelled
                         FROM view_SalesInvoicesDetails
                         WHERE SaleInvoiceID = @FilterValue
                         AND Cancelled = @Cancelled
@@ -306,7 +306,7 @@ namespace StorePilot.DAL
                     Query = @"SELECT SaleInvoiceID, InvoiceID, InvoiceDate,
                         InvoiceStatus, PaidAmount, 
                         (TotalAmount - PaidAmount) AS RemainingAmount,
-                        CustomerName, TotalAmount, CreatedAt
+                        CustomerName, TotalAmount, CreatedAt, Cancelled
                         FROM view_SalesInvoicesDetails
                         WHERE InvoiceID = @FilterValue
                         AND Cancelled = @Cancelled
@@ -328,7 +328,7 @@ namespace StorePilot.DAL
                     Query = @"SELECT SaleInvoiceID, InvoiceID, InvoiceDate,
                         InvoiceStatus, PaidAmount, 
                         (TotalAmount - PaidAmount) AS RemainingAmount,
-                        CustomerName, TotalAmount, CreatedAt
+                        CustomerName, TotalAmount, CreatedAt, Cancelled
                         FROM view_SalesInvoicesDetails
                         WHERE CustomerName LIKE @FilterValue || '%'
                         AND Cancelled = @Cancelled
@@ -340,7 +340,7 @@ namespace StorePilot.DAL
                     Query = @"SELECT SaleInvoiceID, InvoiceID, InvoiceDate,
                         InvoiceStatus, PaidAmount, 
                         (TotalAmount - PaidAmount) AS RemainingAmount,
-                        CustomerName, TotalAmount, CreatedAt
+                        CustomerName, TotalAmount, CreatedAt, Cancelled
                         FROM view_SalesInvoicesDetails
                         WHERE InvoiceDate LIKE @FilterValue || '%'
                         AND Cancelled = @Cancelled
@@ -352,7 +352,7 @@ namespace StorePilot.DAL
                     Query = @"SELECT SaleInvoiceID, InvoiceID, InvoiceDate,
                         InvoiceStatus, PaidAmount, 
                         (TotalAmount - PaidAmount) AS RemainingAmount,
-                        CustomerName, TotalAmount, CreatedAt
+                        CustomerName, TotalAmount, CreatedAt, Cancelled
                         FROM view_SalesInvoicesDetails
                         WHERE InvoiceStatus LIKE @FilterValue || '%'
                         AND Cancelled = @Cancelled
@@ -364,7 +364,7 @@ namespace StorePilot.DAL
                     Query = @"SELECT SaleInvoiceID, InvoiceID, InvoiceDate,
                         InvoiceStatus, PaidAmount, 
                         (TotalAmount - PaidAmount) AS RemainingAmount,
-                        CustomerName, TotalAmount, CreatedAt
+                        CustomerName, TotalAmount, CreatedAt, Cancelled
                         FROM view_SalesInvoicesDetails
                         WHERE Cancelled = @Cancelled
                         LIMIT @PageSize
@@ -400,6 +400,54 @@ namespace StorePilot.DAL
                 CommandType.Text,
                 Query,
                 Parameters);
+        }
+
+        //used
+        public static Result<bool> HasReturns(int id)
+        {
+            string Query = @"SELECT EXISTS
+                (
+                    SELECT 1 FROM SalesReturns WHERE SaleInvoiceID = @SaleInvoiceID
+                ) AS IsExist;";
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@SaleInvoiceID",
+                    DbType = DbType.Int64,
+                    Value = id,
+                },
+            };
+
+            return DataQueryService.Scalar<bool>(
+                CommandType.Text,
+                Query,
+                Parameters);
+        }
+
+        //used
+        public static Result<bool> IsSalesTransaction(int transId)
+        {
+            string Query = @"SELECT EXISTS
+            (
+                SELECT 1 FROM SalesInvoices WHERE InvoiceID = 
+                (
+                    SELECT InvoiceID FROM Invoices WHERE TransactionID = @TransactionID
+                )
+            ) AS IsPurchaseTransaction;";
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@TransactionID",
+                    DbType = DbType.Int64,
+                    Value = transId,
+                },
+            };
+
+            return DataQueryService.Scalar<bool>(CommandType.Text, Query, Parameters);
         }
     }
 }

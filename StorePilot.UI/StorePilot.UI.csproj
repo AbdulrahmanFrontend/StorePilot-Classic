@@ -79,11 +79,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CashTransactions\frmAddEditTransaction.cs">
+    <Compile Include="CashTransactions\frmAddEditUpdateTransaction.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CashTransactions\frmAddEditTransaction.Designer.cs">
-      <DependentUpon>frmAddEditTransaction.cs</DependentUpon>
+    <Compile Include="CashTransactions\frmAddEditUpdateTransaction.Designer.cs">
+      <DependentUpon>frmAddEditUpdateTransaction.cs</DependentUpon>
     </Compile>
     <Compile Include="CashTransactions\ucCashTransactionsScreen.cs">
       <SubType>UserControl</SubType>
@@ -221,8 +221,11 @@
     <Compile Include="ucDashboardScreen.Designer.cs">
       <DependentUpon>ucDashboardScreen.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="CashTransactions\frmAddEditTransaction.resx">
-      <DependentUpon>frmAddEditTransaction.cs</DependentUpon>
+    <EmbeddedResource Include="CashTransactions\frmAddEditUpdateTransaction.resx">
+      <DependentUpon>frmAddEditUpdateTransaction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CashTransactions\ucCashTransactionsScreen.resx">
+      <DependentUpon>ucCashTransactionsScreen.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Customers\frmAddEditUpdateCustomer.resx">
       <DependentUpon>frmAddEditUpdateCustomer.cs</DependentUpon>
@@ -258,6 +261,9 @@
     <EmbeddedResource Include="Purchases\frmAddEditUpdatePurchaseItems.resx">
       <DependentUpon>frmAddEditUpdatePurchaseItems.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Purchases\ucPurchasesScreen.resx">
+      <DependentUpon>ucPurchasesScreen.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Returns\frmAddEditReturnInvoice.resx">
       <DependentUpon>frmAddEditReturnInvoice.cs</DependentUpon>
     </EmbeddedResource>
@@ -269,6 +275,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Sales\frmAddEditUpdateSaleItems.resx">
       <DependentUpon>frmAddEditUpdateSaleItems.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sales\ucSalesScreen.resx">
+      <DependentUpon>ucSalesScreen.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Suppliers\frmAddEditUpdateSupplier.resx">
       <DependentUpon>frmAddEditUpdateSupplier.cs</DependentUpon>

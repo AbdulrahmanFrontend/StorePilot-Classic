@@ -233,17 +233,17 @@ namespace StorePilot.UI.Purchases
         private void cbStatuses_SelectedIndexChanged(object sender, EventArgs e)
             => _SetAmounts();
 
-        private void btnSavePrint_Click(object sender, EventArgs e)
+        private async void btnSavePrint_Click(object sender, EventArgs e)
         {
             switch (_Mode)
             {
                 case frmMode.AddNew:
-                    _AddNew();
+                    await _AddNew();
                     break;
             }
         }
 
-        private void _AddNew()
+        private async Task _AddNew()
         {
             DialogResult Confirm = MessageBoxManager.ShowConfirm(
                 "هل أنت متأكد من أنك تريد حفظ تلك الفاتورة؟",
@@ -274,7 +274,7 @@ namespace StorePilot.UI.Purchases
 
             _Service.SetItems(list);
 
-            var result = _Service.Save();
+            var result = await Task.Run(() => _Service.Save());
 
             if (result.IsSuccess)
             {
@@ -329,7 +329,7 @@ namespace StorePilot.UI.Purchases
 
         }
 
-        private void btnCancel_Click(object sender, EventArgs e)
+        private async void btnCancel_Click(object sender, EventArgs e)
         {
             DialogResult Confirm = MessageBoxManager.ShowConfirm(
                 "هل أنت متأكد من أنك تريد إلغاء تلك الفاتورة؟",
@@ -338,7 +338,7 @@ namespace StorePilot.UI.Purchases
             if (Confirm != DialogResult.Yes)
                 return;
 
-            var result = SaleInvoiceService.Cancell(_Id);
+            var result = await Task.Run(() => PurchaseInvoiceService.Cancell(_Id));
 
             if (result.IsSuccess)
             {

@@ -40,7 +40,7 @@ namespace StorePilot.UI.Returns
         {
             InitializeComponent();
 
-            _Mode = frmMode.AddNew;
+            _Mode = frmMode.Edit;
             _ReturnId = returnId;
             _SaleInvoiceId = saleInvoiceId;
         }
@@ -49,7 +49,7 @@ namespace StorePilot.UI.Returns
         {
             InitializeComponent();
 
-            _Mode = frmMode.Edit;
+            _Mode = frmMode.AddNew;
             _SaleInvoiceId = saleInvoiceId;
         }
 
@@ -190,17 +190,17 @@ namespace StorePilot.UI.Returns
             }
         }
 
-        private void btnSavePrint_Click(object sender, EventArgs e)
+        private async void btnSavePrint_Click(object sender, EventArgs e)
         {
             switch (_Mode)
             {
                 case frmMode.AddNew:
-                    _AddNew();
+                    await _AddNew();
                     break;
             }
         }
 
-        private void _AddNew()
+        private async Task _AddNew()
         {
             DialogResult Confirm = MessageBoxManager.ShowConfirm(
                 "هل أنت متأكد من أنك تريد حفظ تلك الفاتورة؟",
@@ -227,7 +227,7 @@ namespace StorePilot.UI.Returns
 
             _Service.SetItems(list);
 
-            var result = _Service.Save();
+            var result = await Task.Run(() => _Service.Save());
 
             if (result.IsSuccess)
             {
@@ -277,7 +277,7 @@ namespace StorePilot.UI.Returns
             }
         }
 
-        private void btnCancel_Click(object sender, EventArgs e)
+        private async void btnCancel_Click(object sender, EventArgs e)
         {
             DialogResult Confirm = MessageBoxManager.ShowConfirm(
                 "هل أنت متأكد من أنك تريد إلغاء تلك الفاتورة؟",
@@ -286,7 +286,7 @@ namespace StorePilot.UI.Returns
             if (Confirm != DialogResult.Yes)
                 return;
 
-            var result = SaleInvoiceService.Cancell(_ReturnId);
+            var result = await Task.Run(() => SaleReturnService.Cancell(_ReturnId));
 
             if (result.IsSuccess)
             {
