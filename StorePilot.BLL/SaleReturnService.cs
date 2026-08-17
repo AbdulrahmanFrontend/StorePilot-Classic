@@ -69,6 +69,9 @@ namespace StorePilot.BLL
                 return Result.Failure("فاتورة البيع هذه غير مسجلة في النظام," +
                     " أو فشلت عملية الوصول لبيانات الفاتورة");
 
+            if (SaleInvoiceResult.Data.Cancelled)
+                return Result.Failure("لا يسمح بإنشاء فاتورة مرتجع لفاتورة بيع ملغية!");
+
             Result TransResult = DbManager.Current?.ExecuteTransaction(
                 (con, trans) =>
                 {

@@ -130,6 +130,12 @@
     <Compile Include="Payments\frmAddEditPayment.Designer.cs">
       <DependentUpon>frmAddEditPayment.cs</DependentUpon>
     </Compile>
+    <Compile Include="Payments\frmPaymentsScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Payments\frmPaymentsScreen.Designer.cs">
+      <DependentUpon>frmPaymentsScreen.cs</DependentUpon>
+    </Compile>
     <Compile Include="Products\frmAddEditUpdateProduct.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -178,6 +184,18 @@
     </Compile>
     <Compile Include="Returns\frmAddEditUpdateReturnItems.Designer.cs">
       <DependentUpon>frmAddEditUpdateReturnItems.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Global\Forms\frmListScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Global\Forms\frmListScreen.Designer.cs">
+      <DependentUpon>frmListScreen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Returns\frmReturnsScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Returns\frmReturnsScreen.Designer.cs">
+      <DependentUpon>frmReturnsScreen.cs</DependentUpon>
     </Compile>
     <Compile Include="Sales\frmAddEditSaleInvoice.cs">
       <SubType>Form</SubType>
@@ -245,6 +263,9 @@
     <EmbeddedResource Include="Payments\frmAddEditPayment.resx">
       <DependentUpon>frmAddEditPayment.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Payments\frmPaymentsScreen.resx">
+      <DependentUpon>frmPaymentsScreen.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Products\frmAddEditUpdateProduct.resx">
       <DependentUpon>frmAddEditUpdateProduct.cs</DependentUpon>
     </EmbeddedResource>
@@ -269,6 +290,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Returns\frmAddEditUpdateReturnItems.resx">
       <DependentUpon>frmAddEditUpdateReturnItems.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Global\Forms\frmListScreen.resx">
+      <DependentUpon>frmListScreen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Returns\frmReturnsScreen.resx">
+      <DependentUpon>frmReturnsScreen.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Sales\frmAddEditSaleInvoice.resx">
       <DependentUpon>frmAddEditSaleInvoice.cs</DependentUpon>
@@ -302,9 +329,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Global\Forms\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="Resources\sink.png" />
   </ItemGroup>

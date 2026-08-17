@@ -125,5 +125,15 @@ namespace StorePilot.UI.Global.Controls
 
             return value.ToString() == "1" ? true : false;
         }
+
+        protected bool _IsCancelled()
+        {
+            object value = Grid.GetSelectedRow("Cancelled");
+
+            if (value == null)
+                return false;
+
+            return value.ToString() == "1" ? true : false;
+        }
     }
 }

@@ -151,7 +151,7 @@ namespace StorePilot.UI.Suppliers
             }
         }
 
-        private void btnActivate_Click(object sender, EventArgs e)
+        private async void btnActivate_Click(object sender, EventArgs e)
         {
             DialogResult Confirm = MessageBoxManager.ShowConfirm(
                 "هل أنت متأكد من أنك تريد حفظ بيانات هذا المورد؟",
@@ -163,11 +163,11 @@ namespace StorePilot.UI.Suppliers
                 _Service.Model.Phone = _Model.Phone;
                 _Service.Model.Active = !_Service.Model.Active;
 
-                _Save();
+                await _Save();
             }
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
+        private async void btnSave_Click(object sender, EventArgs e)
         {
             DialogResult Confirm = MessageBoxManager.ShowConfirm(
                 "هل أنت متأكد من أنك تريد حفظ بيانات هذا المورد؟",
@@ -186,13 +186,13 @@ namespace StorePilot.UI.Suppliers
                     return;
                 }
 
-                _Save();
+                await _Save();
             }
         }
 
-        private void _Save()
+        private async Task _Save()
         {
-            var result = _Service.Save();
+            var result = await Task.Run(() => _Service.Save());
 
             if (result.IsSuccess)
             {

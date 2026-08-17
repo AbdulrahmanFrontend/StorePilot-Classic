@@ -5,6 +5,7 @@ using DevToolkit.Core.Results;
 using StorePilot.BLL;
 using StorePilot.UI.Global.Classes;
 using StorePilot.UI.Global.Controls;
+using StorePilot.UI.Properties;
 using StorePilot.UI.Suppliers;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,7 @@ namespace StorePilot.UI.Products
         private async void ucProductsScreen_Load(object sender, EventArgs e)
         {
             Title = "الأصناف";
-            Grid.AddNewClicked += Grid_AddNewClicked;
+            TitleImage = Resources.product;
 
             _ConfigureSearch(
                 new[]
@@ -52,6 +53,7 @@ namespace StorePilot.UI.Products
 
             Grid.cmsData = ctrlCmsProducts;
 
+            Grid.AddNewClicked += Grid_AddNewClicked;
             Grid.Filter += Grid_Filter;
             Grid.PageNumberSelected += Grid_PageNumberSelected;
             Grid.RowDoubleClicked += Grid_RowDoubleClicked;
@@ -289,7 +291,7 @@ namespace StorePilot.UI.Products
 
             if (dialog == DialogResult.Yes)
             {
-                var result = ProductResult.Data.Save();
+                var result = await Task.Run(() => ProductResult.Data.Save());
 
                 if (result.IsSuccess)
                 {

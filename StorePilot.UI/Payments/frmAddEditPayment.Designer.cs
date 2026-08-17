@@ -75,7 +75,7 @@
             this.flpFooter.Location = new System.Drawing.Point(0, 315);
             this.flpFooter.Name = "flpFooter";
             this.flpFooter.Padding = new System.Windows.Forms.Padding(3, 3, 0, 3);
-            this.flpFooter.Size = new System.Drawing.Size(700, 40);
+            this.flpFooter.Size = new System.Drawing.Size(498, 40);
             this.flpFooter.TabIndex = 12;
             // 
             // btnClose
@@ -160,7 +160,7 @@
             this.tlpContainer.RowCount = 2;
             this.tlpContainer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpContainer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpContainer.Size = new System.Drawing.Size(700, 269);
+            this.tlpContainer.Size = new System.Drawing.Size(498, 269);
             this.tlpContainer.TabIndex = 13;
             // 
             // tlpNotes
@@ -176,7 +176,7 @@
             this.tlpNotes.RowCount = 2;
             this.tlpNotes.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpNotes.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpNotes.Size = new System.Drawing.Size(694, 127);
+            this.tlpNotes.Size = new System.Drawing.Size(492, 127);
             this.tlpNotes.TabIndex = 1;
             // 
             // lblNotes
@@ -188,7 +188,7 @@
             this.lblNotes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblNotes.Location = new System.Drawing.Point(3, 0);
             this.lblNotes.Name = "lblNotes";
-            this.lblNotes.Size = new System.Drawing.Size(688, 27);
+            this.lblNotes.Size = new System.Drawing.Size(486, 27);
             this.lblNotes.TabIndex = 0;
             this.lblNotes.Text = "ملاحظات:";
             this.lblNotes.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -201,7 +201,7 @@
             this.tbNotes.MaxLength = 500;
             this.tbNotes.Multiline = true;
             this.tbNotes.Name = "tbNotes";
-            this.tbNotes.Size = new System.Drawing.Size(671, 94);
+            this.tbNotes.Size = new System.Drawing.Size(469, 94);
             this.tbNotes.TabIndex = 4;
             // 
             // tlpUp
@@ -220,7 +220,7 @@
             this.tlpUp.RowCount = 2;
             this.tlpUp.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpUp.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpUp.Size = new System.Drawing.Size(694, 126);
+            this.tlpUp.Size = new System.Drawing.Size(492, 126);
             this.tlpUp.TabIndex = 0;
             // 
             // tlpInvoiceID
@@ -236,7 +236,7 @@
             this.tlpInvoiceID.RowCount = 2;
             this.tlpInvoiceID.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpInvoiceID.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpInvoiceID.Size = new System.Drawing.Size(341, 55);
+            this.tlpInvoiceID.Size = new System.Drawing.Size(240, 55);
             this.tlpInvoiceID.TabIndex = 6;
             // 
             // tbInvoiceID
@@ -246,7 +246,7 @@
             this.tbInvoiceID.Margin = new System.Windows.Forms.Padding(3, 3, 20, 3);
             this.tbInvoiceID.Name = "tbInvoiceID";
             this.tbInvoiceID.ReadOnly = true;
-            this.tbInvoiceID.Size = new System.Drawing.Size(318, 25);
+            this.tbInvoiceID.Size = new System.Drawing.Size(217, 25);
             this.tbInvoiceID.TabIndex = 3;
             // 
             // lblInvoiceID
@@ -258,7 +258,7 @@
             this.lblInvoiceID.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblInvoiceID.Location = new System.Drawing.Point(3, 0);
             this.lblInvoiceID.Name = "lblInvoiceID";
-            this.lblInvoiceID.Size = new System.Drawing.Size(335, 24);
+            this.lblInvoiceID.Size = new System.Drawing.Size(234, 24);
             this.lblInvoiceID.TabIndex = 0;
             this.lblInvoiceID.Text = "رقم الفاتورة:";
             this.lblInvoiceID.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -276,7 +276,7 @@
             this.tlpPaymentMethods.RowCount = 2;
             this.tlpPaymentMethods.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpPaymentMethods.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpPaymentMethods.Size = new System.Drawing.Size(341, 55);
+            this.tlpPaymentMethods.Size = new System.Drawing.Size(240, 55);
             this.tlpPaymentMethods.TabIndex = 5;
             // 
             // lblPaymentMethod
@@ -288,7 +288,7 @@
             this.lblPaymentMethod.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblPaymentMethod.Location = new System.Drawing.Point(3, 0);
             this.lblPaymentMethod.Name = "lblPaymentMethod";
-            this.lblPaymentMethod.Size = new System.Drawing.Size(335, 24);
+            this.lblPaymentMethod.Size = new System.Drawing.Size(234, 25);
             this.lblPaymentMethod.TabIndex = 0;
             this.lblPaymentMethod.Text = "طريقة الدفغ:";
             this.lblPaymentMethod.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -300,10 +300,10 @@
             this.cbPaymentMethods.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbPaymentMethods.FormattingEnabled = true;
             this.cbPaymentMethods.IntegralHeight = false;
-            this.cbPaymentMethods.Location = new System.Drawing.Point(20, 27);
+            this.cbPaymentMethods.Location = new System.Drawing.Point(20, 28);
             this.cbPaymentMethods.Margin = new System.Windows.Forms.Padding(3, 3, 20, 3);
             this.cbPaymentMethods.Name = "cbPaymentMethods";
-            this.cbPaymentMethods.Size = new System.Drawing.Size(318, 25);
+            this.cbPaymentMethods.Size = new System.Drawing.Size(217, 25);
             this.cbPaymentMethods.TabIndex = 1;
             // 
             // tlpPaidAmount
@@ -313,13 +313,13 @@
             this.tlpPaidAmount.Controls.Add(this.lblPaidAmount, 0, 0);
             this.tlpPaidAmount.Controls.Add(this.tbPaidAmount, 0, 1);
             this.tlpPaidAmount.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpPaidAmount.Location = new System.Drawing.Point(350, 67);
+            this.tlpPaidAmount.Location = new System.Drawing.Point(249, 67);
             this.tlpPaidAmount.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tlpPaidAmount.Name = "tlpPaidAmount";
             this.tlpPaidAmount.RowCount = 2;
             this.tlpPaidAmount.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpPaidAmount.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpPaidAmount.Size = new System.Drawing.Size(341, 55);
+            this.tlpPaidAmount.Size = new System.Drawing.Size(240, 55);
             this.tlpPaidAmount.TabIndex = 4;
             // 
             // lblPaidAmount
@@ -331,7 +331,7 @@
             this.lblPaidAmount.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblPaidAmount.Location = new System.Drawing.Point(3, 0);
             this.lblPaidAmount.Name = "lblPaidAmount";
-            this.lblPaidAmount.Size = new System.Drawing.Size(335, 24);
+            this.lblPaidAmount.Size = new System.Drawing.Size(234, 24);
             this.lblPaidAmount.TabIndex = 0;
             this.lblPaidAmount.Text = "المبلغ المدفوع:";
             this.lblPaidAmount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -343,7 +343,7 @@
             this.tbPaidAmount.Margin = new System.Windows.Forms.Padding(3, 3, 20, 3);
             this.tbPaidAmount.MaxLength = 6;
             this.tbPaidAmount.Name = "tbPaidAmount";
-            this.tbPaidAmount.Size = new System.Drawing.Size(318, 25);
+            this.tbPaidAmount.Size = new System.Drawing.Size(217, 25);
             this.tbPaidAmount.TabIndex = 2;
             this.tbPaidAmount.Validating += new System.ComponentModel.CancelEventHandler(this.tbPaidAmount_Validating);
             // 
@@ -354,13 +354,13 @@
             this.tlpPaymentDate.Controls.Add(this.lblPaymentDate, 0, 0);
             this.tlpPaymentDate.Controls.Add(this.dtpPaymentDate, 0, 1);
             this.tlpPaymentDate.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpPaymentDate.Location = new System.Drawing.Point(350, 4);
+            this.tlpPaymentDate.Location = new System.Drawing.Point(249, 4);
             this.tlpPaymentDate.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tlpPaymentDate.Name = "tlpPaymentDate";
             this.tlpPaymentDate.RowCount = 2;
             this.tlpPaymentDate.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpPaymentDate.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpPaymentDate.Size = new System.Drawing.Size(341, 55);
+            this.tlpPaymentDate.Size = new System.Drawing.Size(240, 55);
             this.tlpPaymentDate.TabIndex = 2;
             // 
             // lblPaymentDate
@@ -372,7 +372,7 @@
             this.lblPaymentDate.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblPaymentDate.Location = new System.Drawing.Point(3, 0);
             this.lblPaymentDate.Name = "lblPaymentDate";
-            this.lblPaymentDate.Size = new System.Drawing.Size(335, 24);
+            this.lblPaymentDate.Size = new System.Drawing.Size(234, 24);
             this.lblPaymentDate.TabIndex = 0;
             this.lblPaymentDate.Text = "تاريخ الدفع:";
             this.lblPaymentDate.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -390,7 +390,7 @@
             this.dtpPaymentDate.MinDate = new System.DateTime(1960, 1, 1, 0, 0, 0, 0);
             this.dtpPaymentDate.Name = "dtpPaymentDate";
             this.dtpPaymentDate.RightToLeftLayout = true;
-            this.dtpPaymentDate.Size = new System.Drawing.Size(318, 25);
+            this.dtpPaymentDate.Size = new System.Drawing.Size(217, 25);
             this.dtpPaymentDate.TabIndex = 0;
             this.dtpPaymentDate.Validating += new System.ComponentModel.CancelEventHandler(this.dtpPaymentDate_Validating);
             // 
@@ -402,7 +402,7 @@
             this.lblTitle.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblTitle.Location = new System.Drawing.Point(0, 0);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(700, 46);
+            this.lblTitle.Size = new System.Drawing.Size(498, 46);
             this.lblTitle.TabIndex = 11;
             this.lblTitle.Text = "Title";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -412,12 +412,12 @@
             this.epPaymentData.ContainerControl = this;
             this.epPaymentData.RightToLeft = true;
             // 
-            // frmAddEditUpdatePayment
+            // frmAddEditPayment
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
-            this.ClientSize = new System.Drawing.Size(700, 355);
+            this.ClientSize = new System.Drawing.Size(498, 355);
             this.Controls.Add(this.tlpContainer);
             this.Controls.Add(this.flpFooter);
             this.Controls.Add(this.lblTitle);
@@ -427,7 +427,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "frmAddEditUpdatePayment";
+            this.Name = "frmAddEditPayment";
             this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.RightToLeftLayout = true;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

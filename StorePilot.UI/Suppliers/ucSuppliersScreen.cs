@@ -6,6 +6,7 @@ using StorePilot.BLL;
 using StorePilot.UI.Customers;
 using StorePilot.UI.Global.Classes;
 using StorePilot.UI.Global.Controls;
+using StorePilot.UI.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,7 +29,7 @@ namespace StorePilot.UI.Suppliers
         private async void ucSuppliersScreen_Load(object sender, EventArgs e)
         {
             Title = "الموردون";
-            Grid.AddNewClicked += Grid_AddNewClicked;
+            TitleImage = Resources.supplier;
 
             _ConfigureSearch(
                 new[]
@@ -51,6 +52,7 @@ namespace StorePilot.UI.Suppliers
 
             Grid.cmsData = ctrlCmsSuppliers;
 
+            Grid.AddNewClicked += Grid_AddNewClicked;
             Grid.Filter += Grid_Filter;
             Grid.PageNumberSelected += Grid_PageNumberSelected;
             Grid.RowDoubleClicked += Grid_RowDoubleClicked;
@@ -253,7 +255,7 @@ namespace StorePilot.UI.Suppliers
 
             if (dialog == DialogResult.Yes)
             {
-                var result = SupplierResult.Data.Save();
+                var result = await Task.Run(() => SupplierResult.Data.Save());
 
                 if (result.IsSuccess)
                 {

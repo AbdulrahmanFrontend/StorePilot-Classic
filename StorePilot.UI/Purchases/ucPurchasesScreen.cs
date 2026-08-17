@@ -5,6 +5,7 @@ using DevToolkit.Core.Results;
 using StorePilot.BLL;
 using StorePilot.UI.Global.Controls;
 using StorePilot.UI.Payments;
+using StorePilot.UI.Properties;
 using StorePilot.UI.Returns;
 using StorePilot.UI.Sales;
 using System;
@@ -29,7 +30,7 @@ namespace StorePilot.UI.Purchases
         private async void ucPurchasesScreen_Load(object sender, EventArgs e)
         {
             Title = "المشتريات";
-            Grid.AddNewClicked += Grid_AddNewClicked;
+            TitleImage = Resources.purchases;
 
             _ConfigureSearch(
                 new[]
@@ -54,6 +55,7 @@ namespace StorePilot.UI.Purchases
 
             Grid.cmsData = ctrlCmsPurchases;
 
+            Grid.AddNewClicked += Grid_AddNewClicked;
             Grid.Filter += Grid_Filter;
             Grid.PageNumberSelected += Grid_PageNumberSelected;
             Grid.Searchbar.InputEntered += Searchbar_InputEntered;
@@ -324,14 +326,6 @@ namespace StorePilot.UI.Purchases
 
         private void ctrlCmsPurchases_Opening(object sender, CancelEventArgs e)
         {
-            if (_TrySelectedID(0, out int SaleInvoiceId))
-            {
-                var SaleResult = PurchaseInvoiceService.Find(SaleInvoiceId);
-
-                if (SaleResult.IsSuccess && SaleResult.Data.Model.Cancelled)
-                    tsmiCancel.Enabled = false;
-            }
-
             if (_TrySelectedID(1, out int InvoiceId))
             {
                 var HasPaymentsResult = InvoiceService.HasPayments(InvoiceId);
@@ -339,6 +333,11 @@ namespace StorePilot.UI.Purchases
                 if (!HasPaymentsResult.IsSuccess)
                     tsmiViewPayments.Enabled = false;
             }
+
+            if (_IsCancelled())
+                tsmiCancel.Enabled = false;
+            else
+                tsmiCancel.Enabled = true;
         }
     }
 }

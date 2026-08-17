@@ -74,7 +74,7 @@ namespace StorePilot.UI.Products
             {
                 case frmMode.AddNew:
                     lblTitle.Text = "إضافة بيانات صنف جديد";
-                    tbQuantity.ReadOnly = true;
+                    tbQuantity.ReadOnly = false;
                     btnActivate.Visible = false;
                     _Service = new ProductService();
                     break;
@@ -172,6 +172,7 @@ namespace StorePilot.UI.Products
             tbBarCode.ReadOnly = true;
             cbGroups.Enabled = false;
             cbUnits.Enabled = false;
+            tbQuantity.ReadOnly = true;
             tbMinQuantity.ReadOnly = true;
             tbSalePrice.ReadOnly = true;
             tbPurchasePrice.ReadOnly = true;
@@ -215,7 +216,7 @@ namespace StorePilot.UI.Products
         {
             _Validate(sender, e);
             _Service.Model.Quantity = _GetDecimalValue(tbQuantity.Text);
-            _Validate((TextBox)sender, e, _Service.ValidateMinQuantity());
+            _Validate((TextBox)sender, e, _Service.ValidateQuantity());
         }
 
         private decimal _GetDecimalValue(string value)
@@ -260,7 +261,7 @@ namespace StorePilot.UI.Products
             }
         }
 
-        private void btnActivate_Click(object sender, EventArgs e)
+        private async void btnActivate_Click(object sender, EventArgs e)
         {
             DialogResult Confirm = MessageBoxManager.ShowConfirm(
                 "هل أنت متأكد من أنك تريد حفظ بيانات هذا الصنف؟",
@@ -275,11 +276,11 @@ namespace StorePilot.UI.Products
                 _Service.Model.SalePrice = _Model.SalePrice;
                 _Service.Model.Active = !_Service.Model.Active;
 
-                _Save();
+                await _Save();
             }
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
+        private async void btnSave_Click(object sender, EventArgs e)
         {
             DialogResult Confirm = MessageBoxManager.ShowConfirm(
                 "هل أنت متأكد من أنك تريد حفظ بيانات هذا الصنف؟",
@@ -301,16 +302,16 @@ namespace StorePilot.UI.Products
                     return;
                 }
 
-                _Save();
+                await _Save();
             }
         }
 
         private int _GetIntValue(string value)
             => int.TryParse(value?.ToString(), out int result) ? result : 0;
 
-        private void _Save()
+        private async Task _Save()
         {
-            var result = _Service.Save();
+            var result = await Task.Run(() => _Service.Save());
 
             if (result.IsSuccess)
             {

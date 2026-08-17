@@ -72,6 +72,7 @@ namespace StorePilot.UI.CashTransactions
                     lblTitle.Text = "إضافة بيانات حركة جديدة";
                     btnCancel.Visible = false;
                     _Service = new CashTransactionService();
+                    _Model = _Service.Model;
                     break;
 
                 case frmMode.Update:

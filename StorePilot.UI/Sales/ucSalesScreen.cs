@@ -7,6 +7,7 @@ using StorePilot.UI.Customers;
 using StorePilot.UI.Global.Classes;
 using StorePilot.UI.Global.Controls;
 using StorePilot.UI.Payments;
+using StorePilot.UI.Properties;
 using StorePilot.UI.Returns;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,7 @@ namespace StorePilot.UI.Sales
         private async void ucSalesScreen_Load(object sender, EventArgs e)
         {
             Title = "المبيعات";
-            Grid.AddNewClicked += Grid_AddNewClicked;
+            TitleImage = Resources.sales;
 
             _ConfigureSearch(
                 new[]
@@ -56,6 +57,7 @@ namespace StorePilot.UI.Sales
 
             Grid.cmsData = ctrlCmsSales;
 
+            Grid.AddNewClicked += Grid_AddNewClicked;
             Grid.Filter += Grid_Filter;
             Grid.PageNumberSelected += Grid_PageNumberSelected;
             Grid.Searchbar.InputEntered += Searchbar_InputEntered;
@@ -356,11 +358,6 @@ namespace StorePilot.UI.Sales
 
                 if (!HasReturnsResult.IsSuccess)
                     tsmiViewReturns.Enabled = false;
-
-                var PurchaseResult = PurchaseInvoiceService.Find(SaleInvoiceId);
-
-                if (PurchaseResult.IsSuccess && PurchaseResult.Data.Model.Cancelled)
-                    tsmiCancel.Enabled = false;
             }
 
             if (_TrySelectedID(1, out int InvoiceId))
@@ -370,6 +367,11 @@ namespace StorePilot.UI.Sales
                 if (!HasPaymentsResult.IsSuccess)
                     tsmiViewPayments.Enabled = false;
             }
+
+            if (_IsCancelled())
+                tsmiCancel.Enabled = false;
+            else
+                tsmiCancel.Enabled = true;
         }
     }
 }

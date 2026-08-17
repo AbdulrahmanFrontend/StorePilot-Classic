@@ -186,7 +186,7 @@ namespace StorePilot.UI.Payments
             }
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
+        private async void btnSave_Click(object sender, EventArgs e)
         {
             DialogResult Confirm = MessageBoxManager.ShowConfirm(
                 "هل أنت متأكد من أنك تريد حفظ بيانات هذه الدفعة؟",
@@ -206,7 +206,7 @@ namespace StorePilot.UI.Payments
                     return;
                 }
 
-                var result = _Service.Save();
+                var result = await Task.Run(() => _Service.Save());
 
                 if (result.IsSuccess)
                 {
@@ -222,7 +222,7 @@ namespace StorePilot.UI.Payments
         private int _GetIntValue(string value)
             => int.TryParse(value?.ToString(), out int result) ? result : 0;
 
-        private void btnCancel_Click(object sender, EventArgs e)
+        private async void btnCancel_Click(object sender, EventArgs e)
         {
             DialogResult Confirm = MessageBoxManager.ShowConfirm(
                 "هل أنت متأكد من أنك تريد حفظ بيانات هذه الدفعة؟",
@@ -233,7 +233,9 @@ namespace StorePilot.UI.Payments
                 _Service.Model.PaidAmount = _Model.PaidAmount;
                 _Service.Model.PaymentDate = _Model.PaymentDate;
 
-                var result = PaymentService.Cancell(_Model.TransactionID);
+                var result = await Task.Run(
+                    () => PaymentService.Cancell(_Model.TransactionID)
+                    );
 
                 if (result.IsSuccess)
                 {

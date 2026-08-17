@@ -6,6 +6,7 @@ using StorePilot.BLL;
 using StorePilot.UI.Global.Classes;
 using StorePilot.UI.Global.Controls;
 using StorePilot.UI.Payments;
+using StorePilot.UI.Properties;
 using StorePilot.UI.Purchases;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,7 @@ namespace StorePilot.UI.CashTransactions
         private async void ucCashTransactionsScreen_Load(object sender, EventArgs e)
         {
             Title = "حركات الصندوق";
-            Grid.AddNewClicked += Grid_AddNewClicked;
+            TitleImage = Resources.cash;
 
             _ConfigureSearch(
                 new[]
@@ -52,6 +53,7 @@ namespace StorePilot.UI.CashTransactions
 
             Grid.cmsData = ctrlCmsCashTransactions;
 
+            Grid.AddNewClicked += Grid_AddNewClicked;
             Grid.Filter += Grid_Filter;
             Grid.PageNumberSelected += Grid_PageNumberSelected;
             Grid.RowDoubleClicked += Grid_RowDoubleClicked;
@@ -281,14 +283,10 @@ namespace StorePilot.UI.CashTransactions
 
         private void ctrlCmsCashTransactions_Opening(object sender, CancelEventArgs e)
         {
-            if (_TrySelectedID(0, out int TransactionId))
-            {
-                var TransactionResult = CashTransactionService.Find(TransactionId);
-
-                if (TransactionResult.IsSuccess &&
-                    TransactionResult.Data.Model.Cancelled)
-                    tsmiCancel.Enabled = false;
-            }
+            if (_IsCancelled())
+                tsmiCancel.Enabled = false;
+            else
+                tsmiCancel.Enabled = true;
         }
 
         private void tsmiUpdate_Click(object sender, EventArgs e)

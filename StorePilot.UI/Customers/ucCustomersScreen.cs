@@ -5,6 +5,7 @@ using DevToolkit.Core.Results;
 using StorePilot.BLL;
 using StorePilot.UI.Global.Classes;
 using StorePilot.UI.Global.Controls;
+using StorePilot.UI.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -27,7 +28,7 @@ namespace StorePilot.UI.Customers
         private async void ucCustomersScreen_Load(object sender, EventArgs e)
         {
             Title = "العملاء";
-            Grid.AddNewClicked += Grid_AddNewClicked;
+            TitleImage = Resources.customer;
 
             _ConfigureSearch(
                 new[] 
@@ -50,6 +51,7 @@ namespace StorePilot.UI.Customers
 
             Grid.cmsData = ctrlCmsCustomers;
 
+            Grid.AddNewClicked += Grid_AddNewClicked;
             Grid.Filter += Grid_Filter;
             Grid.PageNumberSelected += Grid_PageNumberSelected;
             Grid.RowDoubleClicked += Grid_RowDoubleClicked;
@@ -252,7 +254,7 @@ namespace StorePilot.UI.Customers
 
             if (dialog == DialogResult.Yes)
             {
-                var result = CustomerResult.Data.Save();
+                var result = await Task.Run(() => CustomerResult.Data.Save());
 
                 if (result.IsSuccess)
                 {
