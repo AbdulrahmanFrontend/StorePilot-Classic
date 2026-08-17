@@ -302,7 +302,7 @@
             this.lblTransactionType.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblTransactionType.Location = new System.Drawing.Point(3, 0);
             this.lblTransactionType.Name = "lblTransactionType";
-            this.lblTransactionType.Size = new System.Drawing.Size(282, 33);
+            this.lblTransactionType.Size = new System.Drawing.Size(282, 32);
             this.lblTransactionType.TabIndex = 0;
             this.lblTransactionType.Text = "نوع الحركة:";
             this.lblTransactionType.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -317,7 +317,7 @@
             this.cbTransactionType.Items.AddRange(new object[] {
             "ايرادات",
             "مصروفات"});
-            this.cbTransactionType.Location = new System.Drawing.Point(20, 36);
+            this.cbTransactionType.Location = new System.Drawing.Point(20, 35);
             this.cbTransactionType.Margin = new System.Windows.Forms.Padding(3, 3, 20, 3);
             this.cbTransactionType.Name = "cbTransactionType";
             this.cbTransactionType.Size = new System.Drawing.Size(265, 25);
@@ -358,7 +358,7 @@
             this.tbPaidAmount.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tbPaidAmount.Location = new System.Drawing.Point(20, 36);
             this.tbPaidAmount.Margin = new System.Windows.Forms.Padding(3, 3, 20, 3);
-            this.tbPaidAmount.MaxLength = 6;
+            this.tbPaidAmount.MaxLength = 7;
             this.tbPaidAmount.Name = "tbPaidAmount";
             this.tbPaidAmount.Size = new System.Drawing.Size(265, 25);
             this.tbPaidAmount.TabIndex = 2;

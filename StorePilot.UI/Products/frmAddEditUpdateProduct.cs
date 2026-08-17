@@ -1,6 +1,7 @@
 ﻿using DevToolkit.BaseWinForms.Forms;
 using DevToolkit.BaseWinForms.Managers;
 using DevToolkit.Core.Common;
+using DevToolkit.Core.Guards;
 using DevToolkit.Core.Results;
 using StorePilot.BLL;
 using StorePilot.Core.Models;
@@ -80,12 +81,13 @@ namespace StorePilot.UI.Products
                     break;
 
                 case frmMode.Update:
+                    _LoadData();
                     lblTitle.Text = "تحديث بيانات الصنف";
                     btnActivate.Text = _Service.Model.Active ? "تعطيل" : "تفعيل";
                     btnActivate.BackColor = _Service.Model.Active ?
                         btnActivate.BackColor :
                         Color.Orange;
-                    _LoadData();
+                    cbUnits.Enabled = false;
                     break;
 
                 case frmMode.Edit:
@@ -193,30 +195,42 @@ namespace StorePilot.UI.Products
 
         private void tbMinQuantity_Validating(object sender, CancelEventArgs e)
         {
-            _Validate(sender, e);
             _Service.Model.MinQuantity = _GetDecimalValue(tbMinQuantity.Text);
+
+            if (!_Validate(sender, e))
+                return;
+
             _Validate((TextBox)sender, e, _Service.ValidateMinQuantity());
         }
 
         private void tbPurchasePrice_Validating(object sender, CancelEventArgs e)
         {
-            _Validate(sender, e);
             _Service.Model.PurchasePrice = _GetDecimalValue(tbPurchasePrice.Text);
+
+            if (!_Validate(sender, e))
+                return;
+
             _Validate((TextBox)sender, e, _Service.ValidatePurchasePrice());
         }
 
         private void tbSalePrice_Validating(object sender, CancelEventArgs e)
         {
-            _Validate(sender, e);
             _Service.Model.SalePrice = _GetDecimalValue(tbSalePrice.Text);
+
+            if (!_Validate(sender, e))
+                return;
+
             _Validate((TextBox)sender, e, _Service.ValidateSalePrice());
         }
 
         private void tbQuantity_Validating(object sender, CancelEventArgs e)
         {
-            _Validate(sender, e);
             _Service.Model.Quantity = _GetDecimalValue(tbQuantity.Text);
-            _Validate((TextBox)sender, e, _Service.ValidateQuantity());
+
+            if (!_Validate(sender, e))
+                return;
+
+            _Validate(tbQuantity, e, _Service.ValidateQuantity());
         }
 
         private decimal _GetDecimalValue(string value)
@@ -240,10 +254,20 @@ namespace StorePilot.UI.Products
             }
         }
 
-        private void _Validate(object sender, CancelEventArgs e)
+        private bool _Validate(object sender, CancelEventArgs e)
         {
             TextBox ctrl = sender as TextBox;
-            if (!decimal.TryParse(ctrl.Text?.ToString(), out decimal value))
+            if (!Guard.HasValue(ctrl.Text))
+            {
+                e.Cancel = true;
+
+                epProductData.SetError(ctrl, "مطلوب!");
+
+                ctrl.BackColor = Color.MistyRose;
+
+                return false;
+            }
+            else if (!decimal.TryParse(ctrl.Text?.ToString(), out decimal value))
             {
                 e.Cancel = true;
 
@@ -252,13 +276,11 @@ namespace StorePilot.UI.Products
                     "لا يسمح إلا بإدخال أرقام صحيحة أو عشرية فقط!");
 
                 ctrl.BackColor = Color.MistyRose;
-            }
-            else
-            {
-                epProductData.SetError(ctrl, string.Empty);
 
-                ctrl.BackColor = Color.White;
+                return false;
             }
+
+            return true;
         }
 
         private async void btnActivate_Click(object sender, EventArgs e)

@@ -152,7 +152,7 @@ namespace StorePilot.DAL
             string Query = @"Update Products
             SET 
                 ProductName = @ProductName, BarCode = @BarCode,
-                UnitID = @UnitID, GroupID = @GroupID, MinQuantity = @MinQuantity, 
+                GroupID = @GroupID, MinQuantity = @MinQuantity, 
                 PurchasePrice = @PurchasePrice, SalePrice = @SalePrice, 
                 Active = @Active, Notes = @Notes
             WHERE ProductID = @ProductID;";
@@ -182,12 +182,6 @@ namespace StorePilot.DAL
                     Name = "@GroupID",
                     DbType = DbType.Int64,
                     Value = model.GroupID,
-                },
-                new DbParameterInfo
-                {
-                    Name = "@UnitID",
-                    DbType = DbType.Int64,
-                    Value = model.UnitID,
                 },
                 new DbParameterInfo
                 {

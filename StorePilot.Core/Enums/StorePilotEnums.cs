@@ -28,9 +28,9 @@ namespace StorePilot.Core.Enums
     public enum FilterMethodsProducts
     {
         ProductName = 0,
-        Unit = 1,
+        BarCode = 1,
         Group = 2,
-        BarCode = 3,
+        Unit = 3,
     }
 
     public enum FilterMethodsCash

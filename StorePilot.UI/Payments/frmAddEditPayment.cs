@@ -1,6 +1,7 @@
 ﻿using DevToolkit.BaseWinForms.Forms;
 using DevToolkit.BaseWinForms.Managers;
 using DevToolkit.Core.Common;
+using DevToolkit.Core.Guards;
 using DevToolkit.Core.Results;
 using StorePilot.BLL;
 using StorePilot.Core.Enums;
@@ -137,11 +138,25 @@ namespace StorePilot.UI.Payments
         private void tbPaidAmount_Validating(object sender, CancelEventArgs e)
         {
             decimal Quantity =
-                decimal.TryParse(tbPaidAmount.Text?.ToString(), out decimal value) ?
-                value :
+                decimal.TryParse(tbPaidAmount.Text?.ToString(), out Quantity) ?
+                Quantity :
                 0;
 
-            if (Quantity > 0)
+            _Service.Model.PaidAmount = Quantity;
+
+            if (!Guard.HasValue(tbPaidAmount.Text))
+            {
+                e.Cancel = true;
+
+                epPaymentData.SetError(tbPaidAmount, "مطلوب!");
+
+                tbPaidAmount.BackColor = Color.MistyRose;
+
+                return;
+            }
+            else if (!decimal.TryParse(
+                tbPaidAmount.Text?.ToString(),
+                out decimal value))
             {
                 e.Cancel = true;
 
@@ -150,9 +165,9 @@ namespace StorePilot.UI.Payments
                     "لا يسمح إلا بإدخال أرقام صحيحة أو عشرية فقط!");
 
                 tbPaidAmount.BackColor = Color.MistyRose;
-            }
 
-            _Service.Model.PaidAmount = Quantity;
+                return;
+            }
 
             _Validate(tbPaidAmount, e, _Service.ValidatePaidAmount());
         }

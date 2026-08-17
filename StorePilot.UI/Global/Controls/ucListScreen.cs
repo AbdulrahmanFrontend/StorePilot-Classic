@@ -19,7 +19,7 @@ namespace StorePilot.UI.Global.Controls
     public partial class ucListScreen : ucListScreenBase
     {
         protected int _CurrentPage = 1;
-        protected int _PageSize = 50;
+        protected int _PageSize = 5;
 
         protected int _FilterMethodIndex = 0;
         protected int _FilterValueIndex = 0;
@@ -47,7 +47,7 @@ namespace StorePilot.UI.Global.Controls
             this.Grid.ImportButtonVisible = false;
             this.Grid.Searchbar.ShowCancelButton = false;
 
-            Grid.SetPageSizes(new[] { 50, 100, 200, 300, 400 });
+            Grid.SetPageSizes(new[] { 5, 10, 20, 30, 40 });
         }
 
         protected void _SetPagesCount(Result<int> result)

@@ -291,6 +291,8 @@ namespace StorePilot.UI.Products
 
             if (dialog == DialogResult.Yes)
             {
+                ProductResult.Data.Model.Active = !ProductResult.Data.Model.Active;
+
                 var result = await Task.Run(() => ProductResult.Data.Save());
 
                 if (result.IsSuccess)
