@@ -306,7 +306,7 @@
             this.lblTransactionType.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblTransactionType.Location = new System.Drawing.Point(3, 0);
             this.lblTransactionType.Name = "lblTransactionType";
-            this.lblTransactionType.Size = new System.Drawing.Size(287, 30);
+            this.lblTransactionType.Size = new System.Drawing.Size(287, 26);
             this.lblTransactionType.TabIndex = 0;
             this.lblTransactionType.Text = "نوع الحركة:";
             this.lblTransactionType.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -322,7 +322,7 @@
             this.cbTransactionType.Items.AddRange(new object[] {
             "ايرادات",
             "مصروفات"});
-            this.cbTransactionType.Location = new System.Drawing.Point(23, 34);
+            this.cbTransactionType.Location = new System.Drawing.Point(23, 30);
             this.cbTransactionType.Margin = new System.Windows.Forms.Padding(3, 4, 23, 4);
             this.cbTransactionType.Name = "cbTransactionType";
             this.cbTransactionType.Size = new System.Drawing.Size(267, 28);

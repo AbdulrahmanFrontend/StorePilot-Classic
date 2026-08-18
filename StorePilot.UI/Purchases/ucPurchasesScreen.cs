@@ -3,6 +3,7 @@ using DevToolkit.BaseWinForms.Managers;
 using DevToolkit.Core.Common;
 using DevToolkit.Core.Results;
 using StorePilot.BLL;
+using StorePilot.Core.Enums;
 using StorePilot.UI.Global.Controls;
 using StorePilot.UI.Payments;
 using StorePilot.UI.Properties;
@@ -43,7 +44,7 @@ namespace StorePilot.UI.Purchases
                 },
                 new[]
                 {
-                    "غير ملغي",
+                    "مفعل",
                     "ملغي"
                 });
 
@@ -321,7 +322,21 @@ namespace StorePilot.UI.Purchases
 
         private void tsmiViewPayments_Click(object sender, EventArgs e)
         {
+            if (_TrySelectedID(1, out int ID))
+            {
+                var result = PurchaseInvoiceService.IsExist(ID);
 
+                if (result.IsSuccess)
+                {
+                    using (var frm = new frmPaymentsScreen(ID))
+                    {
+                        frm.DataBack += Frm_DataBack;
+                        frm.ShowDialog();
+                    }
+                }
+                else
+                    MessageBoxManager.ShowError(result.Message, Language.ar);
+            }
         }
 
         private void ctrlCmsPurchases_Opening(object sender, CancelEventArgs e)
@@ -332,12 +347,35 @@ namespace StorePilot.UI.Purchases
 
                 if (!HasPaymentsResult.IsSuccess)
                     tsmiViewPayments.Enabled = false;
+                else
+                    tsmiViewPayments.Enabled = true;
             }
 
             if (_IsCancelled())
+            {
+                tsmiAddPayments.Enabled = false;
+                tsmiPrint.Enabled = false;
                 tsmiCancel.Enabled = false;
+            }
             else
+            {
+                if (_IsPaid())
+                    tsmiAddPayments.Enabled = false;
+                else
+                    tsmiAddPayments.Enabled = true;
+                tsmiPrint.Enabled = true;
                 tsmiCancel.Enabled = true;
+            }
+        }
+
+        protected bool _IsPaid()
+        {
+            object value = Grid.GetSelectedRow("InvoiceStatus");
+
+            if (value == null)
+                return false;
+
+            return value.ToString() == InvoiceStatus.Paid.ToArabic() ? true : false;
         }
     }
 }

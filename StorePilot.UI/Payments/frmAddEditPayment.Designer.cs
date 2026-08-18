@@ -288,7 +288,7 @@
             this.lblPaymentMethod.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblPaymentMethod.Location = new System.Drawing.Point(3, 0);
             this.lblPaymentMethod.Name = "lblPaymentMethod";
-            this.lblPaymentMethod.Size = new System.Drawing.Size(234, 24);
+            this.lblPaymentMethod.Size = new System.Drawing.Size(234, 25);
             this.lblPaymentMethod.TabIndex = 0;
             this.lblPaymentMethod.Text = "طريقة الدفغ:";
             this.lblPaymentMethod.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -300,7 +300,7 @@
             this.cbPaymentMethods.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbPaymentMethods.FormattingEnabled = true;
             this.cbPaymentMethods.IntegralHeight = false;
-            this.cbPaymentMethods.Location = new System.Drawing.Point(20, 27);
+            this.cbPaymentMethods.Location = new System.Drawing.Point(20, 28);
             this.cbPaymentMethods.Margin = new System.Windows.Forms.Padding(3, 3, 20, 3);
             this.cbPaymentMethods.Name = "cbPaymentMethods";
             this.cbPaymentMethods.Size = new System.Drawing.Size(217, 25);

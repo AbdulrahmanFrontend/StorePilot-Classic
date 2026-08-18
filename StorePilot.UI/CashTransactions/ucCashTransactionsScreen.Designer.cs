@@ -47,7 +47,7 @@
             this.tsmiCancel});
             this.ctrlCmsCashTransactions.Name = "ctrlCmsCashTransactions";
             this.ctrlCmsCashTransactions.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.ctrlCmsCashTransactions.Size = new System.Drawing.Size(211, 122);
+            this.ctrlCmsCashTransactions.Size = new System.Drawing.Size(128, 94);
             this.ctrlCmsCashTransactions.Opening += new System.ComponentModel.CancelEventHandler(this.ctrlCmsCashTransactions_Opening);
             // 
             // tsmiView
@@ -55,7 +55,7 @@
             this.tsmiView.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(243)))), ((int)(((byte)(244)))));
             this.tsmiView.Image = global::StorePilot.UI.Properties.Resources.view;
             this.tsmiView.Name = "tsmiView";
-            this.tsmiView.Size = new System.Drawing.Size(210, 28);
+            this.tsmiView.Size = new System.Drawing.Size(127, 28);
             this.tsmiView.Text = "عرض";
             this.tsmiView.Click += new System.EventHandler(this.tsmiView_Click);
             // 
@@ -64,7 +64,7 @@
             this.tsmiUpdate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(243)))), ((int)(((byte)(244)))));
             this.tsmiUpdate.Image = global::StorePilot.UI.Properties.Resources.update;
             this.tsmiUpdate.Name = "tsmiUpdate";
-            this.tsmiUpdate.Size = new System.Drawing.Size(210, 28);
+            this.tsmiUpdate.Size = new System.Drawing.Size(127, 28);
             this.tsmiUpdate.Text = "تحديث";
             this.tsmiUpdate.Click += new System.EventHandler(this.tsmiUpdate_Click);
             // 
@@ -72,14 +72,14 @@
             // 
             this.tss.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(243)))), ((int)(((byte)(244)))));
             this.tss.Name = "tss";
-            this.tss.Size = new System.Drawing.Size(207, 6);
+            this.tss.Size = new System.Drawing.Size(124, 6);
             // 
             // tsmiCancel
             // 
             this.tsmiCancel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(243)))), ((int)(((byte)(244)))));
             this.tsmiCancel.Image = global::StorePilot.UI.Properties.Resources.activate_profile;
             this.tsmiCancel.Name = "tsmiCancel";
-            this.tsmiCancel.Size = new System.Drawing.Size(210, 28);
+            this.tsmiCancel.Size = new System.Drawing.Size(127, 28);
             this.tsmiCancel.Text = "إلغاء";
             this.tsmiCancel.Click += new System.EventHandler(this.tsmiCancel_Click);
             // 

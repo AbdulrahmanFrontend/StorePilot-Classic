@@ -301,6 +301,10 @@ namespace StorePilot.BLL
             string filterValue,
             bool cancelled)
         {
+            if (!int.TryParse(filterValue?.ToString(), out int Value) &&
+                (filterMethodIndex == 0 || filterMethodIndex == 1))
+                filterMethodIndex = -1;
+
             Result<int> result = PurchaseInvoiceData.GetCount(
                 filterMethodIndex,
                 filterValue,
@@ -320,6 +324,10 @@ namespace StorePilot.BLL
             bool cancelled)
         {
             int offset = (currentPage - 1) * pageSize;
+
+            if (!int.TryParse(filterValue?.ToString(), out int Value) &&
+                (filterMethodIndex == 0 || filterMethodIndex == 1))
+                filterMethodIndex = -1;
 
             Result<DataTable> result = PurchaseInvoiceData.GetInvoices(
                 offset,

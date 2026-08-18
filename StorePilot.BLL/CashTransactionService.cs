@@ -93,37 +93,7 @@ namespace StorePilot.BLL
             else
                 return Result.Failure("فشلت عملية الوصول لبيانات حركة الصندوق هذه!");
 
-            Result<bool> IsValidTransResult = 
-                PurchaseInvoiceData.IsPurchaseTransaction(id);
-
-            if (IsValidTransResult.IsSuccess && IsValidTransResult.Data)
-                return Result.Failure("لا يسمح بتعديل أو حذف حركة مصروفات شراء!");
-            else if(!IsValidTransResult.IsSuccess)
-                return Result.Failure("فشلت عملية التحقق من كون الحركة مصروفات شراء!");
-
-            IsValidTransResult = SaleReturnData.IsReturnsTransaction(id);
-
-            if (IsValidTransResult.IsSuccess && IsValidTransResult.Data)
-                return Result.Failure("لا يسمح بتعديل أو حذف حركة مصروفات مرتجعات!");
-            else if (!IsValidTransResult.IsSuccess)
-                return Result.Failure("فشلت عملية التحقق من كون الحركة مصروفات مرتجعات!");
-
-            IsValidTransResult = SaleInvoiceData.IsSalesTransaction(id);
-
-            if (IsValidTransResult.IsSuccess && IsValidTransResult.Data)
-                return Result.Failure("لا يسمح بتعديل أو حذف حركة إيرادات مبيعات!");
-            else if (!IsValidTransResult.IsSuccess)
-                return Result.Failure("فشلت عملية التحقق من كون الحركة إيرادات مبيعات!");
-
-            IsValidTransResult = PaymentData.IsPaymentsTransaction(id);
-
-            if (IsValidTransResult.IsSuccess && IsValidTransResult.Data)
-                return Result.Failure("لا يسمح بتعديل أو حذف حركة تحصيل أو سداد ديون!");
-            else if (!IsValidTransResult.IsSuccess)
-                return Result.Failure(
-                    "فشلت عملية التحقق من كون الحركة تحصيل أو سداد ديون!");
-
-            return Result.Success();
+            return IsDependentTransaction(id);
         }
 
         protected override ValidationResult _Validate()
@@ -192,6 +162,41 @@ namespace StorePilot.BLL
                 return result;
 
             return Result<decimal>.Failure("فشلت عملية الوصول لرصيد الصندوق!");
+        }
+
+        public static Result IsDependentTransaction(int id)
+        {
+            Result<bool> IsValidTransResult =
+                PurchaseInvoiceData.IsPurchaseTransaction(id);
+
+            if (IsValidTransResult.IsSuccess && IsValidTransResult.Data)
+                return Result.Failure("لا يسمح بتعديل أو حذف حركة مصروفات شراء!");
+            else if (!IsValidTransResult.IsSuccess)
+                return Result.Failure("فشلت عملية التحقق من كون الحركة مصروفات شراء!");
+
+            IsValidTransResult = SaleReturnData.IsReturnsTransaction(id);
+
+            if (IsValidTransResult.IsSuccess && IsValidTransResult.Data)
+                return Result.Failure("لا يسمح بتعديل أو حذف حركة مصروفات مرتجعات!");
+            else if (!IsValidTransResult.IsSuccess)
+                return Result.Failure("فشلت عملية التحقق من كون الحركة مصروفات مرتجعات!");
+
+            IsValidTransResult = SaleInvoiceData.IsSalesTransaction(id);
+
+            if (IsValidTransResult.IsSuccess && IsValidTransResult.Data)
+                return Result.Failure("لا يسمح بتعديل أو حذف حركة إيرادات مبيعات!");
+            else if (!IsValidTransResult.IsSuccess)
+                return Result.Failure("فشلت عملية التحقق من كون الحركة إيرادات مبيعات!");
+
+            IsValidTransResult = PaymentData.IsPaymentsTransaction(id);
+
+            if (IsValidTransResult.IsSuccess && IsValidTransResult.Data)
+                return Result.Failure("لا يسمح بتعديل أو حذف حركة تحصيل أو سداد ديون!");
+            else if (!IsValidTransResult.IsSuccess)
+                return Result.Failure(
+                    "فشلت عملية التحقق من كون الحركة تحصيل أو سداد ديون!");
+
+            return Result.Success();
         }
     }
 }

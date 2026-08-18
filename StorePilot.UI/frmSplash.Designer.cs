@@ -43,7 +43,7 @@
             this.SplashScreen.Logo = global::StorePilot.UI.Properties.Resources.sink;
             this.SplashScreen.Margin = new System.Windows.Forms.Padding(0);
             this.SplashScreen.Name = "SplashScreen";
-            this.SplashScreen.Size = new System.Drawing.Size(501, 386);
+            this.SplashScreen.Size = new System.Drawing.Size(586, 487);
             this.SplashScreen.SubTitle = "رقم الإصدار 1.0 | StorePilot";
             this.SplashScreen.SubTitleFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SplashScreen.TabIndex = 0;
@@ -56,19 +56,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(501, 386);
+            this.ClientSize = new System.Drawing.Size(586, 487);
             this.Controls.Add(this.SplashScreen);
-            this.DoubleBuffered = true;
-            this.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.Name = "frmSplash";
-            this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.RightToLeftLayout = true;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "مرحبا";
             this.Load += new System.EventHandler(this.frmSplash_Load);
             this.ResumeLayout(false);

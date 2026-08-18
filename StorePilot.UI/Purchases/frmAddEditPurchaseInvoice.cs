@@ -7,6 +7,7 @@ using StorePilot.Core.Enums;
 using StorePilot.Core.Models;
 using StorePilot.UI.Customers;
 using StorePilot.UI.Global.Classes;
+using StorePilot.UI.Payments;
 using StorePilot.UI.Properties;
 using StorePilot.UI.Sales;
 using StorePilot.UI.Suppliers;
@@ -102,6 +103,8 @@ namespace StorePilot.UI.Purchases
             btnViewPayments.Visible = false;
 
             btnInvoiceItems.Text = "إضافة عناصر الفاتورة";
+            
+            cbStatuses.SelectedIndex = 0;
 
             using (var frm = new frmAddEditUpdatePurchaseItems())
             {
@@ -120,6 +123,13 @@ namespace StorePilot.UI.Purchases
             btnInvoiceItems.Text = "عرض عناصر الفاتورة";
 
             _LoadData();
+
+            var result = InvoiceService.HasPayments(_Model.InvoiceID);
+
+            if (!result.IsSuccess)
+                btnViewPayments.Enabled = false;
+            if (_Model.Cancelled)
+                btnCancel.Enabled = false;
         }
 
         private void Frm_DataBackInvoiceItems(
@@ -134,6 +144,9 @@ namespace StorePilot.UI.Purchases
 
             _EnabledFields();
 
+            btnAddNew.Visible = true;
+            btnSavePrint.Enabled = true;
+
             _SetAmounts();
         }
 
@@ -143,7 +156,7 @@ namespace StorePilot.UI.Purchases
             {
                 case InvoiceStatus.Paid:
                     tbPaidAmount.Text = _InvoiceItems
-                        .Sum(i => i.UnitPrice)
+                        .Sum(i => i.TotalPrice)
                         .ToString("#,##0");
                     tbRemainingAmount.Text = "0";
                     tbTotalAmount.Text = tbPaidAmount.Text;
@@ -151,7 +164,7 @@ namespace StorePilot.UI.Purchases
 
                 case InvoiceStatus.Deferred:
                     tbRemainingAmount.Text = _InvoiceItems
-                        .Sum(i => i.UnitPrice)
+                        .Sum(i => i.TotalPrice)
                         .ToString("#,##0");
                     tbPaidAmount.Text = "0";
                     tbTotalAmount.Text = tbRemainingAmount.Text;
@@ -169,7 +182,7 @@ namespace StorePilot.UI.Purchases
                 this.Close();
             }
 
-            cbSuppliers.DisplayMember = "SupplierName";
+            cbSuppliers.DisplayMember = "Name";
             cbSuppliers.ValueMember = "SupplierID";
             cbSuppliers.DataSource = result.Data;
 
@@ -326,7 +339,30 @@ namespace StorePilot.UI.Purchases
 
         private void btnViewPayments_Click(object sender, EventArgs e)
         {
+            using (var frm = new frmPaymentsScreen(_Service.Model.InvoiceID))
+            {
+                frm.DataBack += Frm_UpdateTotalAmount;
+                frm.ShowDialog();
+            }
+        }
 
+        private void Frm_UpdateTotalAmount(object sender)
+        {
+            var result = PurchaseInvoiceService.Find(_Id);
+
+            if (!result.IsSuccess)
+            {
+                MessageBoxManager.ShowError(result.Message, Language.ar);
+                return;
+            }
+
+            _Service = result.Data;
+            _Model = _Service.Model;
+
+            cbStatuses.SelectedValue = (int)_Model.InvoiceStatus.ToInvoiceStatus();
+            tbPaidAmount.Text = _Model.PaidAmount.ToString("#,##0");
+            tbRemainingAmount.Text = _Model.RemainingAmount.ToString("#,##0");
+            tbTotalAmount.Text = _Model.TotalAmount.ToString("#,##0");
         }
 
         private async void btnCancel_Click(object sender, EventArgs e)

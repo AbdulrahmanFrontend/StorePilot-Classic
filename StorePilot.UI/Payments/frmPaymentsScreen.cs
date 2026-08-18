@@ -22,6 +22,9 @@ namespace StorePilot.UI.Payments
     {
         private int _InvoiceId;
 
+        public delegate void DataBackEventHandler(object sender);
+        public event DataBackEventHandler DataBack;
+
         public frmPaymentsScreen(int invoiceId)
         {
             InitializeComponent();

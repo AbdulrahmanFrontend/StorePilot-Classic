@@ -284,17 +284,32 @@ namespace StorePilot.UI.CashTransactions
                     Language.ar);
         }
 
-        private void ctrlCmsCashTransactions_Opening(object sender, CancelEventArgs e)
+        private async void ctrlCmsCashTransactions_Opening(object sender, CancelEventArgs e)
         {
-            if (_IsCancelled())
+            if (!_TrySelectedID(0, out int ID))
+                return;
+
+            var result = await Task.Run(
+                () => CashTransactionService.IsDependentTransaction(ID)
+                );
+
+            if (!result.IsSuccess)
             {
                 tsmiUpdate.Enabled = false;
-                tsmiCancel.Text = "تفعيل";
+                tsmiCancel.Enabled = false;
+                if (_IsCancelled())
+                    tsmiCancel.Text = "تفعيل";
+                else
+                    tsmiCancel.Text = "إلغاء";
             }
             else
             {
                 tsmiUpdate.Enabled = true;
-                tsmiCancel.Text = "إلغاء";
+                tsmiCancel.Enabled = true;
+                if (_IsCancelled())
+                    tsmiCancel.Text = "تفعيل";
+                else
+                    tsmiCancel.Text = "إلغاء";
             }
         }
 

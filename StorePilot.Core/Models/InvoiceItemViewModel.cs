@@ -14,6 +14,6 @@ namespace StorePilot.Core.Models
         public string GroupName { get; set; } = string.Empty;
         public decimal Quantity { get; set; } = 0;
         public decimal UnitPrice { get; set; } = 0;
-        public decimal TotalPrice => TotalPrice * Quantity;
+        public decimal TotalPrice => UnitPrice * Quantity;
     }
 }
