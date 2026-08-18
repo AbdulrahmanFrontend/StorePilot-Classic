@@ -120,36 +120,14 @@ namespace StorePilot.BLL
             if (IsValidTransResult.IsSuccess && IsValidTransResult.Data)
                 return Result.Failure("لا يسمح بتعديل أو حذف حركة تحصيل أو سداد ديون!");
             else if (!IsValidTransResult.IsSuccess)
-                return Result.Failure("فشلت عملية التحقق من كون الحركة تحصيل أو سداد ديون!");
+                return Result.Failure(
+                    "فشلت عملية التحقق من كون الحركة تحصيل أو سداد ديون!");
 
             return Result.Success();
         }
 
         protected override ValidationResult _Validate()
             => ObjectValidator.ValidateObject<CashTransactionModel>(Model);
-
-        public static Result Cancell(int id)
-        {
-            Result result = _ValidateBusiness(id);
-
-            if (!result.IsSuccess)
-                return result;
-
-            Result<CashTransactionModel> GetTransResult = CashTransactionData.Find(id);
-
-            if (GetTransResult.IsSuccess)
-            {
-                if (GetTransResult.Data == null)
-                    return Result.Failure("هذه الحركة غير مسجلة في النظام!");
-
-                if (GetTransResult.Data.Cancelled)
-                    return Result.Failure("هذه الحركة ملغية بالفعل!");
-            }
-            else
-                return Result.Failure("فشلت عملية الوصول لبيانات هذه الحركة!");
-
-            return CashTransactionData.Cancell(id);
-        }
 
         public static Result IsExist(int id)
         {

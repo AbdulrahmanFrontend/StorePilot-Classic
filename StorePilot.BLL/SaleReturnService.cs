@@ -79,6 +79,7 @@ namespace StorePilot.BLL
 
                     TransModel.TransactionDate = Model.ReturnDate;
                     TransModel.PaidAmount = Model.TotalReturnAmount;
+                    TransModel.TransactionType = TransactionType.Expense.ToString();
                     TransModel.Description = "مصروفات فاتورة مرتجع";
 
                     Result result = CashTransactionData.AddNew(

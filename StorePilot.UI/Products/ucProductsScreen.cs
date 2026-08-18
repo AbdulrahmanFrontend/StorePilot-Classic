@@ -315,9 +315,15 @@ namespace StorePilot.UI.Products
         private void ctrlCmsProducts_Opening(object sender, CancelEventArgs e)
         {
             if (!_IsActive())
+            {
+                tsmiUpdate.Enabled = false;
                 tsmiActivate.Text = "تفعيل";
+            }
             else
+            {
+                tsmiUpdate.Enabled = false;
                 tsmiActivate.Text = "تعطيل";
+            }
         }
     }
 }

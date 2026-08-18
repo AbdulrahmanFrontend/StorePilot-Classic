@@ -83,7 +83,7 @@ namespace StorePilot.DAL
                 {
                     Name = "@TransactionType",
                     DbType = DbType.String,
-                    Value = TransactionType.Expense.ToArabic(),
+                    Value = model.TransactionType,
                 },
                 new DbParameterInfo
                 {
@@ -159,7 +159,7 @@ namespace StorePilot.DAL
                 {
                     Name = "@TransactionType",
                     DbType = DbType.String,
-                    Value = TransactionType.Expense.ToArabic(),
+                    Value = model.TransactionType,
                 },
                 new DbParameterInfo
                 {
@@ -194,7 +194,7 @@ namespace StorePilot.DAL
                 SET
                     TransactionDate = @TransactionDate, PaidAmount = @PaidAmount,
                     TransactionType = @TransactionType, Notes = @Notes,
-                    Description = @Description
+                    Description = @Description, Cancelled = @Cancelled
                 WHERE TransactionID = @TransactionID;";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
@@ -227,13 +227,19 @@ namespace StorePilot.DAL
                 {
                     Name = "@TransactionType",
                     DbType = DbType.String,
-                    Value = TransactionType.Expense.ToArabic(),
+                    Value = model.TransactionType,
                 },
                 new DbParameterInfo
                 {
                     Name = "@Notes",
                     DbType = DbType.String,
                     Value = model.Notes,
+                },
+                new DbParameterInfo
+                {
+                    Name = "@Cancelled",
+                    DbType = DbType.Boolean,
+                    Value = model.Cancelled,
                 },
             };
 
@@ -254,47 +260,6 @@ namespace StorePilot.DAL
             }
 
             return Result.Failure("فشلت عملية حفظ بيانات حركة الصندوق هذه!");
-        }
-
-        //used
-        public static Result Cancell(int id)
-        {
-            string Query = @"UPDATE CashTransactions
-                SET
-                    Cancelled = CASE Cancelled 
-                    WHEN 0 THEN 1 
-                    ELSE 1
-                END
-                WHERE TransactionID = @TransactionID;";
-
-            DbParameterInfo[] Parameters = new DbParameterInfo[]
-            {
-                new DbParameterInfo
-                {
-                    Name = "@TransactionID",
-                    DbType = DbType.Int64,
-                    Value = id,
-                },
-            };
-
-            Result<int> result = DbManager.Current?.ExecuteNonQuery(
-                CommandType.Text,
-                Query,
-                Parameters);
-
-            if (result.IsSuccess)
-            {
-                if (result.Data > 0)
-                {
-                    LogManager.LogInfo($"تمت عملية إلغاء حركة {id} بنجاح.");
-
-                    return Result.Success("تمت عملية إلغاء هذه الحركة بنجاح.");
-                }
-
-                return Result.Failure("لا يوجد حركات تم إلغاؤها من النظام!");
-            }
-
-            return Result.Failure("فشلت عملية إلغاء هذه الحركة!");
         }
 
         //used

@@ -70,12 +70,12 @@ namespace StorePilot.UI.Customers
                     break;
 
                 case frmMode.Update:
+                    _LoadData();
                     lblTitle.Text = "تحديث بيانات العميل";
                     btnActivate.Text = _Service.Model.Active ? "تعطيل" : "تفعيل";
                     btnActivate.BackColor = _Service.Model.Active ?
                         btnActivate.BackColor :
                         Color.Orange;
-                    _LoadData();
                     break;
 
                 case frmMode.Edit:
@@ -175,9 +175,6 @@ namespace StorePilot.UI.Customers
 
             if (Confirm == DialogResult.Yes)
             {
-                _Service.Model.Address = tbAddress.Text;
-                _Service.Model.Notes = tbNotes.Text;
-
                 if (!ValidateChildren())
                 {
                     MessageBoxManager.ShowError(
@@ -185,6 +182,9 @@ namespace StorePilot.UI.Customers
                         Language.ar);
                     return;
                 }
+
+                _Service.Model.Address = tbAddress.Text;
+                _Service.Model.Notes = tbNotes.Text;
 
                 await _Save();
             }

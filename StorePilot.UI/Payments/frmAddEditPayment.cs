@@ -209,10 +209,6 @@ namespace StorePilot.UI.Payments
 
             if (Confirm == DialogResult.Yes)
             {
-                _Service.Model.MethodID = 
-                    _GetIntValue(cbPaymentMethods.SelectedValue?.ToString());
-                _Service.Model.Notes = _Model.Notes;
-
                 if (!ValidateChildren())
                 {
                     MessageBoxManager.ShowError(
@@ -220,6 +216,10 @@ namespace StorePilot.UI.Payments
                         Language.ar);
                     return;
                 }
+
+                _Service.Model.MethodID =
+                    _GetIntValue(cbPaymentMethods.SelectedValue?.ToString());
+                _Service.Model.Notes = _Model.Notes;
 
                 var result = await Task.Run(() => _Service.Save());
 

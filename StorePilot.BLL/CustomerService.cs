@@ -105,6 +105,9 @@ namespace StorePilot.BLL
             if (!IsExistResult.IsSuccess)
                 return IsExistResult;
 
+            if (!this.Model.Active)
+                return Result.Failure("لا يسمح بتحديث بيانات عميل معطل!");
+
             Result result = DbManager.Current?.ExecuteTransaction((con, trans) =>
                 {
                     if (this.Model == null)

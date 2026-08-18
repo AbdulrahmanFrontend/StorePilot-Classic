@@ -195,40 +195,40 @@ namespace StorePilot.UI.Products
 
         private void tbMinQuantity_Validating(object sender, CancelEventArgs e)
         {
-            _Service.Model.MinQuantity = _GetDecimalValue(tbMinQuantity.Text);
-
             if (!_Validate(sender, e))
                 return;
+            
+            _Service.Model.MinQuantity = _GetDecimalValue(tbMinQuantity.Text);
 
             _Validate((TextBox)sender, e, _Service.ValidateMinQuantity());
         }
 
         private void tbPurchasePrice_Validating(object sender, CancelEventArgs e)
         {
-            _Service.Model.PurchasePrice = _GetDecimalValue(tbPurchasePrice.Text);
-
             if (!_Validate(sender, e))
                 return;
+
+            _Service.Model.PurchasePrice = _GetDecimalValue(tbPurchasePrice.Text);
 
             _Validate((TextBox)sender, e, _Service.ValidatePurchasePrice());
         }
 
         private void tbSalePrice_Validating(object sender, CancelEventArgs e)
         {
-            _Service.Model.SalePrice = _GetDecimalValue(tbSalePrice.Text);
-
             if (!_Validate(sender, e))
                 return;
+
+            _Service.Model.SalePrice = _GetDecimalValue(tbSalePrice.Text);
 
             _Validate((TextBox)sender, e, _Service.ValidateSalePrice());
         }
 
         private void tbQuantity_Validating(object sender, CancelEventArgs e)
         {
-            _Service.Model.Quantity = _GetDecimalValue(tbQuantity.Text);
-
             if (!_Validate(sender, e))
                 return;
+
+            _Service.Model.Quantity = _GetDecimalValue(tbQuantity.Text);
 
             _Validate(tbQuantity, e, _Service.ValidateQuantity());
         }
@@ -310,12 +310,6 @@ namespace StorePilot.UI.Products
 
             if (Confirm == DialogResult.Yes)
             {
-                _Service.Model.GroupID = 
-                    _GetIntValue(cbGroups.SelectedValue?.ToString());
-                _Service.Model.UnitID = 
-                    _GetIntValue(cbUnits.SelectedValue?.ToString());
-                _Service.Model.Notes = tbNotes.Text;
-
                 if (!ValidateChildren())
                 {
                     MessageBoxManager.ShowError(
@@ -323,6 +317,12 @@ namespace StorePilot.UI.Products
                         Language.ar);
                     return;
                 }
+
+                _Service.Model.GroupID =
+                    _GetIntValue(cbGroups.SelectedValue?.ToString());
+                _Service.Model.UnitID =
+                    _GetIntValue(cbUnits.SelectedValue?.ToString());
+                _Service.Model.Notes = tbNotes.Text;
 
                 await _Save();
             }

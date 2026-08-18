@@ -138,14 +138,14 @@ CREATE TABLE "SalesInvoices" (
 
 CREATE TABLE "SalesReturns" (
 	"ReturnID"	INTEGER NOT NULL,
-	"SalesInvoiceID"	INTEGER NOT NULL,
+	"SaleInvoiceID"	INTEGER NOT NULL,
 	"ReturnDate"	TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	"TotalReturnAmount"	REAL NOT NULL CHECK("TotalReturnAmount" > 0),
 	"Cancelled"	INT NOT NULL DEFAULT 0 CHECK("Cancelled" IN (1, 0)),
 	"TransactionID"	INTEGER NOT NULL UNIQUE,
 	"Notes"	TEXT,
 	PRIMARY KEY("ReturnID" AUTOINCREMENT),
-	FOREIGN KEY("SalesInvoiceID") REFERENCES "SalesInvoices"("SaleInvoiceID"),
+	FOREIGN KEY("SaleInvoiceID") REFERENCES "SalesInvoices"("SaleInvoiceID"),
 	FOREIGN KEY("TransactionID") REFERENCES "CashTransactions"("TransactionID")
 ) STRICT;
 

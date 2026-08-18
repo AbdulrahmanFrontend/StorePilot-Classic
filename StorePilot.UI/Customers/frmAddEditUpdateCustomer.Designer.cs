@@ -67,8 +67,9 @@
             this.lblTitle.Image = global::StorePilot.UI.Properties.Resources.customer;
             this.lblTitle.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblTitle.Location = new System.Drawing.Point(0, 0);
+            this.lblTitle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(576, 46);
+            this.lblTitle.Size = new System.Drawing.Size(659, 54);
             this.lblTitle.TabIndex = 9;
             this.lblTitle.Text = "Title";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -81,10 +82,11 @@
             this.flpFooter.Controls.Add(this.btnActivate);
             this.flpFooter.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.flpFooter.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.flpFooter.Location = new System.Drawing.Point(0, 302);
+            this.flpFooter.Location = new System.Drawing.Point(0, 291);
+            this.flpFooter.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.flpFooter.Name = "flpFooter";
-            this.flpFooter.Padding = new System.Windows.Forms.Padding(3, 3, 0, 3);
-            this.flpFooter.Size = new System.Drawing.Size(576, 40);
+            this.flpFooter.Padding = new System.Windows.Forms.Padding(4, 3, 0, 3);
+            this.flpFooter.Size = new System.Drawing.Size(659, 47);
             this.flpFooter.TabIndex = 10;
             // 
             // btnClose
@@ -101,10 +103,11 @@
             this.btnClose.ForeColor = System.Drawing.Color.White;
             this.btnClose.Image = global::StorePilot.UI.Properties.Resources.Close_32;
             this.btnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClose.Location = new System.Drawing.Point(6, 6);
+            this.btnClose.Location = new System.Drawing.Point(8, 6);
+            this.btnClose.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
-            this.btnClose.Size = new System.Drawing.Size(92, 28);
+            this.btnClose.Padding = new System.Windows.Forms.Padding(12, 0, 12, 0);
+            this.btnClose.Size = new System.Drawing.Size(98, 35);
             this.btnClose.TabIndex = 6;
             this.btnClose.Text = "إغلاق";
             this.btnClose.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -123,10 +126,11 @@
             this.btnSave.ForeColor = System.Drawing.Color.White;
             this.btnSave.Image = global::StorePilot.UI.Properties.Resources.Save_32;
             this.btnSave.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSave.Location = new System.Drawing.Point(104, 6);
+            this.btnSave.Location = new System.Drawing.Point(114, 6);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
-            this.btnSave.Size = new System.Drawing.Size(92, 28);
+            this.btnSave.Padding = new System.Windows.Forms.Padding(12, 0, 12, 0);
+            this.btnSave.Size = new System.Drawing.Size(98, 35);
             this.btnSave.TabIndex = 5;
             this.btnSave.Text = "حفظ";
             this.btnSave.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -146,10 +150,11 @@
             this.btnActivate.ForeColor = System.Drawing.Color.White;
             this.btnActivate.Image = global::StorePilot.UI.Properties.Resources.activate_profile;
             this.btnActivate.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnActivate.Location = new System.Drawing.Point(202, 6);
+            this.btnActivate.Location = new System.Drawing.Point(220, 6);
+            this.btnActivate.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnActivate.Name = "btnActivate";
-            this.btnActivate.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
-            this.btnActivate.Size = new System.Drawing.Size(92, 28);
+            this.btnActivate.Padding = new System.Windows.Forms.Padding(12, 0, 12, 0);
+            this.btnActivate.Size = new System.Drawing.Size(98, 35);
             this.btnActivate.TabIndex = 4;
             this.btnActivate.Text = "تفعيل";
             this.btnActivate.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -163,12 +168,13 @@
             this.tlpContainer.Controls.Add(this.tlpUp, 0, 0);
             this.tlpContainer.Controls.Add(this.tlpDown, 0, 1);
             this.tlpContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpContainer.Location = new System.Drawing.Point(0, 46);
+            this.tlpContainer.Location = new System.Drawing.Point(0, 54);
+            this.tlpContainer.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.tlpContainer.Name = "tlpContainer";
             this.tlpContainer.RowCount = 2;
             this.tlpContainer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpContainer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpContainer.Size = new System.Drawing.Size(576, 256);
+            this.tlpContainer.Size = new System.Drawing.Size(659, 237);
             this.tlpContainer.TabIndex = 11;
             // 
             // tlpUp
@@ -188,7 +194,7 @@
             this.tlpUp.RowCount = 2;
             this.tlpUp.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpUp.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpUp.Size = new System.Drawing.Size(568, 122);
+            this.tlpUp.Size = new System.Drawing.Size(651, 112);
             this.tlpUp.TabIndex = 4;
             // 
             // tlpAddress
@@ -198,23 +204,23 @@
             this.tlpAddress.Controls.Add(this.tbAddress, 0, 1);
             this.tlpAddress.Controls.Add(this.lblAddress, 0, 0);
             this.tlpAddress.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpAddress.Location = new System.Drawing.Point(284, 61);
+            this.tlpAddress.Location = new System.Drawing.Point(326, 56);
             this.tlpAddress.Margin = new System.Windows.Forms.Padding(0);
             this.tlpAddress.Name = "tlpAddress";
             this.tlpAddress.RowCount = 2;
             this.tlpAddress.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpAddress.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpAddress.Size = new System.Drawing.Size(284, 61);
+            this.tlpAddress.Size = new System.Drawing.Size(325, 56);
             this.tlpAddress.TabIndex = 5;
             // 
             // tbAddress
             // 
             this.tbAddress.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbAddress.Location = new System.Drawing.Point(20, 33);
-            this.tbAddress.Margin = new System.Windows.Forms.Padding(4, 3, 20, 3);
+            this.tbAddress.Location = new System.Drawing.Point(23, 26);
+            this.tbAddress.Margin = new System.Windows.Forms.Padding(4, 3, 23, 3);
             this.tbAddress.MaxLength = 50;
             this.tbAddress.Name = "tbAddress";
-            this.tbAddress.Size = new System.Drawing.Size(260, 25);
+            this.tbAddress.Size = new System.Drawing.Size(298, 27);
             this.tbAddress.TabIndex = 2;
             // 
             // lblAddress
@@ -226,7 +232,7 @@
             this.lblAddress.Location = new System.Drawing.Point(4, 0);
             this.lblAddress.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblAddress.Name = "lblAddress";
-            this.lblAddress.Size = new System.Drawing.Size(276, 30);
+            this.lblAddress.Size = new System.Drawing.Size(317, 23);
             this.lblAddress.TabIndex = 1;
             this.lblAddress.Text = "العنوان:";
             this.lblAddress.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -244,17 +250,17 @@
             this.tlpPhoneNumber.RowCount = 2;
             this.tlpPhoneNumber.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpPhoneNumber.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpPhoneNumber.Size = new System.Drawing.Size(284, 61);
+            this.tlpPhoneNumber.Size = new System.Drawing.Size(326, 56);
             this.tlpPhoneNumber.TabIndex = 4;
             // 
             // tbPhone
             // 
             this.tbPhone.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbPhone.Location = new System.Drawing.Point(20, 33);
-            this.tbPhone.Margin = new System.Windows.Forms.Padding(4, 3, 20, 3);
+            this.tbPhone.Location = new System.Drawing.Point(23, 26);
+            this.tbPhone.Margin = new System.Windows.Forms.Padding(4, 3, 23, 3);
             this.tbPhone.MaxLength = 20;
             this.tbPhone.Name = "tbPhone";
-            this.tbPhone.Size = new System.Drawing.Size(260, 25);
+            this.tbPhone.Size = new System.Drawing.Size(299, 27);
             this.tbPhone.TabIndex = 1;
             this.tbPhone.Validating += new System.ComponentModel.CancelEventHandler(this.tbPhone_Validating);
             // 
@@ -267,7 +273,7 @@
             this.lblPhoneNumber.Location = new System.Drawing.Point(4, 0);
             this.lblPhoneNumber.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblPhoneNumber.Name = "lblPhoneNumber";
-            this.lblPhoneNumber.Size = new System.Drawing.Size(276, 30);
+            this.lblPhoneNumber.Size = new System.Drawing.Size(318, 23);
             this.lblPhoneNumber.TabIndex = 1;
             this.lblPhoneNumber.Text = "رقم الهاتف:";
             this.lblPhoneNumber.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -279,23 +285,23 @@
             this.tlpName.Controls.Add(this.tbName, 0, 1);
             this.tlpName.Controls.Add(this.lblName, 0, 0);
             this.tlpName.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpName.Location = new System.Drawing.Point(284, 0);
+            this.tlpName.Location = new System.Drawing.Point(326, 0);
             this.tlpName.Margin = new System.Windows.Forms.Padding(0);
             this.tlpName.Name = "tlpName";
             this.tlpName.RowCount = 2;
             this.tlpName.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpName.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpName.Size = new System.Drawing.Size(284, 61);
+            this.tlpName.Size = new System.Drawing.Size(325, 56);
             this.tlpName.TabIndex = 3;
             // 
             // tbName
             // 
             this.tbName.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbName.Location = new System.Drawing.Point(20, 33);
-            this.tbName.Margin = new System.Windows.Forms.Padding(4, 3, 20, 3);
+            this.tbName.Location = new System.Drawing.Point(23, 26);
+            this.tbName.Margin = new System.Windows.Forms.Padding(4, 3, 23, 3);
             this.tbName.MaxLength = 50;
             this.tbName.Name = "tbName";
-            this.tbName.Size = new System.Drawing.Size(260, 25);
+            this.tbName.Size = new System.Drawing.Size(298, 27);
             this.tbName.TabIndex = 0;
             this.tbName.Validating += new System.ComponentModel.CancelEventHandler(this.tbName_Validating);
             // 
@@ -308,7 +314,7 @@
             this.lblName.Location = new System.Drawing.Point(4, 0);
             this.lblName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblName.Name = "lblName";
-            this.lblName.Size = new System.Drawing.Size(276, 30);
+            this.lblName.Size = new System.Drawing.Size(317, 23);
             this.lblName.TabIndex = 1;
             this.lblName.Text = "الإسم:";
             this.lblName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -322,23 +328,24 @@
             this.tlpDown.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpDown.Controls.Add(this.tbNotes, 0, 1);
             this.tlpDown.Controls.Add(this.lblNotes, 0, 0);
-            this.tlpDown.Location = new System.Drawing.Point(3, 131);
+            this.tlpDown.Location = new System.Drawing.Point(4, 121);
+            this.tlpDown.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.tlpDown.Name = "tlpDown";
             this.tlpDown.RowCount = 2;
             this.tlpDown.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpDown.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpDown.Size = new System.Drawing.Size(570, 122);
+            this.tlpDown.Size = new System.Drawing.Size(651, 113);
             this.tlpDown.TabIndex = 5;
             // 
             // tbNotes
             // 
             this.tbNotes.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbNotes.Location = new System.Drawing.Point(20, 24);
-            this.tbNotes.Margin = new System.Windows.Forms.Padding(4, 3, 20, 3);
+            this.tbNotes.Location = new System.Drawing.Point(23, 23);
+            this.tbNotes.Margin = new System.Windows.Forms.Padding(4, 3, 23, 3);
             this.tbNotes.MaxLength = 500;
             this.tbNotes.Multiline = true;
             this.tbNotes.Name = "tbNotes";
-            this.tbNotes.Size = new System.Drawing.Size(546, 95);
+            this.tbNotes.Size = new System.Drawing.Size(624, 87);
             this.tbNotes.TabIndex = 3;
             // 
             // lblNotes
@@ -352,7 +359,7 @@
             this.lblNotes.Location = new System.Drawing.Point(4, 0);
             this.lblNotes.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblNotes.Name = "lblNotes";
-            this.lblNotes.Size = new System.Drawing.Size(562, 21);
+            this.lblNotes.Size = new System.Drawing.Size(643, 20);
             this.lblNotes.TabIndex = 2;
             this.lblNotes.Text = "ملاحظات:";
             this.lblNotes.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -365,24 +372,17 @@
             // frmAddEditUpdateCustomer
             // 
             this.AcceptButton = this.btnSave;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.CancelButton = this.btnClose;
-            this.ClientSize = new System.Drawing.Size(576, 342);
+            this.ClientSize = new System.Drawing.Size(659, 338);
             this.Controls.Add(this.tlpContainer);
             this.Controls.Add(this.flpFooter);
             this.Controls.Add(this.lblTitle);
-            this.DoubleBuffered = true;
-            this.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
+            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Name = "frmAddEditUpdateCustomer";
-            this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.RightToLeftLayout = true;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmAddEditUpdateCustomer";
             this.Load += new System.EventHandler(this.frmAddEditUpdateCustomer_Load);
             this.flpFooter.ResumeLayout(false);

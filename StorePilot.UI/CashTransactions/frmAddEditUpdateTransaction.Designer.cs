@@ -72,7 +72,7 @@
             this.lblTitle.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblTitle.Location = new System.Drawing.Point(0, 0);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(594, 46);
+            this.lblTitle.Size = new System.Drawing.Size(603, 54);
             this.lblTitle.TabIndex = 10;
             this.lblTitle.Text = "Title";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -85,10 +85,11 @@
             this.flpFooter.Controls.Add(this.btnCancel);
             this.flpFooter.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.flpFooter.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.flpFooter.Location = new System.Drawing.Point(0, 349);
+            this.flpFooter.Location = new System.Drawing.Point(0, 364);
+            this.flpFooter.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.flpFooter.Name = "flpFooter";
-            this.flpFooter.Padding = new System.Windows.Forms.Padding(3, 3, 0, 3);
-            this.flpFooter.Size = new System.Drawing.Size(594, 50);
+            this.flpFooter.Padding = new System.Windows.Forms.Padding(3, 4, 0, 4);
+            this.flpFooter.Size = new System.Drawing.Size(603, 49);
             this.flpFooter.TabIndex = 11;
             // 
             // btnClose
@@ -105,10 +106,11 @@
             this.btnClose.ForeColor = System.Drawing.Color.White;
             this.btnClose.Image = global::StorePilot.UI.Properties.Resources.Close_32;
             this.btnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClose.Location = new System.Drawing.Point(6, 6);
+            this.btnClose.Location = new System.Drawing.Point(6, 8);
+            this.btnClose.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
-            this.btnClose.Size = new System.Drawing.Size(100, 38);
+            this.btnClose.Padding = new System.Windows.Forms.Padding(11, 0, 11, 0);
+            this.btnClose.Size = new System.Drawing.Size(96, 33);
             this.btnClose.TabIndex = 7;
             this.btnClose.Text = "إغلاق";
             this.btnClose.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -127,10 +129,11 @@
             this.btnSave.ForeColor = System.Drawing.Color.White;
             this.btnSave.Image = global::StorePilot.UI.Properties.Resources.Save_32;
             this.btnSave.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSave.Location = new System.Drawing.Point(112, 6);
+            this.btnSave.Location = new System.Drawing.Point(108, 8);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
-            this.btnSave.Size = new System.Drawing.Size(100, 38);
+            this.btnSave.Padding = new System.Windows.Forms.Padding(11, 0, 11, 0);
+            this.btnSave.Size = new System.Drawing.Size(96, 33);
             this.btnSave.TabIndex = 6;
             this.btnSave.Text = "حفظ";
             this.btnSave.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -148,12 +151,13 @@
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCancel.ForeColor = System.Drawing.Color.White;
-            this.btnCancel.Image = global::StorePilot.UI.Properties.Resources.cancel;
+            this.btnCancel.Image = global::StorePilot.UI.Properties.Resources.activate_profile;
             this.btnCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnCancel.Location = new System.Drawing.Point(218, 6);
+            this.btnCancel.Location = new System.Drawing.Point(210, 8);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
-            this.btnCancel.Size = new System.Drawing.Size(100, 38);
+            this.btnCancel.Padding = new System.Windows.Forms.Padding(11, 0, 11, 0);
+            this.btnCancel.Size = new System.Drawing.Size(96, 33);
             this.btnCancel.TabIndex = 5;
             this.btnCancel.Text = "إلغاء";
             this.btnCancel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -167,13 +171,13 @@
             this.tlpContainer.Controls.Add(this.tlpNotes, 0, 1);
             this.tlpContainer.Controls.Add(this.tlpUp, 0, 0);
             this.tlpContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpContainer.Location = new System.Drawing.Point(0, 46);
-            this.tlpContainer.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.tlpContainer.Location = new System.Drawing.Point(0, 54);
+            this.tlpContainer.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.tlpContainer.Name = "tlpContainer";
             this.tlpContainer.RowCount = 2;
             this.tlpContainer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpContainer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpContainer.Size = new System.Drawing.Size(594, 303);
+            this.tlpContainer.Size = new System.Drawing.Size(603, 310);
             this.tlpContainer.TabIndex = 12;
             // 
             // tlpNotes
@@ -183,13 +187,13 @@
             this.tlpNotes.Controls.Add(this.lblNotes, 0, 0);
             this.tlpNotes.Controls.Add(this.tbNotes, 0, 1);
             this.tlpNotes.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpNotes.Location = new System.Drawing.Point(3, 155);
-            this.tlpNotes.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.tlpNotes.Location = new System.Drawing.Point(3, 160);
+            this.tlpNotes.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.tlpNotes.Name = "tlpNotes";
             this.tlpNotes.RowCount = 2;
             this.tlpNotes.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpNotes.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpNotes.Size = new System.Drawing.Size(588, 144);
+            this.tlpNotes.Size = new System.Drawing.Size(597, 145);
             this.tlpNotes.TabIndex = 1;
             // 
             // lblNotes
@@ -201,7 +205,7 @@
             this.lblNotes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblNotes.Location = new System.Drawing.Point(3, 0);
             this.lblNotes.Name = "lblNotes";
-            this.lblNotes.Size = new System.Drawing.Size(582, 44);
+            this.lblNotes.Size = new System.Drawing.Size(591, 20);
             this.lblNotes.TabIndex = 0;
             this.lblNotes.Text = "ملاحظات:";
             this.lblNotes.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -209,12 +213,12 @@
             // tbNotes
             // 
             this.tbNotes.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbNotes.Location = new System.Drawing.Point(20, 47);
-            this.tbNotes.Margin = new System.Windows.Forms.Padding(3, 3, 20, 3);
+            this.tbNotes.Location = new System.Drawing.Point(23, 24);
+            this.tbNotes.Margin = new System.Windows.Forms.Padding(3, 4, 23, 4);
             this.tbNotes.MaxLength = 500;
             this.tbNotes.Multiline = true;
             this.tbNotes.Name = "tbNotes";
-            this.tbNotes.Size = new System.Drawing.Size(565, 94);
+            this.tbNotes.Size = new System.Drawing.Size(571, 117);
             this.tbNotes.TabIndex = 4;
             // 
             // tlpUp
@@ -227,13 +231,13 @@
             this.tlpUp.Controls.Add(this.tlpPaidAmount, 0, 1);
             this.tlpUp.Controls.Add(this.tlpTransactionDate, 0, 0);
             this.tlpUp.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpUp.Location = new System.Drawing.Point(3, 4);
-            this.tlpUp.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.tlpUp.Location = new System.Drawing.Point(3, 5);
+            this.tlpUp.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.tlpUp.Name = "tlpUp";
             this.tlpUp.RowCount = 2;
             this.tlpUp.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpUp.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpUp.Size = new System.Drawing.Size(588, 143);
+            this.tlpUp.Size = new System.Drawing.Size(597, 145);
             this.tlpUp.TabIndex = 0;
             // 
             // tlpDescription
@@ -243,23 +247,23 @@
             this.tlpDescription.Controls.Add(this.tbDescription, 0, 1);
             this.tlpDescription.Controls.Add(this.lblDescription, 0, 0);
             this.tlpDescription.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpDescription.Location = new System.Drawing.Point(3, 75);
-            this.tlpDescription.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.tlpDescription.Location = new System.Drawing.Point(3, 77);
+            this.tlpDescription.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.tlpDescription.Name = "tlpDescription";
             this.tlpDescription.RowCount = 2;
             this.tlpDescription.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpDescription.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpDescription.Size = new System.Drawing.Size(288, 64);
+            this.tlpDescription.Size = new System.Drawing.Size(293, 63);
             this.tlpDescription.TabIndex = 6;
             // 
             // tbDescription
             // 
             this.tbDescription.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbDescription.Location = new System.Drawing.Point(20, 36);
-            this.tbDescription.Margin = new System.Windows.Forms.Padding(3, 3, 20, 3);
+            this.tbDescription.Location = new System.Drawing.Point(23, 32);
+            this.tbDescription.Margin = new System.Windows.Forms.Padding(3, 4, 23, 4);
             this.tbDescription.MaxLength = 100;
             this.tbDescription.Name = "tbDescription";
-            this.tbDescription.Size = new System.Drawing.Size(265, 25);
+            this.tbDescription.Size = new System.Drawing.Size(267, 27);
             this.tbDescription.TabIndex = 3;
             this.tbDescription.Validating += new System.ComponentModel.CancelEventHandler(this.tbDescription_Validating);
             // 
@@ -272,7 +276,7 @@
             this.lblDescription.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblDescription.Location = new System.Drawing.Point(3, 0);
             this.lblDescription.Name = "lblDescription";
-            this.lblDescription.Size = new System.Drawing.Size(282, 33);
+            this.lblDescription.Size = new System.Drawing.Size(287, 28);
             this.lblDescription.TabIndex = 0;
             this.lblDescription.Text = "توصيف الحركة:";
             this.lblDescription.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -284,13 +288,13 @@
             this.tlpTransactionType.Controls.Add(this.lblTransactionType, 0, 0);
             this.tlpTransactionType.Controls.Add(this.cbTransactionType, 0, 1);
             this.tlpTransactionType.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpTransactionType.Location = new System.Drawing.Point(3, 4);
-            this.tlpTransactionType.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.tlpTransactionType.Location = new System.Drawing.Point(3, 5);
+            this.tlpTransactionType.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.tlpTransactionType.Name = "tlpTransactionType";
             this.tlpTransactionType.RowCount = 2;
             this.tlpTransactionType.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpTransactionType.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpTransactionType.Size = new System.Drawing.Size(288, 63);
+            this.tlpTransactionType.Size = new System.Drawing.Size(293, 62);
             this.tlpTransactionType.TabIndex = 5;
             // 
             // lblTransactionType
@@ -302,7 +306,7 @@
             this.lblTransactionType.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblTransactionType.Location = new System.Drawing.Point(3, 0);
             this.lblTransactionType.Name = "lblTransactionType";
-            this.lblTransactionType.Size = new System.Drawing.Size(282, 32);
+            this.lblTransactionType.Size = new System.Drawing.Size(287, 30);
             this.lblTransactionType.TabIndex = 0;
             this.lblTransactionType.Text = "نوع الحركة:";
             this.lblTransactionType.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -310,6 +314,7 @@
             // cbTransactionType
             // 
             this.cbTransactionType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbTransactionType.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbTransactionType.DropDownHeight = 100;
             this.cbTransactionType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbTransactionType.FormattingEnabled = true;
@@ -317,10 +322,10 @@
             this.cbTransactionType.Items.AddRange(new object[] {
             "ايرادات",
             "مصروفات"});
-            this.cbTransactionType.Location = new System.Drawing.Point(20, 35);
-            this.cbTransactionType.Margin = new System.Windows.Forms.Padding(3, 3, 20, 3);
+            this.cbTransactionType.Location = new System.Drawing.Point(23, 34);
+            this.cbTransactionType.Margin = new System.Windows.Forms.Padding(3, 4, 23, 4);
             this.cbTransactionType.Name = "cbTransactionType";
-            this.cbTransactionType.Size = new System.Drawing.Size(265, 25);
+            this.cbTransactionType.Size = new System.Drawing.Size(267, 28);
             this.cbTransactionType.TabIndex = 1;
             // 
             // tlpPaidAmount
@@ -330,13 +335,13 @@
             this.tlpPaidAmount.Controls.Add(this.lblPaidAmount, 0, 0);
             this.tlpPaidAmount.Controls.Add(this.tbPaidAmount, 0, 1);
             this.tlpPaidAmount.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpPaidAmount.Location = new System.Drawing.Point(297, 75);
-            this.tlpPaidAmount.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.tlpPaidAmount.Location = new System.Drawing.Point(302, 77);
+            this.tlpPaidAmount.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.tlpPaidAmount.Name = "tlpPaidAmount";
             this.tlpPaidAmount.RowCount = 2;
             this.tlpPaidAmount.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpPaidAmount.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpPaidAmount.Size = new System.Drawing.Size(288, 64);
+            this.tlpPaidAmount.Size = new System.Drawing.Size(292, 63);
             this.tlpPaidAmount.TabIndex = 4;
             // 
             // lblPaidAmount
@@ -348,7 +353,7 @@
             this.lblPaidAmount.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblPaidAmount.Location = new System.Drawing.Point(3, 0);
             this.lblPaidAmount.Name = "lblPaidAmount";
-            this.lblPaidAmount.Size = new System.Drawing.Size(282, 33);
+            this.lblPaidAmount.Size = new System.Drawing.Size(286, 28);
             this.lblPaidAmount.TabIndex = 0;
             this.lblPaidAmount.Text = "المبلغ المدفوع:";
             this.lblPaidAmount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -356,11 +361,11 @@
             // tbPaidAmount
             // 
             this.tbPaidAmount.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbPaidAmount.Location = new System.Drawing.Point(20, 36);
-            this.tbPaidAmount.Margin = new System.Windows.Forms.Padding(3, 3, 20, 3);
+            this.tbPaidAmount.Location = new System.Drawing.Point(23, 32);
+            this.tbPaidAmount.Margin = new System.Windows.Forms.Padding(3, 4, 23, 4);
             this.tbPaidAmount.MaxLength = 7;
             this.tbPaidAmount.Name = "tbPaidAmount";
-            this.tbPaidAmount.Size = new System.Drawing.Size(265, 25);
+            this.tbPaidAmount.Size = new System.Drawing.Size(266, 27);
             this.tbPaidAmount.TabIndex = 2;
             this.tbPaidAmount.Validating += new System.ComponentModel.CancelEventHandler(this.tbPaidAmount_Validating);
             // 
@@ -371,13 +376,13 @@
             this.tlpTransactionDate.Controls.Add(this.lblTransactionDate, 0, 0);
             this.tlpTransactionDate.Controls.Add(this.dtpTransactionDate, 0, 1);
             this.tlpTransactionDate.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpTransactionDate.Location = new System.Drawing.Point(297, 4);
-            this.tlpTransactionDate.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.tlpTransactionDate.Location = new System.Drawing.Point(302, 5);
+            this.tlpTransactionDate.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.tlpTransactionDate.Name = "tlpTransactionDate";
             this.tlpTransactionDate.RowCount = 2;
             this.tlpTransactionDate.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpTransactionDate.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpTransactionDate.Size = new System.Drawing.Size(288, 63);
+            this.tlpTransactionDate.Size = new System.Drawing.Size(292, 62);
             this.tlpTransactionDate.TabIndex = 2;
             // 
             // lblTransactionDate
@@ -389,7 +394,7 @@
             this.lblTransactionDate.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblTransactionDate.Location = new System.Drawing.Point(3, 0);
             this.lblTransactionDate.Name = "lblTransactionDate";
-            this.lblTransactionDate.Size = new System.Drawing.Size(282, 32);
+            this.lblTransactionDate.Size = new System.Drawing.Size(286, 27);
             this.lblTransactionDate.TabIndex = 0;
             this.lblTransactionDate.Text = "تاريخ الحركة:";
             this.lblTransactionDate.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -401,13 +406,13 @@
             this.dtpTransactionDate.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dtpTransactionDate.DropDownAlign = System.Windows.Forms.LeftRightAlignment.Right;
             this.dtpTransactionDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpTransactionDate.Location = new System.Drawing.Point(20, 35);
-            this.dtpTransactionDate.Margin = new System.Windows.Forms.Padding(3, 3, 20, 3);
+            this.dtpTransactionDate.Location = new System.Drawing.Point(23, 31);
+            this.dtpTransactionDate.Margin = new System.Windows.Forms.Padding(3, 4, 23, 4);
             this.dtpTransactionDate.MaxDate = new System.DateTime(2999, 12, 31, 0, 0, 0, 0);
             this.dtpTransactionDate.MinDate = new System.DateTime(1960, 1, 1, 0, 0, 0, 0);
             this.dtpTransactionDate.Name = "dtpTransactionDate";
             this.dtpTransactionDate.RightToLeftLayout = true;
-            this.dtpTransactionDate.Size = new System.Drawing.Size(265, 25);
+            this.dtpTransactionDate.Size = new System.Drawing.Size(266, 27);
             this.dtpTransactionDate.TabIndex = 0;
             // 
             // epTransactionData
@@ -417,13 +422,15 @@
             // 
             // frmAddEditUpdateTransaction
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(594, 399);
+            this.ClientSize = new System.Drawing.Size(603, 413);
             this.Controls.Add(this.tlpContainer);
             this.Controls.Add(this.flpFooter);
             this.Controls.Add(this.lblTitle);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "frmAddEditUpdateTransaction";
             this.Text = "frmAddEditUpdateTransaction";
             this.Load += new System.EventHandler(this.frmAddEditUpdateTransaction_Load);

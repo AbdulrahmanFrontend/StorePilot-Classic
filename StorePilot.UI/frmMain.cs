@@ -73,7 +73,7 @@ namespace StorePilot.UI
                 },
                 new NavigationItem
                 {
-                    Title = "المنتجات",
+                    Title = "الأصناف",
                     Icon = Resources.product,
                     Index = 1,
                 },

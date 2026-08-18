@@ -72,13 +72,18 @@ namespace StorePilot.UI.CashTransactions
                 case frmMode.AddNew:
                     lblTitle.Text = "إضافة بيانات حركة جديدة";
                     btnCancel.Visible = false;
+                    this.cbTransactionType.SelectedIndex = 0;
                     _Service = new CashTransactionService();
                     _Model = _Service.Model;
                     break;
 
                 case frmMode.Update:
-                    lblTitle.Text = "تحديث بيانات الحركة";
                     _LoadData();
+                    lblTitle.Text = "تحديث بيانات الحركة";
+                    btnCancel.Text = _Service.Model.Cancelled ? "تفعيل" : "إلغاء";
+                    btnCancel.BackColor = _Service.Model.Cancelled ?
+                        Color.Orange :
+                        btnCancel.BackColor;
                     break;
 
                 case frmMode.Edit:
@@ -91,7 +96,6 @@ namespace StorePilot.UI.CashTransactions
             }
 
             this.Text = lblTitle.Text;
-            this.cbTransactionType.SelectedIndex = 0;
         }
 
         private void _LoadData()
@@ -109,7 +113,7 @@ namespace StorePilot.UI.CashTransactions
 
             dtpTransactionDate.Value = _Model.TransactionDate;
             cbTransactionType.SelectedIndex = 
-                (int)_Model.TransactionType.ToTransactionType();
+                _Model.TransactionType == "ايرادات" ? 0 : 1;
             tbPaidAmount.Text = _Model.PaidAmount.ToString("#,##0");
             tbDescription.Text = _Model.Description;
             tbNotes.Text = _Model.Notes;
@@ -196,10 +200,6 @@ namespace StorePilot.UI.CashTransactions
 
             if (Confirm == DialogResult.Yes)
             {
-                _Service.Model.TransactionDate = dtpTransactionDate.Value;
-                _Service.Model.TransactionType = cbTransactionType.Text;
-                _Service.Model.Notes = _Model.Notes;
-
                 if (!ValidateChildren())
                 {
                     MessageBoxManager.ShowError(
@@ -207,6 +207,10 @@ namespace StorePilot.UI.CashTransactions
                         Language.ar);
                     return;
                 }
+
+                _Service.Model.TransactionDate = dtpTransactionDate.Value;
+                _Service.Model.TransactionType = cbTransactionType.Text;
+                _Service.Model.Notes = _Model.Notes;
 
                 var result = await Task.Run(() => _Service.Save());
 
@@ -231,10 +235,9 @@ namespace StorePilot.UI.CashTransactions
             {
                 _Service.Model.PaidAmount = _Model.PaidAmount;
                 _Service.Model.Description = _Model.Description;
+                _Service.Model.Cancelled = !_Service.Model.Cancelled;
 
-                var result = await Task.Run(
-                    () => CashTransactionService.Cancell(_Model.TransactionID)
-                    );
+                var result = await Task.Run(() => _Service.Save());
 
                 if (result.IsSuccess)
                 {

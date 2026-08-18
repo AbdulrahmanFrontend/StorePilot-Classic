@@ -80,6 +80,9 @@ namespace StorePilot.BLL
             if (!IsExistResult.IsSuccess)
                 return IsExistResult;
 
+            if (!this.Model.Active)
+                return Result.Failure("لا يسمح بتحديث بيانات صنف معطل!");
+
             Result result = ProductData.Update(this.Model);
 
             if (result.IsSuccess)

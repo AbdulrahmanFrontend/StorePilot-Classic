@@ -254,6 +254,8 @@ namespace StorePilot.UI.Customers
 
             if (dialog == DialogResult.Yes)
             {
+                CustomerResult.Data.Model.Active = !CustomerResult.Data.Model.Active;
+
                 var result = await Task.Run(() => CustomerResult.Data.Save());
 
                 if (result.IsSuccess)
@@ -276,9 +278,15 @@ namespace StorePilot.UI.Customers
         private void ctrlCmsCustomers_Opening(object sender, CancelEventArgs e)
         {
             if (!_IsActive())
+            {
+                tsmiUpdate.Enabled = false;
                 tsmiActivate.Text = "تفعيل";
+            }
             else
+            {
+                tsmiUpdate.Enabled = false;
                 tsmiActivate.Text = "تعطيل";
+            }
         }
     }
 }

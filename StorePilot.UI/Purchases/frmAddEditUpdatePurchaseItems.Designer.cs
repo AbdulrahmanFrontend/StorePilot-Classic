@@ -93,7 +93,7 @@
             this.tlpHeader.Padding = new System.Windows.Forms.Padding(0, 11, 0, 0);
             this.tlpHeader.RowCount = 1;
             this.tlpHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpHeader.Size = new System.Drawing.Size(1128, 74);
+            this.tlpHeader.Size = new System.Drawing.Size(1173, 99);
             this.tlpHeader.TabIndex = 14;
             // 
             // btnCancel
@@ -106,7 +106,7 @@
             this.btnCancel.FlatAppearance.BorderSize = 0;
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCancel.Location = new System.Drawing.Point(3, 29);
+            this.btnCancel.Location = new System.Drawing.Point(3, 41);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(0, 5, 0, 5);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(41, 27);
@@ -138,7 +138,7 @@
             this.tlpItem.RowCount = 2;
             this.tlpItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpItem.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpItem.Size = new System.Drawing.Size(1036, 63);
+            this.tlpItem.Size = new System.Drawing.Size(1081, 88);
             this.tlpItem.TabIndex = 8;
             // 
             // tbTotalPrice
@@ -146,23 +146,23 @@
             this.tbTotalPrice.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.tbTotalPrice.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.tbTotalPrice.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbTotalPrice.Location = new System.Drawing.Point(3, 33);
+            this.tbTotalPrice.Location = new System.Drawing.Point(3, 49);
             this.tbTotalPrice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 0);
             this.tbTotalPrice.Name = "tbTotalPrice";
             this.tbTotalPrice.ReadOnly = true;
-            this.tbTotalPrice.Size = new System.Drawing.Size(202, 27);
+            this.tbTotalPrice.Size = new System.Drawing.Size(211, 27);
             this.tbTotalPrice.TabIndex = 7;
             // 
             // tbUnitPrice
             // 
             this.tbUnitPrice.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.tbUnitPrice.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbUnitPrice.Location = new System.Drawing.Point(211, 33);
+            this.tbUnitPrice.Location = new System.Drawing.Point(220, 49);
             this.tbUnitPrice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 0);
             this.tbUnitPrice.MaxLength = 6;
             this.tbUnitPrice.Name = "tbUnitPrice";
             this.tbUnitPrice.ReadOnly = true;
-            this.tbUnitPrice.Size = new System.Drawing.Size(201, 27);
+            this.tbUnitPrice.Size = new System.Drawing.Size(210, 27);
             this.tbUnitPrice.TabIndex = 3;
             this.tbUnitPrice.TextChanged += new System.EventHandler(this.QuantitAndUnitPrice_TextChanged);
             // 
@@ -176,7 +176,7 @@
             this.lblTotalPrice.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblTotalPrice.Location = new System.Drawing.Point(3, 0);
             this.lblTotalPrice.Name = "lblTotalPrice";
-            this.lblTotalPrice.Size = new System.Drawing.Size(202, 26);
+            this.lblTotalPrice.Size = new System.Drawing.Size(211, 34);
             this.lblTotalPrice.TabIndex = 3;
             this.lblTotalPrice.Text = "الإجمالي:";
             this.lblTotalPrice.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -189,9 +189,9 @@
             this.lblUnitPrice.AutoSize = true;
             this.lblUnitPrice.Image = global::StorePilot.UI.Properties.Resources.money;
             this.lblUnitPrice.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblUnitPrice.Location = new System.Drawing.Point(211, 0);
+            this.lblUnitPrice.Location = new System.Drawing.Point(220, 0);
             this.lblUnitPrice.Name = "lblUnitPrice";
-            this.lblUnitPrice.Size = new System.Drawing.Size(201, 26);
+            this.lblUnitPrice.Size = new System.Drawing.Size(210, 34);
             this.lblUnitPrice.TabIndex = 2;
             this.lblUnitPrice.Text = "سعر الوحدة:";
             this.lblUnitPrice.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -204,9 +204,9 @@
             this.lblQuantity.AutoSize = true;
             this.lblQuantity.Image = global::StorePilot.UI.Properties.Resources.weight_pound;
             this.lblQuantity.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblQuantity.Location = new System.Drawing.Point(418, 0);
+            this.lblQuantity.Location = new System.Drawing.Point(436, 0);
             this.lblQuantity.Name = "lblQuantity";
-            this.lblQuantity.Size = new System.Drawing.Size(201, 26);
+            this.lblQuantity.Size = new System.Drawing.Size(210, 34);
             this.lblQuantity.TabIndex = 1;
             this.lblQuantity.Text = "الكمية:";
             this.lblQuantity.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -218,9 +218,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblProduct.Image = global::StorePilot.UI.Properties.Resources.product;
             this.lblProduct.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblProduct.Location = new System.Drawing.Point(625, 0);
+            this.lblProduct.Location = new System.Drawing.Point(652, 0);
             this.lblProduct.Name = "lblProduct";
-            this.lblProduct.Size = new System.Drawing.Size(408, 26);
+            this.lblProduct.Size = new System.Drawing.Size(426, 34);
             this.lblProduct.TabIndex = 12;
             this.lblProduct.Text = "الصنف:";
             this.lblProduct.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -234,28 +234,29 @@
             this.tlpProduct.Controls.Add(this.cbProducts, 1, 0);
             this.tlpProduct.Cursor = System.Windows.Forms.Cursors.Default;
             this.tlpProduct.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpProduct.Location = new System.Drawing.Point(625, 29);
-            this.tlpProduct.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.tlpProduct.Location = new System.Drawing.Point(652, 44);
+            this.tlpProduct.Margin = new System.Windows.Forms.Padding(3, 10, 3, 10);
             this.tlpProduct.Name = "tlpProduct";
             this.tlpProduct.RowCount = 1;
             this.tlpProduct.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpProduct.Size = new System.Drawing.Size(408, 34);
+            this.tlpProduct.Size = new System.Drawing.Size(426, 34);
             this.tlpProduct.TabIndex = 4;
             // 
             // btnAddNew
             // 
-            this.btnAddNew.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAddNew.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnAddNew.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnAddNew.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnAddNew.FlatAppearance.BorderSize = 0;
             this.btnAddNew.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAddNew.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAddNew.Image = global::StorePilot.UI.Properties.Resources.product;
             this.btnAddNew.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAddNew.Location = new System.Drawing.Point(307, 3);
+            this.btnAddNew.Location = new System.Drawing.Point(321, 0);
             this.btnAddNew.Margin = new System.Windows.Forms.Padding(0);
             this.btnAddNew.Name = "btnAddNew";
-            this.btnAddNew.Size = new System.Drawing.Size(101, 27);
+            this.btnAddNew.Size = new System.Drawing.Size(105, 34);
             this.btnAddNew.TabIndex = 0;
             this.btnAddNew.Text = "صنف جديد";
             this.btnAddNew.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -270,10 +271,10 @@
             this.cbProducts.DropDownHeight = 100;
             this.cbProducts.FormattingEnabled = true;
             this.cbProducts.IntegralHeight = false;
-            this.cbProducts.Location = new System.Drawing.Point(3, 4);
-            this.cbProducts.Margin = new System.Windows.Forms.Padding(3, 3, 3, 4);
+            this.cbProducts.Location = new System.Drawing.Point(3, 5);
+            this.cbProducts.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.cbProducts.Name = "cbProducts";
-            this.cbProducts.Size = new System.Drawing.Size(301, 28);
+            this.cbProducts.Size = new System.Drawing.Size(315, 28);
             this.cbProducts.TabIndex = 2;
             this.cbProducts.Validating += new System.ComponentModel.CancelEventHandler(this.cbProducts_Validating);
             // 
@@ -282,12 +283,12 @@
             this.tbQuantity.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.tbQuantity.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.tbQuantity.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbQuantity.Location = new System.Drawing.Point(418, 33);
+            this.tbQuantity.Location = new System.Drawing.Point(436, 49);
             this.tbQuantity.Margin = new System.Windows.Forms.Padding(3, 4, 3, 0);
             this.tbQuantity.MaxLength = 6;
             this.tbQuantity.Name = "tbQuantity";
             this.tbQuantity.ReadOnly = true;
-            this.tbQuantity.Size = new System.Drawing.Size(201, 27);
+            this.tbQuantity.Size = new System.Drawing.Size(210, 27);
             this.tbQuantity.TabIndex = 2;
             this.tbQuantity.TextChanged += new System.EventHandler(this.QuantitAndUnitPrice_TextChanged);
             // 
@@ -301,7 +302,7 @@
             this.btnSaveItem.FlatAppearance.BorderSize = 0;
             this.btnSaveItem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSaveItem.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSaveItem.Location = new System.Drawing.Point(47, 29);
+            this.btnSaveItem.Location = new System.Drawing.Point(47, 41);
             this.btnSaveItem.Margin = new System.Windows.Forms.Padding(0, 5, 0, 5);
             this.btnSaveItem.Name = "btnSaveItem";
             this.btnSaveItem.Size = new System.Drawing.Size(44, 27);
@@ -327,12 +328,12 @@
             this.tlpFooter.Cursor = System.Windows.Forms.Cursors.Default;
             this.tlpFooter.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.tlpFooter.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tlpFooter.Location = new System.Drawing.Point(0, 545);
+            this.tlpFooter.Location = new System.Drawing.Point(0, 671);
             this.tlpFooter.Name = "tlpFooter";
             this.tlpFooter.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.tlpFooter.RowCount = 1;
             this.tlpFooter.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpFooter.Size = new System.Drawing.Size(1128, 45);
+            this.tlpFooter.Size = new System.Drawing.Size(1173, 45);
             this.tlpFooter.TabIndex = 19;
             // 
             // lblTotal
@@ -340,7 +341,7 @@
             this.lblTotal.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblTotal.AutoSize = true;
             this.lblTotal.Cursor = System.Windows.Forms.Cursors.Default;
-            this.lblTotal.Location = new System.Drawing.Point(879, 14);
+            this.lblTotal.Location = new System.Drawing.Point(924, 14);
             this.lblTotal.Margin = new System.Windows.Forms.Padding(18, 0, 3, 0);
             this.lblTotal.Name = "lblTotal";
             this.lblTotal.Size = new System.Drawing.Size(102, 17);
@@ -352,7 +353,7 @@
             this.lblItemsCount.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblItemsCount.AutoSize = true;
             this.lblItemsCount.Cursor = System.Windows.Forms.Cursors.Default;
-            this.lblItemsCount.Location = new System.Drawing.Point(1002, 14);
+            this.lblItemsCount.Location = new System.Drawing.Point(1047, 14);
             this.lblItemsCount.Name = "lblItemsCount";
             this.lblItemsCount.Size = new System.Drawing.Size(123, 17);
             this.lblItemsCount.TabIndex = 10;
@@ -368,9 +369,9 @@
             this.btnResetList.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnResetList.Image = global::StorePilot.UI.Properties.Resources.discharge;
             this.btnResetList.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnResetList.Location = new System.Drawing.Point(174, 4);
+            this.btnResetList.Location = new System.Drawing.Point(182, 4);
             this.btnResetList.Name = "btnResetList";
-            this.btnResetList.Size = new System.Drawing.Size(78, 37);
+            this.btnResetList.Size = new System.Drawing.Size(83, 37);
             this.btnResetList.TabIndex = 7;
             this.btnResetList.Text = "تفريغ";
             this.btnResetList.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -389,7 +390,7 @@
             this.btnExit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnExit.Location = new System.Drawing.Point(3, 4);
             this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(81, 37);
+            this.btnExit.Size = new System.Drawing.Size(84, 37);
             this.btnExit.TabIndex = 9;
             this.btnExit.Text = "خروج";
             this.btnExit.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -405,9 +406,9 @@
             this.btnSaveList.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSaveList.Image = global::StorePilot.UI.Properties.Resources.Save_32;
             this.btnSaveList.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSaveList.Location = new System.Drawing.Point(90, 4);
+            this.btnSaveList.Location = new System.Drawing.Point(93, 4);
             this.btnSaveList.Name = "btnSaveList";
-            this.btnSaveList.Size = new System.Drawing.Size(78, 37);
+            this.btnSaveList.Size = new System.Drawing.Size(83, 37);
             this.btnSaveList.TabIndex = 8;
             this.btnSaveList.Text = "حفظ";
             this.btnSaveList.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -456,7 +457,7 @@
             this.ctrlCmData.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ctrlCmData.EnableHeadersVisualStyles = false;
             this.ctrlCmData.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(224)))), ((int)(((byte)(230)))));
-            this.ctrlCmData.Location = new System.Drawing.Point(0, 74);
+            this.ctrlCmData.Location = new System.Drawing.Point(0, 99);
             this.ctrlCmData.MultiSelect = false;
             this.ctrlCmData.Name = "ctrlCmData";
             this.ctrlCmData.ReadOnly = true;
@@ -464,7 +465,7 @@
             this.ctrlCmData.RowHeadersWidth = 51;
             this.ctrlCmData.RowTemplate.Height = 35;
             this.ctrlCmData.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.ctrlCmData.Size = new System.Drawing.Size(1128, 471);
+            this.ctrlCmData.Size = new System.Drawing.Size(1173, 572);
             this.ctrlCmData.TabIndex = 6;
             this.ctrlCmData.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ctrlCmData_CellDoubleClick);
             // 
@@ -575,21 +576,13 @@
             this.AcceptButton = this.btnSaveList;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.CancelButton = this.btnExit;
-            this.ClientSize = new System.Drawing.Size(1128, 590);
+            this.ClientSize = new System.Drawing.Size(1173, 716);
             this.Controls.Add(this.ctrlCmData);
             this.Controls.Add(this.tlpFooter);
             this.Controls.Add(this.tlpHeader);
-            this.DoubleBuffered = true;
-            this.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.Name = "frmAddEditUpdatePurchaseItems";
-            this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.RightToLeftLayout = true;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "frmAddEditUpdatePurchaseItems";
             this.Load += new System.EventHandler(this.frmAddEditUpdatePurchaseItems_Load);

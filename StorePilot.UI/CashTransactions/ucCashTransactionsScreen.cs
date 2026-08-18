@@ -41,7 +41,7 @@ namespace StorePilot.UI.CashTransactions
                 },
                 new[]
                 {
-                    "غير ملغي",
+                    "مفعل",
                     "ملغي"
                 });
 
@@ -245,7 +245,14 @@ namespace StorePilot.UI.CashTransactions
             if (!_TrySelectedID(0, out int ID))
                 return;
 
-            var TransactionResult = CashTransactionService.IsExist(ID);
+            DialogResult dialog = MessageBoxManager.ShowConfirm(
+                "هل انت متأكد أنك تريد تحديث بيانات هذه الحركة؟",
+                Language.ar);
+
+            if (dialog != DialogResult.Yes)
+                return;
+
+            var TransactionResult = CashTransactionService.Find(ID);
 
             if (!TransactionResult.IsSuccess)
             {
@@ -256,37 +263,39 @@ namespace StorePilot.UI.CashTransactions
                 return;
             }
 
-            DialogResult dialog = MessageBoxManager.ShowConfirm(
-                "هل انت متأكد أنك تريد إلغاء هذه الحركة؟",
-                Language.ar);
+            TransactionResult.Data.Model.Cancelled = 
+                !TransactionResult.Data.Model.Cancelled;
 
-            if (dialog == DialogResult.Yes)
+            var result = await Task.Run(() => TransactionResult.Data.Save());
+
+            if (result.IsSuccess)
             {
-                var result = await Task.Run(() => CashTransactionService.Cancell(ID));
+                MessageBoxManager.ShowSuccess(
+                    result.Message,
+                    Language.ar);
 
-                if (result.IsSuccess)
-                {
-                    MessageBoxManager.ShowSuccess(
-                        result.Message,
-                        Language.ar);
+                await _RefreshData();
 
-                    await _RefreshData();
-
-                    await _RefreshPagesCount();
-                }
-                else
-                    MessageBoxManager.ShowError(
-                        result.Message,
-                        Language.ar);
+                await _RefreshPagesCount();
             }
+            else
+                MessageBoxManager.ShowError(
+                    result.Message,
+                    Language.ar);
         }
 
         private void ctrlCmsCashTransactions_Opening(object sender, CancelEventArgs e)
         {
             if (_IsCancelled())
-                tsmiCancel.Enabled = false;
+            {
+                tsmiUpdate.Enabled = false;
+                tsmiCancel.Text = "تفعيل";
+            }
             else
-                tsmiCancel.Enabled = true;
+            {
+                tsmiUpdate.Enabled = true;
+                tsmiCancel.Text = "إلغاء";
+            }
         }
 
         private void tsmiUpdate_Click(object sender, EventArgs e)

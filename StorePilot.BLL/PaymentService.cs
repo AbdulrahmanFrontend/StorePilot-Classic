@@ -62,9 +62,15 @@ namespace StorePilot.BLL
             if (IsForSalesResult.IsSuccess)
             {
                 if (IsForSalesResult.Data)
+                {
+                    TransModel.TransactionType = TransactionType.Revenue.ToString();
                     TransModel.Description = "تحصيل دين.";
+                }
                 else
+                {
+                    TransModel.TransactionType = TransactionType.Expense.ToString();
                     TransModel.Description = "سداد دين.";
+                }
             }
             else
                 return Result.Failure(
