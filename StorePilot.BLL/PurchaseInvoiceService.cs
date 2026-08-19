@@ -261,12 +261,15 @@ namespace StorePilot.BLL
 
                     _ThrowException(result);
 
-                    result = CashTransactionData.Cancell(
-                        con, 
-                        trans, 
-                        InvoiceResult.Data.TransactionID.Value);
+                    if (InvoiceResult.Data.TransactionID.HasValue)
+                    {
+                        result = CashTransactionData.Cancell(
+                            con,
+                            trans,
+                            InvoiceResult.Data.TransactionID.Value);
 
-                    _ThrowException(result);
+                        _ThrowException(result);
+                    }
                 });
 
             if (TransResult.IsSuccess)

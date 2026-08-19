@@ -22,9 +22,6 @@ namespace StorePilot.UI.Payments
     {
         private int _InvoiceId;
 
-        public delegate void DataBackEventHandler(object sender);
-        public event DataBackEventHandler DataBack;
-
         public frmPaymentsScreen(int invoiceId)
         {
             InitializeComponent();
@@ -41,12 +38,13 @@ namespace StorePilot.UI.Payments
                 new[]
                 {
                     "رقم الدفعة",
+                    "رقم الفاتورة",
                     "تاريخ الدفع",
                     "طريقة الدفع",
                 },
                 new[]
                 {
-                    "غير ملغي",
+                    "مفعل",
                     "ملغي"
                 });
 
@@ -218,25 +216,35 @@ namespace StorePilot.UI.Payments
 
         private void _ViewPaymentsInvoice()
         {
-            if (_TrySelectedID(0, out int ID))
-            {
-                var result = PaymentService.IsExist(ID);
+            if (!_TrySelectedID(0, out int paymentId))
+                return;
 
-                if (result.IsSuccess)
+            var result = PaymentService.IsExist(paymentId);
+
+            if (result.IsSuccess)
+            {
+                if (!_TrySelectedID(1, out int invoiceId))
+                    return;
+
+                using (var frm = new frmAddEditPayment(paymentId, invoiceId))
                 {
-                    using (var frm = new frmAddEditPayment(ID))
-                    {
-                        frm.DataBack += Frm_DataBack;
-                        frm.ShowDialog();
-                    }
+                    frm.DataBack += Frm_DataBack;
+                    frm.ShowDialog();
                 }
-                else
-                    MessageBoxManager.ShowError(result.Message, Language.ar);
             }
+            else
+                MessageBoxManager.ShowError(result.Message, Language.ar);
         }
 
         private async void tsmiCancel_Click(object sender, EventArgs e)
         {
+            DialogResult dialog = MessageBoxManager.ShowConfirm(
+                "هل انت متأكد أنك تريد إلغاء هذه الدفعة؟",
+                Language.ar);
+
+            if (dialog != DialogResult.Yes)
+                return;
+
             if (!_TrySelectedID(0, out int ID))
                 return;
 
@@ -251,29 +259,22 @@ namespace StorePilot.UI.Payments
                 return;
             }
 
-            DialogResult dialog = MessageBoxManager.ShowConfirm(
-                "هل انت متأكد أنك تريد إلغاء هذه الدفعة؟",
-                Language.ar);
+            var result = await Task.Run(() => PaymentService.Cancell(ID));
 
-            if (dialog == DialogResult.Yes)
+            if (result.IsSuccess)
             {
-                var result = await Task.Run(() => PaymentService.Cancell(ID));
+                MessageBoxManager.ShowSuccess(
+                    result.Message,
+                    Language.ar);
 
-                if (result.IsSuccess)
-                {
-                    MessageBoxManager.ShowSuccess(
-                        result.Message,
-                        Language.ar);
+                await _RefreshData();
 
-                    await _RefreshData();
-
-                    await _RefreshPagesCount();
-                }
-                else
-                    MessageBoxManager.ShowError(
-                        result.Message,
-                        Language.ar);
+                await _RefreshPagesCount();
             }
+            else
+                MessageBoxManager.ShowError(
+                    result.Message,
+                    Language.ar);
         }
 
         private void tsmiPrint_Click(object sender, EventArgs e)
@@ -284,9 +285,15 @@ namespace StorePilot.UI.Payments
         private void ctrlCmsPayments_Opening(object sender, CancelEventArgs e)
         {
             if (_IsCancelled())
+            {
+                tsmiPrint.Enabled = false;
                 tsmiCancel.Enabled = false;
+            }
             else
+            {
+                tsmiPrint.Enabled = true;
                 tsmiCancel.Enabled = true;
+            }
         }
     }
 }

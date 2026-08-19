@@ -318,7 +318,7 @@ namespace StorePilot.DAL
             {
                 case (int)FilterMethodsPayments.PaymentID:
                     Query = @"SELECT PaymentID, InvoiceID, PaymentDate, PaidAmount,
-                        MethodName, Cancelled FROM Payments
+                        MethodName, Cancelled FROM view_PaymentsDetails
                         WHERE PaymentID = @FilterValue
                         AND InvoiceID = @InvoiceID
                         AND Cancelled = @Cancelled
@@ -337,7 +337,7 @@ namespace StorePilot.DAL
 
                 case (int)FilterMethodsPayments.PaymentDate:
                     Query = @"SELECT PaymentID, InvoiceID, PaymentDate, PaidAmount,
-                        MethodName, Cancelled FROM Payments
+                        MethodName, Cancelled FROM view_PaymentsDetails
                         WHERE PaymentDate LIKE @FilterValue || '%'
                         AND InvoiceID = @InvoiceID
                         AND Cancelled = @Cancelled
@@ -347,7 +347,7 @@ namespace StorePilot.DAL
 
                 case (int)FilterMethodsPayments.PaymentMethod:
                     Query = @"SELECT PaymentID, InvoiceID, PaymentDate, PaidAmount,
-                        MethodName, Cancelled FROM Payments
+                        MethodName, Cancelled FROM view_PaymentsDetails
                         WHERE MethodName LIKE @FilterValue || '%'
                         AND InvoiceID = @InvoiceID
                         AND Cancelled = @Cancelled
@@ -357,7 +357,7 @@ namespace StorePilot.DAL
 
                 default:
                     Query = @"SELECT PaymentID, InvoiceID, PaymentDate, PaidAmount,
-                        MethodName, Cancelled FROM Payments
+                        MethodName, Cancelled FROM view_PaymentsDetails
                         WHERE InvoiceID = @InvoiceID
                         AND Cancelled = @Cancelled
                         LIMIT @PageSize

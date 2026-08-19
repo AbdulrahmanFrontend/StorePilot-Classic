@@ -27,6 +27,9 @@ namespace StorePilot.UI.Global.Forms
         protected int _FilterValueIndex = 0;
         protected string _FilterValue = string.Empty;
 
+        public delegate void DataBackEventHandler(object sender);
+        public event DataBackEventHandler DataBack;
+
         [Category("Custom Properties")]
         public string Title
         {
@@ -159,5 +162,11 @@ namespace StorePilot.UI.Global.Forms
 
             return value.ToString() == "1" ? true : false;
         }
+
+        private void frmListScreen_FormClosing(object sender, FormClosingEventArgs e)
+            => DataBack?.Invoke(sender);
+
+        private void btnClose_Click(object sender, EventArgs e)
+            => this.Close();
     }
 }

@@ -76,6 +76,7 @@ namespace StorePilot.UI.Payments
                     lblTitle.Text = "إضافة بيانات دفعة جديدة";
                     btnCancel.Visible = false;
                     _Service = new PaymentService();
+                    _Service.Model.InvoiceID = _InvoiceID;
                     break;
 
                 case frmMode.Edit:
@@ -219,13 +220,16 @@ namespace StorePilot.UI.Payments
 
                 _Service.Model.MethodID =
                     _GetIntValue(cbPaymentMethods.SelectedValue?.ToString());
-                _Service.Model.Notes = _Model.Notes;
+                _Service.Model.Notes = tbNotes.Text;
 
-                var result = await Task.Run(() => _Service.Save());
+                var result = await Task.Run(() =>
+                    _Service.Save()
+                    );
 
                 if (result.IsSuccess)
                 {
                     MessageBoxManager.ShowSuccess(result.Message, Language.ar);
+                    tbInvoiceID.Text = _Service.Model.InvoiceID.ToString();
                     DataBack?.Invoke(this);
                     this.Close();
                 }

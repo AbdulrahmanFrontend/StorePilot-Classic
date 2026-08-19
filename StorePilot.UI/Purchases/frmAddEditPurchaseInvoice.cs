@@ -270,8 +270,10 @@ namespace StorePilot.UI.Purchases
             _Service.Model.PaidAmount = _GetDecimalVal(tbPaidAmount.Text?.ToString());
             _Service.Model.TotalAmount =
                 _GetDecimalVal(tbTotalAmount.Text?.ToString());
-            _Service.Model.SupplierID =
-                _GetIntVal(cbSuppliers.SelectedValue?.ToString());
+
+            int? SupplierID = _GetIntVal(cbSuppliers.SelectedValue?.ToString());
+
+            _Service.Model.SupplierID = SupplierID == 0 ? null : SupplierID;
             _Service.Model.Notes = tbNotes.Text;
 
             List<InvoiceItemModel> list = new List<InvoiceItemModel>();

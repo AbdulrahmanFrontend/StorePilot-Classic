@@ -30,10 +30,10 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmListScreen));
             this.tlpContainer = new System.Windows.Forms.TableLayoutPanel();
+            this.GridView = new DevToolkit.BaseWinForms.Controls.UserControls.ucDataGridView();
+            this.lblTitle = new System.Windows.Forms.Label();
             this.flpFooter = new System.Windows.Forms.FlowLayoutPanel();
             this.btnClose = new DevToolkit.BaseWinForms.Controls.CustomControls.ccButton();
-            this.lblTitle = new System.Windows.Forms.Label();
-            this.GridView = new DevToolkit.BaseWinForms.Controls.UserControls.ucDataGridView();
             this.tlpContainer.SuspendLayout();
             this.flpFooter.SuspendLayout();
             this.SuspendLayout();
@@ -55,6 +55,40 @@
             this.tlpContainer.Size = new System.Drawing.Size(1174, 742);
             this.tlpContainer.TabIndex = 2;
             // 
+            // GridView
+            // 
+            this.GridView.AddNewButtonColor = System.Drawing.SystemColors.Control;
+            this.GridView.AddNewButtonImage = null;
+            this.GridView.AddNewButtonText = "";
+            this.GridView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.GridView.cmsData = null;
+            this.GridView.DataSource = null;
+            this.GridView.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GridView.ImportButtonColor = System.Drawing.SystemColors.Control;
+            this.GridView.ImportButtonImage = null;
+            this.GridView.ImportButtonText = "";
+            this.GridView.ImportButtonVisible = true;
+            this.GridView.Location = new System.Drawing.Point(3, 138);
+            this.GridView.Name = "GridView";
+            this.GridView.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.GridView.Size = new System.Drawing.Size(1168, 533);
+            this.GridView.TabIndex = 5;
+            // 
+            // lblTitle
+            // 
+            this.lblTitle.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitle.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblTitle.Location = new System.Drawing.Point(3, 0);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.Size = new System.Drawing.Size(1168, 60);
+            this.lblTitle.TabIndex = 4;
+            this.lblTitle.Text = "Title";
+            this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // flpFooter
             // 
             this.flpFooter.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -63,10 +97,10 @@
             this.flpFooter.AutoSize = true;
             this.flpFooter.Controls.Add(this.btnClose);
             this.flpFooter.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.flpFooter.Location = new System.Drawing.Point(3, 692);
+            this.flpFooter.Location = new System.Drawing.Point(3, 677);
             this.flpFooter.Name = "flpFooter";
             this.flpFooter.Padding = new System.Windows.Forms.Padding(3);
-            this.flpFooter.Size = new System.Drawing.Size(1168, 47);
+            this.flpFooter.Size = new System.Drawing.Size(1168, 62);
             this.flpFooter.TabIndex = 1;
             // 
             // btnClose
@@ -85,63 +119,23 @@
             this.btnClose.Location = new System.Drawing.Point(6, 6);
             this.btnClose.Name = "btnClose";
             this.btnClose.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
-            this.btnClose.Size = new System.Drawing.Size(110, 35);
+            this.btnClose.Size = new System.Drawing.Size(124, 50);
             this.btnClose.TabIndex = 0;
             this.btnClose.Text = "إغلاق";
             this.btnClose.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnClose.UseVisualStyleBackColor = false;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
-            // lblTitle
-            // 
-            this.lblTitle.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitle.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblTitle.Location = new System.Drawing.Point(3, 0);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(1168, 60);
-            this.lblTitle.TabIndex = 4;
-            this.lblTitle.Text = "Title";
-            this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // GridView
-            // 
-            this.GridView.AddNewButtonColor = System.Drawing.SystemColors.Control;
-            this.GridView.AddNewButtonImage = null;
-            this.GridView.AddNewButtonText = "";
-            this.GridView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.GridView.cmsData = null;
-            this.GridView.DataSource = null;
-            this.GridView.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GridView.ImportButtonColor = System.Drawing.SystemColors.Control;
-            this.GridView.ImportButtonImage = null;
-            this.GridView.ImportButtonText = "";
-            this.GridView.ImportButtonVisible = true;
-            this.GridView.Location = new System.Drawing.Point(3, 153);
-            this.GridView.Name = "GridView";
-            this.GridView.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.GridView.Size = new System.Drawing.Size(1168, 533);
-            this.GridView.TabIndex = 5;
-            // 
-            // frmReturnsScreen
+            // frmListScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1174, 742);
             this.Controls.Add(this.tlpContainer);
-            this.DoubleBuffered = true;
-            this.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "frmReturnsScreen";
-            this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.RightToLeftLayout = true;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Name = "frmListScreen";
             this.Text = "frmReturnsScreen";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmListScreen_FormClosing);
             this.Load += new System.EventHandler(this.frmListScreen_Load);
             this.tlpContainer.ResumeLayout(false);
             this.tlpContainer.PerformLayout();

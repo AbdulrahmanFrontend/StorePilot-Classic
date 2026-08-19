@@ -257,6 +257,13 @@ namespace StorePilot.UI.Purchases
 
         private async void tsmiCancel_Click(object sender, EventArgs e)
         {
+            DialogResult dialog = MessageBoxManager.ShowConfirm(
+                "هل انت متأكد أنك تريد إلغاء هذه الفاتورة؟",
+                Language.ar);
+
+            if (dialog != DialogResult.Yes)
+                return;
+
             if (!_TrySelectedID(0, out int ID))
                 return;
 
@@ -271,29 +278,24 @@ namespace StorePilot.UI.Purchases
                 return;
             }
 
-            DialogResult dialog = MessageBoxManager.ShowConfirm(
-                "هل انت متأكد أنك تريد إلغاء هذه الفاتورة؟",
-                Language.ar);
+            var result = await Task.Run(() => 
+                PurchaseInvoiceService.Cancell(ID)
+            );
 
-            if (dialog == DialogResult.Yes)
+            if (result.IsSuccess)
             {
-                var result = await Task.Run(() => PurchaseInvoiceService.Cancell(ID));
+                MessageBoxManager.ShowSuccess(
+                    result.Message,
+                    Language.ar);
 
-                if (result.IsSuccess)
-                {
-                    MessageBoxManager.ShowSuccess(
-                        result.Message,
-                        Language.ar);
+                await _RefreshData();
 
-                    await _RefreshData();
-
-                    await _RefreshPagesCount();
-                }
-                else
-                    MessageBoxManager.ShowError(
-                        result.Message,
-                        Language.ar);
+                await _RefreshPagesCount();
             }
+            else
+                MessageBoxManager.ShowError(
+                    result.Message,
+                    Language.ar);
         }
 
         private void tsmiPrint_Click(object sender, EventArgs e)
@@ -303,13 +305,16 @@ namespace StorePilot.UI.Purchases
 
         private void tsmiAddPayments_Click(object sender, EventArgs e)
         {
-            if (_TrySelectedID(1, out int ID))
+            if (_TrySelectedID(0, out int purchaseInvoiceId))
             {
-                var result = PurchaseInvoiceService.IsExist(ID);
+                var result = PurchaseInvoiceService.IsExist(purchaseInvoiceId);
 
                 if (result.IsSuccess)
                 {
-                    using (var frm = new frmAddEditPayment(ID))
+                    if (!_TrySelectedID(1, out int invoiceId))
+                        return;
+
+                    using (var frm = new frmAddEditPayment(invoiceId))
                     {
                         frm.DataBack += Frm_DataBack;
                         frm.ShowDialog();
@@ -322,13 +327,16 @@ namespace StorePilot.UI.Purchases
 
         private void tsmiViewPayments_Click(object sender, EventArgs e)
         {
-            if (_TrySelectedID(1, out int ID))
+            if (_TrySelectedID(0, out int purchaseInvoiceId))
             {
-                var result = PurchaseInvoiceService.IsExist(ID);
+                var result = PurchaseInvoiceService.IsExist(purchaseInvoiceId);
 
                 if (result.IsSuccess)
                 {
-                    using (var frm = new frmPaymentsScreen(ID))
+                    if (!_TrySelectedID(1, out int invoiceId))
+                        return;
+
+                    using (var frm = new frmPaymentsScreen(invoiceId))
                     {
                         frm.DataBack += Frm_DataBack;
                         frm.ShowDialog();

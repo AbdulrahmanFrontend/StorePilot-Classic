@@ -63,12 +63,12 @@ namespace StorePilot.BLL
             {
                 if (IsForSalesResult.Data)
                 {
-                    TransModel.TransactionType = TransactionType.Revenue.ToString();
+                    TransModel.TransactionType = TransactionType.Revenue.ToArabic();
                     TransModel.Description = "تحصيل دين.";
                 }
                 else
                 {
-                    TransModel.TransactionType = TransactionType.Expense.ToString();
+                    TransModel.TransactionType = TransactionType.Expense.ToArabic();
                     TransModel.Description = "سداد دين.";
                 }
             }
@@ -286,6 +286,10 @@ namespace StorePilot.BLL
             string filterValue,
             bool cancelled)
         {
+            if (!int.TryParse(filterValue?.ToString(), out int Value) &&
+                (filterMethodIndex == 0 || filterMethodIndex == 1))
+                filterMethodIndex = -1;
+
             Result<int> result = PaymentData.GetCount(
                 invoiceId,
                 filterMethodIndex,
@@ -308,6 +312,10 @@ namespace StorePilot.BLL
             bool cancelled)
         {
             int offset = (currentPage - 1) * pageSize;
+
+            if (!int.TryParse(filterValue?.ToString(), out int Value) &&
+                (filterMethodIndex == 0 || filterMethodIndex == 1))
+                filterMethodIndex = -1;
 
             Result<DataTable> result = PaymentData.GetPaymentsInvoice(
                 invoiceId,
