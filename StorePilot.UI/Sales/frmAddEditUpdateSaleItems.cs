@@ -146,7 +146,7 @@ namespace StorePilot.UI.Sales
         {
             lblItemsCount.Text = $"عدد عناصر الفاتورة: {_Items.Count}";
             lblTotal.Text = $"إجمالي الفاتورة: " +
-                $"{_Items.Sum(i => i.UnitPrice).ToString("#,##0")}";
+                $"{_Items.Sum(i => i.TotalPrice).ToString("#,##0")}";
         }
 
         private void _LoadItems()
