@@ -38,9 +38,10 @@ namespace StorePilot.BLL
             this.Mode = Mode.Update;
         }
 
-        public static Result<PurchaseInvoiceService> Find(int id)
+        public static Result<PurchaseInvoiceService> Find(
+            int id)
         {
-            Result<PurchaseInvoiceModel> result = PurchaseInvoiceData.Find(id);
+            var result = PurchaseInvoiceData.Find(id);
 
             if (result.IsSuccess)
             {

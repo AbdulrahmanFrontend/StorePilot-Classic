@@ -54,17 +54,18 @@
             this.btnExit = new System.Windows.Forms.Button();
             this.btnSaveList = new System.Windows.Forms.Button();
             this.ctrlCmData = new DevToolkit.BaseWinForms.Controls.CustomControls.ccDataGridView();
-            this.ProductID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ProductName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.GroupName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Unit = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.RequiredQuantity = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.UnitPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TotalPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ctrlCmsData = new DevToolkit.BaseWinForms.Controls.CustomControls.ccContextMenuStrip();
             this.tsmiUpdate = new System.Windows.Forms.ToolStripMenuItem();
             this.tss = new System.Windows.Forms.ToolStripSeparator();
             this.tsmiDelete = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnPrint = new System.Windows.Forms.Button();
+            this.ProductID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ProductName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.GroupName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.UnitName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Quantity = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.UnitPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TotalPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tlpHeader.SuspendLayout();
             this.tlpItem.SuspendLayout();
             this.tlpFooter.SuspendLayout();
@@ -90,7 +91,7 @@
             this.tlpHeader.Padding = new System.Windows.Forms.Padding(0, 11, 0, 0);
             this.tlpHeader.RowCount = 1;
             this.tlpHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpHeader.Size = new System.Drawing.Size(1050, 74);
+            this.tlpHeader.Size = new System.Drawing.Size(1146, 74);
             this.tlpHeader.TabIndex = 13;
             // 
             // btnCancel
@@ -135,7 +136,7 @@
             this.tlpItem.RowCount = 2;
             this.tlpItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpItem.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpItem.Size = new System.Drawing.Size(958, 63);
+            this.tlpItem.Size = new System.Drawing.Size(1054, 63);
             this.tlpItem.TabIndex = 8;
             // 
             // cbProducts
@@ -146,34 +147,35 @@
             this.cbProducts.DropDownHeight = 100;
             this.cbProducts.FormattingEnabled = true;
             this.cbProducts.IntegralHeight = false;
-            this.cbProducts.Location = new System.Drawing.Point(578, 35);
+            this.cbProducts.Location = new System.Drawing.Point(636, 31);
             this.cbProducts.Margin = new System.Windows.Forms.Padding(3, 3, 3, 4);
             this.cbProducts.Name = "cbProducts";
-            this.cbProducts.Size = new System.Drawing.Size(377, 28);
+            this.cbProducts.Size = new System.Drawing.Size(415, 28);
             this.cbProducts.TabIndex = 0;
+            this.cbProducts.Validating += new System.ComponentModel.CancelEventHandler(this.cbProducts_Validating);
             // 
             // tbTotalPrice
             // 
             this.tbTotalPrice.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.tbTotalPrice.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.tbTotalPrice.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbTotalPrice.Location = new System.Drawing.Point(3, 36);
+            this.tbTotalPrice.Location = new System.Drawing.Point(3, 34);
             this.tbTotalPrice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 0);
             this.tbTotalPrice.Name = "tbTotalPrice";
             this.tbTotalPrice.ReadOnly = true;
-            this.tbTotalPrice.Size = new System.Drawing.Size(187, 27);
+            this.tbTotalPrice.Size = new System.Drawing.Size(207, 27);
             this.tbTotalPrice.TabIndex = 7;
             // 
             // tbUnitPrice
             // 
             this.tbUnitPrice.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.tbUnitPrice.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbUnitPrice.Location = new System.Drawing.Point(196, 36);
+            this.tbUnitPrice.Location = new System.Drawing.Point(216, 34);
             this.tbUnitPrice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 0);
             this.tbUnitPrice.MaxLength = 6;
             this.tbUnitPrice.Name = "tbUnitPrice";
             this.tbUnitPrice.ReadOnly = true;
-            this.tbUnitPrice.Size = new System.Drawing.Size(185, 27);
+            this.tbUnitPrice.Size = new System.Drawing.Size(204, 27);
             this.tbUnitPrice.TabIndex = 2;
             this.tbUnitPrice.TextChanged += new System.EventHandler(this.QuantitAndUnitPrice_TextChanged);
             // 
@@ -187,7 +189,7 @@
             this.lblTotalPrice.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblTotalPrice.Location = new System.Drawing.Point(3, 0);
             this.lblTotalPrice.Name = "lblTotalPrice";
-            this.lblTotalPrice.Size = new System.Drawing.Size(187, 32);
+            this.lblTotalPrice.Size = new System.Drawing.Size(207, 28);
             this.lblTotalPrice.TabIndex = 3;
             this.lblTotalPrice.Text = "الإجمالي:";
             this.lblTotalPrice.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -200,9 +202,9 @@
             this.lblUnitPrice.AutoSize = true;
             this.lblUnitPrice.Image = global::StorePilot.UI.Properties.Resources.money;
             this.lblUnitPrice.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblUnitPrice.Location = new System.Drawing.Point(196, 0);
+            this.lblUnitPrice.Location = new System.Drawing.Point(216, 0);
             this.lblUnitPrice.Name = "lblUnitPrice";
-            this.lblUnitPrice.Size = new System.Drawing.Size(185, 32);
+            this.lblUnitPrice.Size = new System.Drawing.Size(204, 28);
             this.lblUnitPrice.TabIndex = 2;
             this.lblUnitPrice.Text = "سعر الوحدة:";
             this.lblUnitPrice.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -215,9 +217,9 @@
             this.lblQuantity.AutoSize = true;
             this.lblQuantity.Image = global::StorePilot.UI.Properties.Resources.weight_pound;
             this.lblQuantity.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblQuantity.Location = new System.Drawing.Point(387, 0);
+            this.lblQuantity.Location = new System.Drawing.Point(426, 0);
             this.lblQuantity.Name = "lblQuantity";
-            this.lblQuantity.Size = new System.Drawing.Size(185, 32);
+            this.lblQuantity.Size = new System.Drawing.Size(204, 28);
             this.lblQuantity.TabIndex = 1;
             this.lblQuantity.Text = "الكمية:";
             this.lblQuantity.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -229,9 +231,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblProduct.Image = global::StorePilot.UI.Properties.Resources.product;
             this.lblProduct.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblProduct.Location = new System.Drawing.Point(578, 0);
+            this.lblProduct.Location = new System.Drawing.Point(636, 0);
             this.lblProduct.Name = "lblProduct";
-            this.lblProduct.Size = new System.Drawing.Size(377, 32);
+            this.lblProduct.Size = new System.Drawing.Size(415, 28);
             this.lblProduct.TabIndex = 12;
             this.lblProduct.Text = "الصنف:";
             this.lblProduct.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -241,12 +243,12 @@
             this.tbQuantity.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.tbQuantity.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.tbQuantity.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbQuantity.Location = new System.Drawing.Point(387, 36);
+            this.tbQuantity.Location = new System.Drawing.Point(426, 34);
             this.tbQuantity.Margin = new System.Windows.Forms.Padding(3, 4, 3, 0);
             this.tbQuantity.MaxLength = 6;
             this.tbQuantity.Name = "tbQuantity";
             this.tbQuantity.ReadOnly = true;
-            this.tbQuantity.Size = new System.Drawing.Size(185, 27);
+            this.tbQuantity.Size = new System.Drawing.Size(204, 27);
             this.tbQuantity.TabIndex = 1;
             this.tbQuantity.TextChanged += new System.EventHandler(this.QuantitAndUnitPrice_TextChanged);
             // 
@@ -278,6 +280,7 @@
             this.tlpFooter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 9.689318F));
             this.tlpFooter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 9.689318F));
             this.tlpFooter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 9.689318F));
+            this.tlpFooter.Controls.Add(this.btnPrint, 2, 0);
             this.tlpFooter.Controls.Add(this.lblTotal, 1, 0);
             this.tlpFooter.Controls.Add(this.lblItemsCount, 0, 0);
             this.tlpFooter.Controls.Add(this.btnResetList, 3, 0);
@@ -291,7 +294,7 @@
             this.tlpFooter.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.tlpFooter.RowCount = 1;
             this.tlpFooter.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpFooter.Size = new System.Drawing.Size(1050, 45);
+            this.tlpFooter.Size = new System.Drawing.Size(1146, 45);
             this.tlpFooter.TabIndex = 16;
             // 
             // lblTotal
@@ -299,7 +302,7 @@
             this.lblTotal.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblTotal.AutoSize = true;
             this.lblTotal.Cursor = System.Windows.Forms.Cursors.Default;
-            this.lblTotal.Location = new System.Drawing.Point(801, 14);
+            this.lblTotal.Location = new System.Drawing.Point(897, 14);
             this.lblTotal.Margin = new System.Windows.Forms.Padding(18, 0, 3, 0);
             this.lblTotal.Name = "lblTotal";
             this.lblTotal.Size = new System.Drawing.Size(102, 17);
@@ -311,7 +314,7 @@
             this.lblItemsCount.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblItemsCount.AutoSize = true;
             this.lblItemsCount.Cursor = System.Windows.Forms.Cursors.Default;
-            this.lblItemsCount.Location = new System.Drawing.Point(924, 14);
+            this.lblItemsCount.Location = new System.Drawing.Point(1020, 14);
             this.lblItemsCount.Name = "lblItemsCount";
             this.lblItemsCount.Size = new System.Drawing.Size(123, 17);
             this.lblItemsCount.TabIndex = 10;
@@ -327,10 +330,10 @@
             this.btnResetList.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnResetList.Image = global::StorePilot.UI.Properties.Resources.discharge;
             this.btnResetList.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnResetList.Location = new System.Drawing.Point(158, 4);
+            this.btnResetList.Location = new System.Drawing.Point(177, 4);
             this.btnResetList.Name = "btnResetList";
-            this.btnResetList.Size = new System.Drawing.Size(71, 37);
-            this.btnResetList.TabIndex = 6;
+            this.btnResetList.Size = new System.Drawing.Size(80, 37);
+            this.btnResetList.TabIndex = 7;
             this.btnResetList.Text = "تفريغ";
             this.btnResetList.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnResetList.UseVisualStyleBackColor = true;
@@ -348,15 +351,15 @@
             this.btnExit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnExit.Location = new System.Drawing.Point(3, 4);
             this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(72, 37);
-            this.btnExit.TabIndex = 8;
+            this.btnExit.Size = new System.Drawing.Size(82, 37);
+            this.btnExit.TabIndex = 9;
             this.btnExit.Text = "خروج";
             this.btnExit.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnExit.UseVisualStyleBackColor = true;
             // 
             // btnSaveList
             // 
-            this.btnSaveList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSaveList.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.btnSaveList.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnSaveList.Enabled = false;
             this.btnSaveList.FlatAppearance.BorderSize = 0;
@@ -364,11 +367,11 @@
             this.btnSaveList.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSaveList.Image = global::StorePilot.UI.Properties.Resources.Save_32;
             this.btnSaveList.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSaveList.Location = new System.Drawing.Point(81, 4);
+            this.btnSaveList.Location = new System.Drawing.Point(91, 4);
             this.btnSaveList.Name = "btnSaveList";
             this.btnSaveList.Size = new System.Drawing.Size(71, 37);
-            this.btnSaveList.TabIndex = 7;
-            this.btnSaveList.Text = "حفظ";
+            this.btnSaveList.TabIndex = 8;
+            this.btnSaveList.Text = "طباعة";
             this.btnSaveList.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnSaveList.UseVisualStyleBackColor = true;
             this.btnSaveList.Click += new System.EventHandler(this.btnSaveList_Click);
@@ -398,8 +401,8 @@
             this.ProductID,
             this.ProductName,
             this.GroupName,
-            this.Unit,
-            this.RequiredQuantity,
+            this.UnitName,
+            this.Quantity,
             this.UnitPrice,
             this.TotalPrice});
             this.ctrlCmData.ContextMenuStrip = this.ctrlCmsData;
@@ -423,75 +426,9 @@
             this.ctrlCmData.RowHeadersWidth = 51;
             this.ctrlCmData.RowTemplate.Height = 35;
             this.ctrlCmData.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.ctrlCmData.Size = new System.Drawing.Size(1050, 471);
+            this.ctrlCmData.Size = new System.Drawing.Size(1146, 471);
             this.ctrlCmData.TabIndex = 5;
             this.ctrlCmData.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ctrlCmData_CellDoubleClick);
-            // 
-            // ProductID
-            // 
-            this.ProductID.DataPropertyName = "ProductID";
-            this.ProductID.HeaderText = "رقم المنتج";
-            this.ProductID.MinimumWidth = 6;
-            this.ProductID.Name = "ProductID";
-            this.ProductID.ReadOnly = true;
-            this.ProductID.Visible = false;
-            // 
-            // ProductName
-            // 
-            this.ProductName.DataPropertyName = "ProductName";
-            this.ProductName.HeaderText = "اسم المنتج";
-            this.ProductName.MinimumWidth = 6;
-            this.ProductName.Name = "ProductName";
-            this.ProductName.ReadOnly = true;
-            // 
-            // GroupName
-            // 
-            this.GroupName.DataPropertyName = "Group";
-            this.GroupName.HeaderText = "المجموعة";
-            this.GroupName.MinimumWidth = 6;
-            this.GroupName.Name = "GroupName";
-            this.GroupName.ReadOnly = true;
-            // 
-            // Unit
-            // 
-            this.Unit.DataPropertyName = "UnitName";
-            this.Unit.HeaderText = "وحدة القياس";
-            this.Unit.MinimumWidth = 6;
-            this.Unit.Name = "Unit";
-            this.Unit.ReadOnly = true;
-            // 
-            // RequiredQuantity
-            // 
-            this.RequiredQuantity.DataPropertyName = "Quantity";
-            dataGridViewCellStyle3.Format = "N2";
-            dataGridViewCellStyle3.NullValue = null;
-            this.RequiredQuantity.DefaultCellStyle = dataGridViewCellStyle3;
-            this.RequiredQuantity.HeaderText = "الكمية";
-            this.RequiredQuantity.MinimumWidth = 6;
-            this.RequiredQuantity.Name = "RequiredQuantity";
-            this.RequiredQuantity.ReadOnly = true;
-            // 
-            // UnitPrice
-            // 
-            this.UnitPrice.DataPropertyName = "UnitPrice";
-            dataGridViewCellStyle4.Format = "N2";
-            dataGridViewCellStyle4.NullValue = null;
-            this.UnitPrice.DefaultCellStyle = dataGridViewCellStyle4;
-            this.UnitPrice.HeaderText = "سعر الوحدة";
-            this.UnitPrice.MinimumWidth = 6;
-            this.UnitPrice.Name = "UnitPrice";
-            this.UnitPrice.ReadOnly = true;
-            // 
-            // TotalPrice
-            // 
-            this.TotalPrice.DataPropertyName = "TotalPrice";
-            dataGridViewCellStyle5.Format = "N2";
-            dataGridViewCellStyle5.NullValue = null;
-            this.TotalPrice.DefaultCellStyle = dataGridViewCellStyle5;
-            this.TotalPrice.HeaderText = "الإجمالي";
-            this.TotalPrice.MinimumWidth = 6;
-            this.TotalPrice.Name = "TotalPrice";
-            this.TotalPrice.ReadOnly = true;
             // 
             // ctrlCmsData
             // 
@@ -529,27 +466,102 @@
             this.tsmiDelete.Text = "حذف";
             this.tsmiDelete.Click += new System.EventHandler(this.tsmiDelete_Click);
             // 
+            // btnPrint
+            // 
+            this.btnPrint.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.btnPrint.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnPrint.Enabled = false;
+            this.btnPrint.FlatAppearance.BorderSize = 0;
+            this.btnPrint.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPrint.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnPrint.Image = global::StorePilot.UI.Properties.Resources.print;
+            this.btnPrint.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnPrint.Location = new System.Drawing.Point(263, 4);
+            this.btnPrint.Name = "btnPrint";
+            this.btnPrint.Size = new System.Drawing.Size(71, 37);
+            this.btnPrint.TabIndex = 6;
+            this.btnPrint.Text = "طباعة";
+            this.btnPrint.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnPrint.UseVisualStyleBackColor = true;
+            // 
+            // ProductID
+            // 
+            this.ProductID.DataPropertyName = "ProductID";
+            this.ProductID.HeaderText = "رقم المنتج";
+            this.ProductID.MinimumWidth = 6;
+            this.ProductID.Name = "ProductID";
+            this.ProductID.ReadOnly = true;
+            this.ProductID.Visible = false;
+            // 
+            // ProductName
+            // 
+            this.ProductName.DataPropertyName = "ProductName";
+            this.ProductName.HeaderText = "اسم المنتج";
+            this.ProductName.MinimumWidth = 6;
+            this.ProductName.Name = "ProductName";
+            this.ProductName.ReadOnly = true;
+            // 
+            // GroupName
+            // 
+            this.GroupName.DataPropertyName = "GroupName";
+            this.GroupName.HeaderText = "المجموعة";
+            this.GroupName.MinimumWidth = 6;
+            this.GroupName.Name = "GroupName";
+            this.GroupName.ReadOnly = true;
+            // 
+            // UnitName
+            // 
+            this.UnitName.DataPropertyName = "UnitName";
+            this.UnitName.HeaderText = "وحدة القياس";
+            this.UnitName.MinimumWidth = 6;
+            this.UnitName.Name = "UnitName";
+            this.UnitName.ReadOnly = true;
+            // 
+            // Quantity
+            // 
+            this.Quantity.DataPropertyName = "Quantity";
+            dataGridViewCellStyle3.Format = "N2";
+            dataGridViewCellStyle3.NullValue = null;
+            this.Quantity.DefaultCellStyle = dataGridViewCellStyle3;
+            this.Quantity.HeaderText = "الكمية";
+            this.Quantity.MinimumWidth = 6;
+            this.Quantity.Name = "Quantity";
+            this.Quantity.ReadOnly = true;
+            // 
+            // UnitPrice
+            // 
+            this.UnitPrice.DataPropertyName = "UnitPrice";
+            dataGridViewCellStyle4.Format = "N2";
+            dataGridViewCellStyle4.NullValue = null;
+            this.UnitPrice.DefaultCellStyle = dataGridViewCellStyle4;
+            this.UnitPrice.HeaderText = "سعر الوحدة";
+            this.UnitPrice.MinimumWidth = 6;
+            this.UnitPrice.Name = "UnitPrice";
+            this.UnitPrice.ReadOnly = true;
+            // 
+            // TotalPrice
+            // 
+            this.TotalPrice.DataPropertyName = "TotalPrice";
+            dataGridViewCellStyle5.Format = "N2";
+            dataGridViewCellStyle5.NullValue = null;
+            this.TotalPrice.DefaultCellStyle = dataGridViewCellStyle5;
+            this.TotalPrice.HeaderText = "الإجمالي";
+            this.TotalPrice.MinimumWidth = 6;
+            this.TotalPrice.Name = "TotalPrice";
+            this.TotalPrice.ReadOnly = true;
+            // 
             // frmAddEditUpdateSaleItems
             // 
             this.AcceptButton = this.btnSaveList;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.CancelButton = this.btnExit;
-            this.ClientSize = new System.Drawing.Size(1050, 590);
+            this.ClientSize = new System.Drawing.Size(1146, 590);
             this.Controls.Add(this.ctrlCmData);
             this.Controls.Add(this.tlpFooter);
             this.Controls.Add(this.tlpHeader);
-            this.DoubleBuffered = true;
-            this.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.Name = "frmAddEditUpdateSaleItems";
-            this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.RightToLeftLayout = true;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmAddUpdateSaleItems";
             this.Load += new System.EventHandler(this.frmAddEditUpdateSaleItems_Load);
             this.tlpHeader.ResumeLayout(false);
@@ -584,17 +596,18 @@
         private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.Button btnSaveList;
         private DevToolkit.BaseWinForms.Controls.CustomControls.ccDataGridView ctrlCmData;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ProductID;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ProductName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn GroupName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Unit;
-        private System.Windows.Forms.DataGridViewTextBoxColumn RequiredQuantity;
-        private System.Windows.Forms.DataGridViewTextBoxColumn UnitPrice;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TotalPrice;
         private DevToolkit.BaseWinForms.Controls.CustomControls.ccContextMenuStrip ctrlCmsData;
         private System.Windows.Forms.ToolStripMenuItem tsmiUpdate;
         private System.Windows.Forms.ToolStripMenuItem tsmiDelete;
         private System.Windows.Forms.ToolStripSeparator tss;
         private System.Windows.Forms.ComboBox cbProducts;
+        private System.Windows.Forms.Button btnPrint;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ProductID;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ProductName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn GroupName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn UnitName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Quantity;
+        private System.Windows.Forms.DataGridViewTextBoxColumn UnitPrice;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TotalPrice;
     }
 }

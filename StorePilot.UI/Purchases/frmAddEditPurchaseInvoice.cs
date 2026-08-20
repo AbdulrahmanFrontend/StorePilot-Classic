@@ -2,6 +2,7 @@
 using DevToolkit.BaseWinForms.Managers;
 using DevToolkit.Core.Common;
 using DevToolkit.Core.Guards;
+using DevToolkit.Core.Results;
 using StorePilot.BLL;
 using StorePilot.Core.Enums;
 using StorePilot.Core.Models;
@@ -124,12 +125,22 @@ namespace StorePilot.UI.Purchases
 
             _LoadData();
 
-            var result = InvoiceService.HasPayments(_Model.InvoiceID);
+            Result<bool> result;
 
-            if (!result.IsSuccess)
-                btnViewPayments.Enabled = false;
+            if (_Model.InvoiceStatus == InvoiceStatus.Deferred.ToArabic())
+                btnViewPayments.Text = "إضافة دفعة جديدة";
+            else
+            {
+                result = InvoiceService.HasPayments(_Model.InvoiceID);
+
+                if (!result.IsSuccess)
+                    btnViewPayments.Enabled = false;
+            }
             if (_Model.Cancelled)
+            {
                 btnCancel.Enabled = false;
+                btnSavePrint.Enabled = false;
+            }
         }
 
         private void Frm_DataBackInvoiceItems(

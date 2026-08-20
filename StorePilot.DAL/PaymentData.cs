@@ -252,6 +252,21 @@ namespace StorePilot.DAL
 
                     break;
 
+                case (int)FilterMethodsPayments.InvoiceID:
+                    Query = @"SELECT COUNT(PaymentID) FROM view_PaymentsDetails
+                        WHERE InvoiceID = @FilterValue 
+                        AND Cancelled = @Cancelled;";
+
+                    parameter = new DbParameterInfo
+                    {
+                        Name = "@FilterValue",
+                        DbType = DbType.Int64,
+                        Value = int.TryParse(filterValue?.ToString(), out int InvoiceID)
+                            ? InvoiceID : 0,
+                    };
+
+                    break;
+
                 case (int)FilterMethodsPayments.PaymentDate:
                     Query = @"SELECT COUNT(PaymentID) FROM view_PaymentsDetails
                         WHERE PaymentDate LIKE @FilterValue || '%'
@@ -331,6 +346,24 @@ namespace StorePilot.DAL
                         DbType = DbType.Int64,
                         Value = int.TryParse(filterValue?.ToString(), out int PaymentID)
                             ? PaymentID : 0,
+                    };
+
+                    break;
+
+                case (int)FilterMethodsPayments.InvoiceID:
+                    Query = @"SELECT PaymentID, InvoiceID, PaymentDate, PaidAmount,
+                        MethodName, Cancelled FROM view_PaymentsDetails
+                        WHERE InvoiceID = @FilterValue
+                        AND Cancelled = @Cancelled
+                        LIMIT @PageSize
+                        OFFSET @Offset;";
+
+                    parameter = new DbParameterInfo
+                    {
+                        Name = "@FilterValue",
+                        DbType = DbType.Int64,
+                        Value = int.TryParse(filterValue?.ToString(), out int InvoiceID)
+                            ? InvoiceID : 0,
                     };
 
                     break;

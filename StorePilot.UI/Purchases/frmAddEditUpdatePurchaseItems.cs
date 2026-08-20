@@ -208,7 +208,11 @@ namespace StorePilot.UI.Purchases
             }
         }
 
-        private void Frm_DataBack(object sender) => _FillProductsComboBox();
+        private void Frm_DataBack(object sender) 
+        {
+            _FillProductsComboBox();
+            _SetDefaultValues();
+        }
 
         private void btnSaveItem_Click(object sender, EventArgs e)
         {
@@ -242,7 +246,7 @@ namespace StorePilot.UI.Purchases
 
             if (_Items.Count(i => i.ProductID == _InvoiceItem.ProductID) > 0)
                 return Result.Failure(
-                    $"الصنف {result.Data.Model.ProductName} مكرر في الفاتورة!");
+                    $"هذا الصنف موجود بالفعل في الفاتورة!");
 
             decimal Quantity = _GetDecimalValue(tbQuantity.Text?.ToString());
 

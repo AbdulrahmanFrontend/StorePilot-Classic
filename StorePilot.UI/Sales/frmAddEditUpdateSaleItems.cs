@@ -67,6 +67,9 @@ namespace StorePilot.UI.Sales
             btnCancel.BackColor = Theme.Surface;
             btnCancel.ForeColor = Theme.Text;
 
+            btnPrint.BackColor = Theme.Success;
+            btnPrint.ForeColor = Theme.Text;
+
             btnSaveList.BackColor = Theme.Success;
             btnSaveList.ForeColor = Theme.TextSecondary;
 
@@ -95,6 +98,8 @@ namespace StorePilot.UI.Sales
                     tlpHeader.Visible = false;
                     btnSaveList.Visible = false;
                     btnResetList.Visible = false;
+                    btnPrint.Visible = false;
+                    ctrlCmData.ContextMenuStrip = null;
                     _LoadItems();
                     break;
             }
@@ -107,6 +112,9 @@ namespace StorePilot.UI.Sales
         {
             btnSaveItem.Enabled = false;
             btnCancel.Enabled = false;
+
+            tbQuantity.ReadOnly = true;
+            tbUnitPrice.ReadOnly = true;
 
             tbQuantity.Text = "0";
             tbUnitPrice.Text = "0";
@@ -184,7 +192,7 @@ namespace StorePilot.UI.Sales
             btnCancel.Enabled = result.IsSuccess;
 
             if (result.IsSuccess)
-            { 
+            {
                 _InvoiceItem.ProductID = ProductID;
                 tbUnitPrice.Text = result.Data.Model.SalePrice.ToString("#,##0");
             }
@@ -223,9 +231,9 @@ namespace StorePilot.UI.Sales
                 return Result.Failure(
                     $"الصنف {result.Data.Model.ProductName} غير مفعل في النظام!");
 
-            if (_Items.Count(i => i.ProductID == _InvoiceItem.ProductID) > 1)
+            if (_Items.Count(i => i.ProductID == _InvoiceItem.ProductID) > 0)
                 return Result.Failure(
-                    $"الصنف {result.Data.Model.ProductName} مكرر في الفاتورة!");
+                    $"هذا الصنف موجود بالفعل في الفاتورة!");
 
             decimal Quantity = _GetDecimalValue(tbQuantity.Text?.ToString());
 
@@ -259,6 +267,7 @@ namespace StorePilot.UI.Sales
         {
             btnSaveList.Enabled = _Items.Count > 0;
             btnExit.Enabled = _Items.Count > 0;
+            btnPrint.Enabled = _Items.Count > 0;
         }
 
         private void btnCancel_Click(object sender, EventArgs e) => _SetDefaultValues();
@@ -281,17 +290,20 @@ namespace StorePilot.UI.Sales
 
         private void _Update()
         {
-            InvoiceItemViewModel Item = _RemoveItemFromList();
+            if (_Mode == frmMode.Edit)
+                return;
+
+            _InvoiceItem = _RemoveItemFromList();
 
             btnSaveItem.Enabled = true;
             btnCancel.Enabled = true;
             tbQuantity.ReadOnly = false;
             tbUnitPrice.ReadOnly = false;
 
-            cbProducts.SelectedValue = Item.ProductID;
-            tbQuantity.Text = Item.Quantity.ToString("#,##0");
-            tbUnitPrice.Text = Item.UnitPrice.ToString("#,##0");
-            tbTotalPrice.Text = Item.TotalPrice.ToString("#,##0");
+            cbProducts.SelectedValue = _InvoiceItem.ProductID;
+            tbQuantity.Text = _InvoiceItem.Quantity.ToString("#,##0");
+            tbUnitPrice.Text = _InvoiceItem.UnitPrice.ToString("#,##0");
+            tbTotalPrice.Text = _InvoiceItem.TotalPrice.ToString("#,##0");
         }
 
         private InvoiceItemViewModel _RemoveItemFromList()
@@ -328,10 +340,10 @@ namespace StorePilot.UI.Sales
 
         private void QuantitAndUnitPrice_TextChanged(object sender, EventArgs e)
         {
-            decimal Quantity = 
-                _GetSelectedDecimalCellValue(tbQuantity.Text?.ToString());
-            decimal UnitPrice = 
-                _GetSelectedDecimalCellValue(tbUnitPrice.Text?.ToString());
+            decimal Quantity =
+                _GetDecimalValue(tbQuantity.Text?.ToString());
+            decimal UnitPrice =
+                _GetDecimalValue(tbUnitPrice.Text?.ToString());
 
             tbTotalPrice.Text = (Quantity * UnitPrice).ToString("#,##0");
         }

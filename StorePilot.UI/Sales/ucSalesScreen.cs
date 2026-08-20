@@ -3,6 +3,7 @@ using DevToolkit.BaseWinForms.Managers;
 using DevToolkit.Core.Common;
 using DevToolkit.Core.Results;
 using StorePilot.BLL;
+using StorePilot.Core.Enums;
 using StorePilot.UI.Customers;
 using StorePilot.UI.Global.Classes;
 using StorePilot.UI.Global.Controls;
@@ -258,6 +259,13 @@ namespace StorePilot.UI.Sales
 
         private async void tsmiCancel_Click(object sender, EventArgs e)
         {
+            DialogResult dialog = MessageBoxManager.ShowConfirm(
+                "هل انت متأكد أنك تريد إلغاء هذه الفاتورة؟",
+                Language.ar);
+
+            if (dialog == DialogResult.Yes)
+                return;
+
             if (!_TrySelectedID(0, out int ID))
                 return;
 
@@ -272,29 +280,22 @@ namespace StorePilot.UI.Sales
                 return;
             }
 
-            DialogResult dialog = MessageBoxManager.ShowConfirm(
-                "هل انت متأكد أنك تريد إلغاء هذه الفاتورة؟", 
-                Language.ar);
+            var result = await Task.Run(() => SaleInvoiceService.Cancell(ID));
 
-            if (dialog == DialogResult.Yes)
+            if (result.IsSuccess)
             {
-                var result = await Task.Run(() => SaleInvoiceService.Cancell(ID));
+                MessageBoxManager.ShowSuccess(
+                    result.Message,
+                    Language.ar);
 
-                if (result.IsSuccess)
-                {
-                    MessageBoxManager.ShowSuccess(
-                        result.Message,
-                        Language.ar);
+                await _RefreshData();
 
-                    await _RefreshData();
-
-                    await _RefreshPagesCount();
-                }
-                else
-                    MessageBoxManager.ShowError(
-                        result.Message,
-                        Language.ar);
+                await _RefreshPagesCount();
             }
+            else
+                MessageBoxManager.ShowError(
+                    result.Message,
+                    Language.ar);
         }
 
         private void tsmiPrint_Click(object sender, EventArgs e)
@@ -304,13 +305,16 @@ namespace StorePilot.UI.Sales
 
         private void tsmiAddPayments_Click(object sender, EventArgs e)
         {
-            if (_TrySelectedID(1, out int ID))
+            if (_TrySelectedID(0, out int saleInvoiceId))
             {
-                var result = SaleInvoiceService.IsExist(ID);
+                var result = SaleInvoiceService.IsExist(saleInvoiceId);
 
                 if (result.IsSuccess)
                 {
-                    using (var frm = new frmAddEditPayment(ID))
+                    if (!_TrySelectedID(1, out int invoiceId))
+                        return;
+
+                    using (var frm = new frmAddEditPayment(invoiceId))
                     {
                         frm.DataBack += Frm_DataBack;
                         frm.ShowDialog();
@@ -323,7 +327,24 @@ namespace StorePilot.UI.Sales
 
         private void tsmiViewPayments_Click(object sender, EventArgs e)
         {
+            if (_TrySelectedID(0, out int saleInvoiceId))
+            {
+                var result = SaleInvoiceService.IsExist(saleInvoiceId);
 
+                if (result.IsSuccess)
+                {
+                    if (!_TrySelectedID(1, out int invoiceId))
+                        return;
+
+                    using (var frm = new frmPaymentsScreen(invoiceId))
+                    {
+                        frm.DataBack += Frm_DataBack;
+                        frm.ShowDialog();
+                    }
+                }
+                else
+                    MessageBoxManager.ShowError(result.Message, Language.ar);
+            }
         }
 
         private void tsmiAddReturns_Click(object sender, EventArgs e)
@@ -347,7 +368,21 @@ namespace StorePilot.UI.Sales
 
         private void tsmiViewReturns_Click(object sender, EventArgs e)
         {
+            if (_TrySelectedID(0, out int ID))
+            {
+                var result = SaleInvoiceService.IsExist(ID);
 
+                if (result.IsSuccess)
+                {
+                    using (var frm = new frmReturnsScreen(ID))
+                    {
+                        frm.DataBack += Frm_DataBack;
+                        frm.ShowDialog();
+                    }
+                }
+                else
+                    MessageBoxManager.ShowError(result.Message, Language.ar);
+            }
         }
 
         private void ctrlCmsSales_Opening(object sender, CancelEventArgs e)
@@ -358,6 +393,9 @@ namespace StorePilot.UI.Sales
 
                 if (!HasReturnsResult.IsSuccess)
                     tsmiViewReturns.Enabled = false;
+                else
+                    tsmiViewReturns.Enabled = true;
+
             }
 
             if (_TrySelectedID(1, out int InvoiceId))
@@ -366,12 +404,37 @@ namespace StorePilot.UI.Sales
 
                 if (!HasPaymentsResult.IsSuccess)
                     tsmiViewPayments.Enabled = false;
+                else
+                    tsmiViewPayments.Enabled = true;
             }
 
             if (_IsCancelled())
+            {
+                tsmiAddPayments.Enabled = false;
+                tsmiAddReturns.Enabled = false;
+                tsmiPrint.Enabled = false;
                 tsmiCancel.Enabled = false;
+            }
             else
+            {
+                if (_IsPaid())
+                    tsmiAddPayments.Enabled = false;
+                else
+                    tsmiAddPayments.Enabled = true;
+                tsmiAddReturns.Enabled = true;
+                tsmiPrint.Enabled = true;
                 tsmiCancel.Enabled = true;
+            }
+        }
+
+        protected bool _IsPaid()
+        {
+            object value = Grid.GetSelectedRow("InvoiceStatus");
+
+            if (value == null)
+                return false;
+
+            return value.ToString() == InvoiceStatus.Paid.ToArabic() ? true : false;
         }
     }
 }

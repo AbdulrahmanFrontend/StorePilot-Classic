@@ -263,12 +263,15 @@ namespace StorePilot.BLL
 
                     _ThrowException(result);
 
-                    result = CashTransactionData.Cancell(
-                        con,
-                        trans,
-                        InvoiceResult.Data.TransactionID.Value);
+                    if (InvoiceResult.Data.TransactionID.HasValue)
+                    {
+                        result = CashTransactionData.Cancell(
+                            con,
+                            trans,
+                            InvoiceResult.Data.TransactionID.Value);
 
-                    _ThrowException(result);
+                        _ThrowException(result);
+                    }
 
                     result = SaleReturnData.CancellSalesReturns(
                         con, 
@@ -323,6 +326,10 @@ namespace StorePilot.BLL
             string filterValue,
             bool cancelled)
         {
+            if (!int.TryParse(filterValue?.ToString(), out int Value) &&
+                (filterMethodIndex == 0 || filterMethodIndex == 1))
+                filterMethodIndex = -1;
+
             Result<int> result = SaleInvoiceData.GetCount(
                 filterMethodIndex,
                 filterValue,
@@ -342,6 +349,10 @@ namespace StorePilot.BLL
             bool cancelled)
         {
             int offset = (currentPage - 1) * pageSize;
+
+            if (!int.TryParse(filterValue?.ToString(), out int Value) &&
+                (filterMethodIndex == 0 || filterMethodIndex == 1))
+                filterMethodIndex = -1;
 
             Result<DataTable> result = SaleInvoiceData.GetInvoices(
                 offset,

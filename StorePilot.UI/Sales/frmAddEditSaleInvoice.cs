@@ -1,23 +1,26 @@
-﻿using DevToolkit.BaseWinForms.Managers;
-using StorePilot.BLL;
-using StorePilot.Core.Models;
-using StorePilot.UI.Global.Classes;
-using System;
+﻿using DevToolkit.BaseWinForms.Forms;
+using DevToolkit.BaseWinForms.Managers;
 using DevToolkit.Core.Common;
+using DevToolkit.Core.Guards;
+using DevToolkit.Core.Results;
+using StorePilot.BLL;
+using StorePilot.Core.Enums;
+using StorePilot.Core.Models;
+using StorePilot.UI.Customers;
+using StorePilot.UI.Global.Classes;
+using StorePilot.UI.Payments;
+using StorePilot.UI.Properties;
+using StorePilot.UI.Returns;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using DevToolkit.BaseWinForms.Forms;
-using StorePilot.UI.Properties;
-using StorePilot.UI.Customers;
-using DevToolkit.Core.Guards;
-using StorePilot.Core.Enums;
-using System.Runtime.CompilerServices;
 
 namespace StorePilot.UI.Sales
 {
@@ -102,6 +105,8 @@ namespace StorePilot.UI.Sales
 
             btnInvoiceItems.Text = "إضافة عناصر الفاتورة";
 
+            cbStatuses.SelectedIndex = 0;
+
             using (var frm = new frmAddEditUpdateSaleItems())
             {
                 frm.DataBack += Frm_DataBackInvoiceItems;
@@ -119,6 +124,30 @@ namespace StorePilot.UI.Sales
             btnInvoiceItems.Text = "عرض عناصر الفاتورة";
 
             _LoadData();
+
+            Result<bool> result;
+
+            if (_Model.InvoiceStatus == InvoiceStatus.Deferred.ToArabic())
+                btnViewPayments.Text = "إضافة دفعة جديدة";
+            else
+            {
+                result = InvoiceService.HasPayments(_Model.InvoiceID);
+
+                if (!result.IsSuccess)
+                    btnViewPayments.Enabled = false;
+            }
+            if (_Model.Cancelled)
+            {
+                btnCancel.Enabled = false;
+                btnSavePrint.Enabled = false;
+            }
+
+            result = SaleInvoiceService.HasReturns(_Model.SaleInvoiceID);
+
+            if (!result.IsSuccess)
+                btnReturns.Text = "إضافة مرتجع";
+            else
+                btnReturns.Text = "عرض المرتجعات";
         }
 
         private void Frm_DataBackInvoiceItems(
@@ -133,6 +162,9 @@ namespace StorePilot.UI.Sales
 
             _EnabledFields();
 
+            btnAddNew.Visible = true;
+            btnSavePrint.Enabled = true;
+
             _SetAmounts();
         }
 
@@ -142,7 +174,7 @@ namespace StorePilot.UI.Sales
             {
                 case InvoiceStatus.Paid:
                     tbPaidAmount.Text = _InvoiceItems
-                        .Sum(i => i.UnitPrice)
+                        .Sum(i => i.TotalPrice)
                         .ToString("#,##0");
                     tbRemainingAmount.Text = "0";
                     tbTotalAmount.Text = tbPaidAmount.Text;
@@ -150,7 +182,7 @@ namespace StorePilot.UI.Sales
 
                 case InvoiceStatus.Deferred:
                     tbRemainingAmount.Text = _InvoiceItems
-                        .Sum(i => i.UnitPrice)
+                        .Sum(i => i.TotalPrice)
                         .ToString("#,##0");
                     tbPaidAmount.Text = "0";
                     tbTotalAmount.Text = tbRemainingAmount.Text;
@@ -168,7 +200,7 @@ namespace StorePilot.UI.Sales
                 this.Close();
             }
 
-            cbCustomers.DisplayMember = "CustomerName";
+            cbCustomers.DisplayMember = "Name";
             cbCustomers.ValueMember = "CustomerID";
             cbCustomers.DataSource = result.Data;
 
@@ -218,17 +250,6 @@ namespace StorePilot.UI.Sales
             tbNotes.Text = _Model.Notes;
         }
 
-        private void btnAddNew_Click(object sender, EventArgs e)
-        {
-            using (var frm = new frmAddEditUpdateCustomer())
-            {
-                frm.DataBack += Frm_DataBack;
-                frm.ShowDialog();
-            }
-        }
-
-        private void Frm_DataBack(object sender) => _LoadCustomers();
-
         private void cbStatuses_SelectedIndexChanged(object sender, EventArgs e)
             => _SetAmounts();
 
@@ -256,8 +277,10 @@ namespace StorePilot.UI.Sales
             _Service.Model.PaidAmount = _GetDecimalVal(tbPaidAmount.Text?.ToString());
             _Service.Model.TotalAmount = 
                 _GetDecimalVal(tbTotalAmount.Text?.ToString());
-            _Service.Model.CustomerID = 
-                _GetIntVal(cbCustomers.SelectedValue?.ToString());
+
+            int? CustomerID = _GetIntVal(cbCustomers.SelectedValue?.ToString());
+
+            _Service.Model.CustomerID = CustomerID == 0 ? null : CustomerID;
             _Service.Model.Notes = tbNotes.Text;
 
             List<InvoiceItemModel> list = new List<InvoiceItemModel>();
@@ -325,7 +348,30 @@ namespace StorePilot.UI.Sales
 
         private void btnViewPayments_Click(object sender, EventArgs e)
         {
+            using (var frm = new frmPaymentsScreen(_Service.Model.InvoiceID))
+            {
+                frm.DataBack += Frm_UpdateTotalAmount;
+                frm.ShowDialog();
+            }
+        }
 
+        private void Frm_UpdateTotalAmount(object sender)
+        {
+            var result = SaleInvoiceService.Find(_Id);
+
+            if (!result.IsSuccess)
+            {
+                MessageBoxManager.ShowError(result.Message, Language.ar);
+                return;
+            }
+
+            _Service = result.Data;
+            _Model = _Service.Model;
+
+            cbStatuses.SelectedValue = (int)_Model.InvoiceStatus.ToInvoiceStatus();
+            tbPaidAmount.Text = _Model.PaidAmount.ToString("#,##0");
+            tbRemainingAmount.Text = _Model.RemainingAmount.ToString("#,##0");
+            tbTotalAmount.Text = _Model.TotalAmount.ToString("#,##0");
         }
 
         private async void btnCancel_Click(object sender, EventArgs e)
@@ -348,5 +394,16 @@ namespace StorePilot.UI.Sales
             else
                 MessageBoxManager.ShowError(result.Message, Language.ar);
         }
+
+        private void btnReturns_Click(object sender, EventArgs e)
+        {
+            using (var frm = new frmReturnsScreen(_Service.Model.SaleInvoiceID))
+            {
+                frm.DataBack += Frm_UpdateTotalAmount;
+                frm.ShowDialog();
+            }
+        }
+
+        private void btnAddNew_Click(object sender, EventArgs e) => _LoadCustomers();
     }
 }

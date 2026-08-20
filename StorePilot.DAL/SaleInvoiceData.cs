@@ -449,5 +449,27 @@ namespace StorePilot.DAL
 
             return DataQueryService.Scalar<bool>(CommandType.Text, Query, Parameters);
         }
+
+        //used
+        public static Result<bool> Cancelled(int inoiceId)
+        {
+            string Query = @"SELECT EXISTS
+            (
+                SELECT 1 FROM SalesInvoices 
+                WHERE InvoiceID = @InvoiceID AND Cancelled = 1
+            ) AS Cancelled;";
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@InvoiceID",
+                    DbType = DbType.Int64,
+                    Value = inoiceId,
+                },
+            };
+
+            return DataQueryService.Scalar<bool>(CommandType.Text, Query, Parameters);
+        }
     }
 }

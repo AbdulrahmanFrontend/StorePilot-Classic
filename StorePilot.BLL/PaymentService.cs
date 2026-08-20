@@ -63,13 +63,33 @@ namespace StorePilot.BLL
             {
                 if (IsForSalesResult.Data)
                 {
-                    TransModel.TransactionType = TransactionType.Revenue.ToArabic();
-                    TransModel.Description = "تحصيل دين.";
+                    var CancelledResult = 
+                        SaleInvoiceData.Cancelled(this.Model.InvoiceID);
+
+                    if (CancelledResult.IsSuccess && !CancelledResult.Data)
+                    {
+                        TransModel.TransactionType = TransactionType.Revenue.ToArabic();
+                        TransModel.Description = "تحصيل دين.";
+                    }
+                    else
+                        return Result.Failure(
+                            "لا يسمح بتسجيل دفع لفاتورة ملغية, " +
+                            "أو أن عملية التحقق من كون الفاتورة ملغية فشلت!");
                 }
                 else
                 {
-                    TransModel.TransactionType = TransactionType.Expense.ToArabic();
-                    TransModel.Description = "سداد دين.";
+                    var CancelledResult =
+                        PurchaseInvoiceData.Cancelled(this.Model.InvoiceID);
+
+                    if (CancelledResult.IsSuccess && !CancelledResult.Data)
+                    {
+                        TransModel.TransactionType = TransactionType.Expense.ToArabic();
+                        TransModel.Description = "سداد دين.";
+                    }
+                    else
+                        return Result.Failure(
+                            "لا يسمح بتسجيل دفع لفاتورة ملغية, " +
+                            "أو أن عملية التحقق من كون الفاتورة ملغية فشلت!");
                 }
             }
             else
@@ -224,6 +244,35 @@ namespace StorePilot.BLL
 
             if (PaymentResult.Data.Cancelled)
                 return Result.Failure("عملية الدفع ملغية بالفعل!");
+
+            Result<bool> IsForSalesResult = PaymentData.IsForSales(PaymentResult.Data.InvoiceID);
+
+            if (IsForSalesResult.IsSuccess)
+            {
+                if (IsForSalesResult.Data)
+                {
+                    var CancelledResult =
+                        SaleInvoiceData.Cancelled(PaymentResult.Data.InvoiceID);
+
+                    if (!(CancelledResult.IsSuccess && !CancelledResult.Data))
+                        return Result.Failure(
+                            "لا يسمح بتسجيل دفع لفاتورة ملغية, " +
+                            "أو أن عملية التحقق من كون الفاتورة ملغية فشلت!");
+                }
+                else
+                {
+                    var CancelledResult =
+                        PurchaseInvoiceData.Cancelled(PaymentResult.Data.InvoiceID);
+
+                    if (!(CancelledResult.IsSuccess && !CancelledResult.Data))
+                        return Result.Failure(
+                            "لا يسمح بتسجيل دفع لفاتورة ملغية, " +
+                            "أو أن عملية التحقق من كون الفاتورة ملغية فشلت!");
+                }
+            }
+            else
+                return Result.Failure(
+                    "فشلت عملية التحقق من كون الدين لفاتورة شراء أم بيع!");
 
             Result CancellResult = DbManager.Current?.ExecuteTransaction(
                 (con, trans) =>
