@@ -266,7 +266,7 @@ namespace StorePilot.UI.Sales
         private void _EnabledButtonsList()
         {
             btnSaveList.Enabled = _Items.Count > 0;
-            btnExit.Enabled = _Items.Count > 0;
+            btnResetList.Enabled = _Items.Count > 0;
             btnPrint.Enabled = _Items.Count > 0;
         }
 

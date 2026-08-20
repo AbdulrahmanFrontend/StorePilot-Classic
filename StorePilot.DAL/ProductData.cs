@@ -469,12 +469,7 @@ namespace StorePilot.DAL
                 Parameters);
 
             if (result.IsSuccess)
-            {
-                if (result.Data > 0)
-                    return Result.Success();
-
-                return Result.Failure("لم تحديث مخزن أي صنف!");
-            }
+                return Result.Success();
 
             return Result.Failure("فشلت عملية تحديث مخزن صنف!");
         }

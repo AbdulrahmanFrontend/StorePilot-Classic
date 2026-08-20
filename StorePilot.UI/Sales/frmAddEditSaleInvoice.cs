@@ -101,6 +101,7 @@ namespace StorePilot.UI.Sales
             btnSavePrint.Enabled = false;
 
             btnCancel.Visible = false;
+            btnReturns.Visible = false;
             btnViewPayments.Visible = false;
 
             btnInvoiceItems.Text = "إضافة عناصر الفاتورة";
@@ -125,16 +126,28 @@ namespace StorePilot.UI.Sales
 
             _LoadData();
 
+            _ConfigureForStatus();
+        }
+
+        private void _ConfigureForStatus()
+        {
             Result<bool> result;
 
             if (_Model.InvoiceStatus == InvoiceStatus.Deferred.ToArabic())
-                btnViewPayments.Text = "إضافة دفعة جديدة";
+            {
+                if (!_Model.Cancelled)
+                    btnViewPayments.Text = "إضافة دفعة جديدة";
+                else
+                    btnViewPayments.Enabled = false;
+            }
             else
             {
                 result = InvoiceService.HasPayments(_Model.InvoiceID);
-
+                btnViewPayments.Text = "عرض المدفوعات";
                 if (!result.IsSuccess)
                     btnViewPayments.Enabled = false;
+                else
+                    btnViewPayments.Enabled = true;
             }
             if (_Model.Cancelled)
             {
@@ -145,9 +158,21 @@ namespace StorePilot.UI.Sales
             result = SaleInvoiceService.HasReturns(_Model.SaleInvoiceID);
 
             if (!result.IsSuccess)
+            {
                 btnReturns.Text = "إضافة مرتجع";
+                if (_Model.Cancelled)
+                    btnReturns.Enabled = false;
+                else
+                    btnReturns.Enabled = true;
+            }
             else
+            {
                 btnReturns.Text = "عرض المرتجعات";
+                if (_Model.Cancelled)
+                    btnReturns.Enabled = true;
+                else
+                    btnReturns.Enabled = false;
+            }
         }
 
         private void Frm_DataBackInvoiceItems(
@@ -242,7 +267,8 @@ namespace StorePilot.UI.Sales
             _Model = _Service.Model;
 
             dtpInvoiceDate.Value = _Model.InvoiceDate;
-            cbCustomers.SelectedValue = _Model.CustomerID;
+            if (_Model.CustomerID.HasValue)
+                cbCustomers.SelectedValue = _Model.CustomerID.Value;
             cbStatuses.Text = _Model.InvoiceStatus;
             tbPaidAmount.Text = _Model.PaidAmount.ToString("#,##0");
             tbRemainingAmount.Text = _Model.RemainingAmount.ToString("#,##0");
@@ -372,6 +398,8 @@ namespace StorePilot.UI.Sales
             tbPaidAmount.Text = _Model.PaidAmount.ToString("#,##0");
             tbRemainingAmount.Text = _Model.RemainingAmount.ToString("#,##0");
             tbTotalAmount.Text = _Model.TotalAmount.ToString("#,##0");
+
+            _ConfigureForStatus();
         }
 
         private async void btnCancel_Click(object sender, EventArgs e)
@@ -405,5 +433,12 @@ namespace StorePilot.UI.Sales
         }
 
         private void btnAddNew_Click(object sender, EventArgs e) => _LoadCustomers();
+
+        private void frmAddEditSaleInvoice_FormClosing(
+            object sender, 
+            FormClosingEventArgs e)
+            => DataBack?.Invoke(this);
+
+        private void btnClose_Click(object sender, EventArgs e) => this.Close();
     }
 }

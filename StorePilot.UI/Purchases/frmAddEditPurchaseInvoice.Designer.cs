@@ -125,6 +125,7 @@
             this.btnClose.Text = "إغلاق";
             this.btnClose.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnClose.UseVisualStyleBackColor = false;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // btnSavePrint
             // 
@@ -623,6 +624,7 @@
             this.Name = "frmAddEditPurchaseInvoice";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "frmAddEditPurchaseInvoice";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmAddEditPurchaseInvoice_FormClosing);
             this.Load += new System.EventHandler(this.frmAddEditPurchaseInvoice_Load);
             this.flpFooter.ResumeLayout(false);
             this.tlpContainer.ResumeLayout(false);

@@ -94,6 +94,7 @@ namespace StorePilot.UI.Returns
                     tlpHeader.Visible = false;
                     btnSaveList.Visible = false;
                     btnResetList.Visible = false;
+                    ctrlCmData.ContextMenuStrip = null;
                     _LoadItems();
                     break;
             }
@@ -106,6 +107,9 @@ namespace StorePilot.UI.Returns
         {
             btnSaveItem.Enabled = false;
             btnCancel.Enabled = false;
+
+            tbQuantity.ReadOnly = true;
+            tbUnitPrice.ReadOnly = true;
 
             tbQuantity.Text = "0";
             tbUnitPrice.Text = "0";
@@ -137,7 +141,7 @@ namespace StorePilot.UI.Returns
         {
             lblItemsCount.Text = $"عدد عناصر الفاتورة: {_Items.Count}";
             lblTotal.Text = $"إجمالي الفاتورة: " +
-                $"{_Items.Sum(i => i.UnitPrice).ToString("#,##0")}";
+                $"{_Items.Sum(i => i.TotalPrice).ToString("#,##0")}";
         }
 
         private void _LoadItems()

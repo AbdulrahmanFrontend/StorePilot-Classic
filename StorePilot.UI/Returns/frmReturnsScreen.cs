@@ -45,7 +45,7 @@ namespace StorePilot.UI.Returns
                 },
                 new[]
                 {
-                    "غير ملغي",
+                    "مفعل",
                     "ملغي"
                 });
 

@@ -46,7 +46,7 @@ namespace StorePilot.UI.Sales
                 },
                 new[]
                 {
-                    "غير ملغي",
+                    "مفعل",
                     "ملغي"
                 });
 
@@ -263,7 +263,7 @@ namespace StorePilot.UI.Sales
                 "هل انت متأكد أنك تريد إلغاء هذه الفاتورة؟",
                 Language.ar);
 
-            if (dialog == DialogResult.Yes)
+            if (dialog != DialogResult.Yes)
                 return;
 
             if (!_TrySelectedID(0, out int ID))
@@ -280,7 +280,9 @@ namespace StorePilot.UI.Sales
                 return;
             }
 
-            var result = await Task.Run(() => SaleInvoiceService.Cancell(ID));
+            var result = await Task.Run(() => 
+                SaleInvoiceService.Cancell(ID)
+            );
 
             if (result.IsSuccess)
             {

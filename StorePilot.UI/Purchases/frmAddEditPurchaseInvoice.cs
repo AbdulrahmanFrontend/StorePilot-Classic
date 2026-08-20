@@ -141,6 +141,35 @@ namespace StorePilot.UI.Purchases
                 btnCancel.Enabled = false;
                 btnSavePrint.Enabled = false;
             }
+
+            _ConfigureForStatus();
+        }
+
+        private void _ConfigureForStatus()
+        {
+            Result<bool> result;
+
+            if (_Model.InvoiceStatus == InvoiceStatus.Deferred.ToArabic())
+            {
+                if (!_Model.Cancelled)
+                    btnViewPayments.Text = "إضافة دفعة جديدة";
+                else
+                    btnViewPayments.Enabled = false;
+            }
+            else
+            {
+                result = InvoiceService.HasPayments(_Model.InvoiceID);
+                btnViewPayments.Text = "عرض المدفوعات";
+                if (!result.IsSuccess)
+                    btnViewPayments.Enabled = false;
+                else
+                    btnViewPayments.Enabled = true;
+            }
+            if (_Model.Cancelled)
+            {
+                btnCancel.Enabled = false;
+                btnSavePrint.Enabled = false;
+            }
         }
 
         private void Frm_DataBackInvoiceItems(
@@ -235,7 +264,8 @@ namespace StorePilot.UI.Purchases
             _Model = _Service.Model;
 
             dtpInvoiceDate.Value = _Model.InvoiceDate;
-            cbSuppliers.SelectedValue = _Model.SupplierID;
+            if (_Model.SupplierID.HasValue)
+                cbSuppliers.SelectedValue = _Model.SupplierID.Value;
             cbStatuses.Text = _Model.InvoiceStatus;
             tbPaidAmount.Text = _Model.PaidAmount.ToString("#,##0");
             tbRemainingAmount.Text = _Model.RemainingAmount.ToString("#,##0");
@@ -376,6 +406,8 @@ namespace StorePilot.UI.Purchases
             tbPaidAmount.Text = _Model.PaidAmount.ToString("#,##0");
             tbRemainingAmount.Text = _Model.RemainingAmount.ToString("#,##0");
             tbTotalAmount.Text = _Model.TotalAmount.ToString("#,##0");
+
+            _ConfigureForStatus();
         }
 
         private async void btnCancel_Click(object sender, EventArgs e)
@@ -398,5 +430,12 @@ namespace StorePilot.UI.Purchases
             else
                 MessageBoxManager.ShowError(result.Message, Language.ar);
         }
+
+        private void frmAddEditPurchaseInvoice_FormClosing(
+            object sender, 
+            FormClosingEventArgs e)
+            => DataBack?.Invoke(this);
+
+        private void btnClose_Click(object sender, EventArgs e) => this.Close();
     }
 }
