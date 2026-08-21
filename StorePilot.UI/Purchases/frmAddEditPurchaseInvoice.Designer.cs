@@ -410,6 +410,7 @@
             this.cbStatuses.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbStatuses.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbStatuses.DropDownHeight = 100;
             this.cbStatuses.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbStatuses.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -556,6 +557,7 @@
             this.dtpInvoiceDate.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.dtpInvoiceDate.Cursor = System.Windows.Forms.Cursors.Hand;
             this.dtpInvoiceDate.CustomFormat = "dd/MM/yyyy hh:mm tt";
             this.dtpInvoiceDate.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpInvoiceDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;

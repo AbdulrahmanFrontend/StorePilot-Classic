@@ -159,7 +159,7 @@
             this.tbUnitPrice.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbUnitPrice.Location = new System.Drawing.Point(229, 48);
             this.tbUnitPrice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 3);
-            this.tbUnitPrice.MaxLength = 6;
+            this.tbUnitPrice.MaxLength = 7;
             this.tbUnitPrice.Name = "tbUnitPrice";
             this.tbUnitPrice.ReadOnly = true;
             this.tbUnitPrice.Size = new System.Drawing.Size(218, 27);
@@ -271,11 +271,11 @@
             this.cbProducts.DropDownHeight = 100;
             this.cbProducts.FormattingEnabled = true;
             this.cbProducts.IntegralHeight = false;
-            this.cbProducts.Location = new System.Drawing.Point(3, 3);
+            this.cbProducts.Location = new System.Drawing.Point(3, 5);
             this.cbProducts.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.cbProducts.Name = "cbProducts";
             this.cbProducts.Size = new System.Drawing.Size(328, 28);
-            this.cbProducts.TabIndex = 2;
+            this.cbProducts.TabIndex = 1;
             this.cbProducts.Validating += new System.ComponentModel.CancelEventHandler(this.cbProducts_Validating);
             // 
             // tbQuantity
@@ -285,7 +285,7 @@
             this.tbQuantity.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbQuantity.Location = new System.Drawing.Point(453, 48);
             this.tbQuantity.Margin = new System.Windows.Forms.Padding(3, 4, 3, 3);
-            this.tbQuantity.MaxLength = 6;
+            this.tbQuantity.MaxLength = 7;
             this.tbQuantity.Name = "tbQuantity";
             this.tbQuantity.ReadOnly = true;
             this.tbQuantity.Size = new System.Drawing.Size(218, 27);
@@ -372,7 +372,7 @@
             this.btnResetList.Location = new System.Drawing.Point(190, 4);
             this.btnResetList.Name = "btnResetList";
             this.btnResetList.Size = new System.Drawing.Size(87, 37);
-            this.btnResetList.TabIndex = 7;
+            this.btnResetList.TabIndex = 6;
             this.btnResetList.Text = "تفريغ";
             this.btnResetList.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnResetList.UseVisualStyleBackColor = true;
@@ -391,7 +391,7 @@
             this.btnExit.Location = new System.Drawing.Point(3, 4);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(88, 37);
-            this.btnExit.TabIndex = 9;
+            this.btnExit.TabIndex = 8;
             this.btnExit.Text = "خروج";
             this.btnExit.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnExit.UseVisualStyleBackColor = true;
@@ -409,7 +409,7 @@
             this.btnSaveList.Location = new System.Drawing.Point(97, 4);
             this.btnSaveList.Name = "btnSaveList";
             this.btnSaveList.Size = new System.Drawing.Size(87, 37);
-            this.btnSaveList.TabIndex = 8;
+            this.btnSaveList.TabIndex = 7;
             this.btnSaveList.Text = "حفظ";
             this.btnSaveList.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnSaveList.UseVisualStyleBackColor = true;

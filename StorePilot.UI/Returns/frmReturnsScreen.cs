@@ -230,6 +230,13 @@ namespace StorePilot.UI.Returns
 
         private async void tsmiCancel_Click(object sender, EventArgs e)
         {
+            DialogResult dialog = MessageBoxManager.ShowConfirm(
+                "هل انت متأكد أنك تريد إلغاء هذه الفاتورة؟",
+                Language.ar);
+
+            if (dialog != DialogResult.Yes)
+                return;
+
             if (!_TrySelectedID(0, out int ID))
                 return;
 
@@ -244,29 +251,22 @@ namespace StorePilot.UI.Returns
                 return;
             }
 
-            DialogResult dialog = MessageBoxManager.ShowConfirm(
-                "هل انت متأكد أنك تريد إلغاء هذه الفاتورة؟",
-                Language.ar);
+            var result = await Task.Run(() => SaleReturnService.Cancell(ID));
 
-            if (dialog == DialogResult.Yes)
+            if (result.IsSuccess)
             {
-                var result = await Task.Run(() => SaleReturnService.Cancell(ID));
+                MessageBoxManager.ShowSuccess(
+                    result.Message,
+                    Language.ar);
 
-                if (result.IsSuccess)
-                {
-                    MessageBoxManager.ShowSuccess(
-                        result.Message,
-                        Language.ar);
+                await _RefreshData();
 
-                    await _RefreshData();
-
-                    await _RefreshPagesCount();
-                }
-                else
-                    MessageBoxManager.ShowError(
-                        result.Message,
-                        Language.ar);
+                await _RefreshPagesCount();
             }
+            else
+                MessageBoxManager.ShowError(
+                    result.Message,
+                    Language.ar);
         }
 
         private void tsmiPrint_Click(object sender, EventArgs e)
@@ -277,9 +277,15 @@ namespace StorePilot.UI.Returns
         private void ctrlCmsReturns_Opening(object sender, CancelEventArgs e)
         {
             if (_IsCancelled())
+            {
                 tsmiCancel.Enabled = false;
+                tsmiPrint.Enabled = false;
+            }
             else
+            {
                 tsmiCancel.Enabled = true;
+                tsmiPrint.Enabled = true;
+            }
         }
     }
 }

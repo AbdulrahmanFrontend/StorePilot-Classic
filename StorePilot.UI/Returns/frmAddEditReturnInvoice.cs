@@ -67,6 +67,8 @@ namespace StorePilot.UI.Returns
             foreach (var i in tlpUp.Controls.OfType<TableLayoutPanel>())
                 i.BackColor = Theme.Background;
 
+            tlpNotes.BackColor = Theme.Background;
+
 
             flpFooter.BackColor = Theme.Background;
             flpFooter.ForeColor = Theme.Text;
@@ -98,13 +100,14 @@ namespace StorePilot.UI.Returns
 
             btnSavePrint.Text = "حفظ";
             btnSavePrint.Image = Resources.Save_32;
-            btnSavePrint.Enabled = false;
+            btnSavePrint.Enabled = true;
 
             btnCancel.Visible = false;
 
             btnInvoiceItems.Text = "إضافة عناصر الفاتورة";
 
-            using (var frm = new frmAddEditUpdateReturnItems())
+            using (var frm = new frmAddEditUpdateReturnItems(
+                _Service.Model.SaleInvoiceID))
             {
                 frm.DataBack += Frm_DataBackInvoiceItems;
                 frm.ShowDialog();
@@ -239,8 +242,6 @@ namespace StorePilot.UI.Returns
                 MessageBoxManager.ShowError(result.Message, Language.ar);
         }
 
-        private int _GetIntVal(string key) => int.TryParse(key, out var val) ? val : 0;
-
         private decimal _GetDecimalVal(string key)
             => decimal.TryParse(key, out var val) ? val : 0;
 
@@ -251,7 +252,8 @@ namespace StorePilot.UI.Returns
                 case frmMode.AddNew:
                     if (!_InvoiceItems.Any())
                     {
-                        using (var frmAdd = new frmAddEditUpdateReturnItems())
+                        using (var frmAdd = new frmAddEditUpdateReturnItems(
+                            _Service.Model.SaleInvoiceID))
                         {
                             frmAdd.DataBack += Frm_DataBackInvoiceItems;
                             frmAdd.ShowDialog();
@@ -259,8 +261,9 @@ namespace StorePilot.UI.Returns
                     }
                     else
                     {
-                        using (var frmUpdate =
-                            new frmAddEditUpdateReturnItems(_InvoiceItems))
+                        using (var frmUpdate = new frmAddEditUpdateReturnItems(
+                                _Service.Model.SaleInvoiceID,
+                                _InvoiceItems))
                         {
                             frmUpdate.DataBack += Frm_DataBackInvoiceItems;
                             frmUpdate.ShowDialog();
@@ -271,7 +274,9 @@ namespace StorePilot.UI.Returns
                 case frmMode.Edit:
                     int InvoiceID = _Service.Model.ReturnID;
 
-                    using (var frmEdit = new frmAddEditUpdateReturnItems(InvoiceID))
+                    using (var frmEdit = new frmAddEditUpdateReturnItems(
+                        InvoiceID,
+                        frmMode.Edit))
                         frmEdit.ShowDialog();
                     break;
             }

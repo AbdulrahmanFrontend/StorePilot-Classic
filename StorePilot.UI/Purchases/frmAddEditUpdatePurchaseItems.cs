@@ -86,14 +86,17 @@ namespace StorePilot.UI.Purchases
             switch (_Mode)
             {
                 case frmMode.AddNew:
+                    this.Text = "إضافة عناصر الفاتورة";
                     _FillProductsComboBox();
                     break;
 
                 case frmMode.Update:
+                    this.Text = "تحديث بيانات عناصر الفاتورة";
                     _FillProductsComboBox();
                     break;
 
                 case frmMode.Edit:
+                    this.Text = "بيانات عناصر الفاتورة";
                     tlpHeader.Visible = false;
                     btnSaveList.Visible = false;
                     btnResetList.Visible = false;

@@ -22,7 +22,9 @@ namespace StorePilot.UI.Returns
     {
         private frmMode _Mode;
 
-        private int _InvoiceID;
+        private int _ReturnId;
+        private int _SaleInvoiceId;
+        private int _InvoiceId;
         private InvoiceItemViewModel _InvoiceItem;
         private BindingList<InvoiceItemViewModel> _Items;
 
@@ -31,28 +33,41 @@ namespace StorePilot.UI.Returns
             BindingList<InvoiceItemViewModel> items);
         public event DataBackEventHandler DataBack;
 
-        public frmAddEditUpdateReturnItems()
-        {
-            InitializeComponent();
-
-            _Mode = frmMode.AddNew;
-            _Items = new BindingList<InvoiceItemViewModel>();
-        }
-
-        public frmAddEditUpdateReturnItems(BindingList<InvoiceItemViewModel> items)
+        public frmAddEditUpdateReturnItems(
+            int saleInvoiceId,
+            BindingList<InvoiceItemViewModel> items)
         {
             InitializeComponent();
 
             _Mode = frmMode.Update;
             _Items = items;
+            _SaleInvoiceId = saleInvoiceId;
         }
 
-        public frmAddEditUpdateReturnItems(int invoiceId)
+        public frmAddEditUpdateReturnItems(int id, frmMode mode = frmMode.AddNew)
         {
             InitializeComponent();
 
-            _Mode = frmMode.Edit;
-            _InvoiceID = invoiceId;
+            switch (mode)
+            {
+                case frmMode.AddNew:
+                    _Mode = frmMode.AddNew;
+                    _Items = new BindingList<InvoiceItemViewModel>();
+                    _SaleInvoiceId = id;
+                    break;
+
+                case frmMode.Edit:
+                    _Mode = frmMode.Edit;
+                    _ReturnId = id;
+                    break;
+
+                default:
+                    MessageBoxManager.ShowError(
+                        "حالة الشاشة غير متوقعة!",
+                        Language.ar);
+                    this.Close();
+                    break;
+            }
         }
 
         protected override void ApplyTheme()
@@ -80,17 +95,30 @@ namespace StorePilot.UI.Returns
         {
             _SetDefaultValues();
 
+            var SaleInvoiceResult = SaleInvoiceService.Find(_SaleInvoiceId);
+
+            if (!SaleInvoiceResult.IsSuccess)
+            {
+                MessageBoxManager.ShowError(SaleInvoiceResult.Message, Language.ar);
+                this.Close();
+            }
+
+            _InvoiceId = SaleInvoiceResult.Data.Model.InvoiceID;
+
             switch (_Mode)
             {
                 case frmMode.AddNew:
+                    this.Text = "إضافة عناصر الفاتورة";
                     _FillProductsComboBox();
                     break;
 
                 case frmMode.Update:
+                    this.Text = "تحديث بيانات عناصر الفاتورة";
                     _FillProductsComboBox();
                     break;
 
                 case frmMode.Edit:
+                    this.Text = "بيانات عناصر الفاتورة";
                     tlpHeader.Visible = false;
                     btnSaveList.Visible = false;
                     btnResetList.Visible = false;
@@ -122,7 +150,7 @@ namespace StorePilot.UI.Returns
 
         private void _FillProductsComboBox()
         {
-            var result = InvoiceItemService.GetInvoiceItems(_InvoiceID);
+            var result = InvoiceItemService.GetInvoiceItems(_InvoiceId);
 
             if (!result.IsSuccess)
             {
@@ -146,7 +174,7 @@ namespace StorePilot.UI.Returns
 
         private void _LoadItems()
         {
-            var result = InvoiceItemService.GetInvoiceItems(_InvoiceID);
+            var result = InvoiceItemService.GetInvoiceItems(_InvoiceId);
 
             if (!result.IsSuccess)
             {
@@ -179,8 +207,9 @@ namespace StorePilot.UI.Returns
         private void cbProducts_Validating(object sender, CancelEventArgs e)
         {
             int ProductID = _GetIntValue(cbProducts.SelectedValue?.ToString());
-            var result = InvoiceItemService.Find(_InvoiceID, ProductID);
+            var result = InvoiceItemService.Find(_SaleInvoiceId, ProductID);
 
+            tbUnitPrice.ReadOnly = !result.IsSuccess;
             tbQuantity.ReadOnly = !result.IsSuccess;
             btnSaveItem.Enabled = result.IsSuccess;
             btnCancel.Enabled = result.IsSuccess;
@@ -217,15 +246,15 @@ namespace StorePilot.UI.Returns
         private Result IsValid()
         {
             var ItemResult = InvoiceItemService.Find(
-                _InvoiceID, 
+                _SaleInvoiceId, 
                 _InvoiceItem.ProductID);
 
             if (!ItemResult.IsSuccess)
                 return Result.Failure(ItemResult.Message);
 
-            if (_Items.Count(i => i.ProductID == _InvoiceItem.ProductID) > 1)
+            if (_Items.Count(i => i.ProductID == _InvoiceItem.ProductID) > 0)
                 return Result.Failure(
-                    $"هذا الصنف مكرر في الفاتورة!");
+                    $"هذا الصنف موجود بالفعل في الفاتورة!");
 
             decimal Quantity = _GetDecimalValue(tbQuantity.Text?.ToString());
 
@@ -235,7 +264,7 @@ namespace StorePilot.UI.Returns
 
             if (Quantity > ItemResult.Data.Model.Quantity)
                 return Result.Failure(
-                    $"هذا الصنف الكمية المطلوبة منه أكبر من الكمية التي تم بيعها!");
+                    $"هذا الصنف الكمية المطلوبة منه أكبر من المسجلة في فاتورة البيع!");
 
             decimal UnitPrice = _GetDecimalValue(tbUnitPrice.Text?.ToString());
 
@@ -280,17 +309,20 @@ namespace StorePilot.UI.Returns
 
         private void _Update()
         {
-            InvoiceItemViewModel Item = _RemoveItemFromList();
+            if (_Mode == frmMode.Edit)
+                return;
+
+            _InvoiceItem = _RemoveItemFromList();
 
             btnSaveItem.Enabled = true;
             btnCancel.Enabled = true;
             tbQuantity.ReadOnly = false;
             tbUnitPrice.ReadOnly = false;
 
-            cbProducts.SelectedValue = Item.ProductID;
-            tbQuantity.Text = Item.Quantity.ToString("#,##0");
-            tbUnitPrice.Text = Item.UnitPrice.ToString("#,##0");
-            tbTotalPrice.Text = Item.TotalPrice.ToString("#,##0");
+            cbProducts.SelectedValue = _InvoiceItem.ProductID;
+            tbQuantity.Text = _InvoiceItem.Quantity.ToString("#,##0");
+            tbUnitPrice.Text = _InvoiceItem.UnitPrice.ToString("#,##0");
+            tbTotalPrice.Text = _InvoiceItem.TotalPrice.ToString("#,##0");
         }
 
         private InvoiceItemViewModel _RemoveItemFromList()

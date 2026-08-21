@@ -98,6 +98,7 @@
             this.btnClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
             this.btnClose.ButtonStyle = DevToolkit.BaseWinForms.Theming.ButtonStyle.Primary;
             this.btnClose.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnClose.FlatAppearance.BorderSize = 0;
             this.btnClose.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(64)))), ((int)(((byte)(175)))));
             this.btnClose.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(78)))), ((int)(((byte)(216)))));
@@ -110,7 +111,7 @@
             this.btnClose.Name = "btnClose";
             this.btnClose.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.btnClose.Size = new System.Drawing.Size(112, 43);
-            this.btnClose.TabIndex = 9;
+            this.btnClose.TabIndex = 10;
             this.btnClose.Text = "إغلاق";
             this.btnClose.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnClose.UseVisualStyleBackColor = false;
@@ -132,7 +133,7 @@
             this.btnSavePrint.Name = "btnSavePrint";
             this.btnSavePrint.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.btnSavePrint.Size = new System.Drawing.Size(112, 43);
-            this.btnSavePrint.TabIndex = 8;
+            this.btnSavePrint.TabIndex = 9;
             this.btnSavePrint.Text = "حفظ";
             this.btnSavePrint.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnSavePrint.UseVisualStyleBackColor = false;
@@ -155,7 +156,7 @@
             this.btnInvoiceItems.Name = "btnInvoiceItems";
             this.btnInvoiceItems.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.btnInvoiceItems.Size = new System.Drawing.Size(177, 43);
-            this.btnInvoiceItems.TabIndex = 7;
+            this.btnInvoiceItems.TabIndex = 8;
             this.btnInvoiceItems.Text = "إضافة عناصر الفاتورة";
             this.btnInvoiceItems.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnInvoiceItems.UseVisualStyleBackColor = false;
@@ -178,7 +179,7 @@
             this.btnViewPayments.Name = "btnViewPayments";
             this.btnViewPayments.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.btnViewPayments.Size = new System.Drawing.Size(174, 43);
-            this.btnViewPayments.TabIndex = 6;
+            this.btnViewPayments.TabIndex = 7;
             this.btnViewPayments.Text = "عرض سجل الدفع";
             this.btnViewPayments.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnViewPayments.UseVisualStyleBackColor = false;
@@ -201,7 +202,7 @@
             this.btnReturns.Name = "btnReturns";
             this.btnReturns.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.btnReturns.Size = new System.Drawing.Size(160, 43);
-            this.btnReturns.TabIndex = 10;
+            this.btnReturns.TabIndex = 6;
             this.btnReturns.Text = "عرض المرتجعات";
             this.btnReturns.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnReturns.UseVisualStyleBackColor = false;
@@ -224,7 +225,7 @@
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.btnCancel.Size = new System.Drawing.Size(112, 43);
-            this.btnCancel.TabIndex = 11;
+            this.btnCancel.TabIndex = 5;
             this.btnCancel.Text = "إلغاء";
             this.btnCancel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnCancel.UseVisualStyleBackColor = false;

@@ -3,6 +3,7 @@ using DevToolkit.BaseWinForms.Managers;
 using DevToolkit.Core.Common;
 using DevToolkit.Core.Results;
 using StorePilot.BLL;
+using StorePilot.UI.Global.Classes;
 using StorePilot.UI.Global.Forms;
 using StorePilot.UI.Properties;
 using StorePilot.UI.Returns;
@@ -226,7 +227,7 @@ namespace StorePilot.UI.Payments
                 if (!_TrySelectedID(1, out int invoiceId))
                     return;
 
-                using (var frm = new frmAddEditPayment(paymentId, invoiceId))
+                using (var frm = new frmAddEditPayment(paymentId, frmMode.Edit))
                 {
                     frm.DataBack += Frm_DataBack;
                     frm.ShowDialog();

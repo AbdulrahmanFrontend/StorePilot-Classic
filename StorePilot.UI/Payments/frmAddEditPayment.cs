@@ -31,21 +31,27 @@ namespace StorePilot.UI.Payments
         public delegate void DataBackEventHandler(object sender);
         public event DataBackEventHandler DataBack;
 
-        public frmAddEditPayment(int invoiceId)
+        public frmAddEditPayment(int id, frmMode mode = frmMode.AddNew)
         {
             InitializeComponent();
 
-            _Mode = frmMode.AddNew;
-            _InvoiceID = invoiceId;
-        }
+            switch (mode)
+            {
+                case frmMode.AddNew:
+                    _Mode = frmMode.AddNew;
+                    _InvoiceID = id;
+                    break;
 
-        public frmAddEditPayment(int paymentId, int invoiceId)
-        {
-            InitializeComponent();
+                case frmMode.Edit:
+                    _Mode = frmMode.Edit;
+                    _PaymentId = id;
+                    break;
 
-            _Mode = frmMode.Edit;
-            _PaymentId = paymentId;
-            _InvoiceID = invoiceId;
+                default:
+                    MessageBoxManager.ShowError("حالة الشاشة غير صالحة!", Language.ar);
+                    this.Close();
+                    break;
+            }
         }
 
         protected override void ApplyTheme()
