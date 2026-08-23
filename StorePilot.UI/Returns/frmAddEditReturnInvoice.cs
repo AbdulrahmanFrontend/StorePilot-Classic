@@ -35,22 +35,28 @@ namespace StorePilot.UI.Returns
 
         public delegate void DataBackEventHandler(object sender);
         public event DataBackEventHandler DataBack;
-        
-        public frmAddEditReturnInvoice(int saleInvoiceId, int returnId)
+
+        public frmAddEditReturnInvoice(int id, frmMode mode = frmMode.AddNew)
         {
             InitializeComponent();
 
-            _Mode = frmMode.Edit;
-            _ReturnId = returnId;
-            _SaleInvoiceId = saleInvoiceId;
-        }
+            switch (mode)
+            {
+                case frmMode.AddNew:
+                    _Mode = frmMode.AddNew;
+                    _SaleInvoiceId = id;
+                    break;
 
-        public frmAddEditReturnInvoice(int saleInvoiceId)
-        {
-            InitializeComponent();
+                case frmMode.Edit:
+                    _Mode = frmMode.Edit;
+                    _ReturnId = id;
+                    break;
 
-            _Mode = frmMode.AddNew;
-            _SaleInvoiceId = saleInvoiceId;
+                default:
+                    MessageBoxManager.ShowError("حالة الشاشة غير متوقعة!", Language.ar);
+                    this.Close();
+                    break;
+            }
         }
 
         protected override void ApplyTheme()
@@ -95,6 +101,7 @@ namespace StorePilot.UI.Returns
         private void _ConfigureForAddNewInvoice()
         {
             _Service = new SaleReturnService();
+            _Service.Model.SaleInvoiceID = _SaleInvoiceId;
 
             lblTitle.Text = "إضافة بيانات فاتورة مرتجع جديدة";
 
@@ -107,7 +114,7 @@ namespace StorePilot.UI.Returns
             btnInvoiceItems.Text = "إضافة عناصر الفاتورة";
 
             using (var frm = new frmAddEditUpdateReturnItems(
-                _Service.Model.SaleInvoiceID))
+                _SaleInvoiceId))
             {
                 frm.DataBack += Frm_DataBackInvoiceItems;
                 frm.ShowDialog();
@@ -137,6 +144,12 @@ namespace StorePilot.UI.Returns
             _InvoiceItems = items;
 
             _EnabledFields();
+            
+            btnSavePrint.Enabled = true;
+
+            tbTotalAmount.Text = _InvoiceItems
+                .Sum(i => i.TotalPrice)
+                .ToString("#,##0");
         }
 
         private void _SetDefaultAppearance()
@@ -212,7 +225,12 @@ namespace StorePilot.UI.Returns
             if (Confirm != DialogResult.Yes)
                 return;
 
-            _Service.Model.ReturnDate = dtpInvoiceDate.Value;
+            if (!ValidateChildren())
+            {
+                MessageBoxManager.ShowError("فاتورة مرتجع غير صالحة!", Language.ar);
+                return;
+            }
+
             _Service.Model.TotalReturnAmount =
                 _GetDecimalVal(tbTotalAmount.Text?.ToString());
             _Service.Model.Notes = tbNotes.Text;
@@ -230,7 +248,9 @@ namespace StorePilot.UI.Returns
 
             _Service.SetItems(list);
 
-            var result = await Task.Run(() => _Service.Save());
+            var result = await Task.Run(() => 
+                _Service.Save()
+            );
 
             if (result.IsSuccess)
             {

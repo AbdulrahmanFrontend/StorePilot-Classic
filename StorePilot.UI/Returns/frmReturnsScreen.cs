@@ -3,6 +3,7 @@ using DevToolkit.BaseWinForms.Managers;
 using DevToolkit.Core.Common;
 using DevToolkit.Core.Results;
 using StorePilot.BLL;
+using StorePilot.UI.Global.Classes;
 using StorePilot.UI.Global.Forms;
 using StorePilot.UI.Payments;
 using StorePilot.UI.Properties;
@@ -145,7 +146,7 @@ namespace StorePilot.UI.Returns
                 {
                     Name = "ReturnID",
                     HeaderText = "رقم فاتورة المرتجع",
-                    DataPropertyName = "SaleInvoiceID",
+                    DataPropertyName = "ReturnID",
                 },
                 new DataGridViewTextBoxColumn
                 {
@@ -178,7 +179,7 @@ namespace StorePilot.UI.Returns
 
             _Grid.Columns.Add(chbColumn);
 
-            _Grid.Columns[4].DefaultCellStyle.Format = string.Format("N2");
+            _Grid.Columns[3].DefaultCellStyle.Format = string.Format("N2");
         }
 
         private async Task _RefreshData()
@@ -217,7 +218,7 @@ namespace StorePilot.UI.Returns
 
                 if (result.IsSuccess)
                 {
-                    using (var frm = new frmAddEditReturnInvoice(ID))
+                    using (var frm = new frmAddEditReturnInvoice(ID, frmMode.Edit))
                     {
                         frm.DataBack += Frm_DataBack;
                         frm.ShowDialog();

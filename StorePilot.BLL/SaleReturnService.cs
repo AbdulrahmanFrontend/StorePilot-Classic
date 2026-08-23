@@ -20,12 +20,15 @@ namespace StorePilot.BLL
     {
         public SaleReturnModel Model { get; private set; }
 
-        private List<SaleReturnItemModel> _Items { get; set; }
+        private List<SaleReturnItemModel> _Items;
+
+        public SaleInvoiceModel SaleInvoice { get; private set; }
 
         public SaleReturnService()
         {
             this.Model = new SaleReturnModel();
             this._Items = new List<SaleReturnItemModel>();
+            this.SaleInvoice = new SaleInvoiceModel();
             this.Mode = Mode.AddNew;
         }
 
@@ -33,6 +36,19 @@ namespace StorePilot.BLL
         {
             this.Model = model;
             this.Mode = Mode.Update;
+            _Items = SaleReturnItemService.GetSalesReturnItems(this.Model.ReturnID)
+                .Data
+                .AsEnumerable()
+                .Select(r => new SaleReturnItemModel
+                {
+                    ReturnItemID = int.Parse(r["ReturnItemID"].ToString()),
+                    ReturnID = this.Model.ReturnID,
+                    ProductID = int.Parse(r["ProductID"].ToString()),
+                    Quantity = decimal.Parse(r["Quantity"].ToString()),
+                    UnitPrice = decimal.Parse(r["UnitPrice"].ToString()),
+                })
+                .ToList();
+            SaleInvoice = SaleInvoiceService.Find(this.Model.SaleInvoiceID).Data.Model;
         }
 
         public void SetItems(IEnumerable<SaleReturnItemModel> items)
@@ -63,14 +79,18 @@ namespace StorePilot.BLL
 
         protected override Result _AddNew()
         {
-            var SaleInvoiceResult = SaleInvoiceData.Find(this.Model.SaleInvoiceID);
+            var HasPaymentsResult = 
+                InvoiceData.HasPayments(SaleInvoice.InvoiceID);
 
-            if (!SaleInvoiceResult.IsSuccess || SaleInvoiceResult.Data == null)
-                return Result.Failure("فاتورة البيع هذه غير مسجلة في النظام," +
-                    " أو فشلت عملية الوصول لبيانات الفاتورة");
-
-            if (SaleInvoiceResult.Data.Cancelled)
-                return Result.Failure("لا يسمح بإنشاء فاتورة مرتجع لفاتورة بيع ملغية!");
+            if (HasPaymentsResult.IsSuccess)
+            {
+                if (!HasPaymentsResult.Data
+                && SaleInvoice.InvoiceStatus == InvoiceStatus.Paid.ToArabic())
+                    SaleInvoice.PaidAmount -= this.Model.TotalReturnAmount;
+            }
+            SaleInvoice.TotalAmount -= this.Model.TotalReturnAmount;
+            if (SaleInvoice.TotalAmount == SaleInvoice.PaidAmount)
+                SaleInvoice.InvoiceStatus = InvoiceStatus.Paid.ToArabic();
 
             Result TransResult = DbManager.Current?.ExecuteTransaction(
                 (con, trans) =>
@@ -79,7 +99,7 @@ namespace StorePilot.BLL
 
                     TransModel.TransactionDate = Model.ReturnDate;
                     TransModel.PaidAmount = Model.TotalReturnAmount;
-                    TransModel.TransactionType = TransactionType.Expense.ToString();
+                    TransModel.TransactionType = TransactionType.Expense.ToArabic();
                     TransModel.Description = "مصروفات فاتورة مرتجع";
 
                     Result result = CashTransactionData.AddNew(
@@ -100,22 +120,17 @@ namespace StorePilot.BLL
 
                     foreach (SaleReturnItemModel item in _Items)
                     {
+                        item.ReturnID = Model.ReturnID;
+
                         result = SaleReturnItemData.AddNew(con, trans, item);
 
                         _ThrowException(result);
                     }
 
-                    result = InvoiceData.UpdateTotalAmountAfterCreatingReturns(
+                    result = InvoiceData.Update(
                         con,
                         trans,
-                        this.Model.ReturnID);
-
-                    _ThrowException(result);
-
-                    result = InvoiceData.UpdateStatus(
-                        con,
-                        trans,
-                        SaleInvoiceResult.Data.InvoiceID);
+                        this.SaleInvoice);
 
                     _ThrowException(result);
 
@@ -130,7 +145,7 @@ namespace StorePilot.BLL
                         con,
                         trans,
                         this.Model.ReturnID,
-                        SaleInvoiceResult.Data.InvoiceID);
+                        SaleInvoice.InvoiceID);
 
                     _ThrowException(result);
                 });
@@ -155,7 +170,22 @@ namespace StorePilot.BLL
 
         public override Result Valid()
         {
-            Result result = this.ValidateReturnDate();
+            var InvoiceResult = SaleInvoiceService.Find(this.Model.SaleInvoiceID);
+
+            if (!InvoiceResult.IsSuccess)
+                return Result.Failure(InvoiceResult.Message);
+
+            SaleInvoice = InvoiceResult.Data.Model;
+
+            Result result = SaleInvoiceService.IsExist(this.Model.SaleInvoiceID);
+
+            if (!result.IsSuccess)
+                return Result.Failure(result.Message);
+
+            if (SaleInvoice.Cancelled)
+                return Result.Failure("لا يسمح بإنشاء فاتورة مرتجع لفاتورة بيع ملغية!");
+
+            result = this.ValidateReturnDate();
 
             if (!result.IsSuccess)
                 return Result.Failure(result.Message);
@@ -210,42 +240,44 @@ namespace StorePilot.BLL
 
         public Result ValidateReturnDate()
         {
-            var result = SaleInvoiceData.Find(this.Model.SaleInvoiceID);
-
-            if (result.IsSuccess)
-            {
-                if (result.Data == null)
-                    return Result.Failure("فاتورة البيع غير مسجلة في النظام!");
-
-                if (this.Model.ReturnDate < result.Data.InvoiceDate)
-                    return Result.Failure(
-                        "يجب إن يكون تاريخ فاتورة المرتجع أكبر من" +
-                        " أو يساوي تاريخ فاتورة البيع!");
-            }
-            else
-                return Result.Failure("فشلت عملية الوصول لبيانات فاتورة البيع!");
+            if (this.Model.ReturnDate < SaleInvoice.InvoiceDate)
+                return Result.Failure(
+                    "يجب إن يكون تاريخ فاتورة المرتجع أكبر من" +
+                    " أو يساوي تاريخ فاتورة البيع!");
 
             return Result.Success();
         }
 
         public Result ValidateTotalReturnAmount()
         {
-            var result = SaleInvoiceData.Find(this.Model.SaleInvoiceID);
-
-            if (result.IsSuccess)
+            switch (SaleInvoice.InvoiceStatus.ToInvoiceStatus())
             {
-                if (result.Data == null)
-                    return Result.Failure("فاتورة البيع غير مسجلة في النظام!");
+                case InvoiceStatus.Deferred:
+                    if (SaleInvoice.TotalAmount - this.Model.TotalReturnAmount <
+                        SaleInvoice.PaidAmount)
+                        return Result.Failure(
+                            "يجب أن يكون مجموع الدفعات أصغر من " +
+                            "أو يساوي إجمالي الفاتورة بعد المرتجع!");
 
-                if (result.Data.InvoiceStatus == InvoiceStatus.Deferred.ToArabic()
-                    && result.Data.TotalAmount - this.Model.TotalReturnAmount <
-                    result.Data.PaidAmount)
-                    return Result.Failure(
-                        "يجب أن يكون مجموع الدفعات أصغر من " +
-                        "أو يساوي إجمالي الفاتورة بعد المرتجع!");
+                    return Result.Success();
+
+                case InvoiceStatus.Paid:
+                    var HasPaymentsResult =
+                        InvoiceData.HasPayments(SaleInvoice.InvoiceID);
+
+                    if (HasPaymentsResult.IsSuccess && HasPaymentsResult.Data)
+                        return Result.Failure("يجب أن يكون مجموع الدفعات أصغر من " +
+                            "أو يساوي إجمالي الفاتورة بعد المرتجع!");
+                    else if (!HasPaymentsResult.IsSuccess)
+                        return Result.Failure(
+                            "فشلت عملية التحقق من كون الفاتورة لها مدفوعات!");
+
+                    if (SaleInvoice.TotalAmount < this.Model.TotalReturnAmount)
+                        return Result.Failure("يجب أن يكون إجمالي فاتورة" +
+                            " المرتجع أصغر من أو يساوي إجمالي فاتورة البيع!");
+
+                    return Result.Success();
             }
-            if(!result.IsSuccess)
-                return Result.Failure("فشلت عملية الوصول لبيانات فاتورة البيع!");
 
             return Result.Success();
         }
@@ -272,6 +304,16 @@ namespace StorePilot.BLL
             if (!SaleInvoiceResult.IsSuccess || SaleInvoiceResult.Data == null)
                 return Result.Failure("فشلت عملية الوصول لبيانات فاتورة البيع " +
                     "أو أن الفاتورة غير مسجلة في النظام!");
+
+            if(SaleInvoiceResult.Data.Cancelled)
+                return Result.Failure("فاتورة البيع ملغية!");
+
+            SaleInvoiceResult.Data.TotalAmount += SaleReturnResult.Data.TotalReturnAmount;
+
+            if (SaleInvoiceResult.Data.InvoiceStatus == InvoiceStatus.Paid.ToArabic()
+                && SaleInvoiceResult.Data.TotalAmount != SaleInvoiceResult.Data.PaidAmount)
+                SaleInvoiceResult.Data.InvoiceStatus = InvoiceStatus.Deferred.ToArabic();
+                
 
             Result TransResult = DbManager.Current?.ExecuteTransaction((con, trans) =>
             {
@@ -301,34 +343,12 @@ namespace StorePilot.BLL
 
                 _ThrowException(result);
 
-                result = InvoiceData.UpdateTotalAmountAfterCancellingReturns(
+                result = InvoiceData.Update(
                     con,
                     trans,
-                    id);
+                    SaleInvoiceResult.Data);
 
                 _ThrowException(result);
-
-                if (SaleInvoiceResult.Data.InvoiceStatus == InvoiceStatus.Paid.ToArabic())
-                {
-                    if (HasPaymentsResult.Data)
-                    {
-                        result = InvoiceData.UpdateStatus(
-                            con, 
-                            trans, 
-                            SaleInvoiceResult.Data.InvoiceID);
-
-                        _ThrowException(result);
-                    }
-                    else
-                    {
-                        result = InvoiceData.UpdatePaidAmountAfterCancellReturns(
-                            con, 
-                            trans, 
-                            SaleInvoiceResult.Data.InvoiceID);
-
-                        _ThrowException(result);
-                    }
-                }
             });
 
             if (!TransResult.IsSuccess)

@@ -79,11 +79,11 @@
             this.flpFooter.Controls.Add(this.btnCancel);
             this.flpFooter.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.flpFooter.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.flpFooter.Location = new System.Drawing.Point(0, 337);
+            this.flpFooter.Location = new System.Drawing.Point(0, 342);
             this.flpFooter.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.flpFooter.Name = "flpFooter";
             this.flpFooter.Padding = new System.Windows.Forms.Padding(3, 4, 0, 4);
-            this.flpFooter.Size = new System.Drawing.Size(809, 56);
+            this.flpFooter.Size = new System.Drawing.Size(809, 51);
             this.flpFooter.TabIndex = 11;
             // 
             // btnClose
@@ -104,7 +104,7 @@
             this.btnClose.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnClose.Name = "btnClose";
             this.btnClose.Padding = new System.Windows.Forms.Padding(11, 0, 11, 0);
-            this.btnClose.Size = new System.Drawing.Size(113, 40);
+            this.btnClose.Size = new System.Drawing.Size(102, 35);
             this.btnClose.TabIndex = 5;
             this.btnClose.Text = "إغلاق";
             this.btnClose.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -122,11 +122,11 @@
             this.btnSavePrint.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSavePrint.ForeColor = System.Drawing.Color.White;
             this.btnSavePrint.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSavePrint.Location = new System.Drawing.Point(125, 8);
+            this.btnSavePrint.Location = new System.Drawing.Point(114, 8);
             this.btnSavePrint.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnSavePrint.Name = "btnSavePrint";
             this.btnSavePrint.Padding = new System.Windows.Forms.Padding(11, 0, 11, 0);
-            this.btnSavePrint.Size = new System.Drawing.Size(113, 40);
+            this.btnSavePrint.Size = new System.Drawing.Size(102, 35);
             this.btnSavePrint.TabIndex = 4;
             this.btnSavePrint.Text = "حفظ";
             this.btnSavePrint.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -146,11 +146,11 @@
             this.btnInvoiceItems.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(41)))), ((int)(((byte)(59)))));
             this.btnInvoiceItems.Image = global::StorePilot.UI.Properties.Resources.list;
             this.btnInvoiceItems.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnInvoiceItems.Location = new System.Drawing.Point(244, 8);
+            this.btnInvoiceItems.Location = new System.Drawing.Point(222, 8);
             this.btnInvoiceItems.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnInvoiceItems.Name = "btnInvoiceItems";
             this.btnInvoiceItems.Padding = new System.Windows.Forms.Padding(11, 0, 11, 0);
-            this.btnInvoiceItems.Size = new System.Drawing.Size(217, 40);
+            this.btnInvoiceItems.Size = new System.Drawing.Size(183, 35);
             this.btnInvoiceItems.TabIndex = 3;
             this.btnInvoiceItems.Text = "إضافة عناصر الفاتورة";
             this.btnInvoiceItems.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -170,11 +170,11 @@
             this.btnCancel.ForeColor = System.Drawing.Color.White;
             this.btnCancel.Image = global::StorePilot.UI.Properties.Resources.cancel;
             this.btnCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnCancel.Location = new System.Drawing.Point(467, 8);
+            this.btnCancel.Location = new System.Drawing.Point(411, 8);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Padding = new System.Windows.Forms.Padding(11, 0, 11, 0);
-            this.btnCancel.Size = new System.Drawing.Size(113, 40);
+            this.btnCancel.Size = new System.Drawing.Size(102, 35);
             this.btnCancel.TabIndex = 2;
             this.btnCancel.Text = "إلغاء";
             this.btnCancel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -194,7 +194,7 @@
             this.tlpContainer.RowCount = 2;
             this.tlpContainer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30.45267F));
             this.tlpContainer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 69.54733F));
-            this.tlpContainer.Size = new System.Drawing.Size(809, 283);
+            this.tlpContainer.Size = new System.Drawing.Size(809, 288);
             this.tlpContainer.TabIndex = 13;
             // 
             // tlpUp
@@ -212,7 +212,7 @@
             this.tlpUp.Name = "tlpUp";
             this.tlpUp.RowCount = 1;
             this.tlpUp.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpUp.Size = new System.Drawing.Size(803, 78);
+            this.tlpUp.Size = new System.Drawing.Size(803, 79);
             this.tlpUp.TabIndex = 0;
             // 
             // tlpInvoiceDate
@@ -230,7 +230,7 @@
             this.tlpInvoiceDate.RowCount = 2;
             this.tlpInvoiceDate.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpInvoiceDate.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpInvoiceDate.Size = new System.Drawing.Size(395, 70);
+            this.tlpInvoiceDate.Size = new System.Drawing.Size(395, 71);
             this.tlpInvoiceDate.TabIndex = 0;
             // 
             // lblInvoiceDate
@@ -242,7 +242,7 @@
             this.lblInvoiceDate.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblInvoiceDate.Location = new System.Drawing.Point(3, 0);
             this.lblInvoiceDate.Name = "lblInvoiceDate";
-            this.lblInvoiceDate.Size = new System.Drawing.Size(389, 32);
+            this.lblInvoiceDate.Size = new System.Drawing.Size(389, 33);
             this.lblInvoiceDate.TabIndex = 0;
             this.lblInvoiceDate.Text = "تاريخ الإرجاع:";
             this.lblInvoiceDate.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -257,7 +257,7 @@
             this.dtpInvoiceDate.CustomFormat = "dd/MM/yyyy hh:mm tt";
             this.dtpInvoiceDate.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpInvoiceDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpInvoiceDate.Location = new System.Drawing.Point(23, 36);
+            this.dtpInvoiceDate.Location = new System.Drawing.Point(23, 37);
             this.dtpInvoiceDate.Margin = new System.Windows.Forms.Padding(3, 4, 23, 4);
             this.dtpInvoiceDate.MaxDate = new System.DateTime(2999, 12, 31, 0, 0, 0, 0);
             this.dtpInvoiceDate.MinDate = new System.DateTime(1981, 1, 1, 0, 0, 0, 0);
@@ -283,7 +283,7 @@
             this.tlpTotalAmount.RowCount = 2;
             this.tlpTotalAmount.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpTotalAmount.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpTotalAmount.Size = new System.Drawing.Size(396, 70);
+            this.tlpTotalAmount.Size = new System.Drawing.Size(396, 71);
             this.tlpTotalAmount.TabIndex = 5;
             // 
             // lblTotalAmount
@@ -295,7 +295,7 @@
             this.lblTotalAmount.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblTotalAmount.Location = new System.Drawing.Point(3, 0);
             this.lblTotalAmount.Name = "lblTotalAmount";
-            this.lblTotalAmount.Size = new System.Drawing.Size(390, 32);
+            this.lblTotalAmount.Size = new System.Drawing.Size(390, 33);
             this.lblTotalAmount.TabIndex = 0;
             this.lblTotalAmount.Text = "إجمالي الفاتورة:";
             this.lblTotalAmount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -306,7 +306,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbTotalAmount.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbTotalAmount.Location = new System.Drawing.Point(23, 36);
+            this.tbTotalAmount.Location = new System.Drawing.Point(23, 37);
             this.tbTotalAmount.Margin = new System.Windows.Forms.Padding(3, 4, 23, 4);
             this.tbTotalAmount.MaxLength = 6;
             this.tbTotalAmount.Name = "tbTotalAmount";
@@ -323,13 +323,13 @@
             this.tlpNotes.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpNotes.Controls.Add(this.tbNotes, 0, 1);
             this.tlpNotes.Controls.Add(this.lblNotes, 0, 0);
-            this.tlpNotes.Location = new System.Drawing.Point(3, 90);
+            this.tlpNotes.Location = new System.Drawing.Point(3, 91);
             this.tlpNotes.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tlpNotes.Name = "tlpNotes";
             this.tlpNotes.RowCount = 2;
             this.tlpNotes.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpNotes.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpNotes.Size = new System.Drawing.Size(803, 189);
+            this.tlpNotes.Size = new System.Drawing.Size(803, 193);
             this.tlpNotes.TabIndex = 1;
             // 
             // tbNotes
@@ -338,7 +338,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbNotes.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbNotes.Location = new System.Drawing.Point(23, 28);
+            this.tbNotes.Location = new System.Drawing.Point(23, 32);
             this.tbNotes.Margin = new System.Windows.Forms.Padding(3, 4, 23, 4);
             this.tbNotes.MaxLength = 500;
             this.tbNotes.Multiline = true;
@@ -355,7 +355,7 @@
             this.lblNotes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblNotes.Location = new System.Drawing.Point(3, 0);
             this.lblNotes.Name = "lblNotes";
-            this.lblNotes.Size = new System.Drawing.Size(797, 24);
+            this.lblNotes.Size = new System.Drawing.Size(797, 28);
             this.lblNotes.TabIndex = 1;
             this.lblNotes.Text = "ملاحظات:";
             this.lblNotes.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;

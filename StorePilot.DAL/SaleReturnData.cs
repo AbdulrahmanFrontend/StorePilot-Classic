@@ -250,7 +250,7 @@ namespace StorePilot.DAL
             {
                 case (int)FilterMethodsSalesReturns.ReturnID:
                     Query = @"SELECT COUNT(ReturnID) FROM SalesReturns
-                        WHERE ReturnID = @ReturnID 
+                        WHERE ReturnID = @FilterValue 
                         AND SaleInvoiceID = @SaleInvoiceID
                         AND Cancelled = @Cancelled;";
 
@@ -261,6 +261,22 @@ namespace StorePilot.DAL
                         Value = int.TryParse(filterValue?.ToString(),
                             out int ReturnID) ?
                             ReturnID : 0,
+                    };
+
+                    break;
+
+                case (int)FilterMethodsSalesReturns.SaleInvoiceID:
+                    Query = @"SELECT COUNT(ReturnID) FROM SalesReturns
+                        WHERE SaleInvoiceID = @FilterValue
+                        AND Cancelled = @Cancelled;";
+
+                    parameter = new DbParameterInfo
+                    {
+                        Name = "@FilterValue",
+                        DbType = DbType.Int64,
+                        Value = int.TryParse(filterValue?.ToString(),
+                            out int SaleInvoiceID) ?
+                            SaleInvoiceID : 0,
                     };
 
                     break;
@@ -340,6 +356,26 @@ namespace StorePilot.DAL
                         Value = int.TryParse(filterValue?.ToString(),
                             out int ReturnID) ?
                             ReturnID : 0,
+                    };
+
+                    break;
+
+                case (int)FilterMethodsSalesReturns.SaleInvoiceID:
+                    Query = @"SELECT ReturnID, SaleInvoiceID, 
+                        ReturnDate, TotalReturnAmount, Cancelled
+                        FROM SalesReturns
+                        WHERE SaleInvoiceID = @FilterValue
+                        AND Cancelled = @Cancelled
+                        LIMIT @PageSize
+                        OFFSET @Offset;";
+
+                    parameter = new DbParameterInfo
+                    {
+                        Name = "@FilterValue",
+                        DbType = DbType.Int64,
+                        Value = int.TryParse(filterValue?.ToString(),
+                            out int SaleInvoiceID) ?
+                            SaleInvoiceID : 0,
                     };
 
                     break;

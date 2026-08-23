@@ -137,7 +137,6 @@ namespace StorePilot.UI.Returns
             btnCancel.Enabled = false;
 
             tbQuantity.ReadOnly = true;
-            tbUnitPrice.ReadOnly = true;
 
             tbQuantity.Text = "0";
             tbUnitPrice.Text = "0";
@@ -174,7 +173,7 @@ namespace StorePilot.UI.Returns
 
         private void _LoadItems()
         {
-            var result = InvoiceItemService.GetInvoiceItems(_InvoiceId);
+            var result = SaleReturnItemService.GetSalesReturnItems(_ReturnId);
 
             if (!result.IsSuccess)
             {
@@ -209,7 +208,6 @@ namespace StorePilot.UI.Returns
             int ProductID = _GetIntValue(cbProducts.SelectedValue?.ToString());
             var result = InvoiceItemService.Find(_SaleInvoiceId, ProductID);
 
-            tbUnitPrice.ReadOnly = !result.IsSuccess;
             tbQuantity.ReadOnly = !result.IsSuccess;
             btnSaveItem.Enabled = result.IsSuccess;
             btnCancel.Enabled = result.IsSuccess;
@@ -218,10 +216,8 @@ namespace StorePilot.UI.Returns
             {
                 _InvoiceItem.ProductID = ProductID;
                 tbUnitPrice.Text = result.Data.Model.UnitPrice.ToString("#,##0");
+                tbQuantity.Text = result.Data.Model.Quantity.ToString("#,##0");
             }
-
-            tbQuantity.Text = "0";
-            tbTotalPrice.Text = "0";
         }
 
         private void btnSaveItem_Click(object sender, EventArgs e)
@@ -286,7 +282,7 @@ namespace StorePilot.UI.Returns
         private void _EnabledButtonsList()
         {
             btnSaveList.Enabled = _Items.Count > 0;
-            btnExit.Enabled = _Items.Count > 0;
+            btnResetList.Enabled = _Items.Count > 0;
         }
 
         private void btnCancel_Click(object sender, EventArgs e) => _SetDefaultValues();
@@ -360,9 +356,9 @@ namespace StorePilot.UI.Returns
         private void QuantitAndUnitPrice_TextChanged(object sender, EventArgs e)
         {
             decimal Quantity =
-                _GetSelectedDecimalCellValue(tbQuantity.Text?.ToString());
+                _GetDecimalValue(tbQuantity.Text?.ToString());
             decimal UnitPrice =
-                _GetSelectedDecimalCellValue(tbUnitPrice.Text?.ToString());
+                _GetDecimalValue(tbUnitPrice.Text?.ToString());
 
             tbTotalPrice.Text = (Quantity * UnitPrice).ToString("#,##0");
         }

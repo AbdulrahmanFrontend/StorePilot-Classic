@@ -54,10 +54,6 @@
             this.btnExit = new System.Windows.Forms.Button();
             this.btnSaveList = new System.Windows.Forms.Button();
             this.ctrlCmData = new DevToolkit.BaseWinForms.Controls.CustomControls.ccDataGridView();
-            this.ctrlCmsData = new DevToolkit.BaseWinForms.Controls.CustomControls.ccContextMenuStrip();
-            this.tsmiUpdate = new System.Windows.Forms.ToolStripMenuItem();
-            this.tss = new System.Windows.Forms.ToolStripSeparator();
-            this.tsmiDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.ProductID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ProductName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GroupName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -65,6 +61,10 @@
             this.Quantity = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.UnitPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TotalPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ctrlCmsData = new DevToolkit.BaseWinForms.Controls.CustomControls.ccContextMenuStrip();
+            this.tsmiUpdate = new System.Windows.Forms.ToolStripMenuItem();
+            this.tss = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmiDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.tlpHeader.SuspendLayout();
             this.tlpItem.SuspendLayout();
             this.tlpFooter.SuspendLayout();
@@ -151,6 +151,7 @@
             this.cbProducts.Name = "cbProducts";
             this.cbProducts.Size = new System.Drawing.Size(451, 28);
             this.cbProducts.TabIndex = 0;
+            this.cbProducts.Validating += new System.ComponentModel.CancelEventHandler(this.cbProducts_Validating);
             // 
             // tbTotalPrice
             // 
@@ -427,42 +428,6 @@
             this.ctrlCmData.TabIndex = 4;
             this.ctrlCmData.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ctrlCmData_CellDoubleClick);
             // 
-            // ctrlCmsData
-            // 
-            this.ctrlCmsData.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.ctrlCmsData.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(243)))), ((int)(((byte)(244)))));
-            this.ctrlCmsData.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiUpdate,
-            this.tss,
-            this.tsmiDelete});
-            this.ctrlCmsData.Name = "ctrlCmsData";
-            this.ctrlCmsData.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.ctrlCmsData.Size = new System.Drawing.Size(128, 66);
-            // 
-            // tsmiUpdate
-            // 
-            this.tsmiUpdate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(243)))), ((int)(((byte)(244)))));
-            this.tsmiUpdate.Image = global::StorePilot.UI.Properties.Resources.update;
-            this.tsmiUpdate.Name = "tsmiUpdate";
-            this.tsmiUpdate.Size = new System.Drawing.Size(127, 28);
-            this.tsmiUpdate.Text = "تحديث";
-            this.tsmiUpdate.Click += new System.EventHandler(this.tsmiUpdate_Click);
-            // 
-            // tss
-            // 
-            this.tss.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(243)))), ((int)(((byte)(244)))));
-            this.tss.Name = "tss";
-            this.tss.Size = new System.Drawing.Size(124, 6);
-            // 
-            // tsmiDelete
-            // 
-            this.tsmiDelete.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(243)))), ((int)(((byte)(244)))));
-            this.tsmiDelete.Image = global::StorePilot.UI.Properties.Resources.delete;
-            this.tsmiDelete.Name = "tsmiDelete";
-            this.tsmiDelete.Size = new System.Drawing.Size(127, 28);
-            this.tsmiDelete.Text = "حذف";
-            this.tsmiDelete.Click += new System.EventHandler(this.tsmiDelete_Click);
-            // 
             // ProductID
             // 
             this.ProductID.DataPropertyName = "ProductID";
@@ -528,6 +493,42 @@
             this.TotalPrice.MinimumWidth = 6;
             this.TotalPrice.Name = "TotalPrice";
             this.TotalPrice.ReadOnly = true;
+            // 
+            // ctrlCmsData
+            // 
+            this.ctrlCmsData.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.ctrlCmsData.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(243)))), ((int)(((byte)(244)))));
+            this.ctrlCmsData.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiUpdate,
+            this.tss,
+            this.tsmiDelete});
+            this.ctrlCmsData.Name = "ctrlCmsData";
+            this.ctrlCmsData.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.ctrlCmsData.Size = new System.Drawing.Size(128, 66);
+            // 
+            // tsmiUpdate
+            // 
+            this.tsmiUpdate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(243)))), ((int)(((byte)(244)))));
+            this.tsmiUpdate.Image = global::StorePilot.UI.Properties.Resources.update;
+            this.tsmiUpdate.Name = "tsmiUpdate";
+            this.tsmiUpdate.Size = new System.Drawing.Size(127, 28);
+            this.tsmiUpdate.Text = "تحديث";
+            this.tsmiUpdate.Click += new System.EventHandler(this.tsmiUpdate_Click);
+            // 
+            // tss
+            // 
+            this.tss.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(243)))), ((int)(((byte)(244)))));
+            this.tss.Name = "tss";
+            this.tss.Size = new System.Drawing.Size(124, 6);
+            // 
+            // tsmiDelete
+            // 
+            this.tsmiDelete.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(243)))), ((int)(((byte)(244)))));
+            this.tsmiDelete.Image = global::StorePilot.UI.Properties.Resources.delete;
+            this.tsmiDelete.Name = "tsmiDelete";
+            this.tsmiDelete.Size = new System.Drawing.Size(127, 28);
+            this.tsmiDelete.Text = "حذف";
+            this.tsmiDelete.Click += new System.EventHandler(this.tsmiDelete_Click);
             // 
             // frmAddEditUpdateReturnItems
             // 

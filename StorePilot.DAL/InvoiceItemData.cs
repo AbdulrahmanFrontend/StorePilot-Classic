@@ -141,7 +141,7 @@ namespace StorePilot.DAL
         {
             string Query = @"UPDATE InvoicesItems
                 SET 
-                    Quantity = Quantity + 
+                    Quantity = Quantity - 
                     (
                         SELECT Quantity FROM SalesReturnItems 
                         WHERE SalesReturnItems.ProductID = ProductID
