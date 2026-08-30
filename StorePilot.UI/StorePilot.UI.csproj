@@ -136,6 +136,17 @@
     <Compile Include="Payments\frmPaymentsScreen.Designer.cs">
       <DependentUpon>frmPaymentsScreen.cs</DependentUpon>
     </Compile>
+    <Compile Include="Printing\Builders\PaymentReceiptPrintBuilder.cs" />
+    <Compile Include="Printing\Builders\PurchaseInvoicePrintBuilder.cs" />
+    <Compile Include="Printing\Builders\SalesReturnPrintBuilder.cs" />
+    <Compile Include="Printing\PrintDocumentModels\PrintColumn.cs" />
+    <Compile Include="Printing\PrintDocumentModels\PrintDocumentModel.cs" />
+    <Compile Include="Printing\PrintDocumentModels\PrintSubSection.cs" />
+    <Compile Include="Printing\PrintPreviewHelper.cs" />
+    <Compile Include="Printing\Builders\SalesInvoicePrintBuilder.cs" />
+    <Compile Include="Printing\TablePrintDocument.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Products\frmAddEditUpdateProduct.cs">
       <SubType>Form</SubType>
     </Compile>

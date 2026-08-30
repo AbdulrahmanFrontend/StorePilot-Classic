@@ -147,7 +147,7 @@
             this.cbProducts.DropDownHeight = 100;
             this.cbProducts.FormattingEnabled = true;
             this.cbProducts.IntegralHeight = false;
-            this.cbProducts.Location = new System.Drawing.Point(671, 39);
+            this.cbProducts.Location = new System.Drawing.Point(671, 35);
             this.cbProducts.Margin = new System.Windows.Forms.Padding(3, 10, 3, 10);
             this.cbProducts.Name = "cbProducts";
             this.cbProducts.Size = new System.Drawing.Size(438, 28);
@@ -159,7 +159,7 @@
             this.tbTotalPrice.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.tbTotalPrice.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.tbTotalPrice.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbTotalPrice.Location = new System.Drawing.Point(3, 39);
+            this.tbTotalPrice.Location = new System.Drawing.Point(3, 37);
             this.tbTotalPrice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 0);
             this.tbTotalPrice.Name = "tbTotalPrice";
             this.tbTotalPrice.ReadOnly = true;
@@ -170,7 +170,7 @@
             // 
             this.tbUnitPrice.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.tbUnitPrice.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbUnitPrice.Location = new System.Drawing.Point(227, 39);
+            this.tbUnitPrice.Location = new System.Drawing.Point(227, 37);
             this.tbUnitPrice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 0);
             this.tbUnitPrice.MaxLength = 7;
             this.tbUnitPrice.Name = "tbUnitPrice";
@@ -189,7 +189,7 @@
             this.lblTotalPrice.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblTotalPrice.Location = new System.Drawing.Point(3, 0);
             this.lblTotalPrice.Name = "lblTotalPrice";
-            this.lblTotalPrice.Size = new System.Drawing.Size(218, 29);
+            this.lblTotalPrice.Size = new System.Drawing.Size(218, 25);
             this.lblTotalPrice.TabIndex = 3;
             this.lblTotalPrice.Text = "الإجمالي:";
             this.lblTotalPrice.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -204,7 +204,7 @@
             this.lblUnitPrice.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblUnitPrice.Location = new System.Drawing.Point(227, 0);
             this.lblUnitPrice.Name = "lblUnitPrice";
-            this.lblUnitPrice.Size = new System.Drawing.Size(216, 29);
+            this.lblUnitPrice.Size = new System.Drawing.Size(216, 25);
             this.lblUnitPrice.TabIndex = 2;
             this.lblUnitPrice.Text = "سعر الوحدة:";
             this.lblUnitPrice.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -219,7 +219,7 @@
             this.lblQuantity.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblQuantity.Location = new System.Drawing.Point(449, 0);
             this.lblQuantity.Name = "lblQuantity";
-            this.lblQuantity.Size = new System.Drawing.Size(216, 29);
+            this.lblQuantity.Size = new System.Drawing.Size(216, 25);
             this.lblQuantity.TabIndex = 1;
             this.lblQuantity.Text = "الكمية:";
             this.lblQuantity.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -233,7 +233,7 @@
             this.lblProduct.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblProduct.Location = new System.Drawing.Point(671, 0);
             this.lblProduct.Name = "lblProduct";
-            this.lblProduct.Size = new System.Drawing.Size(438, 29);
+            this.lblProduct.Size = new System.Drawing.Size(438, 25);
             this.lblProduct.TabIndex = 12;
             this.lblProduct.Text = "الصنف:";
             this.lblProduct.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -243,7 +243,7 @@
             this.tbQuantity.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.tbQuantity.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.tbQuantity.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbQuantity.Location = new System.Drawing.Point(449, 39);
+            this.tbQuantity.Location = new System.Drawing.Point(449, 37);
             this.tbQuantity.Margin = new System.Windows.Forms.Padding(3, 4, 3, 0);
             this.tbQuantity.MaxLength = 7;
             this.tbQuantity.Name = "tbQuantity";

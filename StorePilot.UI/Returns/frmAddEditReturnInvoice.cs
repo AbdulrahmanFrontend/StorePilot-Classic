@@ -7,6 +7,8 @@ using StorePilot.BLL;
 using StorePilot.Core.Enums;
 using StorePilot.Core.Models;
 using StorePilot.UI.Global.Classes;
+using StorePilot.UI.Printing;
+using StorePilot.UI.Printing.Builders;
 using StorePilot.UI.Properties;
 using StorePilot.UI.Purchases;
 using System;
@@ -213,7 +215,32 @@ namespace StorePilot.UI.Returns
                 case frmMode.AddNew:
                     await _AddNew();
                     break;
+
+                case frmMode.Edit:
+                    await _Print();
+                    break;
+
+                default:
+                    break;
             }
+        }
+
+        private async Task _Print()
+        {
+            var result = await Task.Run(() => 
+                PrintService.GetSalesReturnForPrint(_Service.Model.ReturnID)
+            );
+
+            if (!result.IsSuccess)
+            {
+                MessageBoxManager.ShowError("تعذر تجهيز الطباعة", Language.ar);
+                return;
+            }
+
+            TablePrintDocument document = SalesReturnPrintBuilder.Build(
+                result.Data,
+                "نظام إدارة محل أدوات السباكة");
+            PrintPreviewHelper.Show(document, "معاينة فاتورة مرتجعات");
         }
 
         private async Task _AddNew()

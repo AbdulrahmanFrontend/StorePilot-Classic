@@ -5,6 +5,8 @@ using DevToolkit.Core.Results;
 using StorePilot.BLL;
 using StorePilot.UI.Global.Classes;
 using StorePilot.UI.Global.Forms;
+using StorePilot.UI.Printing;
+using StorePilot.UI.Printing.Builders;
 using StorePilot.UI.Properties;
 using StorePilot.UI.Returns;
 using System;
@@ -278,9 +280,25 @@ namespace StorePilot.UI.Payments
                     Language.ar);
         }
 
-        private void tsmiPrint_Click(object sender, EventArgs e)
+        private async void tsmiPrint_Click(object sender, EventArgs e)
         {
+            if (!_TrySelectedID(0, out int paymentId))
+                return;
 
+            var result = await Task.Run(() =>
+                PrintService.GetPaymentReceiptForPrint(paymentId)
+            );
+
+            if (!result.IsSuccess)
+            {
+                MessageBoxManager.ShowError("تعذر تجهيز الطباعة", Language.ar);
+                return;
+            }
+
+            TablePrintDocument document = PaymentReceiptPrintBuilder.Build(
+                result.Data,
+                "نظام إدارة محل أدوات السباكة");
+            PrintPreviewHelper.Show(document, "معاينة إيصال سداد");
         }
 
         private void ctrlCmsPayments_Opening(object sender, CancelEventArgs e)

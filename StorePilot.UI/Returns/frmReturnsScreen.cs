@@ -6,6 +6,8 @@ using StorePilot.BLL;
 using StorePilot.UI.Global.Classes;
 using StorePilot.UI.Global.Forms;
 using StorePilot.UI.Payments;
+using StorePilot.UI.Printing;
+using StorePilot.UI.Printing.Builders;
 using StorePilot.UI.Properties;
 using StorePilot.UI.Sales;
 using System;
@@ -272,9 +274,25 @@ namespace StorePilot.UI.Returns
                     Language.ar);
         }
 
-        private void tsmiPrint_Click(object sender, EventArgs e)
+        private async void tsmiPrint_Click(object sender, EventArgs e)
         {
+            if (!_TrySelectedID(0, out int salesReturnId))
+                return;
 
+            var result = await Task.Run(() => 
+                PrintService.GetSalesReturnForPrint(salesReturnId)
+            );
+
+            if (!result.IsSuccess)
+            {
+                MessageBoxManager.ShowError("تعذر تجهيز الطباعة", Language.ar);
+                return;
+            }
+
+            TablePrintDocument document = SalesReturnPrintBuilder.Build(
+                result.Data,
+                "نظام إدارة محل أدوات السباكة");
+            PrintPreviewHelper.Show(document, "معاينة فاتورة مرتجعات");
         }
 
         private void ctrlCmsReturns_Opening(object sender, CancelEventArgs e)

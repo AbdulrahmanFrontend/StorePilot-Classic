@@ -9,6 +9,8 @@ using StorePilot.Core.Models;
 using StorePilot.UI.Customers;
 using StorePilot.UI.Global.Classes;
 using StorePilot.UI.Payments;
+using StorePilot.UI.Printing;
+using StorePilot.UI.Printing.Builders;
 using StorePilot.UI.Properties;
 using StorePilot.UI.Returns;
 using System;
@@ -291,7 +293,32 @@ namespace StorePilot.UI.Sales
                 case frmMode.AddNew:
                     await _AddNew();
                     break;
+
+                case frmMode.Edit:
+                    await _Print();
+                    break;
+
+                default:
+                    break;
             }
+        }
+
+        private async Task _Print()
+        {
+            var result = await Task.Run(() =>
+                PrintService.GetSalesInvoiceForPrint(_Service.Model.SaleInvoiceID)
+            );
+
+            if (!result.IsSuccess)
+            {
+                MessageBoxManager.ShowError("تعذر تجهيز الطباعة", Language.ar);
+                return;
+            }
+
+            TablePrintDocument document = SalesInvoicePrintBuilder.Build(
+                result.Data,
+                "نظام إدارة محل أدوات السباكة");
+            PrintPreviewHelper.Show(document, "معاينة فاتورة مبيعات");
         }
 
         private async Task _AddNew()

@@ -68,6 +68,13 @@
     <Compile Include="Models\SaleReturnModel.cs" />
     <Compile Include="Models\SupplierModel.cs" />
     <Compile Include="Models\UnitModel.cs" />
+    <Compile Include="Printing\PrintableInvoiceBase.cs" />
+    <Compile Include="Printing\PrintableLineItem.cs" />
+    <Compile Include="Printing\PrintablePayment.cs" />
+    <Compile Include="Printing\PrintablePaymentReceipt.cs" />
+    <Compile Include="Printing\PrintablePurchaseInvoice.cs" />
+    <Compile Include="Printing\PrintableSalesInvoice.cs" />
+    <Compile Include="Printing\PrintableSalesReturn.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

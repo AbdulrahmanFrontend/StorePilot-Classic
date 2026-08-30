@@ -6,6 +6,8 @@ using StorePilot.BLL;
 using StorePilot.Core.Enums;
 using StorePilot.UI.Global.Controls;
 using StorePilot.UI.Payments;
+using StorePilot.UI.Printing;
+using StorePilot.UI.Printing.Builders;
 using StorePilot.UI.Properties;
 using StorePilot.UI.Returns;
 using StorePilot.UI.Sales;
@@ -298,9 +300,25 @@ namespace StorePilot.UI.Purchases
                     Language.ar);
         }
 
-        private void tsmiPrint_Click(object sender, EventArgs e)
+        private async void tsmiPrint_Click(object sender, EventArgs e)
         {
+            if (!_TrySelectedID(0, out int purchaseInvoiceId))
+                return;
 
+            var result = await Task.Run(() =>
+                PrintService.GetPurchaseInvoiceForPrint(purchaseInvoiceId)
+            );
+
+            if (!result.IsSuccess)
+            {
+                MessageBoxManager.ShowError("تعذر تجهيز الطباعة", Language.ar);
+                return;
+            }
+
+            TablePrintDocument document = PurchaseInvoicePrintBuilder.Build(
+                result.Data,
+                "نظام إدارة محل أدوات السباكة");
+            PrintPreviewHelper.Show(document, "معاينة فاتورة مشتريات");
         }
 
         private void tsmiAddPayments_Click(object sender, EventArgs e)

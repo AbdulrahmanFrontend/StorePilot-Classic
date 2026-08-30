@@ -7,6 +7,9 @@ using StorePilot.BLL;
 using StorePilot.Core.Enums;
 using StorePilot.Core.Models;
 using StorePilot.UI.Global.Classes;
+using StorePilot.UI.Printing;
+using StorePilot.UI.Printing.Builders;
+using StorePilot.UI.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -87,8 +90,9 @@ namespace StorePilot.UI.Payments
 
                 case frmMode.Edit:
                     lblTitle.Text = "بيانات الدفعة";
-                    btnCancel.Visible = false;
-                    btnSave.Visible = false;
+                    btnCancel.Visible = true;
+                    btnSave.Text = "طباعة";
+                    btnSave.Image = Resources.print;
                     EnableTextBoxes();
                     _LoadData();
                     break;
@@ -132,6 +136,17 @@ namespace StorePilot.UI.Payments
             tbPaidAmount.Text = _Model.PaidAmount.ToString("#,##0");
             tbInvoiceID.Text = _Model.InvoiceID.ToString();
             tbNotes.Text = _Model.Notes;
+
+            if (!_Model.Cancelled)
+            {
+                btnSave.Enabled = true;
+                btnCancel.Enabled = true;
+            }
+            else
+            {
+                btnSave.Enabled = false;
+                btnCancel.Enabled = false;
+            }
         }
 
         private void EnableTextBoxes()
@@ -209,6 +224,41 @@ namespace StorePilot.UI.Payments
         }
 
         private async void btnSave_Click(object sender, EventArgs e)
+        {
+            switch (_Mode)
+            {
+                case frmMode.AddNew:
+                    await _AddNew();
+                    break;
+
+                case frmMode.Edit:
+                    await _Print();
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        private async Task _Print()
+        {
+            var result = await Task.Run(() =>
+                PrintService.GetPaymentReceiptForPrint(_Service.Model.PaymentID)
+            );
+
+            if (!result.IsSuccess)
+            {
+                MessageBoxManager.ShowError("تعذر تجهيز الطباعة", Language.ar);
+                return;
+            }
+
+            TablePrintDocument document = PaymentReceiptPrintBuilder.Build(
+                result.Data,
+                "نظام إدارة محل أدوات السباكة");
+            PrintPreviewHelper.Show(document, "معاينة إيصال سداد");
+        }
+
+        private async Task _AddNew()
         {
             DialogResult Confirm = MessageBoxManager.ShowConfirm(
                 "هل أنت متأكد من أنك تريد حفظ بيانات هذه الدفعة؟",

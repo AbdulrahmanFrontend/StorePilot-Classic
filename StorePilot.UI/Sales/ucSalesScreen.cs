@@ -8,6 +8,8 @@ using StorePilot.UI.Customers;
 using StorePilot.UI.Global.Classes;
 using StorePilot.UI.Global.Controls;
 using StorePilot.UI.Payments;
+using StorePilot.UI.Printing;
+using StorePilot.UI.Printing.Builders;
 using StorePilot.UI.Properties;
 using StorePilot.UI.Returns;
 using System;
@@ -16,6 +18,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -300,9 +303,25 @@ namespace StorePilot.UI.Sales
                     Language.ar);
         }
 
-        private void tsmiPrint_Click(object sender, EventArgs e)
+        private async void tsmiPrint_Click(object sender, EventArgs e)
         {
+            if (!_TrySelectedID(0, out int saleInvoiceId))
+                return;
 
+            var result = await Task.Run(() =>
+                PrintService.GetSalesInvoiceForPrint(saleInvoiceId)
+            );
+
+            if (!result.IsSuccess)
+            {
+                MessageBoxManager.ShowError("تعذر تجهيز الطباعة", Language.ar);
+                return;
+            }
+
+            TablePrintDocument document = SalesInvoicePrintBuilder.Build(
+                result.Data, 
+                "نظام إدارة محل أدوات السباكة");
+            PrintPreviewHelper.Show(document, "معاينة فاتورة مبيعات");
         }
 
         private void tsmiAddPayments_Click(object sender, EventArgs e)
