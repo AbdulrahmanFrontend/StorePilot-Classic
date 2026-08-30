@@ -173,25 +173,25 @@ namespace StorePilot.BLL
                 Result<ProductModel> result = ProductData.Find(item.ProductID);
 
                 if (!result.IsSuccess || result.Data == null)
-                    return Result.Failure("هناك صنف غير مسجل في النظام," +
+                    return Result.Failure("هناك صنف غير مسجل في النظام, " +
                         "أو أن عملية الوصول لبيانات الصنف فشلت!");
 
                 if (!result.Data.Active)
                     return Result.Failure(
-                        $"الصنف {result.Data.ProductName} غير مفعل في النظام!");
+                        $"الصنف '{result.Data.ProductName}' غير مفعل في النظام!");
 
                 if (_Items.Count(i => i.ProductID == item.ProductID) > 1)
                     return Result.Failure(
-                        $"الصنف {result.Data.ProductName} مكرر في الفاتورة!");
+                        $"الصنف '{result.Data.ProductName}' مكرر في الفاتورة!");
 
                 if (item.Quantity <= 0)
                     return Result.Failure(
-                        $"الصنف {result.Data.ProductName} الكمية المطلوبة منه أصغر من " +
+                        $"الصنف '{result.Data.ProductName}' الكمية المطلوبة منه أصغر من " +
                         $"أو تساوي الصفر!");
 
                 if (item.UnitPrice <= 0)
                     return Result.Failure(
-                        $"الصنف {result.Data.ProductName} سعر الوحدة له أصغر من " +
+                        $"الصنف '{result.Data.ProductName}' سعر الوحدة له أصغر من " +
                         $"أو يساوي الصفر!");
             }
 

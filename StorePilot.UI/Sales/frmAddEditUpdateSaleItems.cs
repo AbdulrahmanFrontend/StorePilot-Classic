@@ -6,6 +6,8 @@ using DevToolkit.Core.Results;
 using StorePilot.BLL;
 using StorePilot.Core.Models;
 using StorePilot.UI.Global.Classes;
+using StorePilot.UI.Printing;
+using StorePilot.UI.Printing.PrintDocumentModels;
 using StorePilot.UI.Products;
 using System;
 using System.Collections.Generic;
@@ -232,7 +234,7 @@ namespace StorePilot.UI.Sales
 
             if (!result.Data.Model.Active)
                 return Result.Failure(
-                    $"الصنف {result.Data.Model.ProductName} غير مفعل في النظام!");
+                    $"الصنف '{result.Data.Model.ProductName}' غير مفعل في النظام!");
 
             if (_Items.Count(i => i.ProductID == _InvoiceItem.ProductID) > 0)
                 return Result.Failure(
@@ -242,19 +244,19 @@ namespace StorePilot.UI.Sales
 
             if (Quantity <= 0)
                 return Result.Failure(
-                    $"الصنف {result.Data.Model.ProductName} " +
+                    $"الصنف '{result.Data.Model.ProductName}' " +
                     $"الكمية المطلوبة منه أصغر من الصفر!");
 
             if (Quantity > result.Data.Model.Quantity)
                 return Result.Failure(
-                    $"الصنف {result.Data.Model.ProductName}" +
+                    $"الصنف '{result.Data.Model.ProductName}' " +
                     $"الكمية المطلوبة منه أكبر من المخزون!");
 
             decimal UnitPrice = _GetDecimalValue(tbUnitPrice.Text?.ToString());
 
             if (UnitPrice <= 0)
                 return Result.Failure(
-                    $"الصنف {result.Data.Model.ProductName} سعر الوحدة له أصغر من " +
+                    $"الصنف '{result.Data.Model.ProductName}' سعر الوحدة له أصغر من " +
                     $"أو يساوي الصفر!");
 
             _InvoiceItem.ProductName = result.Data.Model.ProductName;
@@ -360,6 +362,63 @@ namespace StorePilot.UI.Sales
         {
             if (_Items.Count > 0)
                 this.DataBack?.Invoke(this, _Items);
+        }
+
+        // -----------------------------------------------------------------
+        // Printing — "فاتورة تسعير" (price quote)
+        //
+        // This is a quick, unofficial pricing print of whatever items are
+        // currently in the grid, before the sale is actually saved — so it
+        // has no InvoiceID/SaleInvoiceID reference number yet, and the date
+        // shown is "now" rather than a stored invoice date.
+        // Reuses the shared DevToolkit.Printing engine already used for the
+        // real sales/purchase invoices, so the look & item columns match.
+        // -----------------------------------------------------------------
+
+        private void btnPrint_Click(object sender, EventArgs e)
+        {
+            if (_Items.Count == 0)
+            {
+                MessageBoxManager.ShowError("لا توجد عناصر لطباعتها!", Language.ar);
+                return;
+            }
+
+            TablePrintDocument document = _BuildPriceQuoteDocument();
+            PrintPreviewHelper.Show(document, "معاينة فاتورة تسعير");
+        }
+
+        private TablePrintDocument _BuildPriceQuoteDocument()
+        {
+            var model = new PrintDocumentModel
+            {
+                ShopName = "نظام إدارة محل أدوات السباكة", // TODO: point this at wherever the shop name is actually configured
+                DocumentTitle = "فاتورة تسعير",
+
+                HeaderInfoLines = new List<(string, string)>
+                {
+                    ("التاريخ", DateTime.Now.ToString("yyyy/MM/dd  hh:mm tt")),
+                },
+
+                Columns = new List<PrintColumn>
+                {
+                    new PrintColumn { Header = "المجموعة",   WidthPercent = 16, ValueSelector = o => ((InvoiceItemViewModel)o).GroupName },
+                    new PrintColumn { Header = "الوحدة",     WidthPercent = 10, ValueSelector = o => ((InvoiceItemViewModel)o).UnitName },
+                    new PrintColumn { Header = "الصنف",      WidthPercent = 30, ValueSelector = o => ((InvoiceItemViewModel)o).ProductName },
+                    new PrintColumn { Header = "الكمية",     WidthPercent = 12, ValueSelector = o => ((InvoiceItemViewModel)o).Quantity.ToString("0.##") },
+                    new PrintColumn { Header = "سعر الوحدة", WidthPercent = 16, ValueSelector = o => ((InvoiceItemViewModel)o).UnitPrice.ToString("N2") },
+                    new PrintColumn { Header = "الإجمالي",   WidthPercent = 16, ValueSelector = o => ((InvoiceItemViewModel)o).TotalPrice.ToString("N2") },
+                },
+                Rows = _Items.Cast<object>().ToList(),
+
+                SummaryLines = new List<(string, string)>
+                {
+                    ("إجمالي التسعير", _Items.Sum(i => i.TotalPrice).ToString("N2"))
+                },
+
+                FooterNote = "هذا العرض غير مُلزم وقابل للتغيير عند تحويله لفاتورة رسمية"
+            };
+
+            return new TablePrintDocument(model);
         }
     }
 }

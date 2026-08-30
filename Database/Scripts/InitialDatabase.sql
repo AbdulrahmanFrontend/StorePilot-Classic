@@ -267,3 +267,30 @@ VALUES ('نواكل'),
 ('موبايل قسط'),
 ('أجهزة كهربائية قسط'),
 ('مستلزمات قسط');
+
+
+-- Indexes
+ 
+CREATE INDEX idx_Payments_InvoiceID_Cancelled
+    ON Payments(InvoiceID, Cancelled);
+ 
+CREATE INDEX idx_SalesReturns_SaleInvoiceID_Cancelled
+    ON SalesReturns(SaleInvoiceID, Cancelled);
+ 
+CREATE INDEX idx_Products_GroupID
+    ON Products(GroupID);
+ 
+CREATE INDEX idx_Products_UnitID
+    ON Products(UnitID);
+ 
+CREATE INDEX idx_CashTransactions_Cancelled_TransactionID
+    ON CashTransactions(Cancelled, TransactionID DESC);
+ 
+CREATE INDEX idx_CashTransactions_TransactionDate
+    ON CashTransactions(TransactionDate);
+ 
+CREATE INDEX idx_SalesInvoices_CustomerID
+    ON SalesInvoices(CustomerID);
+ 
+CREATE INDEX idx_PurchasesInvoices_SupplierID
+    ON PurchasesInvoices(SupplierID);

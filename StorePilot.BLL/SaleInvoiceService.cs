@@ -175,25 +175,25 @@ namespace StorePilot.BLL
 
                 if(!result.Data.Active)
                     return Result.Failure(
-                        $"الصنف {result.Data.ProductName} غير مفعل في النظام!");
+                        $"الصنف '{result.Data.ProductName}' غير مفعل في النظام!");
 
                 if (_Items.Count(i => i.ProductID == item.ProductID) > 1)
                     return Result.Failure(
-                        $"الصنف {result.Data.ProductName} مكرر في الفاتورة!");
+                        $"الصنف '{result.Data.ProductName}' مكرر في الفاتورة!");
 
                 if (item.Quantity <= 0)
                     return Result.Failure(
-                        $"الصنف {result.Data.ProductName} الكمية المطلوبة منه أصغر من " +
+                        $"الصنف '{result.Data.ProductName}' الكمية المطلوبة منه أصغر من " +
                         $"أو تساوي الصفر!");
 
                 if (item.Quantity > result.Data.Quantity)
                     return Result.Failure(
-                        $"الصنف {result.Data.ProductName} الكمية المطلوبة منه أكبر من " +
+                        $"الصنف '{result.Data.ProductName}' الكمية المطلوبة منه أكبر من " +
                         $"الكمية المتوفرة في المخزن!");
 
                 if (item.UnitPrice <= 0)
                     return Result.Failure(
-                        $"الصنف {result.Data.ProductName} سعر الوحدة له أصغر من " +
+                        $"الصنف '{result.Data.ProductName}' سعر الوحدة له أصغر من " +
                         $"أو يساوي الصفر!");
             }
 

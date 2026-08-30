@@ -47,7 +47,7 @@ namespace StorePilot.UI.Global.Controls
             this.Grid.ImportButtonVisible = false;
             this.Grid.Searchbar.ShowCancelButton = false;
 
-            Grid.SetPageSizes(new[] { 5, 10, 20, 30, 40 });
+            Grid.SetPageSizes(new[] { 50, 100, 200, 300, 400 });
         }
 
         protected void _SetPagesCount(Result<int> result)

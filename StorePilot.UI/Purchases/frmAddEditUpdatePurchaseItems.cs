@@ -245,7 +245,7 @@ namespace StorePilot.UI.Purchases
 
             if (!result.Data.Model.Active)
                 return Result.Failure(
-                    $"الصنف {result.Data.Model.ProductName} غير مفعل في النظام!");
+                    $"الصنف '{result.Data.Model.ProductName}' غير مفعل في النظام!");
 
             if (_Items.Count(i => i.ProductID == _InvoiceItem.ProductID) > 0)
                 return Result.Failure(
@@ -255,14 +255,14 @@ namespace StorePilot.UI.Purchases
 
             if (Quantity <= 0)
                 return Result.Failure(
-                    $"الصنف {result.Data.Model.ProductName} " +
+                    $"الصنف '{result.Data.Model.ProductName}' " +
                     $"الكمية المطلوبة منه أصغر من الصفر!");
 
             decimal UnitPrice = _GetDecimalValue(tbUnitPrice.Text?.ToString());
 
             if (UnitPrice <= 0)
                 return Result.Failure(
-                    $"الصنف {result.Data.Model.ProductName} سعر الوحدة له أصغر من " +
+                    $"الصنف '{result.Data.Model.ProductName}' سعر الوحدة له أصغر من " +
                     $"أو يساوي الصفر!");
 
             _InvoiceItem.ProductName = result.Data.Model.ProductName;
