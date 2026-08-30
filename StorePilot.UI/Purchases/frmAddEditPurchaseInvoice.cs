@@ -135,9 +135,15 @@ namespace StorePilot.UI.Purchases
             if (_Model.InvoiceStatus == InvoiceStatus.Deferred.ToArabic())
             {
                 if (!_Model.Cancelled)
+                {
+                    btnViewPayments.Enabled = true;
                     btnViewPayments.Text = "إضافة دفعة جديدة";
+                }
                 else
-                    btnViewPayments.Enabled = false;
+                {
+                    btnViewPayments.Enabled = true;
+                    btnViewPayments.Text = "عرض المدفوعات";
+                }
             }
             else
             {

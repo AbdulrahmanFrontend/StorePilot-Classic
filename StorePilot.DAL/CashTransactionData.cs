@@ -269,16 +269,10 @@ namespace StorePilot.DAL
             int saleInvoiceId)
         {
             string Query = @"UPDATE CashTransactions
-                SET
-                    Cancelled = CASE Cancelled 
-                    WHEN 0 THEN 1 
-                    ELSE 1
-                END
-                WHERE TransactionID = 
-                (
-                    SELECT TransactionID FROM SalesReturns 
-                    WHERE SaleInvoiceID = @SaleInvoiceID
-                );";
+                SET Cancelled = 1
+                FROM SalesReturns SR
+                WHERE SR.SaleInvoiceID = @SaleInvoiceID
+                  AND CashTransactions.TransactionID = SR.TransactionID;";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
             {

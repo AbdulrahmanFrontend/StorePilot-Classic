@@ -113,7 +113,7 @@ namespace StorePilot.UI.CashTransactions
 
             dtpTransactionDate.Value = _Model.TransactionDate;
             cbTransactionType.SelectedIndex = 
-                _Model.TransactionType == "ايرادات" ? 0 : 1;
+                (int)_Model.TransactionType.ToTransactionType();
             tbPaidAmount.Text = _Model.PaidAmount.ToString("#,##0");
             tbDescription.Text = _Model.Description;
             tbNotes.Text = _Model.Notes;

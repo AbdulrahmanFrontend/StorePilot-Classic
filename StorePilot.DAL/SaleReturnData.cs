@@ -183,14 +183,7 @@ namespace StorePilot.DAL
         {
             string Query = @"SELECT EXISTS
             (
-                SELECT 1 FROM SalesReturns WHERE SaleInvoiceID = 
-                (
-                    SELECT SaleInvoiceID FROM SalesInvoices WHERE InvoiceID = 
-                        (
-                            SELECT InvoiceID FROM Invoices 
-                            WHERE TransactionID = @TransactionID
-                        )
-                )
+                SELECT 1 FROM SalesReturns WHERE TransactionID = @TransactionID
             ) AS IsReturnsTransaction;";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]

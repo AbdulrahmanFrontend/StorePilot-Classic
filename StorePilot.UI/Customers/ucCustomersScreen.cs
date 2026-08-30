@@ -284,7 +284,7 @@ namespace StorePilot.UI.Customers
             }
             else
             {
-                tsmiUpdate.Enabled = false;
+                tsmiUpdate.Enabled = true;
                 tsmiActivate.Text = "تعطيل";
             }
         }

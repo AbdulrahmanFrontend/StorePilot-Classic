@@ -24,7 +24,6 @@ namespace StorePilot.UI.Returns
 
         private int _ReturnId;
         private int _SaleInvoiceId;
-        private int _InvoiceId;
         private InvoiceItemViewModel _InvoiceItem;
         private BindingList<InvoiceItemViewModel> _Items;
 
@@ -95,16 +94,6 @@ namespace StorePilot.UI.Returns
         {
             _SetDefaultValues();
 
-            var SaleInvoiceResult = SaleInvoiceService.Find(_SaleInvoiceId);
-
-            if (!SaleInvoiceResult.IsSuccess)
-            {
-                MessageBoxManager.ShowError(SaleInvoiceResult.Message, Language.ar);
-                this.Close();
-            }
-
-            _InvoiceId = SaleInvoiceResult.Data.Model.InvoiceID;
-
             switch (_Mode)
             {
                 case frmMode.AddNew:
@@ -149,7 +138,17 @@ namespace StorePilot.UI.Returns
 
         private void _FillProductsComboBox()
         {
-            var result = InvoiceItemService.GetInvoiceItems(_InvoiceId);
+            var SaleInvoiceResult = SaleInvoiceService.Find(_SaleInvoiceId);
+
+            if (!SaleInvoiceResult.IsSuccess)
+            {
+                MessageBoxManager.ShowError(SaleInvoiceResult.Message, Language.ar);
+                this.Close();
+            }
+
+            int InvoiceId = SaleInvoiceResult.Data.Model.InvoiceID;
+
+            var result = InvoiceItemService.GetInvoiceItems(InvoiceId);
 
             if (!result.IsSuccess)
             {
@@ -313,7 +312,6 @@ namespace StorePilot.UI.Returns
             btnSaveItem.Enabled = true;
             btnCancel.Enabled = true;
             tbQuantity.ReadOnly = false;
-            tbUnitPrice.ReadOnly = false;
 
             cbProducts.SelectedValue = _InvoiceItem.ProductID;
             tbQuantity.Text = _InvoiceItem.Quantity.ToString("#,##0");
@@ -367,5 +365,11 @@ namespace StorePilot.UI.Returns
             object sender,
             DataGridViewCellEventArgs e)
             => _Update();
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            if (_Items.Count > 0)
+                this.DataBack?.Invoke(this, _Items); 
+        }
     }
 }

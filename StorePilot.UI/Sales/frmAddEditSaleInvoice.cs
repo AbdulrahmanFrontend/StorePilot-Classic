@@ -136,9 +136,15 @@ namespace StorePilot.UI.Sales
             if (_Model.InvoiceStatus == InvoiceStatus.Deferred.ToArabic())
             {
                 if (!_Model.Cancelled)
+                {
+                    btnViewPayments.Enabled = true;
                     btnViewPayments.Text = "إضافة دفعة جديدة";
+                }
                 else
-                    btnViewPayments.Enabled = false;
+                {
+                    btnViewPayments.Enabled = true;
+                    btnViewPayments.Text = "عرض المدفوعات";
+                }
             }
             else
             {
@@ -159,20 +165,19 @@ namespace StorePilot.UI.Sales
 
             if (!result.IsSuccess)
             {
-                btnReturns.Text = "إضافة مرتجع";
                 if (_Model.Cancelled)
-                    btnReturns.Enabled = false;
-                else
+                {
                     btnReturns.Enabled = true;
+                    btnReturns.Text = "عرض المرتجعات";
+                }
+                else
+                {
+                    btnReturns.Enabled = true;
+                    btnReturns.Text = "إضافة مرتجع";
+                }
             }
             else
-            {
                 btnReturns.Text = "عرض المرتجعات";
-                if (_Model.Cancelled)
-                    btnReturns.Enabled = true;
-                else
-                    btnReturns.Enabled = false;
-            }
         }
 
         private void Frm_DataBackInvoiceItems(

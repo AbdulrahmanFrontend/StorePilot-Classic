@@ -242,22 +242,10 @@ namespace StorePilot.DAL
             int invoiceId)
         {
             string Query = @"UPDATE Products
-                SET Quantity =
-                (
-                    Quantity +
-                    (
-                        SELECT Quantity
-                        FROM InvoicesItems
-                        WHERE InvoicesItems.ProductID = Products.ProductID
-                        AND InvoicesItems.InvoiceID = @InvoiceID
-                    )
-                )
-                WHERE ProductID IN
-                (
-                    SELECT ProductID
-                    FROM InvoicesItems
-                    WHERE InvoiceID = @InvoiceID
-                );";
+                SET Quantity = Products.Quantity + II.Quantity
+                FROM InvoicesItems AS II
+                WHERE II.InvoiceID = @InvoiceID
+                  AND Products.ProductID = II.ProductID;";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
             {
@@ -289,18 +277,10 @@ namespace StorePilot.DAL
             int returnId)
         {
             string Query = @"UPDATE Products
-                SET 
-                    Quantity = Quantity +
-                    (
-                        SELECT Quantity FROM SalesReturnItems
-                        WHERE SalesReturnItems.ProductID = Products.ProductID
-                        AND SalesReturnItems.ReturnID = @ReturnID
-                    )
-                WHERE ProductID IN
-                (
-                    SELECT ProductID FROM SalesReturnItems
-                    WHERE ReturnID = @ReturnID
-                );";
+                SET Quantity = Products.Quantity + SRI.Quantity
+                FROM SalesReturnItems AS SRI
+                WHERE SRI.ReturnID = @ReturnID
+                  AND Products.ProductID = SRI.ProductID;";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
             {
@@ -337,20 +317,10 @@ namespace StorePilot.DAL
             int invoiceId)
         {
             string Query = @"UPDATE Products
-                SET Quantity =
-                (
-                    Quantity -
-                    (
-                        SELECT Quantity FROM InvoicesItems
-                        WHERE InvoicesItems.ProductID = Products.ProductID
-                        AND InvoicesItems.InvoiceID = @InvoiceID
-                    )
-                )
-                WHERE ProductID IN
-                (
-                    SELECT ProductID FROM InvoicesItems
-                    WHERE InvoiceID = @InvoiceID
-                );";
+                SET Quantity = Products.Quantity - II.Quantity
+                FROM InvoicesItems AS II
+                WHERE II.InvoiceID = @InvoiceID
+                  AND Products.ProductID = II.ProductID;";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
             {
@@ -382,18 +352,10 @@ namespace StorePilot.DAL
             int returnId)
         {
             string Query = @"UPDATE Products
-                SET 
-                    Quantity = Quantity -
-                    (
-                        SELECT Quantity FROM SalesReturnItems
-                        WHERE SalesReturnItems.ProductID = Products.ProductID
-                        AND SalesReturnItems.ReturnID = @ReturnID
-                    )
-                WHERE ProductID IN
-                (
-                    SELECT ProductID FROM SalesReturnItems
-                    WHERE ReturnID = @ReturnID
-                );";
+                SET Quantity = Products.Quantity - SRI.Quantity
+                FROM SalesReturnItems AS SRI
+                WHERE SRI.ReturnID = @ReturnID
+                  AND Products.ProductID = SRI.ProductID;";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
             {
@@ -430,26 +392,16 @@ namespace StorePilot.DAL
             int saleInvoiceId)
         {
             string Query = @"UPDATE Products
-                SET 
-                    Quantity = Quantity -
-                    (
-                        SELECT Quantity FROM SalesReturnItems
-                        WHERE SalesReturnItems.ProductID = Products.ProductID
-                        AND SalesReturnItems.ReturnID IN 
-                        (
-                            SELECT ReturnID FROM SalesReturns 
-                            WHERE SaleInvoiceID = @SaleInvoiceID
-                        )
-                    )
-                WHERE ProductID IN
-                (
-                    SELECT ProductID FROM SalesReturnItems
-                    WHERE ReturnID IN 
-                    (
-                        SELECT ReturnID FROM SalesReturns 
-                        WHERE SaleInvoiceID = @SaleInvoiceID
-                    )
-                );";
+                SET Quantity = Products.Quantity - SRI_Totals.TotalReturned
+                FROM (
+                    SELECT SRI.ProductID, SUM(SRI.Quantity) AS TotalReturned
+                    FROM SalesReturnItems SRI
+                    JOIN SalesReturns SR ON SRI.ReturnID = SR.ReturnID
+                    WHERE SR.SaleInvoiceID = @SaleInvoiceID
+                      AND SR.Cancelled = 0
+                    GROUP BY SRI.ProductID
+                ) AS SRI_Totals
+                WHERE Products.ProductID = SRI_Totals.ProductID;";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
             {

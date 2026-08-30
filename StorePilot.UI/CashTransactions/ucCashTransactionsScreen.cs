@@ -229,6 +229,11 @@ namespace StorePilot.UI.CashTransactions
 
                 if (result.IsSuccess)
                 {
+                    result = CashTransactionService.IsDependentTransaction(ID);
+
+                    if (!result.IsSuccess)
+                        return;
+
                     using (var frm = new frmAddEditUpdateTransaction(ID, frmMode.Update))
                     {
                         frm.DataBack += Frm_DataBack;
@@ -289,28 +294,24 @@ namespace StorePilot.UI.CashTransactions
             if (!_TrySelectedID(0, out int ID))
                 return;
 
-            var result = await Task.Run(
-                () => CashTransactionService.IsDependentTransaction(ID)
+            var result = await Task.Run(() =>
+            CashTransactionService.IsDependentTransaction(ID)
                 );
 
             if (!result.IsSuccess)
             {
                 tsmiUpdate.Enabled = false;
                 tsmiCancel.Enabled = false;
-                if (_IsCancelled())
-                    tsmiCancel.Text = "تفعيل";
-                else
-                    tsmiCancel.Text = "إلغاء";
             }
             else
             {
                 tsmiUpdate.Enabled = true;
                 tsmiCancel.Enabled = true;
-                if (_IsCancelled())
-                    tsmiCancel.Text = "تفعيل";
-                else
-                    tsmiCancel.Text = "إلغاء";
             }
+            if (_IsCancelled())
+                tsmiCancel.Text = "تفعيل";
+            else
+                tsmiCancel.Text = "إلغاء";
         }
 
         private void tsmiUpdate_Click(object sender, EventArgs e)

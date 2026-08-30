@@ -435,7 +435,7 @@ namespace StorePilot.DAL
                 (
                     SELECT InvoiceID FROM Invoices WHERE TransactionID = @TransactionID
                 )
-            ) AS IsPurchaseTransaction;";
+            ) AS IsSalesTransaction;";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
             {

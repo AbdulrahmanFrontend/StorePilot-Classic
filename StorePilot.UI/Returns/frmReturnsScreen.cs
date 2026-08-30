@@ -252,7 +252,9 @@ namespace StorePilot.UI.Returns
                 return;
             }
 
-            var result = await Task.Run(() => SaleReturnService.Cancell(ID));
+            var result = await Task.Run(() =>
+                SaleReturnService.Cancell(ID)
+            );
 
             if (result.IsSuccess)
             {

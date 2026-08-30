@@ -2,15 +2,9 @@
 using DevToolkit.Core.Common;
 using DevToolkit.Core.Results;
 using DevToolkit.Core.Validation;
-using StorePilot.Core.Enums;
 using StorePilot.Core.Models;
 using StorePilot.DAL;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StorePilot.BLL
 {
@@ -167,7 +161,7 @@ namespace StorePilot.BLL
         public static Result IsDependentTransaction(int id)
         {
             Result<bool> IsValidTransResult =
-                PurchaseInvoiceData.IsPurchaseTransaction(id);
+                PurchaseInvoiceData.IsPurchasesTransaction(id);
 
             if (IsValidTransResult.IsSuccess && IsValidTransResult.Data)
                 return Result.Failure("لا يسمح بتعديل أو حذف حركة مصروفات شراء!");

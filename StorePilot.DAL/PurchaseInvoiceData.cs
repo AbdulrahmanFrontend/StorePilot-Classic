@@ -403,7 +403,7 @@ namespace StorePilot.DAL
         }
 
         //used
-        public static Result<bool> IsPurchaseTransaction(int transId)
+        public static Result<bool> IsPurchasesTransaction(int transId)
         {
             string Query = @"SELECT EXISTS
             (
@@ -411,7 +411,7 @@ namespace StorePilot.DAL
                 (
                     SELECT InvoiceID FROM Invoices WHERE TransactionID = @TransactionID
                 )
-            ) AS IsPurchaseTransaction;";
+            ) AS IsPurchasesTransaction;";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
             {

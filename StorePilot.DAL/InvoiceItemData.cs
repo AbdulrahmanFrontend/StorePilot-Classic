@@ -133,25 +133,61 @@ namespace StorePilot.DAL
         }
 
         //used
-        public static Result UpdateInvoiceItems(
+        public static Result UpdateInvoiceItemsAfterAddNewReturns(
             IDbConnection con,
             IDbTransaction trans,
             int returnId,
             int invoiceId)
         {
             string Query = @"UPDATE InvoicesItems
-                SET 
-                    Quantity = Quantity - 
-                    (
-                        SELECT Quantity FROM SalesReturnItems 
-                        WHERE SalesReturnItems.ProductID = ProductID
-                        AND ReturnID = @ReturnID
-                    )
-                WHERE ItemID = 
-                (
-                    SELECT ItemID FROM InvoicesItems 
-                    WHERE InvoiceID = @InvoiceID
-                );";
+                SET Quantity = InvoicesItems.Quantity - SRI.Quantity
+                FROM SalesReturnItems AS SRI
+                WHERE SRI.ReturnID = @ReturnID
+                  AND InvoicesItems.InvoiceID = @InvoiceID
+                  AND InvoicesItems.ProductID = SRI.ProductID;";
+
+            DbParameterInfo[] Parameters = new DbParameterInfo[]
+            {
+                new DbParameterInfo
+                {
+                    Name = "@ReturnID",
+                    DbType = DbType.Int64,
+                    Value = returnId,
+                },
+                new DbParameterInfo
+                {
+                    Name = "@InvoiceID",
+                    DbType = DbType.Int64,
+                    Value = invoiceId,
+                },
+            };
+
+            Result<int> result = DbManager.Current?.ExecuteNonQuery(
+                con,
+                trans,
+                CommandType.Text,
+                Query,
+                Parameters);
+
+            if (result.IsSuccess && result.Data > 0)
+                return Result.Success();
+
+            return Result.Failure("فشلت عملية تحديث عناصر الفاتورة!");
+        }
+
+        //used
+        public static Result UpdateInvoiceItemsAfterCancellReturns(
+            IDbConnection con,
+            IDbTransaction trans,
+            int returnId,
+            int invoiceId)
+        {
+            string Query = @"UPDATE InvoicesItems
+                SET Quantity = InvoicesItems.Quantity + SRI.Quantity
+                FROM SalesReturnItems AS SRI
+                WHERE SRI.ReturnID = @ReturnID
+                  AND InvoicesItems.InvoiceID = @InvoiceID
+                  AND InvoicesItems.ProductID = SRI.ProductID;";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
             {

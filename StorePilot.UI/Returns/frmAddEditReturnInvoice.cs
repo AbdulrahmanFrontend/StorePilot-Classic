@@ -311,7 +311,9 @@ namespace StorePilot.UI.Returns
             if (Confirm != DialogResult.Yes)
                 return;
 
-            var result = await Task.Run(() => SaleReturnService.Cancell(_ReturnId));
+            var result = await Task.Run(() => 
+                SaleReturnService.Cancell(_ReturnId)
+            );
 
             if (result.IsSuccess)
             {

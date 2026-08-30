@@ -461,7 +461,7 @@ namespace StorePilot.DAL
             string Query = @"SELECT EXISTS
             (
                 SELECT 1 FROM Payments WHERE TransactionID = @TransactionID
-            ) AS IsPurchaseTransaction;";
+            ) AS IsPaymentsTransaction;";
 
             DbParameterInfo[] Parameters = new DbParameterInfo[]
             {

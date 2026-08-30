@@ -362,5 +362,11 @@ namespace StorePilot.UI.Purchases
             object sender, 
             DataGridViewCellEventArgs e)
             => _Update();
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            if (_Items.Count > 0)
+                this.DataBack?.Invoke(this, _Items);
+        }
     }
 }

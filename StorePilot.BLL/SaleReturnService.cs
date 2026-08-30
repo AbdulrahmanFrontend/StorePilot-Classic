@@ -141,7 +141,7 @@ namespace StorePilot.BLL
 
                     _ThrowException(result);
 
-                    result = InvoiceItemData.UpdateInvoiceItems(
+                    result = InvoiceItemData.UpdateInvoiceItemsAfterAddNewReturns(
                         con,
                         trans,
                         this.Model.ReturnID,
@@ -240,10 +240,22 @@ namespace StorePilot.BLL
 
         public Result ValidateReturnDate()
         {
-            if (this.Model.ReturnDate < SaleInvoice.InvoiceDate)
-                return Result.Failure(
-                    "يجب إن يكون تاريخ فاتورة المرتجع أكبر من" +
-                    " أو يساوي تاريخ فاتورة البيع!");
+            var result = SaleInvoiceService.Find(this.Model.SaleInvoiceID);
+
+            if (result.IsSuccess)
+            {
+                if (result.Data == null)
+                    return Result.Failure(result.Message);
+
+                this.SaleInvoice = result.Data.Model;
+
+                if (this.Model.ReturnDate < this.SaleInvoice.InvoiceDate)
+                    return Result.Failure(
+                        "يجب إن يكون تاريخ فاتورة المرتجع أكبر من" +
+                        " أو يساوي تاريخ فاتورة البيع!");
+            }
+            else
+                return Result.Failure(result.Message);
 
             return Result.Success();
         }
@@ -347,6 +359,14 @@ namespace StorePilot.BLL
                     con,
                     trans,
                     SaleInvoiceResult.Data);
+
+                _ThrowException(result);
+
+                result = InvoiceItemData.UpdateInvoiceItemsAfterCancellReturns(
+                        con,
+                        trans,
+                        id,
+                        SaleInvoiceResult.Data.InvoiceID);
 
                 _ThrowException(result);
             });
