@@ -271,7 +271,7 @@
             this.cbProducts.DropDownHeight = 100;
             this.cbProducts.FormattingEnabled = true;
             this.cbProducts.IntegralHeight = false;
-            this.cbProducts.Location = new System.Drawing.Point(3, 3);
+            this.cbProducts.Location = new System.Drawing.Point(3, 5);
             this.cbProducts.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.cbProducts.Name = "cbProducts";
             this.cbProducts.Size = new System.Drawing.Size(328, 28);

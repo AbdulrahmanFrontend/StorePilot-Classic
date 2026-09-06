@@ -333,7 +333,9 @@ namespace StorePilot.UI.Products
 
         private async Task _Save()
         {
-            var result = await Task.Run(() => _Service.Save());
+            var result = await Task.Run(() =>
+                _Service.Save()
+            );
 
             if (result.IsSuccess)
             {

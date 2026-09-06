@@ -1,6 +1,6 @@
 ﻿namespace StorePilot.WinForms
 {
-    partial class Form1
+    partial class frmSplash
     {
         /// <summary>
         ///  Required designer variable.
