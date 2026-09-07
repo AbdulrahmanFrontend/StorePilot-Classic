@@ -1,0 +1,39 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace StorePilot.Domain.Entities;
+
+public class Product
+{
+    public int ProductId { get; set; }
+
+    public string? Code { get; set; }
+
+    public string ProductName { get; set; } = string.Empty;
+
+    public decimal Quantity { get; set; } = 0;
+
+    public decimal MinQuantity { get; set; } = 0;
+
+    public decimal SalePrice { get; set; } = 0;
+
+    public decimal PurchasePrice { get; set; } = 0;
+
+    public int UnitId { get; set; }
+
+    public int GroupId { get; set; }
+
+    public DateTime CreatedAt { get; set; }
+
+    public string? Notes { get; set; }
+
+    public bool Active { get; set; }
+
+
+    // Navigation Properties
+
+    public Unit Unit { get; set; } = null!;
+
+    public Group Group { get; set; } = null!;
+}

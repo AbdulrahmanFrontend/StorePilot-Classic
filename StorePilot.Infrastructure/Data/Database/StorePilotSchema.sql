@@ -1,23 +1,13 @@
--- ============================================================
--- StorePilot Database Schema
--- SQLite
---
--- This script creates the initial database structure.
--- Business rules and transactional behavior belong to the
--- application/backend layer, not to this schema script.
--- ============================================================
-
 PRAGMA foreign_keys = ON;
 
 
 -- ============================================================
--- 1. Lookup / Master Tables
+-- Reference Data
 -- ============================================================
 
 CREATE TABLE IF NOT EXISTS "Units" (
     "UnitId" INTEGER,
     "Unit" TEXT NOT NULL UNIQUE,
-
     PRIMARY KEY ("UnitId" AUTOINCREMENT)
 ) STRICT;
 
@@ -25,7 +15,6 @@ CREATE TABLE IF NOT EXISTS "Units" (
 CREATE TABLE IF NOT EXISTS "Groups" (
     "GroupId" INTEGER,
     "Group" TEXT NOT NULL UNIQUE,
-
     PRIMARY KEY ("GroupId" AUTOINCREMENT)
 ) STRICT;
 
@@ -33,126 +22,132 @@ CREATE TABLE IF NOT EXISTS "Groups" (
 CREATE TABLE IF NOT EXISTS "PaymentMethods" (
     "MethodId" INTEGER,
     "Method" TEXT NOT NULL UNIQUE,
-
     PRIMARY KEY ("MethodId" AUTOINCREMENT)
 ) STRICT;
 
 
 -- ============================================================
--- 2. Main Master Data
+-- People
+-- Shared identity data for customers and suppliers.
+-- A person may be both a customer and a supplier.
+-- ============================================================
+
+CREATE TABLE IF NOT EXISTS "People" (
+    "PersonId" INTEGER,
+    "Name" TEXT NOT NULL UNIQUE,
+    "Phone" TEXT UNIQUE,
+    "Address" TEXT,
+    "CreatedAt" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "Notes" TEXT,
+    PRIMARY KEY ("PersonId" AUTOINCREMENT)
+) STRICT;
+
+
+-- ============================================================
+-- Products
+-- Products are master data.
+-- Active = 0 prevents new transactions while preserving history.
 -- ============================================================
 
 CREATE TABLE IF NOT EXISTS "Products" (
     "ProductId" INTEGER,
     "Code" TEXT,
     "ProductName" TEXT NOT NULL,
-    "Quantity" REAL NOT NULL DEFAULT 0
-        CHECK ("Quantity" >= 0),
-    "MinQuantity" REAL NOT NULL DEFAULT 0
-        CHECK ("MinQuantity" >= 0),
-    "SalePrice" REAL NOT NULL DEFAULT 0
-        CHECK ("SalePrice" >= 0),
-    "PurchasePrice" REAL NOT NULL DEFAULT 0
-        CHECK ("PurchasePrice" >= 0),
+    "Quantity" REAL NOT NULL DEFAULT 0 CHECK ("Quantity" >= 0),
+    "MinQuantity" REAL NOT NULL DEFAULT 0 CHECK ("MinQuantity" >= 0),
+    "SalePrice" REAL NOT NULL DEFAULT 0 CHECK ("SalePrice" >= 0),
+    "PurchasePrice" REAL NOT NULL DEFAULT 0 CHECK ("PurchasePrice" >= 0),
     "UnitId" INTEGER NOT NULL,
     "GroupId" INTEGER NOT NULL,
     "CreatedAt" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "Notes" TEXT,
-    "Active" INTEGER NOT NULL DEFAULT 1
-        CHECK ("Active" IN (0, 1)),
-
+    "Active" INTEGER NOT NULL DEFAULT 1 CHECK ("Active" IN (0, 1)),
     PRIMARY KEY ("ProductId" AUTOINCREMENT),
-
-    FOREIGN KEY ("GroupId")
-        REFERENCES "Groups" ("GroupId"),
-
-    FOREIGN KEY ("UnitId")
-        REFERENCES "Units" ("UnitId")
-) STRICT;
-
-
-CREATE TABLE IF NOT EXISTS "Customers" (
-    "CustomerId" INTEGER,
-    "Name" TEXT NOT NULL UNIQUE,
-    "Phone" TEXT UNIQUE,
-    "Address" TEXT,
-    "TotalSales" REAL NOT NULL DEFAULT 0
-        CHECK ("TotalSales" >= 0),
-    "TotalReturns" REAL NOT NULL DEFAULT 0
-        CHECK ("TotalReturns" >= 0),
-    "TotalPaid" REAL NOT NULL DEFAULT 0
-        CHECK ("TotalPaid" >= 0),
-    "Balance" REAL NOT NULL DEFAULT 0
-        CHECK ("Balance" >= 0),
-    "CreatedAt" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "Notes" TEXT,
-    "Active" INTEGER NOT NULL DEFAULT 1
-        CHECK ("Active" IN (0, 1)),
-
-    PRIMARY KEY ("CustomerId" AUTOINCREMENT)
-) STRICT;
-
-
-CREATE TABLE IF NOT EXISTS "Suppliers" (
-    "SupplierId" INTEGER,
-    "Name" TEXT NOT NULL UNIQUE,
-    "Phone" TEXT UNIQUE,
-    "Address" TEXT,
-    "TotalPurchases" REAL NOT NULL DEFAULT 0
-        CHECK ("TotalPurchases" >= 0),
-    "TotalPaid" REAL NOT NULL DEFAULT 0
-        CHECK ("TotalPaid" >= 0),
-    "Balance" REAL NOT NULL DEFAULT 0
-        CHECK ("Balance" >= 0),
-    "CreatedAt" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "Notes" TEXT,
-    "Active" INTEGER NOT NULL DEFAULT 1
-        CHECK ("Active" IN (0, 1)),
-
-    PRIMARY KEY ("SupplierId" AUTOINCREMENT)
+    FOREIGN KEY ("UnitId") REFERENCES "Units" ("UnitId"),
+    FOREIGN KEY ("GroupId") REFERENCES "Groups" ("GroupId")
 ) STRICT;
 
 
 -- ============================================================
--- 3. Transaction History
+-- Customers
+-- Person contains identity/contact information.
+-- Customer contains customer-specific business information.
+-- ============================================================
+
+CREATE TABLE IF NOT EXISTS "Customers" (
+    "CustomerId" INTEGER,
+    "PersonId" INTEGER NOT NULL UNIQUE,
+    "TotalSales" REAL NOT NULL DEFAULT 0 CHECK ("TotalSales" >= 0),
+    "TotalReturns" REAL NOT NULL DEFAULT 0 CHECK ("TotalReturns" >= 0),
+    "TotalPaid" REAL NOT NULL DEFAULT 0 CHECK ("TotalPaid" >= 0),
+    "Balance" REAL NOT NULL DEFAULT 0 CHECK ("Balance" >= 0),
+    "CreatedAt" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "Notes" TEXT,
+    "Active" INTEGER NOT NULL DEFAULT 1 CHECK ("Active" IN (0, 1)),
+    PRIMARY KEY ("CustomerId" AUTOINCREMENT),
+    FOREIGN KEY ("PersonId") REFERENCES "People" ("PersonId")
+) STRICT;
+
+
+-- ============================================================
+-- Suppliers
+-- Person contains identity/contact information.
+-- Supplier contains supplier-specific business information.
+-- ============================================================
+
+CREATE TABLE IF NOT EXISTS "Suppliers" (
+    "SupplierId" INTEGER,
+    "PersonId" INTEGER NOT NULL UNIQUE,
+    "TotalPurchases" REAL NOT NULL DEFAULT 0 CHECK ("TotalPurchases" >= 0),
+    "TotalReturns" REAL NOT NULL DEFAULT 0 CHECK ("TotalReturns" >= 0),
+    "TotalPaid" REAL NOT NULL DEFAULT 0 CHECK ("TotalPaid" >= 0),
+    "Balance" REAL NOT NULL DEFAULT 0 CHECK ("Balance" >= 0),
+    "CreatedAt" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "Notes" TEXT,
+    "Active" INTEGER NOT NULL DEFAULT 1 CHECK ("Active" IN (0, 1)),
+    PRIMARY KEY ("SupplierId" AUTOINCREMENT),
+    FOREIGN KEY ("PersonId") REFERENCES "People" ("PersonId")
+) STRICT;
+
+
+-- ============================================================
+-- Cash Transactions
+-- Represents actual cash movements.
 -- ============================================================
 
 CREATE TABLE IF NOT EXISTS "CashTransactions" (
     "TransactionId" INTEGER,
     "TransactionDate" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "TransactionType" INTEGER NOT NULL,
-    "Amount" REAL NOT NULL
-        CHECK ("Amount" > 0),
+    "Amount" REAL NOT NULL CHECK ("Amount" > 0),
     "CreatedAt" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "Notes" TEXT,
-    "Cancelled" INTEGER NOT NULL DEFAULT 0
-        CHECK ("Cancelled" IN (0, 1)),
-
+    "Cancelled" INTEGER NOT NULL DEFAULT 0 CHECK ("Cancelled" IN (0, 1)),
     PRIMARY KEY ("TransactionId" AUTOINCREMENT)
 ) STRICT;
 
+
+-- ============================================================
+-- Stock Transactions
+-- Represents actual stock movements.
+-- ============================================================
 
 CREATE TABLE IF NOT EXISTS "StockTransactions" (
     "TransactionId" INTEGER,
     "ProductId" INTEGER NOT NULL,
     "TransactionDate" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "TransactionType" INTEGER NOT NULL,
-    "Quantity" REAL NOT NULL
-        CHECK ("Quantity" > 0),
+    "Quantity" REAL NOT NULL CHECK ("Quantity" > 0),
     "CreatedAt" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "Notes" TEXT,
-    "Cancelled" INTEGER NOT NULL DEFAULT 0
-        CHECK ("Cancelled" IN (0, 1)),
-
+    "Cancelled" INTEGER NOT NULL DEFAULT 0 CHECK ("Cancelled" IN (0, 1)),
     PRIMARY KEY ("TransactionId" AUTOINCREMENT),
-
-    FOREIGN KEY ("ProductId")
-        REFERENCES "Products" ("ProductId")
+    FOREIGN KEY ("ProductId") REFERENCES "Products" ("ProductId")
 ) STRICT;
 
 
 -- ============================================================
--- 4. Sales
+-- Sales
 -- ============================================================
 
 CREATE TABLE IF NOT EXISTS "SaleInvoices" (
@@ -161,21 +156,14 @@ CREATE TABLE IF NOT EXISTS "SaleInvoices" (
     "InvoiceDate" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "CustomerId" INTEGER,
     "InvoiceStatus" INTEGER NOT NULL,
-    "TotalAmount" REAL NOT NULL
-        CHECK ("TotalAmount" > 0),
+    "TotalAmount" REAL NOT NULL CHECK ("TotalAmount" > 0),
     "CreatedAt" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "Notes" TEXT,
-    "Cancelled" INTEGER NOT NULL DEFAULT 0
-        CHECK ("Cancelled" IN (0, 1)),
+    "Cancelled" INTEGER NOT NULL DEFAULT 0 CHECK ("Cancelled" IN (0, 1)),
     "CashTransactionId" INTEGER UNIQUE,
-
     PRIMARY KEY ("SaleInvoiceId" AUTOINCREMENT),
-
-    FOREIGN KEY ("CashTransactionId")
-        REFERENCES "CashTransactions" ("TransactionId"),
-
-    FOREIGN KEY ("CustomerId")
-        REFERENCES "Customers" ("CustomerId")
+    FOREIGN KEY ("CustomerId") REFERENCES "Customers" ("CustomerId"),
+    FOREIGN KEY ("CashTransactionId") REFERENCES "CashTransactions" ("TransactionId")
 ) STRICT;
 
 
@@ -183,29 +171,19 @@ CREATE TABLE IF NOT EXISTS "SaleInvoiceItems" (
     "ItemId" INTEGER,
     "SaleInvoiceId" INTEGER NOT NULL,
     "ProductId" INTEGER NOT NULL,
-    "Quantity" REAL NOT NULL
-        CHECK ("Quantity" > 0),
-    "UnitPrice" REAL NOT NULL
-        CHECK ("UnitPrice" > 0),
+    "Quantity" REAL NOT NULL CHECK ("Quantity" > 0),
+    "UnitPrice" REAL NOT NULL CHECK ("UnitPrice" > 0),
     "StockTransactionId" INTEGER NOT NULL UNIQUE,
-
     PRIMARY KEY ("ItemId" AUTOINCREMENT),
-
     UNIQUE ("SaleInvoiceId", "ProductId"),
-
-    FOREIGN KEY ("ProductId")
-        REFERENCES "Products" ("ProductId"),
-
-    FOREIGN KEY ("SaleInvoiceId")
-        REFERENCES "SaleInvoices" ("SaleInvoiceId"),
-
-    FOREIGN KEY ("StockTransactionId")
-        REFERENCES "StockTransactions" ("TransactionId")
+    FOREIGN KEY ("SaleInvoiceId") REFERENCES "SaleInvoices" ("SaleInvoiceId"),
+    FOREIGN KEY ("ProductId") REFERENCES "Products" ("ProductId"),
+    FOREIGN KEY ("StockTransactionId") REFERENCES "StockTransactions" ("TransactionId")
 ) STRICT;
 
 
 -- ============================================================
--- 5. Quotations
+-- Quotations
 -- ============================================================
 
 CREATE TABLE IF NOT EXISTS "Quotations" (
@@ -214,21 +192,14 @@ CREATE TABLE IF NOT EXISTS "Quotations" (
     "QuotationDate" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "QuotationStatus" INTEGER NOT NULL,
     "CustomerId" INTEGER,
-    "TotalAmount" REAL NOT NULL
-        CHECK ("TotalAmount" > 0),
+    "TotalAmount" REAL NOT NULL CHECK ("TotalAmount" > 0),
     "ConvertedInvoiceId" INTEGER UNIQUE,
     "CreatedAt" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "Notes" TEXT,
-    "Cancelled" INTEGER NOT NULL DEFAULT 0
-        CHECK ("Cancelled" IN (0, 1)),
-
+    "Cancelled" INTEGER NOT NULL DEFAULT 0 CHECK ("Cancelled" IN (0, 1)),
     PRIMARY KEY ("QuotationId" AUTOINCREMENT),
-
-    FOREIGN KEY ("ConvertedInvoiceId")
-        REFERENCES "SaleInvoices" ("SaleInvoiceId"),
-
-    FOREIGN KEY ("CustomerId")
-        REFERENCES "Customers" ("CustomerId")
+    FOREIGN KEY ("CustomerId") REFERENCES "Customers" ("CustomerId"),
+    FOREIGN KEY ("ConvertedInvoiceId") REFERENCES "SaleInvoices" ("SaleInvoiceId")
 ) STRICT;
 
 
@@ -236,25 +207,17 @@ CREATE TABLE IF NOT EXISTS "QuotationItems" (
     "ItemId" INTEGER,
     "QuotationId" INTEGER NOT NULL,
     "ProductId" INTEGER NOT NULL,
-    "Quantity" REAL NOT NULL
-        CHECK ("Quantity" > 0),
-    "UnitPrice" REAL NOT NULL
-        CHECK ("UnitPrice" > 0),
-
+    "Quantity" REAL NOT NULL CHECK ("Quantity" > 0),
+    "UnitPrice" REAL NOT NULL CHECK ("UnitPrice" > 0),
     PRIMARY KEY ("ItemId" AUTOINCREMENT),
-
     UNIQUE ("QuotationId", "ProductId"),
-
-    FOREIGN KEY ("ProductId")
-        REFERENCES "Products" ("ProductId"),
-
-    FOREIGN KEY ("QuotationId")
-        REFERENCES "Quotations" ("QuotationId")
+    FOREIGN KEY ("QuotationId") REFERENCES "Quotations" ("QuotationId"),
+    FOREIGN KEY ("ProductId") REFERENCES "Products" ("ProductId")
 ) STRICT;
 
 
 -- ============================================================
--- 6. Purchases
+-- Purchases
 -- ============================================================
 
 CREATE TABLE IF NOT EXISTS "PurchaseInvoices" (
@@ -263,21 +226,14 @@ CREATE TABLE IF NOT EXISTS "PurchaseInvoices" (
     "InvoiceDate" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "SupplierId" INTEGER,
     "InvoiceStatus" INTEGER NOT NULL,
-    "TotalAmount" REAL NOT NULL
-        CHECK ("TotalAmount" > 0),
+    "TotalAmount" REAL NOT NULL CHECK ("TotalAmount" > 0),
     "CreatedAt" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "Notes" TEXT,
-    "Cancelled" INTEGER NOT NULL DEFAULT 0
-        CHECK ("Cancelled" IN (0, 1)),
+    "Cancelled" INTEGER NOT NULL DEFAULT 0 CHECK ("Cancelled" IN (0, 1)),
     "CashTransactionId" INTEGER UNIQUE,
-
     PRIMARY KEY ("PurchaseInvoiceId" AUTOINCREMENT),
-
-    FOREIGN KEY ("CashTransactionId")
-        REFERENCES "CashTransactions" ("TransactionId"),
-
-    FOREIGN KEY ("SupplierId")
-        REFERENCES "Suppliers" ("SupplierId")
+    FOREIGN KEY ("SupplierId") REFERENCES "Suppliers" ("SupplierId"),
+    FOREIGN KEY ("CashTransactionId") REFERENCES "CashTransactions" ("TransactionId")
 ) STRICT;
 
 
@@ -285,29 +241,19 @@ CREATE TABLE IF NOT EXISTS "PurchaseInvoiceItems" (
     "ItemId" INTEGER,
     "PurchaseInvoiceId" INTEGER NOT NULL,
     "ProductId" INTEGER NOT NULL,
-    "Quantity" REAL NOT NULL
-        CHECK ("Quantity" > 0),
-    "UnitPrice" REAL NOT NULL
-        CHECK ("UnitPrice" > 0),
+    "Quantity" REAL NOT NULL CHECK ("Quantity" > 0),
+    "UnitPrice" REAL NOT NULL CHECK ("UnitPrice" > 0),
     "StockTransactionId" INTEGER NOT NULL UNIQUE,
-
     PRIMARY KEY ("ItemId" AUTOINCREMENT),
-
     UNIQUE ("PurchaseInvoiceId", "ProductId"),
-
-    FOREIGN KEY ("ProductId")
-        REFERENCES "Products" ("ProductId"),
-
-    FOREIGN KEY ("PurchaseInvoiceId")
-        REFERENCES "PurchaseInvoices" ("PurchaseInvoiceId"),
-
-    FOREIGN KEY ("StockTransactionId")
-        REFERENCES "StockTransactions" ("TransactionId")
+    FOREIGN KEY ("PurchaseInvoiceId") REFERENCES "PurchaseInvoices" ("PurchaseInvoiceId"),
+    FOREIGN KEY ("ProductId") REFERENCES "Products" ("ProductId"),
+    FOREIGN KEY ("StockTransactionId") REFERENCES "StockTransactions" ("TransactionId")
 ) STRICT;
 
 
 -- ============================================================
--- 7. Sales Returns
+-- Sale Returns
 -- ============================================================
 
 CREATE TABLE IF NOT EXISTS "SaleReturns" (
@@ -315,21 +261,14 @@ CREATE TABLE IF NOT EXISTS "SaleReturns" (
     "ReturnNumber" TEXT UNIQUE,
     "ReturnDate" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "CustomerId" INTEGER NOT NULL,
-    "TotalAmount" REAL NOT NULL
-        CHECK ("TotalAmount" > 0),
+    "TotalAmount" REAL NOT NULL CHECK ("TotalAmount" > 0),
     "CreatedAt" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "Notes" TEXT,
-    "Cancelled" INTEGER NOT NULL DEFAULT 0
-        CHECK ("Cancelled" IN (0, 1)),
+    "Cancelled" INTEGER NOT NULL DEFAULT 0 CHECK ("Cancelled" IN (0, 1)),
     "CashTransactionId" INTEGER UNIQUE,
-
     PRIMARY KEY ("SaleReturnId" AUTOINCREMENT),
-
-    FOREIGN KEY ("CashTransactionId")
-        REFERENCES "CashTransactions" ("TransactionId"),
-
-    FOREIGN KEY ("CustomerId")
-        REFERENCES "Customers" ("CustomerId")
+    FOREIGN KEY ("CustomerId") REFERENCES "Customers" ("CustomerId"),
+    FOREIGN KEY ("CashTransactionId") REFERENCES "CashTransactions" ("TransactionId")
 ) STRICT;
 
 
@@ -337,29 +276,54 @@ CREATE TABLE IF NOT EXISTS "SaleReturnItems" (
     "ItemId" INTEGER,
     "SaleReturnId" INTEGER NOT NULL,
     "SourceInvoiceItemId" INTEGER NOT NULL,
-    "Quantity" REAL NOT NULL
-        CHECK ("Quantity" > 0),
-    "UnitPrice" REAL NOT NULL
-        CHECK ("UnitPrice" > 0),
+    "Quantity" REAL NOT NULL CHECK ("Quantity" > 0),
+    "UnitPrice" REAL NOT NULL CHECK ("UnitPrice" > 0),
     "StockTransactionId" INTEGER NOT NULL UNIQUE,
-
     PRIMARY KEY ("ItemId" AUTOINCREMENT),
-
     UNIQUE ("SaleReturnId", "SourceInvoiceItemId"),
-
-    FOREIGN KEY ("SaleReturnId")
-        REFERENCES "SaleReturns" ("SaleReturnId"),
-
-    FOREIGN KEY ("SourceInvoiceItemId")
-        REFERENCES "SaleInvoiceItems" ("ItemId"),
-
-    FOREIGN KEY ("StockTransactionId")
-        REFERENCES "StockTransactions" ("TransactionId")
+    FOREIGN KEY ("SaleReturnId") REFERENCES "SaleReturns" ("SaleReturnId"),
+    FOREIGN KEY ("SourceInvoiceItemId") REFERENCES "SaleInvoiceItems" ("ItemId"),
+    FOREIGN KEY ("StockTransactionId") REFERENCES "StockTransactions" ("TransactionId")
 ) STRICT;
 
 
 -- ============================================================
--- 8. Customer / Supplier Payments
+-- Purchase Returns
+-- ============================================================
+
+CREATE TABLE IF NOT EXISTS "PurchaseReturns" (
+    "PurchaseReturnId" INTEGER,
+    "ReturnNumber" TEXT UNIQUE,
+    "ReturnDate" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "SupplierId" INTEGER NOT NULL,
+    "TotalAmount" REAL NOT NULL CHECK ("TotalAmount" > 0),
+    "CreatedAt" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "Notes" TEXT,
+    "Cancelled" INTEGER NOT NULL DEFAULT 0 CHECK ("Cancelled" IN (0, 1)),
+    "CashTransactionId" INTEGER UNIQUE,
+    PRIMARY KEY ("PurchaseReturnId" AUTOINCREMENT),
+    FOREIGN KEY ("SupplierId") REFERENCES "Suppliers" ("SupplierId"),
+    FOREIGN KEY ("CashTransactionId") REFERENCES "CashTransactions" ("TransactionId")
+) STRICT;
+
+
+CREATE TABLE IF NOT EXISTS "PurchaseReturnItems" (
+    "ItemId" INTEGER,
+    "PurchaseReturnId" INTEGER NOT NULL,
+    "SourceInvoiceItemId" INTEGER NOT NULL,
+    "Quantity" REAL NOT NULL CHECK ("Quantity" > 0),
+    "UnitPrice" REAL NOT NULL CHECK ("UnitPrice" > 0),
+    "StockTransactionId" INTEGER NOT NULL UNIQUE,
+    PRIMARY KEY ("ItemId" AUTOINCREMENT),
+    UNIQUE ("PurchaseReturnId", "SourceInvoiceItemId"),
+    FOREIGN KEY ("PurchaseReturnId") REFERENCES "PurchaseReturns" ("PurchaseReturnId"),
+    FOREIGN KEY ("SourceInvoiceItemId") REFERENCES "PurchaseInvoiceItems" ("ItemId"),
+    FOREIGN KEY ("StockTransactionId") REFERENCES "StockTransactions" ("TransactionId")
+) STRICT;
+
+
+-- ============================================================
+-- Payments
 -- ============================================================
 
 CREATE TABLE IF NOT EXISTS "CustomerPayments" (
@@ -367,25 +331,16 @@ CREATE TABLE IF NOT EXISTS "CustomerPayments" (
     "ReceiptNumber" TEXT UNIQUE,
     "PaymentDate" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "PaymentMethodId" INTEGER NOT NULL,
-    "Amount" REAL NOT NULL
-        CHECK ("Amount" > 0),
+    "Amount" REAL NOT NULL CHECK ("Amount" > 0),
     "CustomerId" INTEGER NOT NULL,
     "CreatedAt" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "Notes" TEXT,
-    "Cancelled" INTEGER NOT NULL DEFAULT 0
-        CHECK ("Cancelled" IN (0, 1)),
+    "Cancelled" INTEGER NOT NULL DEFAULT 0 CHECK ("Cancelled" IN (0, 1)),
     "CashTransactionId" INTEGER NOT NULL UNIQUE,
-
     PRIMARY KEY ("PaymentId" AUTOINCREMENT),
-
-    FOREIGN KEY ("CashTransactionId")
-        REFERENCES "CashTransactions" ("TransactionId"),
-
-    FOREIGN KEY ("CustomerId")
-        REFERENCES "Customers" ("CustomerId"),
-
-    FOREIGN KEY ("PaymentMethodId")
-        REFERENCES "PaymentMethods" ("MethodId")
+    FOREIGN KEY ("PaymentMethodId") REFERENCES "PaymentMethods" ("MethodId"),
+    FOREIGN KEY ("CustomerId") REFERENCES "Customers" ("CustomerId"),
+    FOREIGN KEY ("CashTransactionId") REFERENCES "CashTransactions" ("TransactionId")
 ) STRICT;
 
 
@@ -394,42 +349,33 @@ CREATE TABLE IF NOT EXISTS "SupplierPayments" (
     "ReceiptNumber" TEXT UNIQUE,
     "PaymentDate" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "PaymentMethodId" INTEGER NOT NULL,
-    "Amount" REAL NOT NULL
-        CHECK ("Amount" > 0),
+    "Amount" REAL NOT NULL CHECK ("Amount" > 0),
     "SupplierId" INTEGER NOT NULL,
     "CreatedAt" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "Notes" TEXT,
-    "Cancelled" INTEGER NOT NULL DEFAULT 0
-        CHECK ("Cancelled" IN (0, 1)),
+    "Cancelled" INTEGER NOT NULL DEFAULT 0 CHECK ("Cancelled" IN (0, 1)),
     "CashTransactionId" INTEGER NOT NULL UNIQUE,
-
     PRIMARY KEY ("PaymentId" AUTOINCREMENT),
-
-    FOREIGN KEY ("PaymentMethodId")
-        REFERENCES "PaymentMethods" ("MethodId"),
-
-    FOREIGN KEY ("SupplierId")
-        REFERENCES "Suppliers" ("SupplierId")
+    FOREIGN KEY ("PaymentMethodId") REFERENCES "PaymentMethods" ("MethodId"),
+    FOREIGN KEY ("SupplierId") REFERENCES "Suppliers" ("SupplierId"),
+    FOREIGN KEY ("CashTransactionId") REFERENCES "CashTransactions" ("TransactionId")
 ) STRICT;
 
 
 -- ============================================================
--- 9. Opening Customer Debts
+-- Opening Customer Debts
+-- These represent balances that existed before StorePilot.
+-- They are not sales invoices and do not create cash movements.
 -- ============================================================
 
-CREATE TABLE IF NOT EXISTS "OldDebts" (
+CREATE TABLE IF NOT EXISTS "OldCustomerDebts" (
     "DebtId" INTEGER,
     "CustomerId" INTEGER NOT NULL,
     "RecordDate" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "Amount" REAL NOT NULL
-        CHECK ("Amount" > 0),
+    "Amount" REAL NOT NULL CHECK ("Amount" > 0),
     "CreatedAt" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "Notes" TEXT,
-    "Cancelled" INTEGER NOT NULL DEFAULT 0
-        CHECK ("Cancelled" IN (0, 1)),
-
+    "Cancelled" INTEGER NOT NULL DEFAULT 0 CHECK ("Cancelled" IN (0, 1)),
     PRIMARY KEY ("DebtId" AUTOINCREMENT),
-
-    FOREIGN KEY ("CustomerId")
-        REFERENCES "Customers" ("CustomerId")
+    FOREIGN KEY ("CustomerId") REFERENCES "Customers" ("CustomerId")
 ) STRICT;

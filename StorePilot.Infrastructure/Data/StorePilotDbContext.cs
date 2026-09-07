@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using StorePilot.Domain.Entities;
 
 namespace StorePilot.Infrastructure.Data;
 
@@ -10,22 +11,29 @@ public class StorePilotDbContext : DbContext
     {
     }
 
-    // DbSets will be added here as the EF Core entities are implemented.
 
-    // Example:
-    //
-    // public DbSet<Product> Products => Set<Product>();
-    // public DbSet<Customer> Customers => Set<Customer>();
-    // public DbSet<Supplier> Suppliers => Set<Supplier>();
+    // --------------------------------------------------------
+    // DbSets
+    // --------------------------------------------------------
+
+    public DbSet<Product> Products => Set<Product>();
+
+    public DbSet<Unit> Units => Set<Unit>();
+
+    public DbSet<Group> Groups => Set<Group>();
 
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(
+        ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
-        // EF Core entity configurations will be added here gradually.
+
+        // Apply entity configurations from this assembly.
         //
-        // The SQL schema remains the initial database creation source.
-        // Business operations should NOT be implemented here.
+        // Later, each entity can have its own configuration
+        // class instead of putting everything here.
+        modelBuilder.ApplyConfigurationsFromAssembly(
+            typeof(StorePilotDbContext).Assembly);
     }
 }

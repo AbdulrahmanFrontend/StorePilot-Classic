@@ -9,12 +9,19 @@
   <ItemGroup>
     <EmbeddedResource Include="Data\Database\StorePilotSchema.sql">
       <LogicalName>StorePilot.Infrastructure.Data.Database.StorePilotSchema.sql</LogicalName>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="StorePilot.Domain">
+      <HintPath>..\StorePilot.Domain\bin\Debug\net10.0\StorePilot.Domain.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

@@ -66,6 +66,8 @@ namespace StorePilot.WinForms
             await InitializeDatabaseAsync(serviceProvider);
 
 
+            //await TestDatabaseAsync(serviceProvider);
+
             // --------------------------------------------------------
             // 5. Start the WinForms application
             // --------------------------------------------------------
@@ -77,6 +79,26 @@ namespace StorePilot.WinForms
 
             Application.Run(mainForm);
         }
+
+
+        //private static async Task TestDatabaseAsync(IServiceProvider serviceProvider)
+        //{
+        //    using var scope =
+        //        serviceProvider.CreateScope();
+
+        //    var dbContext =
+        //        scope.ServiceProvider
+        //            .GetRequiredService<StorePilotDbContext>();
+
+        //    var productCount = await dbContext.Products.CountAsync();
+
+        //    MessageBox.Show(
+        //        $"EF Core connection successful.\n\n" +
+        //        $"Products count: {productCount}",
+        //        "StorePilot",
+        //        MessageBoxButtons.OK,
+        //        MessageBoxIcon.Information);
+        //}
 
 
         /// <summary>
