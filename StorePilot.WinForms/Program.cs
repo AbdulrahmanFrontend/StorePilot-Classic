@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using StorePilot.Infrastructure.Data;
 using StorePilot.Infrastructure.Data.Database;
+using StorePilot.WinForms.Forms;
+using StorePilot.WinForms.Foundation;
 
 namespace StorePilot.WinForms
 {
@@ -11,7 +13,7 @@ namespace StorePilot.WinForms
         ///  The main entry point for the application.
         /// </summary>
         [STAThread]
-        static async Task Main()
+        static void Main()
         {
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
@@ -63,8 +65,14 @@ namespace StorePilot.WinForms
             // This must happen before MainForm is created because
             // the application expects the database to be ready.
             //
-            await InitializeDatabaseAsync(serviceProvider);
+            // Main remains on the STA thread.
+            // We complete database initialization before
+            // starting the WinForms UI.
+            //
+            InitializeDatabaseAsync(serviceProvider).GetAwaiter().GetResult();
 
+            if (!RunStartupFlow(serviceProvider))
+                return;
 
             //await TestDatabaseAsync(serviceProvider);
 
@@ -75,9 +83,8 @@ namespace StorePilot.WinForms
             // Only after successful database initialization do we
             // open the main window.
             //
-            var mainForm = serviceProvider.GetRequiredService<frmSplash>();
-
-            Application.Run(mainForm);
+            Application.Run(
+                serviceProvider.GetRequiredService<MainShellForm>());
         }
 
 
@@ -141,10 +148,17 @@ namespace StorePilot.WinForms
             });
 
             // --------------------------------------------------------
+            // Application
+            // --------------------------------------------------------
+
+            services.AddSingleton<AppBrandSettingsStore>();
+
+            // --------------------------------------------------------
             // Forms
             // --------------------------------------------------------
 
-            services.AddTransient<frmSplash>();
+            services.AddTransient<WelcomeForm>();
+            services.AddTransient<MainShellForm>();
         }
 
 
@@ -186,6 +200,27 @@ namespace StorePilot.WinForms
             // It does not contain business logic.
             //
             await DatabaseInitializer.InitializeAsync(dbContext);
+        }
+
+        private static bool RunStartupFlow(
+            IServiceProvider serviceProvider)
+        {
+            var settingsStore =
+                serviceProvider.GetRequiredService<AppBrandSettingsStore>();
+
+            var settings = settingsStore.Load();
+
+            // First run
+            if (!settings.IsConfigured)
+            {
+                using var welcome =
+                    serviceProvider.GetRequiredService<WelcomeForm>();
+
+                return welcome.ShowDialog() == DialogResult.OK;
+            }
+
+            // Already configured
+            return true;
         }
     }
 }
