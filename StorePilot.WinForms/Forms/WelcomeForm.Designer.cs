@@ -55,7 +55,7 @@ namespace StorePilot.WinForms.Forms
             btnExit.Name = "btnExit";
             btnExit.Size = new Size(130, 45);
             btnExit.StateCommon.Content.ShortText.Font = new Font("Segoe UI", 10F);
-            btnExit.TabIndex = 0;
+            btnExit.TabIndex = 1;
             btnExit.Values.DropDownArrowColor = Color.Empty;
             btnExit.Values.Text = "إغلاق";
             btnExit.Click += btnExit_Click;
@@ -66,7 +66,7 @@ namespace StorePilot.WinForms.Forms
             btnStart.Name = "btnStart";
             btnStart.Size = new Size(205, 45);
             btnStart.StateCommon.Content.ShortText.Font = new Font("Segoe UI Semibold", 11F);
-            btnStart.TabIndex = 1;
+            btnStart.TabIndex = 0;
             btnStart.Values.DropDownArrowColor = Color.Empty;
             btnStart.Values.Text = "بدء إعداد النظام";
             btnStart.Click += btnStart_Click;
@@ -85,7 +85,7 @@ namespace StorePilot.WinForms.Forms
             // lblSubtitle
             // 
             lblSubtitle.AutoSize = false;
-            lblSubtitle.Location = new Point(220, 112);
+            lblSubtitle.Location = new Point(220, 125);
             lblSubtitle.Name = "lblSubtitle";
             lblSubtitle.Size = new Size(470, 35);
             lblSubtitle.StateCommon.ShortText.Color1 = Color.FromArgb(75, 85, 99);
@@ -98,7 +98,7 @@ namespace StorePilot.WinForms.Forms
             lblTitle.AutoSize = false;
             lblTitle.Location = new Point(220, 58);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(470, 48);
+            lblTitle.Size = new Size(470, 61);
             lblTitle.StateCommon.ShortText.Color1 = Color.FromArgb(31, 41, 55);
             lblTitle.StateCommon.ShortText.Font = new Font("Segoe UI Semibold", 24F);
             lblTitle.TabIndex = 4;

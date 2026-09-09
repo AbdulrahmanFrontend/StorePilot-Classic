@@ -70,7 +70,7 @@ namespace StorePilot.WinForms.Forms
             btnCancel.Location = new Point(560, 345);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(155, 45);
-            btnCancel.TabIndex = 0;
+            btnCancel.TabIndex = 4;
             btnCancel.Values.DropDownArrowColor = Color.Empty;
             btnCancel.Values.Text = "إلغاء";
             // 
@@ -80,7 +80,7 @@ namespace StorePilot.WinForms.Forms
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(155, 45);
             btnSave.StateCommon.Content.ShortText.Font = new Font("Segoe UI Semibold", 10.5F);
-            btnSave.TabIndex = 1;
+            btnSave.TabIndex = 5;
             btnSave.Values.DropDownArrowColor = Color.Empty;
             btnSave.Values.Text = "حفظ والمتابعة";
             btnSave.Click += btnSave_Click;
@@ -90,17 +90,17 @@ namespace StorePilot.WinForms.Forms
             btnRemoveLogo.Location = new Point(240, 215);
             btnRemoveLogo.Name = "btnRemoveLogo";
             btnRemoveLogo.Size = new Size(105, 42);
-            btnRemoveLogo.TabIndex = 2;
+            btnRemoveLogo.TabIndex = 3;
             btnRemoveLogo.Values.DropDownArrowColor = Color.Empty;
             btnRemoveLogo.Values.Text = "إزالة";
             btnRemoveLogo.Click += btnRemoveLogo_Click;
             // 
             // btnBrowseLogo
             // 
-            btnBrowseLogo.Location = new Point(240, 160);
+            btnBrowseLogo.Location = new Point(240, 155);
             btnBrowseLogo.Name = "btnBrowseLogo";
             btnBrowseLogo.Size = new Size(105, 42);
-            btnBrowseLogo.TabIndex = 3;
+            btnBrowseLogo.TabIndex = 2;
             btnBrowseLogo.Values.DropDownArrowColor = Color.Empty;
             btnBrowseLogo.Values.Text = "اختيار صورة";
             btnBrowseLogo.Click += btnBrowseLogo_Click;
@@ -108,7 +108,7 @@ namespace StorePilot.WinForms.Forms
             // picLogo
             // 
             picLogo.BorderStyle = BorderStyle.FixedSingle;
-            picLogo.Location = new Point(45, 145);
+            picLogo.Location = new Point(45, 122);
             picLogo.Name = "picLogo";
             picLogo.Size = new Size(180, 180);
             picLogo.SizeMode = PictureBoxSizeMode.Zoom;
@@ -118,9 +118,9 @@ namespace StorePilot.WinForms.Forms
             // lblLogo
             // 
             lblLogo.AutoSize = false;
-            lblLogo.Location = new Point(45, 110);
+            lblLogo.Location = new Point(53, 86);
             lblLogo.Name = "lblLogo";
-            lblLogo.Size = new Size(300, 30);
+            lblLogo.Size = new Size(163, 30);
             lblLogo.StateCommon.ShortText.Font = new Font("Segoe UI Semibold", 10F);
             lblLogo.TabIndex = 5;
             lblLogo.Values.Text = "لوجو المحل (اختياري)";
@@ -131,7 +131,7 @@ namespace StorePilot.WinForms.Forms
             txtUserName.Name = "txtUserName";
             txtUserName.Size = new Size(325, 32);
             txtUserName.StateCommon.Content.Font = new Font("Segoe UI", 11F);
-            txtUserName.TabIndex = 6;
+            txtUserName.TabIndex = 1;
             // 
             // lblUserName
             // 
@@ -149,7 +149,7 @@ namespace StorePilot.WinForms.Forms
             txtShopName.Name = "txtShopName";
             txtShopName.Size = new Size(325, 32);
             txtShopName.StateCommon.Content.Font = new Font("Segoe UI", 11F);
-            txtShopName.TabIndex = 8;
+            txtShopName.TabIndex = 0;
             txtShopName.TextChanged += txtShopName_TextChanged;
             // 
             // lblShopName
@@ -187,7 +187,7 @@ namespace StorePilot.WinForms.Forms
             RightToLeft = RightToLeft.Yes;
             ShowIcon = false;
             StartPosition = FormStartPosition.CenterParent;
-            Text = "معلومات المحل";
+            Text = "StorePilot";
             ((System.ComponentModel.ISupportInitialize)pnlMain).EndInit();
             pnlMain.ResumeLayout(false);
             pnlMain.PerformLayout();

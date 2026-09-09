@@ -1,9 +1,9 @@
 <Solution>
-  <Folder Name="/Database/" />
-  <Folder Name="/Database/Scripts/">
-    <File Path="../Database/Scripts/InitialDatabase.sql" />
-  </Folder>
   <Folder Name="/Setup/" />
+  <Folder Name="/Solution Items/">
+    <File Path="C:/Users/h/Downloads/ARCHITECTURE.md" />
+    <File Path="C:/Users/h/Downloads/README.md" />
+  </Folder>
   <Project Path="StorePilot.Application/StorePilot.Application.csproj" Id="be07e494-e550-47e4-a0e9-b387100e3b98" />
   <Project Path="StorePilot.BLL/StorePilot.BLL.csproj" Id="511961c4-4dd2-47a1-82d6-daf83c44ff1e" />
   <Project Path="StorePilot.Core/StorePilot.Core.csproj" Id="9bc2b378-a1dd-48b2-ac1a-5047831a76ba" />

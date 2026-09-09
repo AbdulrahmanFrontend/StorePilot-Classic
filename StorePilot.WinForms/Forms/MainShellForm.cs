@@ -1,6 +1,7 @@
 using Krypton.Toolkit;
 using StorePilot.WinForms.Foundation;
 using StorePilot.WinForms.Navigation;
+using StorePilot.WinForms.Pages;
 using StorePilot.WinForms.Theme;
 using System;
 using System.Drawing;
@@ -39,31 +40,29 @@ namespace StorePilot.WinForms.Forms
         private void ShowHome()
         {
             _navigation.RegisterAndShow(
-                new NavigationItem(
-                    "home",
-                    "الرئيسية",
-                    () => new HomePage()));
+                new NavigationItem("home", "الرئيسية", () => new DashboardPage()));
 
             HighlightNavigation("home");
         }
 
         private void ConfigureNavigationButtons()
         {
-            // في الخطوات القادمة سنضيف Products, Customers, Sales...
-            // إلى هذه القائمة دون تغيير بنية الـ Shell.
-            AddNavigationButton("home", "الرئيسية", () =>
-                new HomePage());
+            AddNavigationButton("home", "الرئيسية", () => new DashboardPage());
 
-            AddPlaceholderButton("products", "المنتجات");
-            AddPlaceholderButton("customers", "العملاء");
-            AddPlaceholderButton("suppliers", "الموردون");
-            AddPlaceholderButton("sales", "المبيعات");
-            AddPlaceholderButton("purchases", "المشتريات");
-            AddPlaceholderButton("quotations", "عروض الأسعار");
-            AddPlaceholderButton("returns", "المرتجعات");
-            AddPlaceholderButton("payments", "المدفوعات والديون");
-            AddPlaceholderButton("inventory", "حركات المخزون");
-            AddPlaceholderButton("reports", "التقارير");
+            AddNavigationButton("sales", "المبيعات", () => new PlaceholderPage("المبيعات"));
+            AddNavigationButton("purchases", "المشتريات", () => new PlaceholderPage("المشتريات"));
+
+            AddNavigationButton("products", "المنتجات", () => new ProductsPage());
+            AddNavigationButton("customers", "العملاء", () => new CustomersPage());
+            AddNavigationButton("suppliers", "الموردون", () => new SuppliersPage());
+
+            AddNavigationButton("groups", "المجموعات", () => new GroupsPage());
+            AddNavigationButton("units", "الوحدات", () => new UnitsPage());
+            AddNavigationButton("payments", "طرق الدفع", () => new PaymentMethodsPage());
+
+            AddNavigationButton("stock", "المخزون", () => new PlaceholderPage("المخزون"));
+            AddNavigationButton("cash", "النقدية", () => new PlaceholderPage("النقدية"));
+            AddNavigationButton("reports", "التقارير", () => new PlaceholderPage("التقارير"));
         }
 
         private void AddNavigationButton(string key, string text,
@@ -75,19 +74,6 @@ namespace StorePilot.WinForms.Forms
             {
                 _navigation.RegisterAndShow(
                     new NavigationItem(key, text, pageFactory));
-                HighlightNavigation(key);
-            };
-
-            sidebarFlow.Controls.Add(button);
-        }
-
-        private void AddPlaceholderButton(string key, string text)
-        {
-            KryptonButton button = CreateNavButton(text);
-            button.Tag = key;
-            button.Click += delegate
-            {
-                ShowPlaceholder(text);
                 HighlightNavigation(key);
             };
 
@@ -116,54 +102,22 @@ namespace StorePilot.WinForms.Forms
 
         private void HighlightNavigation(string key)
         {
-            foreach (Control control in sidebarFlow.Controls)
+            foreach (KryptonButton btn in sidebarFlow.Controls.OfType<KryptonButton>())
             {
-                KryptonButton button = control as KryptonButton;
-                if (button == null)
+                if (btn == null)
                     continue;
 
                 bool selected = string.Equals(
-                    Convert.ToString(button.Tag),
+                    Convert.ToString(btn.Tag),
                     key,
                     StringComparison.OrdinalIgnoreCase);
 
-                button.StateCommon.Back.Color1 = selected
+                btn.StateCommon.Back.Color1 = selected
                     ? Color.FromArgb(55, 61, 70)
                     : AppTheme.Sidebar;
 
-                button.StateCommon.Back.Color2 = button.StateCommon.Back.Color1;
+                btn.StateCommon.Back.Color2 = btn.StateCommon.Back.Color1;
             }
-        }
-
-        private void ShowPlaceholder(string title)
-        {
-            //contentHost.Controls.Clear();
-
-            KryptonPanel panel = new KryptonPanel();
-            panel.Dock = DockStyle.Fill;
-            panel.StateCommon.Color1 = AppTheme.Surface;
-
-            KryptonLabel label = new KryptonLabel();
-            label.AutoSize = true;
-            label.Location = new Point(48, 48);
-            label.StateCommon.ShortText.Font =
-                new Font("Segoe UI", 20F, FontStyle.Bold);
-            label.StateCommon.ShortText.Color1 = AppTheme.Text;
-            label.Values.Text = title;
-
-            KryptonLabel note = new KryptonLabel();
-            note.AutoSize = true;
-            note.Location = new Point(52, 95);
-            note.StateCommon.ShortText.Font =
-                new Font("Segoe UI", 10.5F);
-            note.StateCommon.ShortText.Color1 = AppTheme.SecondaryText;
-            note.Values.Text =
-                "هذه الوحدة موجودة في الـ Navigation فقط حالياً، " +
-                "وسيتم تنفيذها في خطوات لاحقة.";
-
-            panel.Controls.Add(note);
-            panel.Controls.Add(label);
-            contentHost.Controls.Add(panel);
         }
 
         private void RefreshBranding()
@@ -208,20 +162,24 @@ namespace StorePilot.WinForms.Forms
         {
             BackColor = AppTheme.Background;
             sidebarPanel.StateCommon.Color1 = AppTheme.Sidebar;
-            headerPanel.StateCommon.Color1 = AppTheme.Surface;
+            headerTableLayoutPanel.BackColor = AppTheme.Surface;
             contentHost.BackColor = AppTheme.Background;
 
             shopNameLabel.StateCommon.ShortText.Color1 = AppTheme.Text;
             userNameLabel.StateCommon.ShortText.Color1 = AppTheme.SecondaryText;
 
-            foreach (Control control in sidebarFlow.Controls)
+            foreach (var btn in sidebarFlow.Controls.OfType<KryptonButton>())
             {
-                KryptonButton button = control as KryptonButton;
-                if (button == null)
+                if (btn == null)
                     continue;
 
-                button.StateCommon.Back.Color1 = AppTheme.Sidebar;
-                button.StateCommon.Back.Color2 = AppTheme.Sidebar;
+                btn.StateCommon.Back.Color1 = AppTheme.Sidebar;
+                btn.StateCommon.Back.Color2 = AppTheme.Sidebar;
+            }
+
+            foreach (var page in sidebarFlow.Controls.OfType<DashboardPage>())
+            {
+                page.ApplyTheme();
             }
 
             HighlightNavigation(_navigation.CurrentKey ?? "home");

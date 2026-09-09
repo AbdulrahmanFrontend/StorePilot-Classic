@@ -3,32 +3,23 @@ namespace StorePilot.WinForms.Forms
     partial class MainShellForm
     {
         private Krypton.Toolkit.KryptonPanel sidebarPanel;
-        private Krypton.Toolkit.KryptonPanel headerPanel;
-        private Krypton.Toolkit.KryptonPanel contentHost;
         private System.Windows.Forms.FlowLayoutPanel sidebarFlow;
-        private Krypton.Toolkit.KryptonLabel shopNameLabel;
-        private Krypton.Toolkit.KryptonLabel userNameLabel;
-        private Krypton.Toolkit.KryptonButton settingsButton;
-        private Krypton.Toolkit.KryptonButton themeButton;
-        private Krypton.Toolkit.KryptonButton homeButton;
-        private Krypton.Toolkit.KryptonLabel appTitleLabel;
 
         private void InitializeComponent()
         {
             sidebarPanel = new Krypton.Toolkit.KryptonPanel();
             sidebarFlow = new FlowLayoutPanel();
-            headerPanel = new Krypton.Toolkit.KryptonPanel();
-            homeButton = new Krypton.Toolkit.KryptonButton();
-            themeButton = new Krypton.Toolkit.KryptonButton();
-            settingsButton = new Krypton.Toolkit.KryptonButton();
-            userNameLabel = new Krypton.Toolkit.KryptonLabel();
-            shopNameLabel = new Krypton.Toolkit.KryptonLabel();
+            headerTableLayoutPanel = new TableLayoutPanel();
             appTitleLabel = new Krypton.Toolkit.KryptonLabel();
+            shopNameLabel = new Krypton.Toolkit.KryptonLabel();
+            userNameLabel = new Krypton.Toolkit.KryptonLabel();
+            settingsButton = new Krypton.Toolkit.KryptonButton();
+            themeButton = new Krypton.Toolkit.KryptonButton();
+            homeButton = new Krypton.Toolkit.KryptonButton();
             contentHost = new Krypton.Toolkit.KryptonPanel();
             ((System.ComponentModel.ISupportInitialize)sidebarPanel).BeginInit();
             sidebarPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)headerPanel).BeginInit();
-            headerPanel.SuspendLayout();
+            headerTableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)contentHost).BeginInit();
             SuspendLayout();
             // 
@@ -36,9 +27,9 @@ namespace StorePilot.WinForms.Forms
             // 
             sidebarPanel.Controls.Add(sidebarFlow);
             sidebarPanel.Dock = DockStyle.Right;
-            sidebarPanel.Location = new Point(1596, 0);
+            sidebarPanel.Location = new Point(982, 0);
             sidebarPanel.Name = "sidebarPanel";
-            sidebarPanel.Size = new Size(185, 760);
+            sidebarPanel.Size = new Size(185, 603);
             sidebarPanel.StateCommon.Color1 = Color.FromArgb(32, 36, 42);
             sidebarPanel.TabIndex = 2;
             // 
@@ -51,104 +42,112 @@ namespace StorePilot.WinForms.Forms
             sidebarFlow.Location = new Point(0, 0);
             sidebarFlow.Name = "sidebarFlow";
             sidebarFlow.Padding = new Padding(7, 85, 7, 10);
-            sidebarFlow.Size = new Size(185, 760);
+            sidebarFlow.Size = new Size(185, 603);
             sidebarFlow.TabIndex = 0;
             sidebarFlow.WrapContents = false;
             // 
-            // headerPanel
+            // headerTableLayoutPanel
             // 
-            headerPanel.Controls.Add(homeButton);
-            headerPanel.Controls.Add(themeButton);
-            headerPanel.Controls.Add(settingsButton);
-            headerPanel.Controls.Add(userNameLabel);
-            headerPanel.Controls.Add(shopNameLabel);
-            headerPanel.Controls.Add(appTitleLabel);
-            headerPanel.Dock = DockStyle.Top;
-            headerPanel.Location = new Point(0, 0);
-            headerPanel.Name = "headerPanel";
-            headerPanel.Size = new Size(1596, 119);
-            headerPanel.StateCommon.Color1 = Color.White;
-            headerPanel.TabIndex = 1;
+            headerTableLayoutPanel.ColumnCount = 6;
+            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16.666666F));
+            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16.666666F));
+            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16.666666F));
+            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16.666666F));
+            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16.666666F));
+            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16.666666F));
+            headerTableLayoutPanel.Controls.Add(appTitleLabel, 5, 0);
+            headerTableLayoutPanel.Controls.Add(shopNameLabel, 4, 0);
+            headerTableLayoutPanel.Controls.Add(userNameLabel, 3, 0);
+            headerTableLayoutPanel.Controls.Add(settingsButton, 2, 0);
+            headerTableLayoutPanel.Controls.Add(themeButton, 1, 0);
+            headerTableLayoutPanel.Controls.Add(homeButton, 0, 0);
+            headerTableLayoutPanel.Dock = DockStyle.Top;
+            headerTableLayoutPanel.Location = new Point(0, 0);
+            headerTableLayoutPanel.Name = "headerTableLayoutPanel";
+            headerTableLayoutPanel.RowCount = 1;
+            headerTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            headerTableLayoutPanel.Size = new Size(982, 42);
+            headerTableLayoutPanel.TabIndex = 0;
             // 
-            // homeButton
+            // appTitleLabel
             // 
-            homeButton.Dock = DockStyle.Right;
-            homeButton.Location = new Point(1521, 0);
-            homeButton.Name = "homeButton";
-            homeButton.Size = new Size(75, 119);
-            homeButton.TabIndex = 0;
-            homeButton.Values.DropDownArrowColor = Color.Empty;
-            homeButton.Values.Text = "الرئيسية";
-            homeButton.Click += homeButton_Click;
+            appTitleLabel.Anchor = AnchorStyles.Right;
+            appTitleLabel.Location = new Point(3, 3);
+            appTitleLabel.Name = "appTitleLabel";
+            appTitleLabel.Size = new Size(126, 36);
+            appTitleLabel.StateCommon.ShortText.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            appTitleLabel.TabIndex = 6;
+            appTitleLabel.Values.Text = "StorePilot";
+            // 
+            // shopNameLabel
+            // 
+            shopNameLabel.Anchor = AnchorStyles.None;
+            shopNameLabel.Location = new Point(201, 6);
+            shopNameLabel.Name = "shopNameLabel";
+            shopNameLabel.Size = new Size(95, 29);
+            shopNameLabel.StateCommon.ShortText.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            shopNameLabel.TabIndex = 5;
+            shopNameLabel.Values.Text = "اسم المحل";
+            // 
+            // userNameLabel
+            // 
+            userNameLabel.Anchor = AnchorStyles.None;
+            userNameLabel.Location = new Point(375, 9);
+            userNameLabel.Name = "userNameLabel";
+            userNameLabel.Size = new Size(73, 24);
+            userNameLabel.StateCommon.ShortText.Font = new Font("Segoe UI", 9F);
+            userNameLabel.TabIndex = 4;
+            userNameLabel.Values.Text = "المستخدم";
+            // 
+            // settingsButton
+            // 
+            settingsButton.Anchor = AnchorStyles.None;
+            settingsButton.Location = new Point(523, 8);
+            settingsButton.Name = "settingsButton";
+            settingsButton.Size = new Size(104, 26);
+            settingsButton.TabIndex = 3;
+            settingsButton.Values.DropDownArrowColor = Color.Empty;
+            settingsButton.Values.Text = "إعدادات النظام";
+            settingsButton.Click += settingsButton_Click;
             // 
             // themeButton
             // 
-            themeButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            themeButton.Location = new Point(2006, 15);
+            themeButton.Anchor = AnchorStyles.None;
+            themeButton.Location = new Point(693, 8);
             themeButton.Name = "themeButton";
-            themeButton.Size = new Size(95, 40);
-            themeButton.TabIndex = 1;
+            themeButton.Size = new Size(90, 26);
+            themeButton.TabIndex = 2;
             themeButton.Values.DropDownArrowColor = Color.Empty;
             themeButton.Values.Text = "الوضع";
             themeButton.Click += themeButton_Click;
             // 
-            // settingsButton
+            // homeButton
             // 
-            settingsButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            settingsButton.Location = new Point(2116, 15);
-            settingsButton.Name = "settingsButton";
-            settingsButton.Size = new Size(120, 40);
-            settingsButton.TabIndex = 2;
-            settingsButton.Values.DropDownArrowColor = Color.Empty;
-            settingsButton.Values.Text = "إعدادات المحل";
-            settingsButton.Click += settingsButton_Click;
-            // 
-            // userNameLabel
-            // 
-            userNameLabel.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            userNameLabel.Location = new Point(2031, 39);
-            userNameLabel.Name = "userNameLabel";
-            userNameLabel.Size = new Size(73, 24);
-            userNameLabel.StateCommon.ShortText.Font = new Font("Segoe UI", 9F);
-            userNameLabel.TabIndex = 3;
-            userNameLabel.Values.Text = "المستخدم";
-            // 
-            // shopNameLabel
-            // 
-            shopNameLabel.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            shopNameLabel.Location = new Point(1833, 13);
-            shopNameLabel.Name = "shopNameLabel";
-            shopNameLabel.Size = new Size(95, 29);
-            shopNameLabel.StateCommon.ShortText.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
-            shopNameLabel.TabIndex = 4;
-            shopNameLabel.Values.Text = "اسم المحل";
-            // 
-            // appTitleLabel
-            // 
-            appTitleLabel.Dock = DockStyle.Left;
-            appTitleLabel.Location = new Point(0, 0);
-            appTitleLabel.Name = "appTitleLabel";
-            appTitleLabel.Size = new Size(126, 119);
-            appTitleLabel.StateCommon.ShortText.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
-            appTitleLabel.TabIndex = 5;
-            appTitleLabel.Values.Text = "StorePilot";
+            homeButton.Anchor = AnchorStyles.Left;
+            homeButton.Location = new Point(889, 8);
+            homeButton.Name = "homeButton";
+            homeButton.Size = new Size(90, 26);
+            homeButton.TabIndex = 1;
+            homeButton.Values.DropDownArrowColor = Color.Empty;
+            homeButton.Values.Text = "الرئيسية";
+            homeButton.Click += homeButton_Click;
             // 
             // contentHost
             // 
             contentHost.Dock = DockStyle.Fill;
-            contentHost.Location = new Point(0, 119);
+            contentHost.Location = new Point(0, 42);
             contentHost.Name = "contentHost";
-            contentHost.Size = new Size(1596, 641);
+            contentHost.Size = new Size(982, 561);
             contentHost.StateCommon.Color1 = Color.FromArgb(245, 246, 248);
-            contentHost.TabIndex = 0;
+            contentHost.TabIndex = 4;
             // 
             // MainShellForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1781, 760);
+            ClientSize = new Size(1167, 603);
             Controls.Add(contentHost);
-            Controls.Add(headerPanel);
+            Controls.Add(headerTableLayoutPanel);
             Controls.Add(sidebarPanel);
             FormTitleAlign = Krypton.Toolkit.PaletteRelativeAlign.Far;
             MinimumSize = new Size(1000, 650);
@@ -157,15 +156,22 @@ namespace StorePilot.WinForms.Forms
             ShowIcon = false;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "StorePilot";
-            UseDropShadow = true;
             WindowState = FormWindowState.Maximized;
             ((System.ComponentModel.ISupportInitialize)sidebarPanel).EndInit();
             sidebarPanel.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)headerPanel).EndInit();
-            headerPanel.ResumeLayout(false);
-            headerPanel.PerformLayout();
+            headerTableLayoutPanel.ResumeLayout(false);
+            headerTableLayoutPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)contentHost).EndInit();
             ResumeLayout(false);
         }
+
+        private TableLayoutPanel headerTableLayoutPanel;
+        private Krypton.Toolkit.KryptonLabel appTitleLabel;
+        private Krypton.Toolkit.KryptonLabel shopNameLabel;
+        private Krypton.Toolkit.KryptonLabel userNameLabel;
+        private Krypton.Toolkit.KryptonButton settingsButton;
+        private Krypton.Toolkit.KryptonButton themeButton;
+        private Krypton.Toolkit.KryptonButton homeButton;
+        private Krypton.Toolkit.KryptonPanel contentHost;
     }
 }

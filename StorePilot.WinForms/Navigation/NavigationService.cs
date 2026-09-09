@@ -11,22 +11,18 @@ namespace StorePilot.WinForms.Navigation
     /// </summary>
     public sealed class NavigationService
     {
-        private readonly Panel _host;
-        private readonly Dictionary<string, UserControl> _cache =
-            new Dictionary<string, UserControl>();
+        private readonly Control _host;
+        private readonly Dictionary<string, UserControl> _cache = new();
 
-        public string CurrentKey { get; private set; }
+        public string? CurrentKey { get; private set; }
 
-        public NavigationService(Panel host)
+        public NavigationService(Control host)
         {
             _host = host ?? throw new ArgumentNullException(nameof(host));
         }
 
         public void RegisterAndShow(NavigationItem item)
         {
-            if (item == null)
-                throw new ArgumentNullException(nameof(item));
-
             if (!_cache.ContainsKey(item.Key))
                 _cache[item.Key] = item.CreatePage();
 
@@ -35,23 +31,22 @@ namespace StorePilot.WinForms.Navigation
 
         public void Show(string key)
         {
-            if (!_cache.TryGetValue(key, out UserControl page))
+            if (!_cache.TryGetValue(key, out var page))
                 throw new InvalidOperationException(
                     "Navigation item is not registered: " + key);
 
             _host.SuspendLayout();
-
             try
             {
                 foreach (Control control in _host.Controls)
                     control.Visible = false;
 
                 page.Dock = DockStyle.Fill;
-                page.Visible = true;
 
                 if (!_host.Controls.Contains(page))
                     _host.Controls.Add(page);
 
+                page.Visible = true;
                 page.BringToFront();
                 CurrentKey = key;
             }

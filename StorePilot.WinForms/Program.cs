@@ -4,6 +4,7 @@ using StorePilot.Infrastructure.Data;
 using StorePilot.Infrastructure.Data.Database;
 using StorePilot.WinForms.Forms;
 using StorePilot.WinForms.Foundation;
+using StorePilot.WinForms.Foundation.FakeData;
 
 namespace StorePilot.WinForms
 {
@@ -152,6 +153,9 @@ namespace StorePilot.WinForms
             // --------------------------------------------------------
 
             services.AddSingleton<AppBrandSettingsStore>();
+            services.AddSingleton<FakeDataStore>();
+            services.AddSingleton<IProductDataSource, FakeProductDataSource>();
+            services.AddSingleton<IPartyDataSource, FakePartyDataSource>();
 
             // --------------------------------------------------------
             // Forms
