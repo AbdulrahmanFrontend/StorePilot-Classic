@@ -161,7 +161,7 @@ namespace StorePilot.WinForms.Forms
         private void ApplyTheme()
         {
             BackColor = AppTheme.Background;
-            sidebarPanel.StateCommon.Color1 = AppTheme.Sidebar;
+            sidebarFlow.BackColor = AppTheme.Sidebar;
             headerTableLayoutPanel.BackColor = AppTheme.Surface;
             contentHost.BackColor = AppTheme.Background;
 
@@ -177,7 +177,7 @@ namespace StorePilot.WinForms.Forms
                 btn.StateCommon.Back.Color2 = AppTheme.Sidebar;
             }
 
-            foreach (var page in sidebarFlow.Controls.OfType<DashboardPage>())
+            foreach (var page in contentHost.Controls.OfType<DashboardPage>())
             {
                 page.ApplyTheme();
             }
