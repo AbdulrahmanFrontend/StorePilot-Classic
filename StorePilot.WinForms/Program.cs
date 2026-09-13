@@ -4,7 +4,7 @@ using StorePilot.Infrastructure.Data;
 using StorePilot.Infrastructure.Data.Database;
 using StorePilot.WinForms.Forms;
 using StorePilot.WinForms.Foundation;
-using StorePilot.WinForms.Foundation.FakeData;
+using StorePilot.WinForms.Theme;
 
 namespace StorePilot.WinForms
 {
@@ -153,15 +153,11 @@ namespace StorePilot.WinForms
             // --------------------------------------------------------
 
             services.AddSingleton<AppBrandSettingsStore>();
-            services.AddSingleton<FakeDataStore>();
-            services.AddSingleton<IProductDataSource, FakeProductDataSource>();
-            services.AddSingleton<IPartyDataSource, FakePartyDataSource>();
 
             // --------------------------------------------------------
             // Forms
             // --------------------------------------------------------
 
-            services.AddTransient<WelcomeForm>();
             services.AddTransient<MainShellForm>();
         }
 
@@ -214,13 +210,17 @@ namespace StorePilot.WinForms
 
             var settings = settingsStore.Load();
 
+            AppTheme.Set(settings.Theme);
+
+            using (var splash = new SplashForm())
+                splash.ShowDialog();
+
             // First run
             if (!settings.IsConfigured)
             {
-                using var welcome =
-                    serviceProvider.GetRequiredService<WelcomeForm>();
-
-                return welcome.ShowDialog() == DialogResult.OK;
+                using var setup = new FirstRunSetupForm(settingsStore);
+                
+                return setup.ShowDialog() == DialogResult.OK;
             }
 
             // Already configured

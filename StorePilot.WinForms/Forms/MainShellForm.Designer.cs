@@ -1,177 +1,167 @@
-namespace StorePilot.WinForms.Forms
-{
-    partial class MainShellForm
-    {
-        private Krypton.Toolkit.KryptonPanel sidebarPanel;
-        private System.Windows.Forms.FlowLayoutPanel sidebarFlow;
+using Krypton.Toolkit;
 
-        private void InitializeComponent()
-        {
-            sidebarPanel = new Krypton.Toolkit.KryptonPanel();
-            sidebarFlow = new FlowLayoutPanel();
-            headerTableLayoutPanel = new TableLayoutPanel();
-            appTitleLabel = new Krypton.Toolkit.KryptonLabel();
-            shopNameLabel = new Krypton.Toolkit.KryptonLabel();
-            userNameLabel = new Krypton.Toolkit.KryptonLabel();
-            settingsButton = new Krypton.Toolkit.KryptonButton();
-            themeButton = new Krypton.Toolkit.KryptonButton();
-            homeButton = new Krypton.Toolkit.KryptonButton();
-            contentHost = new Krypton.Toolkit.KryptonPanel();
-            ((System.ComponentModel.ISupportInitialize)sidebarPanel).BeginInit();
-            sidebarPanel.SuspendLayout();
-            headerTableLayoutPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)contentHost).BeginInit();
-            SuspendLayout();
-            // 
-            // sidebarPanel
-            // 
-            sidebarPanel.Controls.Add(sidebarFlow);
-            sidebarPanel.Dock = DockStyle.Right;
-            sidebarPanel.Location = new Point(982, 0);
-            sidebarPanel.Name = "sidebarPanel";
-            sidebarPanel.Size = new Size(185, 603);
-            sidebarPanel.StateCommon.Color1 = Color.FromArgb(32, 36, 42);
-            sidebarPanel.TabIndex = 2;
-            // 
-            // sidebarFlow
-            // 
-            sidebarFlow.AutoScroll = true;
-            sidebarFlow.BackColor = Color.FromArgb(32, 36, 42);
-            sidebarFlow.Dock = DockStyle.Fill;
-            sidebarFlow.FlowDirection = FlowDirection.TopDown;
-            sidebarFlow.Location = new Point(0, 0);
-            sidebarFlow.Name = "sidebarFlow";
-            sidebarFlow.Padding = new Padding(7, 85, 7, 10);
-            sidebarFlow.Size = new Size(185, 603);
-            sidebarFlow.TabIndex = 0;
-            sidebarFlow.WrapContents = false;
-            // 
-            // headerTableLayoutPanel
-            // 
-            headerTableLayoutPanel.ColumnCount = 6;
-            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16.666666F));
-            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16.666666F));
-            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16.666666F));
-            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16.666666F));
-            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16.666666F));
-            headerTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16.666666F));
-            headerTableLayoutPanel.Controls.Add(appTitleLabel, 5, 0);
-            headerTableLayoutPanel.Controls.Add(shopNameLabel, 4, 0);
-            headerTableLayoutPanel.Controls.Add(userNameLabel, 3, 0);
-            headerTableLayoutPanel.Controls.Add(settingsButton, 2, 0);
-            headerTableLayoutPanel.Controls.Add(themeButton, 1, 0);
-            headerTableLayoutPanel.Controls.Add(homeButton, 0, 0);
-            headerTableLayoutPanel.Dock = DockStyle.Top;
-            headerTableLayoutPanel.Location = new Point(0, 0);
-            headerTableLayoutPanel.Name = "headerTableLayoutPanel";
-            headerTableLayoutPanel.RowCount = 1;
-            headerTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            headerTableLayoutPanel.Size = new Size(982, 42);
-            headerTableLayoutPanel.TabIndex = 0;
-            // 
-            // appTitleLabel
-            // 
-            appTitleLabel.Anchor = AnchorStyles.Right;
-            appTitleLabel.Location = new Point(3, 3);
-            appTitleLabel.Name = "appTitleLabel";
-            appTitleLabel.Size = new Size(126, 36);
-            appTitleLabel.StateCommon.ShortText.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
-            appTitleLabel.TabIndex = 6;
-            appTitleLabel.Values.Text = "StorePilot";
-            // 
-            // shopNameLabel
-            // 
-            shopNameLabel.Anchor = AnchorStyles.None;
-            shopNameLabel.Location = new Point(201, 6);
-            shopNameLabel.Name = "shopNameLabel";
-            shopNameLabel.Size = new Size(95, 29);
-            shopNameLabel.StateCommon.ShortText.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
-            shopNameLabel.TabIndex = 5;
-            shopNameLabel.Values.Text = "اسم المحل";
-            // 
-            // userNameLabel
-            // 
-            userNameLabel.Anchor = AnchorStyles.None;
-            userNameLabel.Location = new Point(375, 9);
-            userNameLabel.Name = "userNameLabel";
-            userNameLabel.Size = new Size(73, 24);
-            userNameLabel.StateCommon.ShortText.Font = new Font("Segoe UI", 9F);
-            userNameLabel.TabIndex = 4;
-            userNameLabel.Values.Text = "المستخدم";
-            // 
-            // settingsButton
-            // 
-            settingsButton.Anchor = AnchorStyles.None;
-            settingsButton.Location = new Point(523, 8);
-            settingsButton.Name = "settingsButton";
-            settingsButton.Size = new Size(104, 26);
-            settingsButton.TabIndex = 3;
-            settingsButton.Values.DropDownArrowColor = Color.Empty;
-            settingsButton.Values.Text = "إعدادات النظام";
-            settingsButton.Click += settingsButton_Click;
-            // 
-            // themeButton
-            // 
-            themeButton.Anchor = AnchorStyles.None;
-            themeButton.Location = new Point(693, 8);
-            themeButton.Name = "themeButton";
-            themeButton.Size = new Size(90, 26);
-            themeButton.TabIndex = 2;
-            themeButton.Values.DropDownArrowColor = Color.Empty;
-            themeButton.Values.Text = "الوضع";
-            themeButton.Click += themeButton_Click;
-            // 
-            // homeButton
-            // 
-            homeButton.Anchor = AnchorStyles.Left;
-            homeButton.Location = new Point(889, 8);
-            homeButton.Name = "homeButton";
-            homeButton.Size = new Size(90, 26);
-            homeButton.TabIndex = 1;
-            homeButton.Values.DropDownArrowColor = Color.Empty;
-            homeButton.Values.Text = "الرئيسية";
-            homeButton.Click += homeButton_Click;
-            // 
-            // contentHost
-            // 
-            contentHost.Dock = DockStyle.Fill;
-            contentHost.Location = new Point(0, 42);
-            contentHost.Name = "contentHost";
-            contentHost.Size = new Size(982, 561);
-            contentHost.StateCommon.Color1 = Color.FromArgb(245, 246, 248);
-            contentHost.TabIndex = 4;
-            // 
-            // MainShellForm
-            // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1167, 603);
-            Controls.Add(contentHost);
-            Controls.Add(headerTableLayoutPanel);
-            Controls.Add(sidebarPanel);
-            FormTitleAlign = Krypton.Toolkit.PaletteRelativeAlign.Far;
-            MinimumSize = new Size(1000, 650);
-            Name = "MainShellForm";
-            RightToLeft = RightToLeft.Yes;
-            ShowIcon = false;
-            StartPosition = FormStartPosition.CenterScreen;
-            Text = "StorePilot";
-            WindowState = FormWindowState.Maximized;
-            ((System.ComponentModel.ISupportInitialize)sidebarPanel).EndInit();
-            sidebarPanel.ResumeLayout(false);
-            headerTableLayoutPanel.ResumeLayout(false);
-            headerTableLayoutPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)contentHost).EndInit();
-            ResumeLayout(false);
-        }
+namespace StorePilot.WinForms.Forms;
 
-        private TableLayoutPanel headerTableLayoutPanel;
-        private Krypton.Toolkit.KryptonLabel appTitleLabel;
-        private Krypton.Toolkit.KryptonLabel shopNameLabel;
-        private Krypton.Toolkit.KryptonLabel userNameLabel;
-        private Krypton.Toolkit.KryptonButton settingsButton;
-        private Krypton.Toolkit.KryptonButton themeButton;
-        private Krypton.Toolkit.KryptonButton homeButton;
-        private Krypton.Toolkit.KryptonPanel contentHost;
+partial class MainShellForm
+{ 
+    private System.ComponentModel.IContainer components = null; 
+    private Krypton.Toolkit.KryptonPanel sidebar = null!,
+        header = null!,
+        content = null!; 
+
+    private FlowLayoutPanel sidebarFlow = null!; 
+
+    private Krypton.Toolkit.KryptonLabel shopLabel = null!,
+        userLabel = null!; 
+
+    private Panel contentHost = null!;
+
+    protected override void Dispose(bool disposing) 
+    { 
+        if (disposing)
+            components?.Dispose();
+        
+        base.Dispose(disposing);
     }
+
+    private void InitializeComponent()
+    {
+        sidebar = new KryptonPanel();
+        sidebarFlow = new FlowLayoutPanel();
+        userLabel = new KryptonLabel();
+        shopLabel = new KryptonLabel();
+        header = new KryptonPanel();
+        settings = new KryptonButton();
+        backup = new KryptonButton();
+        content = new KryptonPanel();
+        contentHost = new Panel();
+        ((System.ComponentModel.ISupportInitialize)sidebar).BeginInit();
+        sidebar.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)header).BeginInit();
+        header.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)content).BeginInit();
+        content.SuspendLayout();
+        SuspendLayout();
+        // 
+        // sidebar
+        // 
+        sidebar.Controls.Add(sidebarFlow);
+        sidebar.Controls.Add(userLabel);
+        sidebar.Controls.Add(shopLabel);
+        sidebar.Dock = DockStyle.Right;
+        sidebar.Location = new Point(940, 0);
+        sidebar.Name = "sidebar";
+        sidebar.Padding = new Padding(12);
+        sidebar.Size = new Size(220, 573);
+        sidebar.TabIndex = 2;
+        // 
+        // sidebarFlow
+        // 
+        sidebarFlow.AutoScroll = true;
+        sidebarFlow.Dock = DockStyle.Fill;
+        sidebarFlow.FlowDirection = FlowDirection.TopDown;
+        sidebarFlow.Location = new Point(12, 60);
+        sidebarFlow.Name = "sidebarFlow";
+        sidebarFlow.Padding = new Padding(0, 15, 0, 0);
+        sidebarFlow.Size = new Size(196, 501);
+        sidebarFlow.TabIndex = 0;
+        sidebarFlow.WrapContents = false;
+        // 
+        // userLabel
+        // 
+        userLabel.Dock = DockStyle.Top;
+        userLabel.Location = new Point(12, 36);
+        userLabel.Name = "userLabel";
+        userLabel.RightToLeft = RightToLeft.Yes;
+        userLabel.Size = new Size(196, 24);
+        userLabel.TabIndex = 1;
+        userLabel.Values.Text = "المستخدم";
+        // 
+        // shopLabel
+        // 
+        shopLabel.Dock = DockStyle.Top;
+        shopLabel.Location = new Point(12, 12);
+        shopLabel.Name = "shopLabel";
+        shopLabel.RightToLeft = RightToLeft.Yes;
+        shopLabel.Size = new Size(196, 24);
+        shopLabel.TabIndex = 2;
+        shopLabel.Values.Text = "StorePilot";
+        // 
+        // header
+        // 
+        header.Controls.Add(settings);
+        header.Controls.Add(backup);
+        header.Dock = DockStyle.Top;
+        header.Location = new Point(0, 0);
+        header.Name = "header";
+        header.Padding = new Padding(14);
+        header.Size = new Size(940, 62);
+        header.TabIndex = 1;
+        // 
+        // settings
+        // 
+        settings.Dock = DockStyle.Left;
+        settings.Location = new Point(114, 14);
+        settings.Name = "settings";
+        settings.Size = new Size(100, 34);
+        settings.TabIndex = 1;
+        settings.Values.DropDownArrowColor = Color.Empty;
+        settings.Values.Text = "الإعدادات";
+        settings.Click += settings_Click;
+        // 
+        // backup
+        // 
+        backup.Dock = DockStyle.Left;
+        backup.Location = new Point(14, 14);
+        backup.Name = "backup";
+        backup.Size = new Size(100, 34);
+        backup.TabIndex = 0;
+        backup.Values.DropDownArrowColor = Color.Empty;
+        backup.Values.Text = "نسخ احتياطي";
+        backup.Click += backup_Click;
+        // 
+        // content
+        // 
+        content.Controls.Add(contentHost);
+        content.Dock = DockStyle.Fill;
+        content.Location = new Point(0, 62);
+        content.Name = "content";
+        content.Size = new Size(940, 511);
+        content.TabIndex = 0;
+        // 
+        // contentHost
+        // 
+        contentHost.Dock = DockStyle.Fill;
+        contentHost.Location = new Point(0, 0);
+        contentHost.Name = "contentHost";
+        contentHost.Padding = new Padding(12);
+        contentHost.Size = new Size(940, 511);
+        contentHost.TabIndex = 0;
+        // 
+        // MainShellForm
+        // 
+        ClientSize = new Size(1160, 573);
+        Controls.Add(content);
+        Controls.Add(header);
+        Controls.Add(sidebar);
+        FormTitleAlign = PaletteRelativeAlign.Far;
+        MinimumSize = new Size(980, 620);
+        Name = "MainShellForm";
+        RightToLeft = RightToLeft.Yes;
+        ShowIcon = false;
+        StartPosition = FormStartPosition.CenterScreen;
+        Text = "StorePilot";
+        WindowState = FormWindowState.Maximized;
+        ((System.ComponentModel.ISupportInitialize)sidebar).EndInit();
+        sidebar.ResumeLayout(false);
+        sidebar.PerformLayout();
+        ((System.ComponentModel.ISupportInitialize)header).EndInit();
+        header.ResumeLayout(false);
+        ((System.ComponentModel.ISupportInitialize)content).EndInit();
+        content.ResumeLayout(false);
+        ResumeLayout(false);
+    }
+
+    private KryptonButton backup;
+    private KryptonButton settings;
 }

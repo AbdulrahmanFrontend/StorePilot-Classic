@@ -3,62 +3,17 @@ using System.Drawing;
 
 namespace StorePilot.WinForms.Theme
 {
-    /// <summary>
-    /// نظام ألوان مركزي بسيط.
-    /// الهدف ألا نضع ألواناً عشوائية داخل كل Form.
-    /// </summary>
     public static class AppTheme
     {
-        public static AppThemeMode CurrentMode { get; private set; } = AppThemeMode.Light;
-
-        public static Color Background => CurrentMode == AppThemeMode.Light
-            ? Color.FromArgb(245, 246, 248)
-            : Color.FromArgb(30, 32, 36);
-
-        public static Color Surface => CurrentMode == AppThemeMode.Light
-            ? Color.White
-            : Color.FromArgb(42, 45, 50);
-
-        public static Color Sidebar => CurrentMode == AppThemeMode.Light
-            ? Color.FromArgb(32, 36, 42)
-            : Color.FromArgb(22, 24, 28);
-
-        public static Color Text => CurrentMode == AppThemeMode.Light
-            ? Color.FromArgb(35, 38, 42)
-            : Color.FromArgb(235, 236, 238);
-
-        public static Color SecondaryText => CurrentMode == AppThemeMode.Light
-            ? Color.FromArgb(105, 110, 118)
-            : Color.FromArgb(175, 178, 184);
-
-        public static Color Border => CurrentMode == AppThemeMode.Light
-            ? Color.FromArgb(225, 228, 232)
-            : Color.FromArgb(65, 69, 76);
-
-        public static Color Primary => Color.FromArgb(46, 115, 185);
-        public static Color Success => Color.FromArgb(44, 140, 92);
-        public static Color Warning => Color.FromArgb(190, 135, 35);
-        public static Color Danger => Color.FromArgb(190, 65, 65);
-
-        public static void Toggle()
-        {
-            CurrentMode = CurrentMode == AppThemeMode.Light
-                ? AppThemeMode.Dark
-                : AppThemeMode.Light;
-        }
-
-        public static void ApplyBase(Form form)
-        {
-            form.BackColor = Background;
-            form.Font = new Font("Segoe UI", 10F);
-            form.StartPosition = FormStartPosition.CenterScreen;
-            form.RightToLeft = RightToLeft.Yes;
-            form.RightToLeftLayout = true;
-        }
-
-        public static void ApplyLabel(KryptonLabel label, bool secondary = false)
-        {
-            label.StateCommon.ShortText.Color1 = secondary ? SecondaryText : Text;
-        }
+        public static ThemeMode Current { get; private set; } = ThemeMode.Light;
+        public static Color Background => Current == ThemeMode.Light ? Color.FromArgb(246, 247, 249) : Color.FromArgb(25, 28, 32);
+        public static Color Surface => Current == ThemeMode.Light ? Color.White : Color.FromArgb(35, 39, 44);
+        public static Color Sidebar => Current == ThemeMode.Light ? Color.FromArgb(29, 33, 39) : Color.FromArgb(20, 23, 27);
+        public static Color Text => Current == ThemeMode.Light ? Color.FromArgb(31, 35, 40) : Color.FromArgb(238, 240, 242);
+        public static Color SecondaryText => Current == ThemeMode.Light ? Color.FromArgb(103, 109, 118) : Color.FromArgb(174, 179, 187);
+        public static Color Border => Current == ThemeMode.Light ? Color.FromArgb(220, 223, 228) : Color.FromArgb(61, 66, 73);
+        public static Color Primary => Color.FromArgb(37, 99, 235);
+        public static void Set(ThemeMode mode) => Current = mode;
+        public static void Apply(Form form) { form.BackColor = Background; form.ForeColor = Text; form.Font = new Font("Segoe UI", 10F); form.RightToLeft = RightToLeft.Yes; form.RightToLeftLayout = true; }
     }
 }

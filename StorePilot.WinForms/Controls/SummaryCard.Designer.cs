@@ -29,9 +29,10 @@ partial class SummaryCard
     private void InitializeComponent()
     {
         panel = new Krypton.Toolkit.KryptonPanel();
-        captionLabel = new Krypton.Toolkit.KryptonLabel();
         valueLabel = new Krypton.Toolkit.KryptonLabel();
+        captionLabel = new Krypton.Toolkit.KryptonLabel();
         ((System.ComponentModel.ISupportInitialize)panel).BeginInit();
+        panel.SuspendLayout();
         SuspendLayout();
         // 
         // panel
@@ -39,31 +40,42 @@ partial class SummaryCard
         panel.Controls.Add(valueLabel);
         panel.Controls.Add(captionLabel);
         panel.Dock = DockStyle.Fill;
+        panel.Location = new Point(0, 0);
+        panel.Name = "panel";
         panel.Padding = new Padding(16);
-        //panel.StateCommon.Border.DrawBorders = Krypton.Toolkit.PaletteDrawBorders.All;
-        //panel.StateCommon.Border.Rounding = 10;
+        panel.Size = new Size(160, 150);
+        panel.TabIndex = 0;
+        // 
+        // valueLabel
+        // 
+        valueLabel.Dock = DockStyle.Fill;
+        valueLabel.Location = new Point(16, 40);
+        valueLabel.Name = "valueLabel";
+        valueLabel.Size = new Size(128, 94);
+        valueLabel.TabIndex = 0;
+        valueLabel.Values.Text = "0";
         // 
         // captionLabel
         // 
         captionLabel.Dock = DockStyle.Top;
-        captionLabel.Height = 28; 
+        captionLabel.Location = new Point(16, 16);
+        captionLabel.Name = "captionLabel";
+        captionLabel.Size = new Size(128, 24);
+        captionLabel.TabIndex = 1;
         captionLabel.Values.Text = "العنوان";
-        // 
-        // valueLabel
-        // 
-        valueLabel.Dock = DockStyle.Fill; 
-        valueLabel.Font = new Font("Segoe UI Semibold", 20F, FontStyle.Bold);
-        valueLabel.Values.Text = "0";
         // 
         // SummaryCard
         // 
         Controls.Add(panel);
-        MinimumSize = new Size(160, 105); 
-        RightToLeft = RightToLeft.Yes;
+        DoubleBuffered = true;
+        MinimumSize = new Size(160, 105);
         Name = "SummaryCard";
+        RightToLeft = RightToLeft.Yes;
+        Size = new Size(160, 150);
         ((System.ComponentModel.ISupportInitialize)panel).EndInit();
+        panel.ResumeLayout(false);
+        panel.PerformLayout();
         ResumeLayout(false);
-        PerformLayout();
     }
 
     #endregion

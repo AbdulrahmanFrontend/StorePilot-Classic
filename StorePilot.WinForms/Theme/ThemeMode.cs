@@ -4,7 +4,7 @@ using System.Text;
 
 namespace StorePilot.WinForms.Theme
 {
-    public enum AppThemeMode
+    public enum ThemeMode
     {
         Light,
         Dark

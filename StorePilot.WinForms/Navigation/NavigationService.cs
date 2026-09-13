@@ -3,57 +3,36 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace StorePilot.WinForms.Navigation
+namespace StorePilot.WinForms.Navigation;
+
+/// <summary>
+/// مسؤول عن تغيير الصفحة داخل ContentHost.
+/// لا يعرف تفاصيل قاعدة البيانات؛ دوره فقط إدارة التنقل.
+/// </summary>
+public sealed class NavigationService
 {
-    /// <summary>
-    /// مسؤول عن تغيير الصفحة داخل ContentHost.
-    /// لا يعرف تفاصيل قاعدة البيانات؛ دوره فقط إدارة التنقل.
-    /// </summary>
-    public sealed class NavigationService
-    {
-        private readonly Control _host;
-        private readonly Dictionary<string, UserControl> _cache = new();
-
-        public string? CurrentKey { get; private set; }
-
-        public NavigationService(Control host)
+    private readonly Control _host;
+    private readonly Dictionary<string, UserControl> _pages = new();
+    public string? CurrentKey { get; private set; }
+    public NavigationService(Control host) => _host = host;
+    public void Show(NavigationItem item) 
+    { 
+        if (!_pages.TryGetValue(item.Key, out var page))
         {
-            _host = host ?? throw new ArgumentNullException(nameof(host));
-        }
+            page = item.CreatePage(); 
+            page.Dock = DockStyle.Fill;
+            _pages[item.Key] = page; 
+        } 
+        
+        foreach (Control c in _host.Controls) 
+            c.Visible = false; 
 
-        public void RegisterAndShow(NavigationItem item)
-        {
-            if (!_cache.ContainsKey(item.Key))
-                _cache[item.Key] = item.CreatePage();
+        if (!_host.Controls.Contains(page))
+            _host.Controls.Add(page); 
 
-            Show(item.Key);
-        }
+        page.Visible = true; 
 
-        public void Show(string key)
-        {
-            if (!_cache.TryGetValue(key, out var page))
-                throw new InvalidOperationException(
-                    "Navigation item is not registered: " + key);
-
-            _host.SuspendLayout();
-            try
-            {
-                foreach (Control control in _host.Controls)
-                    control.Visible = false;
-
-                page.Dock = DockStyle.Fill;
-
-                if (!_host.Controls.Contains(page))
-                    _host.Controls.Add(page);
-
-                page.Visible = true;
-                page.BringToFront();
-                CurrentKey = key;
-            }
-            finally
-            {
-                _host.ResumeLayout(true);
-            }
-        }
+        page.BringToFront(); 
+        CurrentKey = item.Key; 
     }
 }
