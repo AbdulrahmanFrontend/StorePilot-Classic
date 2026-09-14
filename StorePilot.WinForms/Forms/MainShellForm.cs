@@ -22,7 +22,7 @@ public partial class MainShellForm : KryptonForm
 {
     readonly AppBrandSettingsStore store;
     readonly NavigationService nav;
-    readonly Dictionary<string, KryptonButton> buttons = new();
+    readonly Dictionary<int, KryptonButton> buttons = new();
 
     public MainShellForm(AppBrandSettingsStore store)
     {
@@ -30,6 +30,7 @@ public partial class MainShellForm : KryptonForm
         this.store = store;
         nav = new NavigationService(contentHost);
         AppTheme.Apply(this);
+        ApplyTheme();
         BuildNavigation();
         RefreshBranding();
         Shown += (_, _) => Home();
@@ -37,44 +38,45 @@ public partial class MainShellForm : KryptonForm
 
     void BuildNavigation()
     {
-        Add("home", "الرئيسية", () => new DashboardPage());
-        Add("products", "الأصناف", () => new ProductsPage());
-        Add("customers", "العملاء", () => new CustomersPage());
-        Add("suppliers", "الموردون", () => new SuppliersPage());
-        Add("sales", "المبيعات", () =>
+        Add(0, "الرئيسية", () => new DashboardPage());
+        Add(1, "الأصناف", () => new ProductsPage());
+        Add(2, "العملاء", () => new CustomersPage());
+        Add(3, "الموردون", () => new SuppliersPage());
+        Add(4, "المبيعات", () =>
         new DemoPage("المبيعات", "فواتير البيع، البحث، الفلاتر، تفاصيل الفاتورة."));
-        Add("purchases", "المشتريات", () =>
+        Add(5, "المشتريات", () =>
         new DemoPage("المشتريات", "فواتير الشراء والمدفوعات المرتبطة بها."));
-        Add("quotations", "عروض الأسعار", () =>
+        Add(6, "عروض الأسعار", () =>
         new DemoPage("عروض الأسعار", "عروض الأسعار قبل تحويلها إلى عملية بيع."));
-        Add("returns", "المرتجعات", () =>
+        Add(7, "المرتجعات", () =>
         new DemoPage("المرتجعات", "مرتجعات البيع والشراء."));
-        Add("payments", "المدفوعات", () =>
+        Add(8, "المدفوعات", () =>
         new DemoPage("المدفوعات", "دفعات العملاء والموردين."));
-        Add("stock", "المخزون", () =>
+        Add(9, "المخزون", () =>
         new DemoPage("المخزون", "الأرصدة وحركات المخزون والتنبيهات."));
-        Add("cash", "النقدية", () =>
+        Add(10, "النقدية", () =>
         new DemoPage("النقدية", "المعاملات النقدية والرصيد."));
-        Add("reports", "التقارير", () =>
+        Add(11, "التقارير", () =>
         new DemoPage("التقارير", "التقارير والملخصات التشغيلية."));
     }
 
-    void Add(string key, string text, Func<UserControl> factory)
+    void Add(int key, string text, Func<UserControl> factory)
     {
         var b = new KryptonButton
         {
             Text = text,
             Width = 190,
             Height = 42,
-            Tag = key
+            Tag = key,
+            Cursor = Cursors.Hand
         };
 
         b.StateCommon.Back.Color1 = AppTheme.Sidebar;
 
         b.Click += (_, _) =>
         {
-            nav.Show(new NavigationItem(key, text, factory));
-            Highlight(key);
+            nav.Show(new NavigationItem(text, factory));
+            Highlight(1);
         };
 
         sidebarFlow.Controls.Add(b);
@@ -83,11 +85,11 @@ public partial class MainShellForm : KryptonForm
 
     void Home()
     {
-        nav.Show(new NavigationItem("home", "الرئيسية", () => new DashboardPage()));
-        Highlight("home");
+        nav.Show(new NavigationItem("الرئيسية", () => new DashboardPage()));
+        Highlight(0);
     }
 
-    void Highlight(string key)
+    void Highlight(int key)
     {
         foreach (var x in buttons)
             x.Value.StateCommon.Back.Color1 =
@@ -111,11 +113,13 @@ public partial class MainShellForm : KryptonForm
             s.UserDisplayName;
 
         AppTheme.Set(s.Theme);
+        AppTheme.Apply(this);
+        ApplyTheme();
     }
 
     void settings_Click(object? s, EventArgs e)
     {
-        nav.Show(new NavigationItem("settings", "الإعدادات", () => new SettingsPage(store)));
+        nav.Show(new NavigationItem("الإعدادات", () => new SettingsPage(store)));
     }
 
     void ApplyTheme()

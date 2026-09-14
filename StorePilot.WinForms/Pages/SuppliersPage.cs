@@ -9,13 +9,6 @@ public partial class SuppliersPage : UserControl
     public SuppliersPage()
     {
         InitializeComponent();
-        RefreshGrid();
-        pagination.PageChanged += (_, _) => RefreshGrid();
-        search.TextChanged += (_, _) =>
-        {
-            pagination.Reset();
-            RefreshGrid();
-        };
     }
 
     void RefreshGrid()
@@ -30,7 +23,6 @@ public partial class SuppliersPage : UserControl
         }
 
         var all = q.ToList();
-        pagination.TotalItems = all.Count;
         grid.DataSource = all
             .Skip((pagination.CurrentPage - 1) * pagination.PageSize)
             .Take(pagination.PageSize)
@@ -44,5 +36,17 @@ public partial class SuppliersPage : UserControl
                 الرصيد = x.Balance.ToString("N2")
             })
             .ToList();
+    }
+
+    private void SuppliersPage_Load(object sender, EventArgs e)
+    {
+        pagination.TotalItems = data.Suppliers.ToList().Count;
+        RefreshGrid();
+        pagination.PageChanged += (_, _) => RefreshGrid();
+        search.TextChanged += (_, _) =>
+        {
+            RefreshGrid();
+            pagination.Reset();
+        };
     }
 }

@@ -19,9 +19,9 @@ partial class SuppliersPage
     {
         header = new StorePilot.WinForms.Controls.PageHeader();
         surface = new Krypton.Toolkit.KryptonPanel();
+        grid = new Krypton.Toolkit.KryptonDataGridView();
         search = new Krypton.Toolkit.KryptonTextBox();
         pagination = new StorePilot.WinForms.Controls.PaginationBar();
-        grid = new Krypton.Toolkit.KryptonDataGridView();
         ((System.ComponentModel.ISupportInitialize)surface).BeginInit();
         surface.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)grid).BeginInit();
@@ -51,6 +51,21 @@ partial class SuppliersPage
         surface.Size = new Size(1184, 560);
         surface.TabIndex = 0;
         // 
+        // grid
+        // 
+        grid.AllowUserToAddRows = false;
+        grid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        grid.BorderStyle = BorderStyle.None;
+        grid.ColumnHeadersHeight = 36;
+        grid.Dock = DockStyle.Fill;
+        grid.Location = new Point(14, 41);
+        grid.Name = "grid";
+        grid.ReadOnly = true;
+        grid.RowHeadersVisible = false;
+        grid.RowHeadersWidth = 51;
+        grid.Size = new Size(1156, 463);
+        grid.TabIndex = 3;
+        // 
         // search
         // 
         search.Dock = DockStyle.Top;
@@ -69,21 +84,6 @@ partial class SuppliersPage
         pagination.TabIndex = 2;
         pagination.TotalItems = 0;
         // 
-        // grid
-        // 
-        grid.AllowUserToAddRows = false;
-        grid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-        grid.BorderStyle = BorderStyle.None;
-        grid.ColumnHeadersHeight = 36;
-        grid.Dock = DockStyle.Fill;
-        grid.Location = new Point(14, 41);
-        grid.Name = "grid";
-        grid.ReadOnly = true;
-        grid.RowHeadersVisible = false;
-        grid.RowHeadersWidth = 51;
-        grid.Size = new Size(1156, 463);
-        grid.TabIndex = 3;
-        // 
         // SuppliersPage
         // 
         Controls.Add(surface);
@@ -92,6 +92,7 @@ partial class SuppliersPage
         Padding = new Padding(18);
         RightToLeft = RightToLeft.Yes;
         Size = new Size(1220, 664);
+        Load += SuppliersPage_Load;
         ((System.ComponentModel.ISupportInitialize)surface).EndInit();
         surface.ResumeLayout(false);
         surface.PerformLayout();

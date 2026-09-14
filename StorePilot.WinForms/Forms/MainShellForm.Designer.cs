@@ -144,11 +144,8 @@ partial class MainShellForm
         Controls.Add(content);
         Controls.Add(header);
         Controls.Add(sidebar);
-        FormTitleAlign = PaletteRelativeAlign.Far;
         MinimumSize = new Size(980, 620);
         Name = "MainShellForm";
-        RightToLeft = RightToLeft.Yes;
-        ShowIcon = false;
         StartPosition = FormStartPosition.CenterScreen;
         Text = "StorePilot";
         WindowState = FormWindowState.Maximized;

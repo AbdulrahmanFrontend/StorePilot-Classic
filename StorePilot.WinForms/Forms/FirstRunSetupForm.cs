@@ -61,13 +61,17 @@ public partial class FirstRunSetupForm : KryptonForm
         { 
             ShopName = shopName.Text.Trim(),
             UserDisplayName = userName.Text.Trim(), 
-            Theme = cmbTheme.SelectedIndex == 1 ? ThemeMode.Dark : ThemeMode.Light 
+            Theme = 
+                cmbTheme.SelectedIndex == 1 ? 
+                ThemeMode.Dark : 
+                ThemeMode.Light 
         };
         
         if (selectedLogo != null)
             x.LogoPath = store.CopyLogo(selectedLogo) ?? ""; 
 
-        store.Save(x); AppTheme.Set(x.Theme); 
+        store.Save(x); 
+        AppTheme.Set(x.Theme); 
         DialogResult = DialogResult.OK; 
         Close(); 
     }

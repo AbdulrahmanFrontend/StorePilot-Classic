@@ -16,7 +16,6 @@ public partial class PaginationBar : UserControl
     public PaginationBar()
     {
         InitializeComponent();
-        cmbPageSize.SelectedIndex = 0;
     }
 
     public int CurrentPage => page;
@@ -30,7 +29,7 @@ public partial class PaginationBar : UserControl
         {
             total = Math.Max(0, value);
             page = Math.Min(page, Math.Max(1, TotalPages));
-            FillPageNumberComboBox();
+            Reset();
         }
     }
 
@@ -48,11 +47,15 @@ public partial class PaginationBar : UserControl
         cmbPageNumber.SelectedIndex = 0;
     }
 
-    public int TotalPages => total == 0 ? 0 : (int)Math.Ceiling(total / (double)size);
+    public int TotalPages => 
+        total == 0 ? 
+        0 : 
+        (int)Math.Ceiling(total / (double)size);
 
-    public void Reset() => cmbPageNumber.SelectedIndex = 0;
+    public void Reset()
+        => cmbPageSize.SelectedIndex = 0;
 
-    void Changed()
+    void ChangePage()
     {
         UpdateState();
         PageChanged?.Invoke(this, EventArgs.Empty);
@@ -106,6 +109,6 @@ public partial class PaginationBar : UserControl
             return;
 
         page = int.Parse(cmbPageNumber.SelectedItem?.ToString()!);
-        Changed();
+        ChangePage();
     }
 }

@@ -11,13 +11,6 @@ public partial class ProductsPage : UserControl
     public ProductsPage()
     {
         InitializeComponent();
-        RefreshGrid();
-        pagination.PageChanged += (_, _) => RefreshGrid();
-        search.TextChanged += (_, _) =>
-        {
-            pagination.Reset();
-            RefreshGrid();
-        };
     }
 
     void RefreshGrid()
@@ -28,13 +21,12 @@ public partial class ProductsPage : UserControl
         {
             var t = search.Text.Trim();
             q = q.Where(x => x.Name.Contains(
-                t, 
-                StringComparison.OrdinalIgnoreCase) 
+                t,
+                StringComparison.OrdinalIgnoreCase)
             || x.Code.Contains(t, StringComparison.OrdinalIgnoreCase));
         }
 
         var all = q.ToList();
-        pagination.TotalItems = all.Count;
         grid.DataSource = all
             .Skip((pagination.CurrentPage - 1) * pagination.PageSize)
             .Take(pagination.PageSize)
@@ -50,5 +42,17 @@ public partial class ProductsPage : UserControl
                 الحالة = x.Active ? "نشط" : "غير نشط"
             })
             .ToList();
+    }
+
+    private void ProductsPage_Load(object sender, EventArgs e)
+    {
+        pagination.TotalItems = data.Products.ToList().Count;
+        RefreshGrid();
+        pagination.PageChanged += (_, _) => RefreshGrid();
+        search.TextChanged += (_, _) =>
+        {
+            RefreshGrid();
+            pagination.Reset();
+        };
     }
 }

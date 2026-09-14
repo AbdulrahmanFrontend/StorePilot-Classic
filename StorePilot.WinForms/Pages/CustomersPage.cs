@@ -10,13 +10,6 @@ public partial class CustomersPage : UserControl
     public CustomersPage()
     {
         InitializeComponent();
-        RefreshGrid();
-        pagination.PageChanged += (_, _) => RefreshGrid();
-        search.TextChanged += (_, _) =>
-        {
-            pagination.Reset(); 
-            RefreshGrid();
-        };
     }
 
     void RefreshGrid()
@@ -33,8 +26,6 @@ public partial class CustomersPage : UserControl
 
         var all = q.ToList();
 
-        pagination.TotalItems = all.Count;
-
         grid.DataSource = all
             .Skip((pagination.CurrentPage - 1) * pagination.PageSize)
             .Take(pagination.PageSize)
@@ -48,5 +39,17 @@ public partial class CustomersPage : UserControl
                 الرصيد = x.Balance.ToString("N2")
             })
             .ToList();
+    }
+
+    private void CustomersPage_Load(object sender, EventArgs e)
+    {
+        pagination.TotalItems = data.Customers.ToList().Count;
+        RefreshGrid();
+        pagination.PageChanged += (_, _) => RefreshGrid();
+        search.TextChanged += (_, _) =>
+        {
+            RefreshGrid();
+            pagination.Reset();
+        };
     }
 }

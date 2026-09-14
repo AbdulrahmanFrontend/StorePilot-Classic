@@ -95,6 +95,7 @@ partial class CustomersPage
         Padding = new Padding(18);
         RightToLeft = RightToLeft.Yes;
         Size = new Size(1186, 517);
+        Load += CustomersPage_Load;
         ((System.ComponentModel.ISupportInitialize)surface).EndInit();
         surface.ResumeLayout(false);
         surface.PerformLayout();
