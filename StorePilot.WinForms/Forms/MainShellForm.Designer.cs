@@ -1,164 +1,201 @@
-using Krypton.Toolkit;
-
-namespace StorePilot.WinForms.Forms;
+namespace StorePilot.WinForms;
 
 partial class MainShellForm
-{ 
-    private System.ComponentModel.IContainer components = null; 
-    private Krypton.Toolkit.KryptonPanel sidebar = null!,
-        header = null!,
-        content = null!; 
+{
+    private System.ComponentModel.IContainer components = null!;
 
-    private FlowLayoutPanel sidebarFlow = null!; 
+    private Krypton.Toolkit.KryptonPanel sidebarPanel;
+    private Krypton.Toolkit.KryptonPanel topBarPanel;
+    private Krypton.Toolkit.KryptonPanel contentPanel;
 
-    private Krypton.Toolkit.KryptonLabel shopLabel = null!,
-        userLabel = null!; 
+    private System.Windows.Forms.FlowLayoutPanel navigationPanel;
+    private System.Windows.Forms.Panel contentHost;
 
-    private Panel contentHost = null!;
+    private System.Windows.Forms.Button btnDashboard;
+    private System.Windows.Forms.Button btnProducts;
+    private System.Windows.Forms.Button btnCustomers;
+    private System.Windows.Forms.Button btnSuppliers;
+    private System.Windows.Forms.Button btnSales;
+    private System.Windows.Forms.Button btnPurchases;
+    private System.Windows.Forms.Button btnQuotations;
+    private System.Windows.Forms.Button btnReturns;
+    private System.Windows.Forms.Button btnPayments;
+    private System.Windows.Forms.Button btnInventory;
+    private System.Windows.Forms.Button btnReports;
 
-    protected override void Dispose(bool disposing) 
-    { 
-        if (disposing)
-            components?.Dispose();
-        
+    private System.Windows.Forms.Button btnSettings;
+    private System.Windows.Forms.Button btnBackup;
+    private System.Windows.Forms.Button btnTheme;
+    private System.Windows.Forms.Button btnExit;
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing && (components != null))
+        {
+            components.Dispose();
+        }
+
         base.Dispose(disposing);
     }
 
     private void InitializeComponent()
     {
-        sidebar = new KryptonPanel();
-        sidebarFlow = new FlowLayoutPanel();
-        userLabel = new KryptonLabel();
-        shopLabel = new KryptonLabel();
-        header = new KryptonPanel();
-        settings = new KryptonButton();
-        backup = new KryptonButton();
-        content = new KryptonPanel();
-        contentHost = new Panel();
-        ((System.ComponentModel.ISupportInitialize)sidebar).BeginInit();
-        sidebar.SuspendLayout();
-        ((System.ComponentModel.ISupportInitialize)header).BeginInit();
-        header.SuspendLayout();
-        ((System.ComponentModel.ISupportInitialize)content).BeginInit();
-        content.SuspendLayout();
-        SuspendLayout();
-        // 
-        // sidebar
-        // 
-        sidebar.Controls.Add(sidebarFlow);
-        sidebar.Controls.Add(userLabel);
-        sidebar.Controls.Add(shopLabel);
-        sidebar.Dock = DockStyle.Right;
-        sidebar.Location = new Point(940, 0);
-        sidebar.Name = "sidebar";
-        sidebar.Padding = new Padding(12);
-        sidebar.Size = new Size(220, 573);
-        sidebar.TabIndex = 2;
-        // 
-        // sidebarFlow
-        // 
-        sidebarFlow.AutoScroll = true;
-        sidebarFlow.Dock = DockStyle.Fill;
-        sidebarFlow.FlowDirection = FlowDirection.TopDown;
-        sidebarFlow.Location = new Point(12, 60);
-        sidebarFlow.Name = "sidebarFlow";
-        sidebarFlow.Padding = new Padding(0, 15, 0, 0);
-        sidebarFlow.Size = new Size(196, 501);
-        sidebarFlow.TabIndex = 0;
-        sidebarFlow.WrapContents = false;
-        // 
-        // userLabel
-        // 
-        userLabel.Dock = DockStyle.Top;
-        userLabel.Location = new Point(12, 36);
-        userLabel.Name = "userLabel";
-        userLabel.RightToLeft = RightToLeft.Yes;
-        userLabel.Size = new Size(196, 24);
-        userLabel.TabIndex = 1;
-        userLabel.Values.Text = "المستخدم";
-        // 
-        // shopLabel
-        // 
-        shopLabel.Dock = DockStyle.Top;
-        shopLabel.Location = new Point(12, 12);
-        shopLabel.Name = "shopLabel";
-        shopLabel.RightToLeft = RightToLeft.Yes;
-        shopLabel.Size = new Size(196, 24);
-        shopLabel.TabIndex = 2;
-        shopLabel.Values.Text = "StorePilot";
-        // 
-        // header
-        // 
-        header.Controls.Add(settings);
-        header.Controls.Add(backup);
-        header.Dock = DockStyle.Top;
-        header.Location = new Point(0, 0);
-        header.Name = "header";
-        header.Padding = new Padding(14);
-        header.Size = new Size(940, 62);
-        header.TabIndex = 1;
-        // 
-        // settings
-        // 
-        settings.Dock = DockStyle.Left;
-        settings.Location = new Point(114, 14);
-        settings.Name = "settings";
-        settings.Size = new Size(100, 34);
-        settings.TabIndex = 1;
-        settings.Values.DropDownArrowColor = Color.Empty;
-        settings.Values.Text = "الإعدادات";
-        settings.Click += settings_Click;
-        // 
-        // backup
-        // 
-        backup.Dock = DockStyle.Left;
-        backup.Location = new Point(14, 14);
-        backup.Name = "backup";
-        backup.Size = new Size(100, 34);
-        backup.TabIndex = 0;
-        backup.Values.DropDownArrowColor = Color.Empty;
-        backup.Values.Text = "نسخ احتياطي";
-        backup.Click += backup_Click;
-        // 
-        // content
-        // 
-        content.Controls.Add(contentHost);
-        content.Dock = DockStyle.Fill;
-        content.Location = new Point(0, 62);
-        content.Name = "content";
-        content.Size = new Size(940, 511);
-        content.TabIndex = 0;
-        // 
-        // contentHost
-        // 
-        contentHost.Dock = DockStyle.Fill;
-        contentHost.Location = new Point(0, 0);
-        contentHost.Name = "contentHost";
-        contentHost.Padding = new Padding(12);
-        contentHost.Size = new Size(940, 511);
-        contentHost.TabIndex = 0;
-        // 
+        this.components = new System.ComponentModel.Container();
+
+        this.sidebarPanel = new Krypton.Toolkit.KryptonPanel();
+        this.topBarPanel = new Krypton.Toolkit.KryptonPanel();
+        this.contentPanel = new Krypton.Toolkit.KryptonPanel();
+
+        this.navigationPanel = new System.Windows.Forms.FlowLayoutPanel();
+        this.contentHost = new System.Windows.Forms.Panel();
+
+        this.btnDashboard = CreateNavigationButton("الرئيسية");
+        this.btnProducts = CreateNavigationButton("الأصناف");
+        this.btnCustomers = CreateNavigationButton("العملاء");
+        this.btnSuppliers = CreateNavigationButton("الموردون");
+        this.btnSales = CreateNavigationButton("المبيعات");
+        this.btnPurchases = CreateNavigationButton("المشتريات");
+        this.btnQuotations = CreateNavigationButton("التسعير");
+        this.btnReturns = CreateNavigationButton("المرتجعات");
+        this.btnPayments = CreateNavigationButton("الدفعات");
+        this.btnInventory = CreateNavigationButton("المخزون");
+        this.btnReports = CreateNavigationButton("التقارير");
+
+        this.btnSettings = CreateTopButton("الإعدادات");
+        this.btnBackup = CreateTopButton("نسخة احتياطية");
+        this.btnTheme = CreateTopButton("الوضع");
+        this.btnExit = CreateTopButton("خروج");
+
+        this.SuspendLayout();
+
         // MainShellForm
-        // 
-        ClientSize = new Size(1160, 573);
-        Controls.Add(content);
-        Controls.Add(header);
-        Controls.Add(sidebar);
-        MinimumSize = new Size(980, 620);
-        Name = "MainShellForm";
-        StartPosition = FormStartPosition.CenterScreen;
-        Text = "StorePilot";
-        WindowState = FormWindowState.Maximized;
-        ((System.ComponentModel.ISupportInitialize)sidebar).EndInit();
-        sidebar.ResumeLayout(false);
-        sidebar.PerformLayout();
-        ((System.ComponentModel.ISupportInitialize)header).EndInit();
-        header.ResumeLayout(false);
-        ((System.ComponentModel.ISupportInitialize)content).EndInit();
-        content.ResumeLayout(false);
-        ResumeLayout(false);
+        this.AutoScaleDimensions =
+            new System.Drawing.SizeF(7F, 15F);
+
+        this.AutoScaleMode =
+            System.Windows.Forms.AutoScaleMode.Font;
+
+        this.ClientSize =
+            new System.Drawing.Size(1400, 800);
+
+        this.Name = "MainShellForm";
+        this.Text = "StorePilot";
+
+        this.RightToLeft =
+            System.Windows.Forms.RightToLeft.Yes;
+
+        this.RightToLeftLayout = true;
+
+        // Sidebar
+        this.sidebarPanel.Dock =
+            System.Windows.Forms.DockStyle.Right;
+
+        this.sidebarPanel.Width = 230;
+
+        this.sidebarPanel.Padding =
+            new System.Windows.Forms.Padding(10);
+
+        this.sidebarPanel.Name = "sidebarPanel";
+
+        this.sidebarPanel.Controls.Add(this.navigationPanel);
+
+        // Navigation
+        this.navigationPanel.Dock =
+            System.Windows.Forms.DockStyle.Fill;
+
+        this.navigationPanel.FlowDirection =
+            System.Windows.Forms.FlowDirection.TopDown;
+
+        this.navigationPanel.WrapContents = false;
+
+        this.navigationPanel.AutoScroll = true;
+
+        this.navigationPanel.Name = "navigationPanel";
+
+        this.navigationPanel.Controls.Add(this.btnDashboard);
+        this.navigationPanel.Controls.Add(this.btnProducts);
+        this.navigationPanel.Controls.Add(this.btnCustomers);
+        this.navigationPanel.Controls.Add(this.btnSuppliers);
+        this.navigationPanel.Controls.Add(this.btnSales);
+        this.navigationPanel.Controls.Add(this.btnPurchases);
+        this.navigationPanel.Controls.Add(this.btnQuotations);
+        this.navigationPanel.Controls.Add(this.btnReturns);
+        this.navigationPanel.Controls.Add(this.btnPayments);
+        this.navigationPanel.Controls.Add(this.btnInventory);
+        this.navigationPanel.Controls.Add(this.btnReports);
+
+        // Top bar
+        this.topBarPanel.Dock =
+            System.Windows.Forms.DockStyle.Top;
+
+        this.topBarPanel.Height = 55;
+
+        this.topBarPanel.Padding =
+            new System.Windows.Forms.Padding(10, 8, 10, 8);
+
+        this.topBarPanel.Name = "topBarPanel";
+
+        this.topBarPanel.Controls.Add(this.btnExit);
+        this.topBarPanel.Controls.Add(this.btnTheme);
+        this.topBarPanel.Controls.Add(this.btnBackup);
+        this.topBarPanel.Controls.Add(this.btnSettings);
+
+        // Content
+        this.contentPanel.Dock =
+            System.Windows.Forms.DockStyle.Fill;
+
+        this.contentPanel.Padding =
+            new System.Windows.Forms.Padding(10);
+
+        this.contentPanel.Name = "contentPanel";
+
+        this.contentPanel.Controls.Add(this.contentHost);
+
+        // Content Host
+        this.contentHost.Dock =
+            System.Windows.Forms.DockStyle.Fill;
+
+        this.contentHost.Name = "contentHost";
+
+        this.contentHost.AutoScroll = true;
+
+        // Add to form
+        this.Controls.Add(this.contentPanel);
+        this.Controls.Add(this.topBarPanel);
+        this.Controls.Add(this.sidebarPanel);
+
+        this.ResumeLayout(false);
     }
 
-    private KryptonButton backup;
-    private KryptonButton settings;
+    private static System.Windows.Forms.Button CreateNavigationButton(
+        string text)
+    {
+        return new System.Windows.Forms.Button
+        {
+            Text = text,
+            Width = 205,
+            Height = 42,
+            Margin = new System.Windows.Forms.Padding(0, 0, 0, 5),
+            FlatStyle = System.Windows.Forms.FlatStyle.Flat,
+            TextAlign = System.Drawing.ContentAlignment.MiddleRight,
+            Padding = new System.Windows.Forms.Padding(12, 0, 12, 0),
+            UseVisualStyleBackColor = false,
+            TabStop = false
+        };
+    }
+
+    private static System.Windows.Forms.Button CreateTopButton(
+        string text)
+    {
+        return new System.Windows.Forms.Button
+        {
+            Text = text,
+            AutoSize = true,
+            Height = 35,
+            Margin = new System.Windows.Forms.Padding(4, 0, 4, 0),
+            FlatStyle = System.Windows.Forms.FlatStyle.Flat,
+            UseVisualStyleBackColor = false,
+            TabStop = false
+        };
+    }
 }

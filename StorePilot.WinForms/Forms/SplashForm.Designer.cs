@@ -2,13 +2,17 @@
 
 partial class SplashForm
 {
-    private System.ComponentModel.IContainer components = null!;
+    private System.ComponentModel.IContainer components = null;
 
-    private Krypton.Toolkit.KryptonPanel panel = null!;
-
-    private Label logo = null!,
-        title = null!,
-        subtitle = null!;
+    private Panel backgroundPanel = null!;
+    private Panel contentPanel = null!;
+    private Label logoMarkLabel = null!;
+    private Label brandLabel = null!;
+    private Label subtitleLabel = null!;
+    private Label loadingLabel = null!;
+    private Panel loadingTrackPanel = null!;
+    private Panel loadingProgressPanel = null!;
+    private Label versionLabel = null!;
 
     protected override void Dispose(bool disposing)
     {
@@ -20,68 +24,138 @@ partial class SplashForm
 
     private void InitializeComponent()
     {
-        panel = new Krypton.Toolkit.KryptonPanel();
-        subtitle = new Label();
-        title = new Label();
-        logo = new Label();
-        ((System.ComponentModel.ISupportInitialize)panel).BeginInit();
-        panel.SuspendLayout();
+        backgroundPanel = new Panel();
+        contentPanel = new Panel();
+        versionLabel = new Label();
+        loadingLabel = new Label();
+        loadingTrackPanel = new Panel();
+        loadingProgressPanel = new Panel();
+        subtitleLabel = new Label();
+        brandLabel = new Label();
+        logoMarkLabel = new Label();
+        backgroundPanel.SuspendLayout();
+        contentPanel.SuspendLayout();
+        loadingTrackPanel.SuspendLayout();
         SuspendLayout();
         // 
-        // panel
+        // backgroundPanel
         // 
-        panel.Controls.Add(subtitle);
-        panel.Controls.Add(title);
-        panel.Controls.Add(logo);
-        panel.Dock = DockStyle.Fill;
-        panel.Location = new Point(0, 0);
-        panel.Name = "panel";
-        panel.Size = new Size(500, 280);
-        panel.TabIndex = 0;
+        backgroundPanel.BackColor = Color.FromArgb(20, 24, 32);
+        backgroundPanel.Controls.Add(contentPanel);
+        backgroundPanel.Dock = DockStyle.Fill;
+        backgroundPanel.Location = new Point(0, 0);
+        backgroundPanel.Name = "backgroundPanel";
+        backgroundPanel.Padding = new Padding(40);
+        backgroundPanel.Size = new Size(539, 360);
+        backgroundPanel.TabIndex = 0;
         // 
-        // subtitle
+        // contentPanel
         // 
-        subtitle.Dock = DockStyle.Top;
-        subtitle.Location = new Point(0, 140);
-        subtitle.Name = "subtitle";
-        subtitle.Size = new Size(500, 35);
-        subtitle.TabIndex = 0;
-        subtitle.Text = "نظام إدارة مخازن";
-        subtitle.TextAlign = ContentAlignment.MiddleCenter;
+        contentPanel.BackColor = Color.FromArgb(20, 24, 32);
+        contentPanel.Controls.Add(versionLabel);
+        contentPanel.Controls.Add(loadingLabel);
+        contentPanel.Controls.Add(loadingTrackPanel);
+        contentPanel.Controls.Add(subtitleLabel);
+        contentPanel.Controls.Add(brandLabel);
+        contentPanel.Controls.Add(logoMarkLabel);
+        contentPanel.Dock = DockStyle.Fill;
+        contentPanel.Location = new Point(40, 40);
+        contentPanel.Name = "contentPanel";
+        contentPanel.Size = new Size(459, 280);
+        contentPanel.TabIndex = 0;
         // 
-        // title
+        // versionLabel
         // 
-        title.Dock = DockStyle.Top;
-        title.Font = new Font("Segoe UI Semibold", 23F, FontStyle.Bold);
-        title.Location = new Point(0, 90);
-        title.Name = "title";
-        title.Size = new Size(500, 50);
-        title.TabIndex = 1;
-        title.Text = "StorePilot";
-        title.TextAlign = ContentAlignment.MiddleCenter;
+        versionLabel.Dock = DockStyle.Bottom;
+        versionLabel.Font = new Font("Segoe UI", 8F);
+        versionLabel.ForeColor = Color.FromArgb(120, 130, 145);
+        versionLabel.Location = new Point(0, 220);
+        versionLabel.Name = "versionLabel";
+        versionLabel.Size = new Size(459, 25);
+        versionLabel.TabIndex = 0;
+        versionLabel.Text = "Prototype • v0.1";
+        versionLabel.TextAlign = ContentAlignment.MiddleCenter;
         // 
-        // logo
+        // loadingLabel
         // 
-        logo.Dock = DockStyle.Top;
-        logo.Font = new Font("Segoe UI Semibold", 36F, FontStyle.Bold);
-        logo.Location = new Point(0, 0);
-        logo.Name = "logo";
-        logo.Size = new Size(500, 90);
-        logo.TabIndex = 2;
-        logo.Text = "SP";
-        logo.TextAlign = ContentAlignment.MiddleCenter;
+        loadingLabel.Dock = DockStyle.Bottom;
+        loadingLabel.Font = new Font("Segoe UI", 9F);
+        loadingLabel.ForeColor = Color.FromArgb(170, 180, 195);
+        loadingLabel.Location = new Point(0, 245);
+        loadingLabel.Name = "loadingLabel";
+        loadingLabel.Size = new Size(459, 31);
+        loadingLabel.TabIndex = 1;
+        loadingLabel.Text = "جاري تجهيز النظام...";
+        loadingLabel.TextAlign = ContentAlignment.MiddleCenter;
+        // 
+        // loadingTrackPanel
+        // 
+        loadingTrackPanel.BackColor = Color.FromArgb(50, 57, 70);
+        loadingTrackPanel.Controls.Add(loadingProgressPanel);
+        loadingTrackPanel.Dock = DockStyle.Bottom;
+        loadingTrackPanel.Location = new Point(0, 276);
+        loadingTrackPanel.Name = "loadingTrackPanel";
+        loadingTrackPanel.Size = new Size(459, 4);
+        loadingTrackPanel.TabIndex = 2;
+        // 
+        // loadingProgressPanel
+        // 
+        loadingProgressPanel.BackColor = Color.FromArgb(76, 151, 255);
+        loadingProgressPanel.Dock = DockStyle.Left;
+        loadingProgressPanel.Location = new Point(0, 0);
+        loadingProgressPanel.Name = "loadingProgressPanel";
+        loadingProgressPanel.Size = new Size(130, 4);
+        loadingProgressPanel.TabIndex = 0;
+        // 
+        // subtitleLabel
+        // 
+        subtitleLabel.Dock = DockStyle.Top;
+        subtitleLabel.Font = new Font("Segoe UI", 10F);
+        subtitleLabel.ForeColor = Color.FromArgb(170, 180, 195);
+        subtitleLabel.Location = new Point(0, 50);
+        subtitleLabel.Name = "subtitleLabel";
+        subtitleLabel.Size = new Size(459, 30);
+        subtitleLabel.TabIndex = 3;
+        subtitleLabel.Text = "نظام إدارة المبيعات والمشتريات والمخزون";
+        subtitleLabel.TextAlign = ContentAlignment.MiddleCenter;
+        // 
+        // brandLabel
+        // 
+        brandLabel.Dock = DockStyle.Top;
+        brandLabel.Font = new Font("Segoe UI Semibold", 24F);
+        brandLabel.ForeColor = Color.White;
+        brandLabel.Location = new Point(0, 0);
+        brandLabel.Name = "brandLabel";
+        brandLabel.Size = new Size(459, 50);
+        brandLabel.TabIndex = 4;
+        brandLabel.Text = "StorePilot";
+        brandLabel.TextAlign = ContentAlignment.MiddleCenter;
+        // 
+        // logoMarkLabel
+        // 
+        logoMarkLabel.BackColor = Color.FromArgb(42, 112, 222);
+        logoMarkLabel.Font = new Font("Segoe UI Semibold", 24F);
+        logoMarkLabel.ForeColor = Color.White;
+        logoMarkLabel.Location = new Point(186, 119);
+        logoMarkLabel.Name = "logoMarkLabel";
+        logoMarkLabel.Size = new Size(74, 74);
+        logoMarkLabel.TabIndex = 5;
+        logoMarkLabel.Text = "SP";
+        logoMarkLabel.TextAlign = ContentAlignment.MiddleCenter;
         // 
         // SplashForm
         // 
-        ClientSize = new Size(500, 280);
-        Controls.Add(panel);
-        DoubleBuffered = true;
+        BackColor = Color.FromArgb(20, 24, 32);
+        ClientSize = new Size(539, 360);
+        Controls.Add(backgroundPanel);
         FormBorderStyle = FormBorderStyle.None;
         Name = "SplashForm";
         ShowInTaskbar = false;
         StartPosition = FormStartPosition.CenterScreen;
-        ((System.ComponentModel.ISupportInitialize)panel).EndInit();
-        panel.ResumeLayout(false);
+        Text = "StorePilot";
+        backgroundPanel.ResumeLayout(false);
+        contentPanel.ResumeLayout(false);
+        loadingTrackPanel.ResumeLayout(false);
         ResumeLayout(false);
     }
 }

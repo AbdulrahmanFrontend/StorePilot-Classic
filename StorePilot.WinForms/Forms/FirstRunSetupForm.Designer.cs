@@ -3,264 +3,415 @@
 partial class FirstRunSetupForm
 {
     private System.ComponentModel.IContainer components = null;
-    private Krypton.Toolkit.KryptonPanel panel;
-    private Label title;
-    private Label desc;
-    private Krypton.Toolkit.KryptonLabel l1;
-    private Krypton.Toolkit.KryptonLabel l2;
-    private Krypton.Toolkit.KryptonLabel l3;
-    private Krypton.Toolkit.KryptonLabel l4;
-    private Krypton.Toolkit.KryptonLabel logoInfo;
-    private Krypton.Toolkit.KryptonTextBox shopName;
-    private Krypton.Toolkit.KryptonTextBox userName;
-    private Krypton.Toolkit.KryptonComboBox cmbTheme;
-    private Krypton.Toolkit.KryptonButton choose;
-    private Krypton.Toolkit.KryptonButton remove;
-    private Krypton.Toolkit.KryptonButton save;
-    private System.Windows.Forms.TableLayoutPanel layout;
-    private System.Windows.Forms.FlowLayoutPanel lf;
-    private System.Windows.Forms.Panel bottom;
+
+    private Panel headerPanel = null!;
+    private Label titleLabel = null!;
+    private Label subtitleLabel = null!;
+
+    private TableLayoutPanel contentLayout = null!;
+
+    private Panel formPanel = null!;
+    private Label storeNameLabel = null!;
+    private TextBox storeNameTextBox = null!;
+    private Label userNameLabel = null!;
+    private TextBox userNameTextBox = null!;
+    private Label themeLabel = null!;
+    private FlowLayoutPanel themeFlow = null!;
+    private RadioButton lightThemeRadioButton = null!;
+    private RadioButton darkThemeRadioButton = null!;
+
+    private Panel logoPanel = null!;
+    private Label logoTitleLabel = null!;
+    private PictureBox logoPreview = null!;
+    private Button chooseLogoButton = null!;
+    private Button removeLogoButton = null!;
+    private Label logoHintLabel = null!;
+
+    private Panel previewPanel = null!;
+    private Label previewTitleLabel = null!;
+    private Label previewStoreLabel = null!;
+    private Label previewUserLabel = null!;
+
+    private Panel footerPanel = null!;
+    private Button cancelButton = null!;
+    private Button saveButton = null!;
 
     protected override void Dispose(bool disposing)
     {
-        if (disposing && (components != null))
-        {
-            components.Dispose();
-        }
+        if (disposing)
+            components?.Dispose();
+
         base.Dispose(disposing);
     }
 
     private void InitializeComponent()
     {
-        panel = new Krypton.Toolkit.KryptonPanel();
-        layout = new TableLayoutPanel();
-        l1 = new Krypton.Toolkit.KryptonLabel();
-        shopName = new Krypton.Toolkit.KryptonTextBox();
-        l2 = new Krypton.Toolkit.KryptonLabel();
-        userName = new Krypton.Toolkit.KryptonTextBox();
-        l3 = new Krypton.Toolkit.KryptonLabel();
-        cmbTheme = new Krypton.Toolkit.KryptonComboBox();
-        l4 = new Krypton.Toolkit.KryptonLabel();
-        lf = new FlowLayoutPanel();
-        choose = new Krypton.Toolkit.KryptonButton();
-        remove = new Krypton.Toolkit.KryptonButton();
-        logoInfo = new Krypton.Toolkit.KryptonLabel();
-        desc = new Label();
-        title = new Label();
-        bottom = new Panel();
-        save = new Krypton.Toolkit.KryptonButton();
-        ((System.ComponentModel.ISupportInitialize)panel).BeginInit();
-        panel.SuspendLayout();
-        layout.SuspendLayout();
-        ((System.ComponentModel.ISupportInitialize)cmbTheme).BeginInit();
-        lf.SuspendLayout();
-        bottom.SuspendLayout();
+        headerPanel = new Panel();
+        subtitleLabel = new Label();
+        titleLabel = new Label();
+        contentLayout = new TableLayoutPanel();
+        formPanel = new Panel();
+        themeFlow = new FlowLayoutPanel();
+        lightThemeRadioButton = new RadioButton();
+        darkThemeRadioButton = new RadioButton();
+        themeLabel = new Label();
+        userNameTextBox = new TextBox();
+        userNameLabel = new Label();
+        storeNameTextBox = new TextBox();
+        storeNameLabel = new Label();
+        logoPanel = new Panel();
+        tlpLogoButtons = new TableLayoutPanel();
+        chooseLogoButton = new Button();
+        removeLogoButton = new Button();
+        logoHintLabel = new Label();
+        logoPreview = new PictureBox();
+        logoTitleLabel = new Label();
+        previewPanel = new Panel();
+        previewUserLabel = new Label();
+        previewStoreLabel = new Label();
+        previewTitleLabel = new Label();
+        footerPanel = new Panel();
+        cancelButton = new Button();
+        saveButton = new Button();
+        headerPanel.SuspendLayout();
+        contentLayout.SuspendLayout();
+        formPanel.SuspendLayout();
+        themeFlow.SuspendLayout();
+        logoPanel.SuspendLayout();
+        tlpLogoButtons.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)logoPreview).BeginInit();
+        previewPanel.SuspendLayout();
+        footerPanel.SuspendLayout();
         SuspendLayout();
         // 
-        // panel
+        // headerPanel
         // 
-        panel.Controls.Add(layout);
-        panel.Controls.Add(desc);
-        panel.Controls.Add(title);
-        panel.Controls.Add(bottom);
-        panel.Dock = DockStyle.Fill;
-        panel.Location = new Point(0, 0);
-        panel.Name = "panel";
-        panel.Padding = new Padding(32);
-        panel.RightToLeft = RightToLeft.Yes;
-        panel.Size = new Size(542, 430);
-        panel.TabIndex = 0;
+        headerPanel.Controls.Add(subtitleLabel);
+        headerPanel.Controls.Add(titleLabel);
+        headerPanel.Dock = DockStyle.Top;
+        headerPanel.Location = new Point(0, 0);
+        headerPanel.Name = "headerPanel";
+        headerPanel.Padding = new Padding(32, 24, 32, 12);
+        headerPanel.Size = new Size(900, 121);
+        headerPanel.TabIndex = 2;
         // 
-        // layout
+        // subtitleLabel
         // 
-        layout.ColumnCount = 2;
-        layout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 118F));
-        layout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-        layout.Controls.Add(l1, 0, 0);
-        layout.Controls.Add(shopName, 1, 0);
-        layout.Controls.Add(l2, 0, 1);
-        layout.Controls.Add(userName, 1, 1);
-        layout.Controls.Add(l3, 0, 2);
-        layout.Controls.Add(cmbTheme, 1, 2);
-        layout.Controls.Add(l4, 0, 3);
-        layout.Controls.Add(lf, 1, 3);
-        layout.Controls.Add(logoInfo, 1, 4);
-        layout.Dock = DockStyle.Fill;
-        layout.Location = new Point(32, 80);
-        layout.Name = "layout";
-        layout.RowCount = 5;
-        layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 33F));
-        layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 36F));
-        layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 34F));
-        layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 38F));
-        layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 119F));
-        layout.Size = new Size(478, 270);
-        layout.TabIndex = 0;
+        subtitleLabel.Dock = DockStyle.Top;
+        subtitleLabel.Location = new Point(32, 80);
+        subtitleLabel.Name = "subtitleLabel";
+        subtitleLabel.Size = new Size(836, 31);
+        subtitleLabel.TabIndex = 0;
+        subtitleLabel.Text = "أدخل بيانات المحل الأساسية واختر المظهر الذي يناسبك.";
         // 
-        // l1
+        // titleLabel
         // 
-        l1.Anchor = AnchorStyles.Left;
-        l1.Location = new Point(393, 4);
-        l1.Name = "l1";
-        l1.Size = new Size(82, 24);
-        l1.TabIndex = 0;
-        l1.Values.Text = ":اسم المحل";
+        titleLabel.Dock = DockStyle.Top;
+        titleLabel.Font = new Font("Segoe UI Semibold", 20F);
+        titleLabel.Location = new Point(32, 24);
+        titleLabel.Name = "titleLabel";
+        titleLabel.Size = new Size(836, 56);
+        titleLabel.TabIndex = 1;
+        titleLabel.Text = "إعداد النظام لأول مرة";
         // 
-        // shopName
+        // contentLayout
         // 
-        shopName.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-        shopName.Location = new Point(3, 3);
-        shopName.Name = "shopName";
-        shopName.Size = new Size(354, 27);
-        shopName.TabIndex = 1;
+        contentLayout.ColumnCount = 3;
+        contentLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 32.8947372F));
+        contentLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 37.08134F));
+        contentLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
+        contentLayout.Controls.Add(formPanel, 0, 0);
+        contentLayout.Controls.Add(logoPanel, 1, 0);
+        contentLayout.Controls.Add(previewPanel, 2, 0);
+        contentLayout.Dock = DockStyle.Fill;
+        contentLayout.Location = new Point(0, 121);
+        contentLayout.Name = "contentLayout";
+        contentLayout.Padding = new Padding(32, 8, 32, 16);
+        contentLayout.RowCount = 1;
+        contentLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+        contentLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+        contentLayout.Size = new Size(900, 427);
+        contentLayout.TabIndex = 0;
         // 
-        // l2
+        // formPanel
         // 
-        l2.Anchor = AnchorStyles.Left;
-        l2.Location = new Point(368, 39);
-        l2.Name = "l2";
-        l2.Size = new Size(107, 24);
-        l2.TabIndex = 2;
-        l2.Values.Text = ":اسم المستخدم";
+        formPanel.Controls.Add(themeFlow);
+        formPanel.Controls.Add(themeLabel);
+        formPanel.Controls.Add(userNameTextBox);
+        formPanel.Controls.Add(userNameLabel);
+        formPanel.Controls.Add(storeNameTextBox);
+        formPanel.Controls.Add(storeNameLabel);
+        formPanel.Dock = DockStyle.Fill;
+        formPanel.Location = new Point(596, 11);
+        formPanel.Name = "formPanel";
+        formPanel.Padding = new Padding(0, 8, 24, 8);
+        formPanel.Size = new Size(269, 397);
+        formPanel.TabIndex = 0;
         // 
-        // userName
+        // themeFlow
         // 
-        userName.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-        userName.Location = new Point(3, 37);
-        userName.Name = "userName";
-        userName.Size = new Size(354, 27);
-        userName.TabIndex = 3;
+        themeFlow.Controls.Add(lightThemeRadioButton);
+        themeFlow.Controls.Add(darkThemeRadioButton);
+        themeFlow.Dock = DockStyle.Top;
+        themeFlow.Location = new Point(0, 186);
+        themeFlow.Name = "themeFlow";
+        themeFlow.Size = new Size(245, 45);
+        themeFlow.TabIndex = 0;
+        themeFlow.WrapContents = false;
         // 
-        // l3
+        // lightThemeRadioButton
         // 
-        l3.Anchor = AnchorStyles.Left;
-        l3.Location = new Point(415, 74);
-        l3.Name = "l3";
-        l3.Size = new Size(60, 24);
-        l3.TabIndex = 4;
-        l3.Values.Text = ":المظهر";
+        lightThemeRadioButton.AutoSize = true;
+        lightThemeRadioButton.Checked = true;
+        lightThemeRadioButton.Location = new Point(173, 10);
+        lightThemeRadioButton.Margin = new Padding(12, 10, 0, 0);
+        lightThemeRadioButton.Name = "lightThemeRadioButton";
+        lightThemeRadioButton.Size = new Size(60, 27);
+        lightThemeRadioButton.TabIndex = 0;
+        lightThemeRadioButton.TabStop = true;
+        lightThemeRadioButton.Text = "فاتح";
+        lightThemeRadioButton.CheckedChanged += themeRadioButton_CheckedChanged;
         // 
-        // cmbTheme
+        // darkThemeRadioButton
         // 
-        cmbTheme.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-        cmbTheme.DropDownStyle = ComboBoxStyle.DropDownList;
-        cmbTheme.Items.AddRange(new object[] { "فاتح", "داكن" });
-        cmbTheme.Location = new Point(3, 73);
-        cmbTheme.Name = "cmbTheme";
-        cmbTheme.Size = new Size(354, 26);
-        cmbTheme.TabIndex = 5;
+        darkThemeRadioButton.AutoSize = true;
+        darkThemeRadioButton.Location = new Point(97, 10);
+        darkThemeRadioButton.Margin = new Padding(12, 10, 0, 0);
+        darkThemeRadioButton.Name = "darkThemeRadioButton";
+        darkThemeRadioButton.Size = new Size(64, 27);
+        darkThemeRadioButton.TabIndex = 1;
+        darkThemeRadioButton.Text = "داكن";
+        darkThemeRadioButton.CheckedChanged += themeRadioButton_CheckedChanged;
         // 
-        // l4
+        // themeLabel
         // 
-        l4.Anchor = AnchorStyles.Left;
-        l4.Location = new Point(419, 110);
-        l4.Name = "l4";
-        l4.Size = new Size(56, 24);
-        l4.TabIndex = 6;
-        l4.Values.Text = ":الشعار";
+        themeLabel.Dock = DockStyle.Top;
+        themeLabel.Location = new Point(0, 130);
+        themeLabel.Name = "themeLabel";
+        themeLabel.Padding = new Padding(0, 20, 0, 0);
+        themeLabel.Size = new Size(245, 56);
+        themeLabel.TabIndex = 1;
+        themeLabel.Text = "المظهر";
         // 
-        // lf
+        // userNameTextBox
         // 
-        lf.Anchor = AnchorStyles.None;
-        lf.AutoSize = true;
-        lf.Controls.Add(choose);
-        lf.Controls.Add(remove);
-        lf.FlowDirection = FlowDirection.RightToLeft;
-        lf.Location = new Point(84, 106);
-        lf.Name = "lf";
-        lf.Size = new Size(192, 31);
-        lf.TabIndex = 7;
-        lf.WrapContents = false;
+        userNameTextBox.Dock = DockStyle.Top;
+        userNameTextBox.Location = new Point(0, 100);
+        userNameTextBox.Name = "userNameTextBox";
+        userNameTextBox.Size = new Size(245, 30);
+        userNameTextBox.TabIndex = 2;
+        userNameTextBox.TextChanged += userNameTextBox_TextChanged;
         // 
-        // choose
+        // userNameLabel
         // 
-        choose.Location = new Point(3, 3);
-        choose.Name = "choose";
-        choose.Size = new Size(90, 25);
-        choose.TabIndex = 0;
-        choose.Values.DropDownArrowColor = Color.Empty;
-        choose.Values.Text = "اختيار";
-        choose.Click += choose_Click;
+        userNameLabel.Dock = DockStyle.Top;
+        userNameLabel.Location = new Point(0, 66);
+        userNameLabel.Name = "userNameLabel";
+        userNameLabel.Size = new Size(245, 34);
+        userNameLabel.TabIndex = 3;
+        userNameLabel.Text = "اسم المستخدم";
         // 
-        // remove
+        // storeNameTextBox
         // 
-        remove.Location = new Point(99, 3);
-        remove.Name = "remove";
-        remove.Size = new Size(90, 25);
-        remove.TabIndex = 1;
-        remove.Values.DropDownArrowColor = Color.Empty;
-        remove.Values.Text = "حذف";
-        remove.Click += remove_Click;
+        storeNameTextBox.Dock = DockStyle.Top;
+        storeNameTextBox.Location = new Point(0, 36);
+        storeNameTextBox.Name = "storeNameTextBox";
+        storeNameTextBox.Size = new Size(245, 30);
+        storeNameTextBox.TabIndex = 4;
+        storeNameTextBox.TextChanged += storeNameTextBox_TextChanged;
         // 
-        // logoInfo
+        // storeNameLabel
         // 
-        logoInfo.Anchor = AnchorStyles.None;
-        logoInfo.Location = new Point(122, 193);
-        logoInfo.Name = "logoInfo";
-        logoInfo.Size = new Size(116, 24);
-        logoInfo.TabIndex = 8;
-        logoInfo.Values.Text = "الشعار الافتراضي";
+        storeNameLabel.Dock = DockStyle.Top;
+        storeNameLabel.Location = new Point(0, 8);
+        storeNameLabel.Name = "storeNameLabel";
+        storeNameLabel.Size = new Size(245, 28);
+        storeNameLabel.TabIndex = 5;
+        storeNameLabel.Text = "اسم المحل";
         // 
-        // desc
+        // logoPanel
         // 
-        desc.Dock = DockStyle.Top;
-        desc.Location = new Point(32, 56);
-        desc.Name = "desc";
-        desc.Size = new Size(478, 24);
-        desc.TabIndex = 1;
-        desc.Text = "أدخل البيانات الأساسية. يمكنك تعديلها لاحقاً من الإعدادات.";
-        desc.TextAlign = ContentAlignment.MiddleCenter;
+        logoPanel.Controls.Add(tlpLogoButtons);
+        logoPanel.Controls.Add(logoHintLabel);
+        logoPanel.Controls.Add(logoPreview);
+        logoPanel.Controls.Add(logoTitleLabel);
+        logoPanel.Dock = DockStyle.Fill;
+        logoPanel.Location = new Point(286, 11);
+        logoPanel.Name = "logoPanel";
+        logoPanel.Size = new Size(304, 397);
+        logoPanel.TabIndex = 1;
         // 
-        // title
+        // tlpLogoButtons
         // 
-        title.Dock = DockStyle.Top;
-        title.Location = new Point(32, 32);
-        title.Name = "title";
-        title.Size = new Size(478, 24);
-        title.TabIndex = 2;
-        title.Text = "الإعداد الأول";
-        title.TextAlign = ContentAlignment.MiddleCenter;
+        tlpLogoButtons.AutoSize = true;
+        tlpLogoButtons.ColumnCount = 2;
+        tlpLogoButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+        tlpLogoButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+        tlpLogoButtons.Controls.Add(chooseLogoButton, 1, 0);
+        tlpLogoButtons.Controls.Add(removeLogoButton, 0, 0);
+        tlpLogoButtons.Dock = DockStyle.Top;
+        tlpLogoButtons.Location = new Point(0, 180);
+        tlpLogoButtons.Name = "tlpLogoButtons";
+        tlpLogoButtons.RowCount = 1;
+        tlpLogoButtons.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+        tlpLogoButtons.Size = new Size(304, 42);
+        tlpLogoButtons.TabIndex = 5;
         // 
-        // bottom
+        // chooseLogoButton
         // 
-        bottom.Controls.Add(save);
-        bottom.Dock = DockStyle.Bottom;
-        bottom.Location = new Point(32, 350);
-        bottom.Name = "bottom";
-        bottom.Size = new Size(478, 48);
-        bottom.TabIndex = 3;
+        chooseLogoButton.Anchor = AnchorStyles.Left;
+        chooseLogoButton.Location = new Point(19, 3);
+        chooseLogoButton.Name = "chooseLogoButton";
+        chooseLogoButton.Size = new Size(130, 36);
+        chooseLogoButton.TabIndex = 2;
+        chooseLogoButton.Text = "اختيار شعار";
+        chooseLogoButton.Click += chooseLogoButton_Click;
         // 
-        // save
+        // removeLogoButton
         // 
-        save.Dock = DockStyle.Fill;
-        save.Location = new Point(0, 0);
-        save.Name = "save";
-        save.Size = new Size(478, 48);
-        save.TabIndex = 0;
-        save.Values.DropDownArrowColor = Color.Empty;
-        save.Values.Text = "حفظ وبدء الاستخدام";
-        save.Click += save_Click;
+        removeLogoButton.Anchor = AnchorStyles.Right;
+        removeLogoButton.Location = new Point(155, 3);
+        removeLogoButton.Name = "removeLogoButton";
+        removeLogoButton.Size = new Size(110, 36);
+        removeLogoButton.TabIndex = 1;
+        removeLogoButton.Text = "حذف الشعار";
+        removeLogoButton.Click += removeLogoButton_Click;
+        // 
+        // logoHintLabel
+        // 
+        logoHintLabel.Dock = DockStyle.Bottom;
+        logoHintLabel.Location = new Point(0, 355);
+        logoHintLabel.Name = "logoHintLabel";
+        logoHintLabel.Size = new Size(304, 42);
+        logoHintLabel.TabIndex = 0;
+        logoHintLabel.Text = "PNG أو JPG أو BMP. يمكنك ترك الشعار الافتراضي.";
+        // 
+        // logoPreview
+        // 
+        logoPreview.BorderStyle = BorderStyle.FixedSingle;
+        logoPreview.Dock = DockStyle.Top;
+        logoPreview.Location = new Point(0, 30);
+        logoPreview.Name = "logoPreview";
+        logoPreview.Size = new Size(304, 150);
+        logoPreview.SizeMode = PictureBoxSizeMode.Zoom;
+        logoPreview.TabIndex = 3;
+        logoPreview.TabStop = false;
+        logoPreview.Text = "بدون شعار";
+        // 
+        // logoTitleLabel
+        // 
+        logoTitleLabel.Dock = DockStyle.Top;
+        logoTitleLabel.Location = new Point(0, 0);
+        logoTitleLabel.Name = "logoTitleLabel";
+        logoTitleLabel.Size = new Size(304, 30);
+        logoTitleLabel.TabIndex = 4;
+        logoTitleLabel.Text = "شعار المحل";
+        // 
+        // previewPanel
+        // 
+        previewPanel.Controls.Add(previewUserLabel);
+        previewPanel.Controls.Add(previewStoreLabel);
+        previewPanel.Controls.Add(previewTitleLabel);
+        previewPanel.Dock = DockStyle.Fill;
+        previewPanel.Location = new Point(35, 11);
+        previewPanel.Name = "previewPanel";
+        previewPanel.Padding = new Padding(24);
+        previewPanel.Size = new Size(245, 397);
+        previewPanel.TabIndex = 2;
+        // 
+        // previewUserLabel
+        // 
+        previewUserLabel.Dock = DockStyle.Top;
+        previewUserLabel.Location = new Point(24, 114);
+        previewUserLabel.Name = "previewUserLabel";
+        previewUserLabel.Size = new Size(197, 35);
+        previewUserLabel.TabIndex = 0;
+        previewUserLabel.Text = "اسم المستخدم";
+        previewUserLabel.TextAlign = ContentAlignment.TopCenter;
+        // 
+        // previewStoreLabel
+        // 
+        previewStoreLabel.Dock = DockStyle.Top;
+        previewStoreLabel.Font = new Font("Segoe UI Semibold", 18F);
+        previewStoreLabel.Location = new Point(24, 59);
+        previewStoreLabel.Name = "previewStoreLabel";
+        previewStoreLabel.Size = new Size(197, 55);
+        previewStoreLabel.TabIndex = 1;
+        previewStoreLabel.Text = "اسم المحل";
+        previewStoreLabel.TextAlign = ContentAlignment.MiddleCenter;
+        // 
+        // previewTitleLabel
+        // 
+        previewTitleLabel.Dock = DockStyle.Top;
+        previewTitleLabel.Font = new Font("Segoe UI Semibold", 12F);
+        previewTitleLabel.Location = new Point(24, 24);
+        previewTitleLabel.Name = "previewTitleLabel";
+        previewTitleLabel.Size = new Size(197, 35);
+        previewTitleLabel.TabIndex = 2;
+        previewTitleLabel.Text = "معاينة الهوية";
+        previewTitleLabel.TextAlign = ContentAlignment.TopCenter;
+        // 
+        // footerPanel
+        // 
+        footerPanel.Controls.Add(cancelButton);
+        footerPanel.Controls.Add(saveButton);
+        footerPanel.Dock = DockStyle.Bottom;
+        footerPanel.Location = new Point(0, 548);
+        footerPanel.Name = "footerPanel";
+        footerPanel.Padding = new Padding(32, 12, 32, 18);
+        footerPanel.Size = new Size(900, 72);
+        footerPanel.TabIndex = 1;
+        // 
+        // cancelButton
+        // 
+        cancelButton.Dock = DockStyle.Right;
+        cancelButton.Location = new Point(628, 12);
+        cancelButton.Name = "cancelButton";
+        cancelButton.Size = new Size(100, 42);
+        cancelButton.TabIndex = 0;
+        cancelButton.Text = "إلغاء";
+        cancelButton.Click += cancelButton_Click;
+        // 
+        // saveButton
+        // 
+        saveButton.Dock = DockStyle.Right;
+        saveButton.Location = new Point(728, 12);
+        saveButton.Margin = new Padding(0, 0, 12, 0);
+        saveButton.Name = "saveButton";
+        saveButton.Size = new Size(140, 42);
+        saveButton.TabIndex = 1;
+        saveButton.Text = "حفظ ومتابعة";
+        saveButton.Click += saveButton_Click;
         // 
         // FirstRunSetupForm
         // 
-        AcceptButton = save;
-        ClientSize = new Size(542, 430);
-        Controls.Add(panel);
+        ClientSize = new Size(900, 620);
+        Controls.Add(contentLayout);
+        Controls.Add(footerPanel);
+        Controls.Add(headerPanel);
+        Font = new Font("Segoe UI", 10F);
         FormBorderStyle = FormBorderStyle.FixedSingle;
-        FormTitleAlign = Krypton.Toolkit.PaletteRelativeAlign.Far;
         MaximizeBox = false;
-        MinimumSize = new Size(560, 390);
+        MinimumSize = new Size(760, 560);
         Name = "FirstRunSetupForm";
-        ShowIcon = false;
+        RightToLeft = RightToLeft.Yes;
+        RightToLeftLayout = true;
         StartPosition = FormStartPosition.CenterScreen;
-        Text = "الإعداد الأول";
-        ((System.ComponentModel.ISupportInitialize)panel).EndInit();
-        panel.ResumeLayout(false);
-        layout.ResumeLayout(false);
-        layout.PerformLayout();
-        ((System.ComponentModel.ISupportInitialize)cmbTheme).EndInit();
-        lf.ResumeLayout(false);
-        bottom.ResumeLayout(false);
+        Text = "إعداد StorePilot";
+        headerPanel.ResumeLayout(false);
+        contentLayout.ResumeLayout(false);
+        formPanel.ResumeLayout(false);
+        formPanel.PerformLayout();
+        themeFlow.ResumeLayout(false);
+        themeFlow.PerformLayout();
+        logoPanel.ResumeLayout(false);
+        logoPanel.PerformLayout();
+        tlpLogoButtons.ResumeLayout(false);
+        ((System.ComponentModel.ISupportInitialize)logoPreview).EndInit();
+        previewPanel.ResumeLayout(false);
+        footerPanel.ResumeLayout(false);
         ResumeLayout(false);
     }
+
+    private TableLayoutPanel tlpLogoButtons;
 }

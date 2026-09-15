@@ -1,102 +1,133 @@
-using System;
-using System.IO;
 using System.Text.Json;
-using System.Xml.Serialization;
 
 namespace StorePilot.WinForms.Foundation;
 
-/// <summary>
-/// Persists the small amount of branding information needed by the shell.
-///
-/// Why XML here?
-/// - Works directly with .NET Framework 4.8.
-/// - No database is required just to start the application.
-/// - Easy to replace later with a database-backed settings service.
-/// </summary>
 public sealed class AppBrandSettingsStore
 {
-    private readonly string _root = Path.Combine(
-        Environment.GetFolderPath(
-            Environment.SpecialFolder.LocalApplicationData),
-        "StorePilot");
+    private readonly string _rootPath;
+    private readonly string _settingsPath;
+    private readonly string _brandingDirectory;
 
-    private string SettingsFile => Path.Combine(
-        _root, 
-        "Settings",
-        "brand-settings.json");
-
-    private string Branding => Path.Combine(_root, "Branding");
-
-    public AppBrandSettingsStore() 
+    private static readonly string[] SupportedExtensions =
     {
-        Directory.CreateDirectory(Path.GetDirectoryName(SettingsFile)!);
-        Directory.CreateDirectory(Branding);
+        ".png",
+        ".jpg",
+        ".jpeg",
+        ".bmp"
+    };
+
+    public string BrandingDirectory => _brandingDirectory;
+
+    public AppBrandSettingsStore()
+    {
+        _rootPath = Path.Combine(
+            Environment.GetFolderPath(
+                Environment.SpecialFolder.LocalApplicationData),
+            "StorePilot");
+
+        _settingsPath = Path.Combine(
+            _rootPath,
+            "app-settings.json");
+
+        _brandingDirectory = Path.Combine(
+            _rootPath,
+            "Branding");
+
+        Directory.CreateDirectory(_rootPath);
+        Directory.CreateDirectory(_brandingDirectory);
     }
 
-    public AppBrandSettings Load() 
-    { 
-        try 
-        { 
-            if (!File.Exists(SettingsFile))
-                return new(); 
+    public AppBrandSettings Load()
+    {
+        if (!File.Exists(_settingsPath))
+            return new AppBrandSettings();
 
-            return JsonSerializer
-                .Deserialize<AppBrandSettings>(File.ReadAllText(SettingsFile))
-                ?? new();
-        } 
+        try
+        {
+            var json = File.ReadAllText(_settingsPath);
+
+            return JsonSerializer.Deserialize<AppBrandSettings>(json)
+                   ?? new AppBrandSettings();
+        }
         catch
-        { 
-            return new();
-        } 
+        {
+            return new AppBrandSettings();
+        }
     }
 
-    public void Save(AppBrandSettings s)
+    public void Save(AppBrandSettings settings)
     {
-        File.WriteAllText(
-            SettingsFile,
-            JsonSerializer.Serialize(
-                s, 
-                new JsonSerializerOptions
-                { 
-                    WriteIndented = true
-                }));
+        Directory.CreateDirectory(_rootPath);
+
+        var temporaryPath = _settingsPath + ".tmp";
+
+        var json = JsonSerializer.Serialize(
+            settings,
+            new JsonSerializerOptions
+            {
+                WriteIndented = true
+            });
+
+        File.WriteAllText(temporaryPath, json);
+
+        File.Move(
+            temporaryPath,
+            _settingsPath,
+            true);
     }
 
-    public string? CopyLogo(string source) 
-    { 
-        if 
-            (!File.Exists(source))
+    public string? GetLogoPath()
+    {
+        if (!Directory.Exists(_brandingDirectory))
             return null;
-        
-        foreach (var f in Directory.GetFiles(Branding, "logo.*"))
-        { 
-            try
-            { 
-                File.Delete(f);
-            } 
-            catch 
-            { 
 
-            } 
-        } 
+        return Directory
+            .GetFiles(_brandingDirectory)
+            .FirstOrDefault(IsSupportedImage);
+    }
 
-        var target = Path.Combine(Branding, "logo" + Path.GetExtension(source));
-        File.Copy(source, target, true);
-        return target; 
+    public void ReplaceLogo(string sourcePath)
+    {
+        if (!File.Exists(sourcePath))
+            throw new FileNotFoundException(
+                "ملف الشعار غير موجود.",
+                sourcePath);
+
+        if (!IsSupportedImage(sourcePath))
+            throw new InvalidOperationException(
+                "صيغة الشعار غير مدعومة. استخدم PNG أو JPG أو BMP.");
+
+        DeleteLogo();
+
+        var extension = Path
+            .GetExtension(sourcePath)
+            .ToLowerInvariant();
+
+        var destinationPath = Path.Combine(
+            _brandingDirectory,
+            "logo" + extension);
+
+        File.Copy(
+            sourcePath,
+            destinationPath,
+            true);
     }
 
     public void DeleteLogo()
-    { 
-        foreach (var f in Directory.GetFiles(Branding, "logo.*"))
-        { 
-            try 
-            { 
-                File.Delete(f);
-            }
-            catch
-            { 
+    {
+        if (!Directory.Exists(_brandingDirectory))
+            return;
 
-            } 
+        foreach (var file in Directory.GetFiles(_brandingDirectory))
+        {
+            if (IsSupportedImage(file))
+                File.Delete(file);
         }
+    }
+
+    private static bool IsSupportedImage(string path)
+    {
+        return SupportedExtensions.Contains(
+            Path.GetExtension(path).ToLowerInvariant());
     }
 }

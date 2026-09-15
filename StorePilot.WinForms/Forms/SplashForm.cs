@@ -1,46 +1,97 @@
-﻿using Krypton.Toolkit;
-using StorePilot.WinForms.Theme;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
+﻿using StorePilot.WinForms.Theme;
 
 namespace StorePilot.WinForms.Forms;
 
-public partial class SplashForm : KryptonForm
+public partial class SplashForm : Form
 {
-    private readonly System.Windows.Forms.Timer timer = new()
-    { 
-        Interval = 40
-    }; 
+    private readonly System.Windows.Forms.Timer _fadeInTimer;
+    private readonly System.Windows.Forms.Timer _displayTimer;
 
-    private int elapsed;
+    private bool _closing;
 
-    public SplashForm() 
-    { 
+    public SplashForm()
+    {
         InitializeComponent();
-        AppTheme.Apply(this); 
+
+        _fadeInTimer = new System.Windows.Forms.Timer
+        {
+            Interval = 20
+        };
+
+        _displayTimer = new System.Windows.Forms.Timer
+        {
+            Interval = 1500
+        };
+
+        _fadeInTimer.Tick += FadeInTimer_Tick;
+        _displayTimer.Tick += DisplayTimer_Tick;
+    }
+
+    protected override void OnShown(EventArgs e)
+    {
+        base.OnShown(e);
+
+        AppTheme.Apply(this);
+
         Opacity = 0;
-        timer.Tick += Tick;
-        Shown += (_, _) => timer.Start();
+
+        _fadeInTimer.Start();
+        _displayTimer.Start();
     }
 
-    void Tick(object? s, EventArgs e)
-    { 
-        elapsed += timer.Interval; 
+    private void FadeInTimer_Tick(
+        object? sender,
+        EventArgs e)
+    {
+        Opacity = Math.Min(
+            1,
+            Opacity + 0.08);
 
-        if (elapsed <= 300) 
-        { 
-            Opacity = Math.Min(1, elapsed / 300.0); 
-            return; 
-        } 
-
-        if (elapsed >= 1000) 
-        { 
-            timer.Stop(); 
-            Close(); 
-        }
+        if (Opacity >= 1)
+            _fadeInTimer.Stop();
     }
+
+    private void DisplayTimer_Tick(
+        object? sender,
+        EventArgs e)
+    {
+        if (_closing)
+            return;
+
+        _closing = true;
+
+        _displayTimer.Stop();
+        _fadeInTimer.Stop();
+
+        var fadeOutTimer = new System.Windows.Forms.Timer
+        {
+            Interval = 20
+        };
+
+        fadeOutTimer.Tick += (_, _) =>
+        {
+            Opacity -= 0.08;
+
+            if (Opacity <= 0)
+            {
+                fadeOutTimer.Stop();
+                fadeOutTimer.Dispose();
+
+                Close();
+            }
+        };
+
+        fadeOutTimer.Start();
+    }
+
+    //protected override void Dispose(bool disposing)
+    //{
+    //    if (disposing)
+    //    {
+    //        _fadeInTimer.Dispose();
+    //        _displayTimer.Dispose();
+    //    }
+
+    //    base.Dispose(disposing);
+    //}
 }

@@ -1,145 +1,282 @@
 using Krypton.Toolkit;
-using StorePilot.WinForms.Foundation;
+using StorePilot.WinForms.Backup;
+using StorePilot.WinForms.Dashboard;
 using StorePilot.WinForms.Navigation;
-using StorePilot.WinForms.Pages;
+using StorePilot.WinForms.Settings;
 using StorePilot.WinForms.Theme;
 using System;
-using System.Configuration;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
-namespace StorePilot.WinForms.Forms;
+namespace StorePilot.WinForms;
 
-/// <summary>
-/// الإطار الرئيسي للنظام.
-///
-/// الفكرة المهمة:
-/// لا نفتح Form جديد لكل شاشة.
-/// نعرض UserControl داخل contentHost.
-/// هذا يجعل التنقل أسرع وأسهل في الإدارة.
-/// </summary>
-public partial class MainShellForm : KryptonForm
+public partial class MainShellForm : Form
 {
-    readonly AppBrandSettingsStore store;
-    readonly NavigationService nav;
-    readonly Dictionary<int, KryptonButton> buttons = new();
+    private NavigationService _navigationService = null!;
+    private BackupService _backupService = null!;
 
-    public MainShellForm(AppBrandSettingsStore store)
+    private Button? _activeNavigationButton;
+
+    private readonly string _databasePath =
+        Path.Combine(
+            Environment.GetFolderPath(
+                Environment.SpecialFolder.LocalApplicationData),
+            "StorePilot",
+            "StorePilot.db");
+
+    public MainShellForm()
     {
         InitializeComponent();
-        this.store = store;
-        nav = new NavigationService(contentHost);
+
+        InitializeServices();
+        InitializeShell();
+        ConfigureNavigation();
+        ApplyCurrentTheme();
+    }
+
+    private void InitializeServices()
+    {
+        _backupService =
+            new BackupService(_databasePath, string.Empty);
+
+        _navigationService =
+            new NavigationService(contentHost);
+    }
+
+    private void InitializeShell()
+    {
+        Text = "StorePilot";
+
+        StartPosition = FormStartPosition.CenterScreen;
+
+        MinimumSize = new Size(1000, 650);
+
+        WindowState = FormWindowState.Maximized;
+
+        RightToLeft = RightToLeft.Yes;
+        RightToLeftLayout = true;
+
         AppTheme.Apply(this);
-        ApplyTheme();
-        BuildNavigation();
-        RefreshBranding();
-        Shown += (_, _) => Home();
     }
 
-    void BuildNavigation()
+    private void ConfigureNavigation()
     {
-        Add(0, "الرئيسية", () => new DashboardPage());
-        Add(1, "الأصناف", () => new ProductsPage());
-        Add(2, "العملاء", () => new CustomersPage());
-        Add(3, "الموردون", () => new SuppliersPage());
-        Add(4, "المبيعات", () =>
-        new DemoPage("المبيعات", "فواتير البيع، البحث، الفلاتر، تفاصيل الفاتورة."));
-        Add(5, "المشتريات", () =>
-        new DemoPage("المشتريات", "فواتير الشراء والمدفوعات المرتبطة بها."));
-        Add(6, "عروض الأسعار", () =>
-        new DemoPage("عروض الأسعار", "عروض الأسعار قبل تحويلها إلى عملية بيع."));
-        Add(7, "المرتجعات", () =>
-        new DemoPage("المرتجعات", "مرتجعات البيع والشراء."));
-        Add(8, "المدفوعات", () =>
-        new DemoPage("المدفوعات", "دفعات العملاء والموردين."));
-        Add(9, "المخزون", () =>
-        new DemoPage("المخزون", "الأرصدة وحركات المخزون والتنبيهات."));
-        Add(10, "النقدية", () =>
-        new DemoPage("النقدية", "المعاملات النقدية والرصيد."));
-        Add(11, "التقارير", () =>
-        new DemoPage("التقارير", "التقارير والملخصات التشغيلية."));
-    }
-
-    void Add(int key, string text, Func<UserControl> factory)
-    {
-        var b = new KryptonButton
+        btnDashboard.Click += (_, _) =>
         {
-            Text = text,
-            Width = 190,
-            Height = 42,
-            Tag = key,
-            Cursor = Cursors.Hand
+            NavigateTo(
+                "dashboard",
+                btnDashboard,
+                () => new DashboardPage());
         };
 
-        b.StateCommon.Back.Color1 = AppTheme.Sidebar;
-
-        b.Click += (_, _) =>
+        btnProducts.Click += (_, _) =>
         {
-            nav.Show(new NavigationItem(text, factory));
-            Highlight(1);
+            NavigateToPlaceholder(
+                "products",
+                btnProducts,
+                "الأصناف");
         };
 
-        sidebarFlow.Controls.Add(b);
-        buttons[key] = b;
+        btnCustomers.Click += (_, _) =>
+        {
+            NavigateToPlaceholder(
+                "customers",
+                btnCustomers,
+                "العملاء");
+        };
+
+        btnSuppliers.Click += (_, _) =>
+        {
+            NavigateToPlaceholder(
+                "suppliers",
+                btnSuppliers,
+                "الموردون");
+        };
+
+        btnSales.Click += (_, _) =>
+        {
+            NavigateToPlaceholder(
+                "sales",
+                btnSales,
+                "المبيعات");
+        };
+
+        btnPurchases.Click += (_, _) =>
+        {
+            NavigateToPlaceholder(
+                "purchases",
+                btnPurchases,
+                "المشتريات");
+        };
+
+        btnQuotations.Click += (_, _) =>
+        {
+            NavigateToPlaceholder(
+                "quotations",
+                btnQuotations,
+                "فواتير التسعير");
+        };
+
+        btnReturns.Click += (_, _) =>
+        {
+            NavigateToPlaceholder(
+                "returns",
+                btnReturns,
+                "المرتجعات");
+        };
+
+        btnPayments.Click += (_, _) =>
+        {
+            NavigateToPlaceholder(
+                "payments",
+                btnPayments,
+                "الدفعات");
+        };
+
+        btnInventory.Click += (_, _) =>
+        {
+            NavigateToPlaceholder(
+                "inventory",
+                btnInventory,
+                "حركات المخزون");
+        };
+
+        btnReports.Click += (_, _) =>
+        {
+            NavigateToPlaceholder(
+                "reports",
+                btnReports,
+                "التقارير");
+        };
+
+        btnSettings.Click += (_, _) =>
+        {
+            NavigateTo(
+                "settings",
+                btnSettings,
+                () => new SettingsPage(_backupService));
+        };
+
+        btnBackup.Click += BtnBackup_Click;
+
+        btnTheme.Click += BtnTheme_Click;
+
+        btnExit.Click += (_, _) => Close();
+
+        Shown += (_, _) =>
+        {
+            NavigateTo(
+                "dashboard",
+                btnDashboard,
+                () => new DashboardPage());
+        };
     }
 
-    void Home()
+    private void NavigateTo<TPage>(
+        string key,
+        Button button,
+        Func<TPage> factory)
+        where TPage : UserControl
     {
-        nav.Show(new NavigationItem("الرئيسية", () => new DashboardPage()));
-        Highlight(0);
+        _navigationService.Navigate(key, factory);
+
+        SetActiveNavigationButton(button);
     }
 
-    void Highlight(int key)
+    private void NavigateToPlaceholder(
+        string key,
+        Button button,
+        string title)
     {
-        foreach (var x in buttons)
-            x.Value.StateCommon.Back.Color1 =
-                x.Key == key ?
-                AppTheme.Primary
-                : AppTheme.Sidebar;
+        NavigateTo(
+            key,
+            button,
+            () => new PlaceholderPage(title));
     }
 
-    void RefreshBranding()
+    private void SetActiveNavigationButton(Button button)
     {
-        var s = store.Load();
+        if (_activeNavigationButton != null)
+        {
+            _activeNavigationButton.BackColor =
+                AppTheme.Surface;
 
-        shopLabel.Text =
-            string.IsNullOrWhiteSpace(s.ShopName) ?
-            "StorePilot" :
-            s.ShopName;
+            _activeNavigationButton.ForeColor =
+                AppTheme.Text;
+        }
 
-        userLabel.Text =
-            string.IsNullOrWhiteSpace(s.UserDisplayName) ?
-            "المستخدم" :
-            s.UserDisplayName;
+        _activeNavigationButton = button;
 
-        AppTheme.Set(s.Theme);
+        button.BackColor = AppTheme.Accent;
+        button.ForeColor = Color.White;
+    }
+
+    private async void BtnBackup_Click(
+        object? sender,
+        EventArgs e)
+    {
+        try
+        {
+            btnBackup.Enabled = false;
+
+            string path =
+                await _backupService.CreateBackupAsync($"Backup_{DateTime.Now:yyyy_MM_dd_HH_mm_ss}");
+
+            MessageBox.Show(
+                $"تم إنشاء النسخة الاحتياطية بنجاح:\n{path}",
+                "StorePilot",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(
+                ex.Message,
+                "فشل النسخ الاحتياطي",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
+        }
+        finally
+        {
+            btnBackup.Enabled = true;
+        }
+    }
+
+    private void BtnTheme_Click(
+        object? sender,
+        EventArgs e)
+    {
+        var newTheme =
+            AppTheme.Current == ThemeMode.Light
+                ? ThemeMode.Dark
+                : ThemeMode.Light;
+
+        AppTheme.Set(newTheme);
+
+        ApplyCurrentTheme();
+
         AppTheme.Apply(this);
-        ApplyTheme();
     }
 
-    void settings_Click(object? s, EventArgs e)
+    private void ApplyCurrentTheme()
     {
-        nav.Show(new NavigationItem("الإعدادات", () => new SettingsPage(store)));
+        AppTheme.Apply(this);
+
+        if (_activeNavigationButton != null)
+        {
+            _activeNavigationButton.BackColor =
+                AppTheme.Accent;
+
+            _activeNavigationButton.ForeColor =
+                Color.White;
+        }
     }
 
-    void ApplyTheme()
+    protected override void OnFormClosed(FormClosedEventArgs e)
     {
-        BackColor = AppTheme.Background;
-        sidebar.StateCommon.Color1 = AppTheme.Sidebar;
-        header.StateCommon.Color1 = AppTheme.Surface;
-        content.StateCommon.Color1 = AppTheme.Background;
-        shopLabel.StateCommon.ShortText.Color1 = AppTheme.Text;
-        userLabel.StateCommon.ShortText.Color1 = AppTheme.SecondaryText;
-        foreach (var b in buttons)
-            b.Value.StateCommon.Back.Color1 = AppTheme.Sidebar;
+        _navigationService.Clear();
 
-        sidebar.StateCommon.Color1 = AppTheme.Sidebar;
-        header.StateCommon.Color1 = AppTheme.Surface;
-        content.StateCommon.Color1 = AppTheme.Background;
-    }
-
-    private void backup_Click(object sender, EventArgs e)
-    {
-
+        base.OnFormClosed(e);
     }
 }

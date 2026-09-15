@@ -206,24 +206,25 @@ namespace StorePilot.WinForms
             IServiceProvider serviceProvider)
         {
             var settingsStore =
-                serviceProvider.GetRequiredService<AppBrandSettingsStore>();
+        serviceProvider.GetRequiredService<AppBrandSettingsStore>();
 
             var settings = settingsStore.Load();
 
             AppTheme.Set(settings.Theme);
 
             using (var splash = new SplashForm())
-                splash.ShowDialog();
-
-            // First run
-            if (!settings.IsConfigured)
             {
-                using var setup = new FirstRunSetupForm(settingsStore);
-                
-                return setup.ShowDialog() == DialogResult.OK;
+                splash.ShowDialog();
             }
 
-            // Already configured
+            if (!settings.IsConfigured)
+            {
+                using var setupForm =
+                    new FirstRunSetupForm(settingsStore);
+
+                return setupForm.ShowDialog() == DialogResult.OK;
+            }
+
             return true;
         }
     }

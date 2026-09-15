@@ -1,53 +1,84 @@
-using Krypton.Toolkit;
 using System.Drawing;
 
-namespace StorePilot.WinForms.Theme
+namespace StorePilot.WinForms.Theme;
+
+public static class AppTheme
 {
-    public static class AppTheme
+    public static ThemeMode Current { get; private set; } = ThemeMode.Light;
+
+    public static Color Background =>
+        Current == ThemeMode.Dark
+            ? Color.FromArgb(20, 24, 32)
+            : Color.FromArgb(247, 249, 252);
+
+    public static Color Surface =>
+        Current == ThemeMode.Dark
+            ? Color.FromArgb(30, 36, 46)
+            : Color.White;
+
+    public static Color Text =>
+        Current == ThemeMode.Dark
+            ? Color.FromArgb(239, 242, 247)
+            : Color.FromArgb(31, 41, 55);
+
+    public static Color MutedText =>
+        Current == ThemeMode.Dark
+            ? Color.FromArgb(160, 170, 185)
+            : Color.FromArgb(107, 114, 128);
+
+    public static Color Border =>
+        Current == ThemeMode.Dark
+            ? Color.FromArgb(55, 65, 81)
+            : Color.FromArgb(229, 231, 235);
+
+    public static Color Accent =>
+        Color.FromArgb(42, 112, 222);
+
+    public static void Set(ThemeMode theme)
     {
-        public static ThemeMode Current { get; private set; } = ThemeMode.Light;
+        Current = theme;
+    }
 
-        public static Color Background => 
-            Current == ThemeMode.Light ? 
-            Color.FromArgb(246, 247, 249) : 
-            Color.FromArgb(25, 28, 32);
+    public static void Apply(Control root)
+    {
+        root.BackColor = Background;
+        root.ForeColor = Text;
 
-        public static Color Surface => 
-            Current == ThemeMode.Light ?
-            Color.White : 
-            Color.FromArgb(35, 39, 44);
+        foreach (Control child in root.Controls)
+        {
+            if (child is Panel ||
+                child is GroupBox ||
+                child is TableLayoutPanel)
+            {
+                child.BackColor = Surface;
+            }
 
-        public static Color Sidebar => 
-            Current == ThemeMode.Light ? 
-            Color.FromArgb(29, 33, 39) :
-            Color.FromArgb(20, 23, 27);
+            if (child is Label label)
+            {
+                label.ForeColor = Text;
+            }
 
-        public static Color Text => 
-            Current == ThemeMode.Light ? 
-            Color.FromArgb(31, 35, 40) :
-            Color.FromArgb(238, 240, 242);
+            if (child is TextBox textBox)
+            {
+                textBox.BackColor = Surface;
+                textBox.ForeColor = Text;
+                textBox.BorderStyle = BorderStyle.FixedSingle;
+            }
 
-        public static Color SecondaryText => 
-            Current == ThemeMode.Light ? 
-            Color.FromArgb(103, 109, 118) : 
-            Color.FromArgb(174, 179, 187);
+            if (child is ComboBox comboBox)
+            {
+                comboBox.BackColor = Surface;
+                comboBox.ForeColor = Text;
+            }
 
-        public static Color Border => 
-            Current == ThemeMode.Light ? 
-            Color.FromArgb(220, 223, 228) :
-            Color.FromArgb(61, 66, 73);
+            if (child is Button button)
+            {
+                button.FlatStyle = FlatStyle.Flat;
+                button.FlatAppearance.BorderColor = Border;
+            }
 
-        public static Color Primary => Color.FromArgb(37, 99, 235);
-
-        public static void Set(ThemeMode mode) => Current = mode;
-
-        public static void Apply(Form form) 
-        { 
-            form.BackColor = Background;
-            form.ForeColor = Text; 
-            form.Font = new Font("Segoe UI", 10F); 
-            form.RightToLeft = RightToLeft.Yes;
-            form.RightToLeftLayout = true;
+            if (child.HasChildren)
+                Apply(child);
         }
     }
 }
