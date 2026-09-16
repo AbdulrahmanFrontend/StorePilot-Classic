@@ -1,281 +1,235 @@
-using Krypton.Toolkit;
-using StorePilot.WinForms.Backup;
-using StorePilot.WinForms.Dashboard;
+using StorePilot.WinForms.Foundation;
 using StorePilot.WinForms.Navigation;
-using StorePilot.WinForms.Settings;
+using StorePilot.WinForms.Pages;
 using StorePilot.WinForms.Theme;
-using System;
-using System.Drawing;
-using System.IO;
-using System.Windows.Forms;
+using StorePilot.WinForms.ViewModels;
 
-namespace StorePilot.WinForms;
+namespace StorePilot.WinForms.Forms;
 
 public partial class MainShellForm : Form
 {
-    private NavigationService _navigationService = null!;
-    private BackupService _backupService = null!;
+    private readonly AppBrandSettingsStore _settingsStore;
+    private readonly MainShellViewModel _viewModel;
 
-    private Button? _activeNavigationButton;
+    private NavigationService? _navigationService;
 
-    private readonly string _databasePath =
-        Path.Combine(
-            Environment.GetFolderPath(
-                Environment.SpecialFolder.LocalApplicationData),
-            "StorePilot",
-            "StorePilot.db");
-
-    public MainShellForm()
+    public MainShellForm(
+        AppBrandSettingsStore settingsStore)
     {
+        _settingsStore = settingsStore;
+
+        _viewModel = new MainShellViewModel(
+            settingsStore);
+
         InitializeComponent();
 
-        InitializeServices();
-        InitializeShell();
-        ConfigureNavigation();
-        ApplyCurrentTheme();
-    }
+        InitializeNavigation();
 
-    private void InitializeServices()
-    {
-        _backupService =
-            new BackupService(_databasePath, string.Empty);
-
-        _navigationService =
-            new NavigationService(contentHost);
-    }
-
-    private void InitializeShell()
-    {
-        Text = "StorePilot";
-
-        StartPosition = FormStartPosition.CenterScreen;
-
-        MinimumSize = new Size(1000, 650);
-
-        WindowState = FormWindowState.Maximized;
-
-        RightToLeft = RightToLeft.Yes;
-        RightToLeftLayout = true;
+        ApplySettingsToView();
 
         AppTheme.Apply(this);
     }
 
-    private void ConfigureNavigation()
+    private void InitializeNavigation()
     {
-        btnDashboard.Click += (_, _) =>
-        {
-            NavigateTo(
-                "dashboard",
-                btnDashboard,
-                () => new DashboardPage());
-        };
-
-        btnProducts.Click += (_, _) =>
-        {
-            NavigateToPlaceholder(
-                "products",
-                btnProducts,
-                "الأصناف");
-        };
-
-        btnCustomers.Click += (_, _) =>
-        {
-            NavigateToPlaceholder(
-                "customers",
-                btnCustomers,
-                "العملاء");
-        };
-
-        btnSuppliers.Click += (_, _) =>
-        {
-            NavigateToPlaceholder(
-                "suppliers",
-                btnSuppliers,
-                "الموردون");
-        };
-
-        btnSales.Click += (_, _) =>
-        {
-            NavigateToPlaceholder(
-                "sales",
-                btnSales,
-                "المبيعات");
-        };
-
-        btnPurchases.Click += (_, _) =>
-        {
-            NavigateToPlaceholder(
-                "purchases",
-                btnPurchases,
-                "المشتريات");
-        };
-
-        btnQuotations.Click += (_, _) =>
-        {
-            NavigateToPlaceholder(
-                "quotations",
-                btnQuotations,
-                "فواتير التسعير");
-        };
-
-        btnReturns.Click += (_, _) =>
-        {
-            NavigateToPlaceholder(
-                "returns",
-                btnReturns,
-                "المرتجعات");
-        };
-
-        btnPayments.Click += (_, _) =>
-        {
-            NavigateToPlaceholder(
-                "payments",
-                btnPayments,
-                "الدفعات");
-        };
-
-        btnInventory.Click += (_, _) =>
-        {
-            NavigateToPlaceholder(
-                "inventory",
-                btnInventory,
-                "حركات المخزون");
-        };
-
-        btnReports.Click += (_, _) =>
-        {
-            NavigateToPlaceholder(
-                "reports",
-                btnReports,
-                "التقارير");
-        };
-
-        btnSettings.Click += (_, _) =>
-        {
-            NavigateTo(
-                "settings",
-                btnSettings,
-                () => new SettingsPage(_backupService));
-        };
-
-        btnBackup.Click += BtnBackup_Click;
-
-        btnTheme.Click += BtnTheme_Click;
-
-        btnExit.Click += (_, _) => Close();
-
-        Shown += (_, _) =>
-        {
-            NavigateTo(
-                "dashboard",
-                btnDashboard,
-                () => new DashboardPage());
-        };
+        _navigationService = new NavigationService(
+            contentHostPanel);
     }
 
-    private void NavigateTo<TPage>(
-        string key,
-        Button button,
-        Func<TPage> factory)
-        where TPage : UserControl
+    protected override void OnShown(EventArgs e)
     {
-        _navigationService.Navigate(key, factory);
+        base.OnShown(e);
 
-        SetActiveNavigationButton(button);
+        NavigateToDashboard();
     }
 
-    private void NavigateToPlaceholder(
-        string key,
-        Button button,
-        string title)
+    private void ApplySettingsToView()
     {
-        NavigateTo(
-            key,
-            button,
-            () => new PlaceholderPage(title));
+        storeNameLabel.Text = _viewModel.StoreName;
+
+        topBarStoreNameLabel.Text = _viewModel.StoreName;
+
+        userNameLabel.Text = _viewModel.UserName;
+
+        welcomeUserLabel.Text =
+            $"مرحباً، {_viewModel.UserName}";
+
+        userInitialLabel.Text =
+            GetUserInitial(_viewModel.UserName);
+
+        LoadLogo();
     }
 
-    private void SetActiveNavigationButton(Button button)
+    private static string GetUserInitial(string userName)
     {
-        if (_activeNavigationButton != null)
+        if (string.IsNullOrWhiteSpace(userName))
+            return "م";
+
+        return userName.Trim()[0].ToString();
+    }
+
+    private void LoadLogo()
+    {
+        logoPictureBox.Image?.Dispose();
+        logoPictureBox.Image = null;
+
+        string? logoPath = _viewModel.LogoPath;
+
+        if (string.IsNullOrWhiteSpace(logoPath) ||
+            !File.Exists(logoPath))
         {
-            _activeNavigationButton.BackColor =
-                AppTheme.Surface;
+            logoPictureBox.Visible = false;
+            logoMarkLabel.Visible = true;
 
-            _activeNavigationButton.ForeColor =
-                AppTheme.Text;
+            return;
         }
 
-        _activeNavigationButton = button;
-
-        button.BackColor = AppTheme.Accent;
-        button.ForeColor = Color.White;
-    }
-
-    private async void BtnBackup_Click(
-        object? sender,
-        EventArgs e)
-    {
         try
         {
-            btnBackup.Enabled = false;
+            using var stream = new FileStream(
+                logoPath,
+                FileMode.Open,
+                FileAccess.Read,
+                FileShare.ReadWrite);
 
-            string path =
-                await _backupService.CreateBackupAsync($"Backup_{DateTime.Now:yyyy_MM_dd_HH_mm_ss}");
+            using var image = Image.FromStream(stream);
 
-            MessageBox.Show(
-                $"تم إنشاء النسخة الاحتياطية بنجاح:\n{path}",
-                "StorePilot",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
+            logoPictureBox.Image = new Bitmap(image);
+
+            logoPictureBox.Visible = true;
+            logoMarkLabel.Visible = false;
         }
-        catch (Exception ex)
+        catch
         {
-            MessageBox.Show(
-                ex.Message,
-                "فشل النسخ الاحتياطي",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Error);
-        }
-        finally
-        {
-            btnBackup.Enabled = true;
+            logoPictureBox.Visible = false;
+            logoMarkLabel.Visible = true;
         }
     }
 
-    private void BtnTheme_Click(
+    private void NavigateToDashboard()
+    {
+        _navigationService?.Navigate(
+            "dashboard",
+            () => new DashboardPage(
+                _settingsStore));
+    }
+
+    private void NavigateToSettings()
+    {
+        _navigationService?.Navigate(
+            "settings",
+            () => new SettingsPage(
+                _settingsStore,
+                RefreshShell));
+    }
+
+    private void RefreshShell()
+    {
+        _viewModel.Reload();
+
+        ApplySettingsToView();
+
+        AppTheme.Apply(this);
+    }
+
+    private void dashboardButton_Click(
         object? sender,
         EventArgs e)
     {
-        var newTheme =
-            AppTheme.Current == ThemeMode.Light
-                ? ThemeMode.Dark
-                : ThemeMode.Light;
-
-        AppTheme.Set(newTheme);
-
-        ApplyCurrentTheme();
-
-        AppTheme.Apply(this);
+        NavigateToDashboard();
     }
 
-    private void ApplyCurrentTheme()
+    private void settingsButton_Click(
+        object? sender,
+        EventArgs e)
     {
-        AppTheme.Apply(this);
+        NavigateToSettings();
+    }
 
-        if (_activeNavigationButton != null)
-        {
-            _activeNavigationButton.BackColor =
-                AppTheme.Accent;
+    private void productsButton_Click(
+        object? sender,
+        EventArgs e)
+    {
+        ShowComingSoon("المنتجات");
+    }
 
-            _activeNavigationButton.ForeColor =
-                Color.White;
-        }
+    private void customersButton_Click(
+        object? sender,
+        EventArgs e)
+    {
+        ShowComingSoon("العملاء");
+    }
+
+    private void suppliersButton_Click(
+        object? sender,
+        EventArgs e)
+    {
+        ShowComingSoon("الموردون");
+    }
+
+    private void salesButton_Click(
+        object? sender,
+        EventArgs e)
+    {
+        ShowComingSoon("المبيعات");
+    }
+
+    private void purchasesButton_Click(
+        object? sender,
+        EventArgs e)
+    {
+        ShowComingSoon("المشتريات");
+    }
+
+    private void quotationsButton_Click(
+        object? sender,
+        EventArgs e)
+    {
+        ShowComingSoon("عروض الأسعار");
+    }
+
+    private void returnsButton_Click(
+        object? sender,
+        EventArgs e)
+    {
+        ShowComingSoon("المرتجعات");
+    }
+
+    private void paymentsButton_Click(
+        object? sender,
+        EventArgs e)
+    {
+        ShowComingSoon("المدفوعات");
+    }
+
+    private void inventoryButton_Click(
+        object? sender,
+        EventArgs e)
+    {
+        ShowComingSoon("المخزون");
+    }
+
+    private void reportsButton_Click(
+        object? sender,
+        EventArgs e)
+    {
+        ShowComingSoon("التقارير");
+    }
+
+    private void ShowComingSoon(string featureName)
+    {
+        MessageBox.Show(
+            $"سيتم إضافة شاشة {featureName} في مرحلة لاحقة.",
+            "StorePilot",
+            MessageBoxButtons.OK,
+            MessageBoxIcon.Information);
     }
 
     protected override void OnFormClosed(FormClosedEventArgs e)
     {
-        _navigationService.Clear();
+        logoPictureBox.Image?.Dispose();
+
+        _navigationService?.Clear();
 
         base.OnFormClosed(e);
     }

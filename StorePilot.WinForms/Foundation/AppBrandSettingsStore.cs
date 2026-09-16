@@ -1,13 +1,10 @@
 using System.Text.Json;
+using StorePilot.WinForms.Theme;
 
 namespace StorePilot.WinForms.Foundation;
 
 public sealed class AppBrandSettingsStore
 {
-    private readonly string _rootPath;
-    private readonly string _settingsPath;
-    private readonly string _brandingDirectory;
-
     private static readonly string[] SupportedExtensions =
     {
         ".png",
@@ -15,6 +12,14 @@ public sealed class AppBrandSettingsStore
         ".jpeg",
         ".bmp"
     };
+
+    private readonly string _rootPath;
+    private readonly string _settingsPath;
+    private readonly string _brandingDirectory;
+
+    public string RootPath => _rootPath;
+
+    public string SettingsPath => _settingsPath;
 
     public string BrandingDirectory => _brandingDirectory;
 
@@ -25,8 +30,11 @@ public sealed class AppBrandSettingsStore
                 Environment.SpecialFolder.LocalApplicationData),
             "StorePilot");
 
-        _settingsPath = Path.Combine(
-            _rootPath,
+        var settingsDirectory = Path.Combine(_rootPath, "Settings");
+
+        Directory.CreateDirectory(settingsDirectory);
+
+        _settingsPath = Path.Combine(settingsDirectory,
             "app-settings.json");
 
         _brandingDirectory = Path.Combine(
@@ -57,9 +65,11 @@ public sealed class AppBrandSettingsStore
 
     public void Save(AppBrandSettings settings)
     {
+        ArgumentNullException.ThrowIfNull(settings);
+
         Directory.CreateDirectory(_rootPath);
 
-        var temporaryPath = _settingsPath + ".tmp";
+        string temporaryPath = _settingsPath + ".tmp";
 
         var json = JsonSerializer.Serialize(
             settings,
@@ -68,7 +78,9 @@ public sealed class AppBrandSettingsStore
                 WriteIndented = true
             });
 
-        File.WriteAllText(temporaryPath, json);
+        File.WriteAllText(
+            temporaryPath,
+            json);
 
         File.Move(
             temporaryPath,
@@ -88,6 +100,11 @@ public sealed class AppBrandSettingsStore
 
     public void ReplaceLogo(string sourcePath)
     {
+        if (string.IsNullOrWhiteSpace(sourcePath))
+            throw new ArgumentException(
+                "مسار الشعار غير صالح.",
+                nameof(sourcePath));
+
         if (!File.Exists(sourcePath))
             throw new FileNotFoundException(
                 "ملف الشعار غير موجود.",
@@ -99,11 +116,11 @@ public sealed class AppBrandSettingsStore
 
         DeleteLogo();
 
-        var extension = Path
+        string extension = Path
             .GetExtension(sourcePath)
             .ToLowerInvariant();
 
-        var destinationPath = Path.Combine(
+        string destinationPath = Path.Combine(
             _brandingDirectory,
             "logo" + extension);
 
@@ -111,6 +128,12 @@ public sealed class AppBrandSettingsStore
             sourcePath,
             destinationPath,
             true);
+
+        var settings = Load();
+
+        settings.LogoFileName = "logo" + extension;
+
+        Save(settings);
     }
 
     public void DeleteLogo()
@@ -118,11 +141,36 @@ public sealed class AppBrandSettingsStore
         if (!Directory.Exists(_brandingDirectory))
             return;
 
-        foreach (var file in Directory.GetFiles(_brandingDirectory))
+        foreach (string file in Directory.GetFiles(_brandingDirectory))
         {
             if (IsSupportedImage(file))
                 File.Delete(file);
         }
+
+        var settings = Load();
+
+        settings.LogoFileName = null;
+
+        Save(settings);
+    }
+
+    public string GetDefaultDatabasePath()
+    {
+        return Path.Combine(_rootPath,
+            "Data",
+            "StorePilot.db");
+    }
+
+    public string GetDefaultBackupDirectory()
+    {
+        string directory = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+            "StorePilot",
+            "Backups");
+
+        Directory.CreateDirectory(directory);
+
+        return directory;
     }
 
     private static bool IsSupportedImage(string path)

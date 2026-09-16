@@ -153,7 +153,7 @@ partial class FirstRunSetupForm
         themeFlow.Controls.Add(lightThemeRadioButton);
         themeFlow.Controls.Add(darkThemeRadioButton);
         themeFlow.Dock = DockStyle.Top;
-        themeFlow.Location = new Point(0, 186);
+        themeFlow.Location = new Point(0, 164);
         themeFlow.Name = "themeFlow";
         themeFlow.Size = new Size(245, 45);
         themeFlow.TabIndex = 0;
@@ -163,11 +163,12 @@ partial class FirstRunSetupForm
         // 
         lightThemeRadioButton.AutoSize = true;
         lightThemeRadioButton.Checked = true;
+        lightThemeRadioButton.Cursor = Cursors.Hand;
         lightThemeRadioButton.Location = new Point(173, 10);
         lightThemeRadioButton.Margin = new Padding(12, 10, 0, 0);
         lightThemeRadioButton.Name = "lightThemeRadioButton";
         lightThemeRadioButton.Size = new Size(60, 27);
-        lightThemeRadioButton.TabIndex = 0;
+        lightThemeRadioButton.TabIndex = 2;
         lightThemeRadioButton.TabStop = true;
         lightThemeRadioButton.Text = "فاتح";
         lightThemeRadioButton.CheckedChanged += themeRadioButton_CheckedChanged;
@@ -175,11 +176,12 @@ partial class FirstRunSetupForm
         // darkThemeRadioButton
         // 
         darkThemeRadioButton.AutoSize = true;
+        darkThemeRadioButton.Cursor = Cursors.Hand;
         darkThemeRadioButton.Location = new Point(97, 10);
         darkThemeRadioButton.Margin = new Padding(12, 10, 0, 0);
         darkThemeRadioButton.Name = "darkThemeRadioButton";
         darkThemeRadioButton.Size = new Size(64, 27);
-        darkThemeRadioButton.TabIndex = 1;
+        darkThemeRadioButton.TabIndex = 3;
         darkThemeRadioButton.Text = "داكن";
         darkThemeRadioButton.CheckedChanged += themeRadioButton_CheckedChanged;
         // 
@@ -188,10 +190,10 @@ partial class FirstRunSetupForm
         themeLabel.Dock = DockStyle.Top;
         themeLabel.Location = new Point(0, 130);
         themeLabel.Name = "themeLabel";
-        themeLabel.Padding = new Padding(0, 20, 0, 0);
-        themeLabel.Size = new Size(245, 56);
+        themeLabel.Size = new Size(245, 34);
         themeLabel.TabIndex = 1;
-        themeLabel.Text = "المظهر";
+        themeLabel.Text = "المظهر:";
+        themeLabel.TextAlign = ContentAlignment.MiddleLeft;
         // 
         // userNameTextBox
         // 
@@ -199,7 +201,7 @@ partial class FirstRunSetupForm
         userNameTextBox.Location = new Point(0, 100);
         userNameTextBox.Name = "userNameTextBox";
         userNameTextBox.Size = new Size(245, 30);
-        userNameTextBox.TabIndex = 2;
+        userNameTextBox.TabIndex = 1;
         userNameTextBox.TextChanged += userNameTextBox_TextChanged;
         // 
         // userNameLabel
@@ -209,7 +211,8 @@ partial class FirstRunSetupForm
         userNameLabel.Name = "userNameLabel";
         userNameLabel.Size = new Size(245, 34);
         userNameLabel.TabIndex = 3;
-        userNameLabel.Text = "اسم المستخدم";
+        userNameLabel.Text = "اسم المستخدم:";
+        userNameLabel.TextAlign = ContentAlignment.MiddleLeft;
         // 
         // storeNameTextBox
         // 
@@ -217,7 +220,7 @@ partial class FirstRunSetupForm
         storeNameTextBox.Location = new Point(0, 36);
         storeNameTextBox.Name = "storeNameTextBox";
         storeNameTextBox.Size = new Size(245, 30);
-        storeNameTextBox.TabIndex = 4;
+        storeNameTextBox.TabIndex = 0;
         storeNameTextBox.TextChanged += storeNameTextBox_TextChanged;
         // 
         // storeNameLabel
@@ -227,7 +230,7 @@ partial class FirstRunSetupForm
         storeNameLabel.Name = "storeNameLabel";
         storeNameLabel.Size = new Size(245, 28);
         storeNameLabel.TabIndex = 5;
-        storeNameLabel.Text = "اسم المحل";
+        storeNameLabel.Text = "اسم المحل:";
         // 
         // logoPanel
         // 
@@ -260,20 +263,22 @@ partial class FirstRunSetupForm
         // chooseLogoButton
         // 
         chooseLogoButton.Anchor = AnchorStyles.Left;
+        chooseLogoButton.Cursor = Cursors.Hand;
         chooseLogoButton.Location = new Point(19, 3);
         chooseLogoButton.Name = "chooseLogoButton";
         chooseLogoButton.Size = new Size(130, 36);
-        chooseLogoButton.TabIndex = 2;
+        chooseLogoButton.TabIndex = 5;
         chooseLogoButton.Text = "اختيار شعار";
         chooseLogoButton.Click += chooseLogoButton_Click;
         // 
         // removeLogoButton
         // 
         removeLogoButton.Anchor = AnchorStyles.Right;
+        removeLogoButton.Cursor = Cursors.Hand;
         removeLogoButton.Location = new Point(155, 3);
         removeLogoButton.Name = "removeLogoButton";
         removeLogoButton.Size = new Size(110, 36);
-        removeLogoButton.TabIndex = 1;
+        removeLogoButton.TabIndex = 4;
         removeLogoButton.Text = "حذف الشعار";
         removeLogoButton.Click += removeLogoButton_Click;
         // 
@@ -305,7 +310,7 @@ partial class FirstRunSetupForm
         logoTitleLabel.Name = "logoTitleLabel";
         logoTitleLabel.Size = new Size(304, 30);
         logoTitleLabel.TabIndex = 4;
-        logoTitleLabel.Text = "شعار المحل";
+        logoTitleLabel.Text = "شعار المحل:";
         // 
         // previewPanel
         // 
@@ -315,27 +320,27 @@ partial class FirstRunSetupForm
         previewPanel.Dock = DockStyle.Fill;
         previewPanel.Location = new Point(35, 11);
         previewPanel.Name = "previewPanel";
-        previewPanel.Padding = new Padding(24);
+        previewPanel.Padding = new Padding(5, 24, 5, 24);
         previewPanel.Size = new Size(245, 397);
         previewPanel.TabIndex = 2;
         // 
         // previewUserLabel
         // 
         previewUserLabel.Dock = DockStyle.Top;
-        previewUserLabel.Location = new Point(24, 114);
+        previewUserLabel.Location = new Point(5, 152);
         previewUserLabel.Name = "previewUserLabel";
-        previewUserLabel.Size = new Size(197, 35);
+        previewUserLabel.Size = new Size(235, 70);
         previewUserLabel.TabIndex = 0;
         previewUserLabel.Text = "اسم المستخدم";
-        previewUserLabel.TextAlign = ContentAlignment.TopCenter;
+        previewUserLabel.TextAlign = ContentAlignment.MiddleCenter;
         // 
         // previewStoreLabel
         // 
         previewStoreLabel.Dock = DockStyle.Top;
         previewStoreLabel.Font = new Font("Segoe UI Semibold", 18F);
-        previewStoreLabel.Location = new Point(24, 59);
+        previewStoreLabel.Location = new Point(5, 59);
         previewStoreLabel.Name = "previewStoreLabel";
-        previewStoreLabel.Size = new Size(197, 55);
+        previewStoreLabel.Size = new Size(235, 93);
         previewStoreLabel.TabIndex = 1;
         previewStoreLabel.Text = "اسم المحل";
         previewStoreLabel.TextAlign = ContentAlignment.MiddleCenter;
@@ -344,9 +349,9 @@ partial class FirstRunSetupForm
         // 
         previewTitleLabel.Dock = DockStyle.Top;
         previewTitleLabel.Font = new Font("Segoe UI Semibold", 12F);
-        previewTitleLabel.Location = new Point(24, 24);
+        previewTitleLabel.Location = new Point(5, 24);
         previewTitleLabel.Name = "previewTitleLabel";
-        previewTitleLabel.Size = new Size(197, 35);
+        previewTitleLabel.Size = new Size(235, 35);
         previewTitleLabel.TabIndex = 2;
         previewTitleLabel.Text = "معاينة الهوية";
         previewTitleLabel.TextAlign = ContentAlignment.TopCenter;
@@ -364,22 +369,24 @@ partial class FirstRunSetupForm
         // 
         // cancelButton
         // 
+        cancelButton.Cursor = Cursors.Hand;
         cancelButton.Dock = DockStyle.Right;
         cancelButton.Location = new Point(628, 12);
         cancelButton.Name = "cancelButton";
         cancelButton.Size = new Size(100, 42);
-        cancelButton.TabIndex = 0;
+        cancelButton.TabIndex = 7;
         cancelButton.Text = "إلغاء";
         cancelButton.Click += cancelButton_Click;
         // 
         // saveButton
         // 
+        saveButton.Cursor = Cursors.Hand;
         saveButton.Dock = DockStyle.Right;
         saveButton.Location = new Point(728, 12);
-        saveButton.Margin = new Padding(0, 0, 12, 0);
+        saveButton.Margin = new Padding(0);
         saveButton.Name = "saveButton";
         saveButton.Size = new Size(140, 42);
-        saveButton.TabIndex = 1;
+        saveButton.TabIndex = 6;
         saveButton.Text = "حفظ ومتابعة";
         saveButton.Click += saveButton_Click;
         // 

@@ -8,6 +8,6 @@ namespace StorePilot.WinForms.Navigation;
 /// لاحقاً يمكن إضافة PermissionKey و Icon وغيرها.
 /// </summary>
 public sealed record NavigationItem(
-    //string Key, 
+    string Key,
     string Text, 
     Func<UserControl> CreatePage);

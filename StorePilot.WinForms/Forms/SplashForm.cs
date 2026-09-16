@@ -84,14 +84,14 @@ public partial class SplashForm : Form
         fadeOutTimer.Start();
     }
 
-    //protected override void Dispose(bool disposing)
-    //{
-    //    if (disposing)
-    //    {
-    //        _fadeInTimer.Dispose();
-    //        _displayTimer.Dispose();
-    //    }
+    protected override void OnFormClosed(FormClosedEventArgs e)
+    {
+        _fadeInTimer.Stop();
+        _displayTimer.Stop();
 
-    //    base.Dispose(disposing);
-    //}
+        _fadeInTimer.Dispose();
+        _displayTimer.Dispose();
+
+        base.OnFormClosed(e);
+    }
 }
