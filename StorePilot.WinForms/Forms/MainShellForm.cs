@@ -109,7 +109,7 @@ public partial class MainShellForm : Form
     private void NavigateToDashboard()
     {
         _navigationService?.Navigate(
-            "dashboard",
+            PageKey.Dashboard,
             () => new DashboardPage(
                 _settingsStore));
     }
@@ -117,7 +117,7 @@ public partial class MainShellForm : Form
     private void NavigateToSettings()
     {
         _navigationService?.Navigate(
-            "settings",
+            PageKey.Settings,
             () => new SettingsPage(
                 _settingsStore,
                 RefreshShell));

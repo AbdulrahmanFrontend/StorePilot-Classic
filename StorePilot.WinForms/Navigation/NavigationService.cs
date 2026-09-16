@@ -6,23 +6,23 @@ public sealed class NavigationService
 {
     private readonly Control _contentHost;
 
-    private readonly Dictionary<string, UserControl> _pages = new();
+    private readonly Dictionary<PageKey, UserControl> _pages = new();
 
-    private string? _currentPageKey;
+    private PageKey _currentPageKey;
 
     public NavigationService(Control contentHost)
     {
         _contentHost = contentHost;
     }
 
-    public string? CurrentPageKey => _currentPageKey;
+    public PageKey CurrentPageKey => _currentPageKey;
 
     public void Navigate<TPage>(
-        string key,
+        PageKey key,
         Func<TPage> factory)
         where TPage : UserControl
     {
-        if (string.IsNullOrWhiteSpace(key))
+        if (key == PageKey.Unknown)
             throw new ArgumentException(
                 "مفتاح الصفحة غير صالح.",
                 nameof(key));
@@ -59,12 +59,12 @@ public sealed class NavigationService
         }
     }
 
-    public bool Contains(string key)
+    public bool Contains(PageKey key)
     {
         return _pages.ContainsKey(key);
     }
 
-    public void Remove(string key)
+    public void Remove(PageKey key)
     {
         if (!_pages.TryGetValue(key, out UserControl? page))
             return;
@@ -72,7 +72,7 @@ public sealed class NavigationService
         _pages.Remove(key);
 
         if (_currentPageKey == key)
-            _currentPageKey = null;
+            _currentPageKey = PageKey.Unknown;
 
         page.Dispose();
     }
@@ -86,6 +86,6 @@ public sealed class NavigationService
 
         _contentHost.Controls.Clear();
 
-        _currentPageKey = null;
+        _currentPageKey = PageKey.Unknown;
     }
 }
