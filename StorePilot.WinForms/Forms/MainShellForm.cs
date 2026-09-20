@@ -40,7 +40,21 @@ public partial class MainShellForm : Form
     {
         base.OnShown(e);
 
-        NavigateToDashboard();
+        dashboardButton.Tag = ((byte)PageKey.Dashboard);
+        customersButton.Tag = ((byte)PageKey.Customers);
+        suppliersButton.Tag = ((byte)PageKey.Suppliers);
+        productsButton.Tag = ((byte)PageKey.Products);
+        quotationsButton.Tag = ((byte)PageKey.Quotations);
+        returnsButton.Tag = ((byte)PageKey.SalesReturns);
+        salesButton.Tag = ((byte)PageKey.Sales);
+        purchasesButton.Tag = ((byte)PageKey.Purchases);
+        reportsButton.Tag = ((byte)PageKey.Reports);
+        settingsButton.Tag = ((byte)PageKey.Settings);
+        paymentsButton.Tag = ((byte)PageKey.CustomerPayments);
+
+        _navigationService?.Navigate(
+            PageKey.Dashboard,
+            () => new DashboardPage(_settingsStore));
     }
 
     private void ApplySettingsToView()
@@ -106,23 +120,6 @@ public partial class MainShellForm : Form
         }
     }
 
-    private void NavigateToDashboard()
-    {
-        _navigationService?.Navigate(
-            PageKey.Dashboard,
-            () => new DashboardPage(
-                _settingsStore));
-    }
-
-    private void NavigateToSettings()
-    {
-        _navigationService?.Navigate(
-            PageKey.Settings,
-            () => new SettingsPage(
-                _settingsStore,
-                RefreshShell));
-    }
-
     private void RefreshShell()
     {
         _viewModel.Reload();
@@ -132,99 +129,6 @@ public partial class MainShellForm : Form
         AppTheme.Apply(this);
     }
 
-    private void dashboardButton_Click(
-        object? sender,
-        EventArgs e)
-    {
-        NavigateToDashboard();
-    }
-
-    private void settingsButton_Click(
-        object? sender,
-        EventArgs e)
-    {
-        NavigateToSettings();
-    }
-
-    private void productsButton_Click(
-        object? sender,
-        EventArgs e)
-    {
-        ShowComingSoon("المنتجات");
-    }
-
-    private void customersButton_Click(
-        object? sender,
-        EventArgs e)
-    {
-        ShowComingSoon("العملاء");
-    }
-
-    private void suppliersButton_Click(
-        object? sender,
-        EventArgs e)
-    {
-        ShowComingSoon("الموردون");
-    }
-
-    private void salesButton_Click(
-        object? sender,
-        EventArgs e)
-    {
-        ShowComingSoon("المبيعات");
-    }
-
-    private void purchasesButton_Click(
-        object? sender,
-        EventArgs e)
-    {
-        ShowComingSoon("المشتريات");
-    }
-
-    private void quotationsButton_Click(
-        object? sender,
-        EventArgs e)
-    {
-        ShowComingSoon("عروض الأسعار");
-    }
-
-    private void returnsButton_Click(
-        object? sender,
-        EventArgs e)
-    {
-        ShowComingSoon("المرتجعات");
-    }
-
-    private void paymentsButton_Click(
-        object? sender,
-        EventArgs e)
-    {
-        ShowComingSoon("المدفوعات");
-    }
-
-    private void inventoryButton_Click(
-        object? sender,
-        EventArgs e)
-    {
-        ShowComingSoon("المخزون");
-    }
-
-    private void reportsButton_Click(
-        object? sender,
-        EventArgs e)
-    {
-        ShowComingSoon("التقارير");
-    }
-
-    private void ShowComingSoon(string featureName)
-    {
-        MessageBox.Show(
-            $"سيتم إضافة شاشة {featureName} في مرحلة لاحقة.",
-            "StorePilot",
-            MessageBoxButtons.OK,
-            MessageBoxIcon.Information);
-    }
-
     protected override void OnFormClosed(FormClosedEventArgs e)
     {
         logoPictureBox.Image?.Dispose();
@@ -232,5 +136,30 @@ public partial class MainShellForm : Form
         _navigationService?.Clear();
 
         base.OnFormClosed(e);
+    }
+
+    private void NavigationButton_Click(object sender, EventArgs e)
+    {
+        if (sender is not Button button)
+            return;
+
+        var key = int.TryParse(button.Tag?.ToString(), out int parsedKey) ? parsedKey : 14;
+
+            switch ((PageKey)key)
+            {
+                case PageKey.Dashboard:
+                    _navigationService?.Navigate(
+                        PageKey.Dashboard,
+                        () => new DashboardPage(_settingsStore)); 
+                    break;
+
+                case PageKey.Settings:
+                    _navigationService?.Navigate(
+                        PageKey.Settings,
+                        () => new SettingsPage(
+                            _settingsStore,
+                            RefreshShell));
+                    break;
+            }
     }
 }

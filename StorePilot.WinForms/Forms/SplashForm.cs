@@ -1,4 +1,5 @@
-﻿using StorePilot.WinForms.Theme;
+﻿using StorePilot.WinForms.Foundation;
+using StorePilot.WinForms.Theme;
 
 namespace StorePilot.WinForms.Forms;
 
@@ -35,8 +36,47 @@ public partial class SplashForm : Form
 
         Opacity = 0;
 
+        LoadLogo();
+
         _fadeInTimer.Start();
         _displayTimer.Start();
+    }
+
+    private void LoadLogo()
+    {
+        var settingsStore = new AppBrandSettingsStore();
+
+        string? logoPath = settingsStore.GetLogoPath();
+
+        if (string.IsNullOrWhiteSpace(logoPath) ||
+            !File.Exists(logoPath))
+        {
+            logoMarkPictureBox.Visible = false;
+            logoMarkLabel.Visible = true;
+
+            return;
+        }
+
+        try
+        {
+            using var stream = new FileStream(
+                logoPath,
+                FileMode.Open,
+                FileAccess.Read,
+                FileShare.ReadWrite);
+
+            using var image = Image.FromStream(stream);
+
+            logoMarkPictureBox.Image = new Bitmap(image);
+
+            logoMarkPictureBox.Visible = true;
+            logoMarkLabel.Visible = false;
+        }
+        catch
+        {
+            logoMarkPictureBox.Visible = false;
+            logoMarkLabel.Visible = true;
+        }
     }
 
     private void FadeInTimer_Tick(
@@ -91,6 +131,8 @@ public partial class SplashForm : Form
 
         _fadeInTimer.Dispose();
         _displayTimer.Dispose();
+
+        logoMarkPictureBox.Image?.Dispose();
 
         base.OnFormClosed(e);
     }

@@ -8,7 +8,7 @@ public sealed class NavigationService
 
     private readonly Dictionary<PageKey, UserControl> _pages = new();
 
-    private PageKey _currentPageKey;
+    private PageKey _currentPageKey = PageKey.Unknown;
 
     public NavigationService(Control contentHost)
     {

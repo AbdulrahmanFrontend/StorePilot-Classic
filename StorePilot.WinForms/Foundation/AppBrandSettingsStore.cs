@@ -5,23 +5,11 @@ namespace StorePilot.WinForms.Foundation;
 
 public sealed class AppBrandSettingsStore
 {
-    private static readonly string[] SupportedExtensions =
-    {
-        ".png",
-        ".jpg",
-        ".jpeg",
-        ".bmp"
-    };
-
     private readonly string _rootPath;
-    private readonly string _settingsPath;
+    private readonly string _settingsFilePath;
+    private readonly string _databasePath;
     private readonly string _brandingDirectory;
-
-    public string RootPath => _rootPath;
-
-    public string SettingsPath => _settingsPath;
-
-    public string BrandingDirectory => _brandingDirectory;
+    private readonly string _backupDirectory;
 
     public AppBrandSettingsStore()
     {
@@ -30,32 +18,69 @@ public sealed class AppBrandSettingsStore
                 Environment.SpecialFolder.LocalApplicationData),
             "StorePilot");
 
-        var settingsDirectory = Path.Combine(_rootPath, "Settings");
-
-        Directory.CreateDirectory(settingsDirectory);
-
-        _settingsPath = Path.Combine(settingsDirectory,
+        _settingsFilePath = Path.Combine(
+            _rootPath,
+            "Settings",
             "app-settings.json");
 
-        _brandingDirectory = Path.Combine(
+        _databasePath = Path.Combine(
             _rootPath,
+            "Data",
+            "StorePilot.db");
+
+        _brandingDirectory = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
             "Branding");
 
+        _backupDirectory = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+            "Backups");
+
         Directory.CreateDirectory(_rootPath);
+        Directory.CreateDirectory(Path.GetDirectoryName(_databasePath)!);
         Directory.CreateDirectory(_brandingDirectory);
+        Directory.CreateDirectory(_backupDirectory);
+    }
+
+    public string RootPath => _rootPath;
+
+    public string GetDatabasePath()
+    {
+        return _databasePath;
+    }
+
+    public string GetDefaultBackupDirectory()
+    {
+        Directory.CreateDirectory(_backupDirectory);
+
+        return _backupDirectory;
+    }
+
+    public string GetLogoPath()
+    {
+        var settings = Load();
+
+        if (string.IsNullOrWhiteSpace(settings.LogoFileName))
+            return string.Empty;
+
+        return Path.Combine(
+            _brandingDirectory,
+            settings.LogoFileName);
     }
 
     public AppBrandSettings Load()
     {
-        if (!File.Exists(_settingsPath))
+        if (!File.Exists(_settingsFilePath))
             return new AppBrandSettings();
 
         try
         {
-            var json = File.ReadAllText(_settingsPath);
+            var json = File.ReadAllText(_settingsFilePath);
 
-            return JsonSerializer.Deserialize<AppBrandSettings>(json)
-                   ?? new AppBrandSettings();
+            var settings =
+                JsonSerializer.Deserialize<AppBrandSettings>(json);
+
+            return settings ?? new AppBrandSettings();
         }
         catch
         {
@@ -65,117 +90,80 @@ public sealed class AppBrandSettingsStore
 
     public void Save(AppBrandSettings settings)
     {
-        ArgumentNullException.ThrowIfNull(settings);
+        if (settings == null)
+            throw new ArgumentNullException(nameof(settings));
 
         Directory.CreateDirectory(_rootPath);
 
-        string temporaryPath = _settingsPath + ".tmp";
+        var options = new JsonSerializerOptions
+        {
+            WriteIndented = true
+        };
 
         var json = JsonSerializer.Serialize(
             settings,
-            new JsonSerializerOptions
-            {
-                WriteIndented = true
-            });
+            options);
 
         File.WriteAllText(
-            temporaryPath,
+            _settingsFilePath,
             json);
-
-        File.Move(
-            temporaryPath,
-            _settingsPath,
-            true);
     }
 
-    public string? GetLogoPath()
+    public void SaveLogo(string sourceFilePath)
     {
-        if (!Directory.Exists(_brandingDirectory))
-            return null;
-
-        return Directory
-            .GetFiles(_brandingDirectory)
-            .FirstOrDefault(IsSupportedImage);
-    }
-
-    public void ReplaceLogo(string sourcePath)
-    {
-        if (string.IsNullOrWhiteSpace(sourcePath))
+        if (string.IsNullOrWhiteSpace(sourceFilePath))
             throw new ArgumentException(
-                "مسار الشعار غير صالح.",
-                nameof(sourcePath));
+                "Logo source path is required.",
+                nameof(sourceFilePath));
 
-        if (!File.Exists(sourcePath))
+        if (!File.Exists(sourceFilePath))
             throw new FileNotFoundException(
-                "ملف الشعار غير موجود.",
-                sourcePath);
+                "Logo file was not found.",
+                sourceFilePath);
 
-        if (!IsSupportedImage(sourcePath))
-            throw new InvalidOperationException(
-                "صيغة الشعار غير مدعومة. استخدم PNG أو JPG أو BMP.");
+        Directory.CreateDirectory(_brandingDirectory);
 
-        DeleteLogo();
-
-        string extension = Path
-            .GetExtension(sourcePath)
+        var extension =
+            Path.GetExtension(sourceFilePath)
             .ToLowerInvariant();
 
-        string destinationPath = Path.Combine(
+        if (string.IsNullOrWhiteSpace(extension))
+            extension = ".png";
+
+        var fileName = "logo" + extension;
+
+        var destinationPath = Path.Combine(
             _brandingDirectory,
-            "logo" + extension);
+            fileName);
 
         File.Copy(
-            sourcePath,
+            sourceFilePath,
             destinationPath,
             true);
 
         var settings = Load();
 
-        settings.LogoFileName = "logo" + extension;
+        settings.LogoFileName = fileName;
 
         Save(settings);
     }
 
-    public void DeleteLogo()
+    public void RemoveLogo()
     {
-        if (!Directory.Exists(_brandingDirectory))
-            return;
-
-        foreach (string file in Directory.GetFiles(_brandingDirectory))
-        {
-            if (IsSupportedImage(file))
-                File.Delete(file);
-        }
-
         var settings = Load();
+
+        if (!string.IsNullOrWhiteSpace(settings.LogoFileName))
+        {
+            var logoPath = Path.Combine(
+                _brandingDirectory,
+                settings.LogoFileName);
+
+            if (File.Exists(logoPath))
+                File.Delete(logoPath);
+        }
 
         settings.LogoFileName = null;
 
         Save(settings);
-    }
-
-    public string GetDefaultDatabasePath()
-    {
-        return Path.Combine(_rootPath,
-            "Data",
-            "StorePilot.db");
-    }
-
-    public string GetDefaultBackupDirectory()
-    {
-        string directory = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-            "StorePilot",
-            "Backups");
-
-        Directory.CreateDirectory(directory);
-
-        return directory;
-    }
-
-    private static bool IsSupportedImage(string path)
-    {
-        return SupportedExtensions.Contains(
-            Path.GetExtension(path).ToLowerInvariant());
     }
 }

@@ -188,11 +188,11 @@ public partial class FirstRunSetupForm : Form
         {
             if (_pendingLogoDeletion)
             {
-                _settingsStore.DeleteLogo();
+                _settingsStore.RemoveLogo();
             }
             else if (!string.IsNullOrWhiteSpace(_pendingLogoPath))
             {
-                _settingsStore.ReplaceLogo(
+                _settingsStore.SaveLogo(
                     _pendingLogoPath);
             }
 

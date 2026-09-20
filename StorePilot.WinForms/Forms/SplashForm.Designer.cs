@@ -33,9 +33,11 @@ partial class SplashForm
         subtitleLabel = new Label();
         brandLabel = new Label();
         logoMarkLabel = new Label();
+        logoMarkPictureBox = new PictureBox();
         backgroundPanel.SuspendLayout();
         contentPanel.SuspendLayout();
         loadingTrackPanel.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)logoMarkPictureBox).BeginInit();
         SuspendLayout();
         // 
         // backgroundPanel
@@ -52,6 +54,7 @@ partial class SplashForm
         // contentPanel
         // 
         contentPanel.BackColor = Color.FromArgb(20, 24, 32);
+        contentPanel.Controls.Add(logoMarkPictureBox);
         contentPanel.Controls.Add(versionLabel);
         contentPanel.Controls.Add(loadingLabel);
         contentPanel.Controls.Add(loadingTrackPanel);
@@ -143,6 +146,14 @@ partial class SplashForm
         logoMarkLabel.Text = "SP";
         logoMarkLabel.TextAlign = ContentAlignment.MiddleCenter;
         // 
+        // LogoMarkPictureBox
+        // 
+        logoMarkPictureBox.Location = new Point(186, 119);
+        logoMarkPictureBox.Name = "LogoMarkPictureBox";
+        logoMarkPictureBox.Size = new Size(74, 74);
+        logoMarkPictureBox.TabIndex = 6;
+        logoMarkPictureBox.TabStop = false;
+        // 
         // SplashForm
         // 
         BackColor = Color.FromArgb(20, 24, 32);
@@ -156,6 +167,9 @@ partial class SplashForm
         backgroundPanel.ResumeLayout(false);
         contentPanel.ResumeLayout(false);
         loadingTrackPanel.ResumeLayout(false);
+        ((System.ComponentModel.ISupportInitialize)logoMarkPictureBox).EndInit();
         ResumeLayout(false);
     }
+
+    private PictureBox logoMarkPictureBox;
 }

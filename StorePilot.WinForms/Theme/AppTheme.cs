@@ -79,9 +79,9 @@ public static class AppTheme
 
     private static void ApplyChild(Control control)
     {
-        if (control is Panel)
+        if (control is TableLayoutPanel)
         {
-            control.BackColor = Surface;
+            control.BackColor = Background;
             control.ForeColor = Text;
         }
         else if (control is GroupBox)
@@ -89,9 +89,9 @@ public static class AppTheme
             control.BackColor = Surface;
             control.ForeColor = Text;
         }
-        else if (control is TableLayoutPanel)
+        else if (control is Panel)
         {
-            control.BackColor = Background;
+            control.BackColor = Surface;
             control.ForeColor = Text;
         }
         else if (control is Label label)
@@ -133,7 +133,9 @@ public static class AppTheme
         if (control.HasChildren)
         {
             foreach (Control child in control.Controls)
+            {
                 ApplyChild(child);
+            }
         }
     }
 }

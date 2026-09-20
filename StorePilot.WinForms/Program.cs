@@ -116,68 +116,30 @@ internal static class Program
     /// </summary>
     private static void ConfigureServices(IServiceCollection services)
     {
-        var rootPath = Path.Combine(
-            Environment.GetFolderPath(
-                Environment.SpecialFolder.MyDocuments),
-            "StorePilot");
+        var settingsStore = new AppBrandSettingsStore();
 
-        Directory.CreateDirectory(rootPath);
+        var databasePath =
+            settingsStore.GetDatabasePath();
 
-        var backupDirectory = Path.Combine(
-            rootPath,
-            "Backups");
-
-        Directory.CreateDirectory(backupDirectory);
-
-        // --------------------------------------------------------
-        // Database
-        // --------------------------------------------------------
-        //
-        // Replace the path with the final database location
-        // chosen for StorePilot.
-        //
-        var databasePath = Path.Combine(
-            Environment.GetFolderPath(
-                Environment.SpecialFolder.LocalApplicationData),
-            "StorePilot",
-            "Data",
-            "StorePilot.db");
-
-
-        // Make sure the directory exists before SQLite tries
-        // to create the database file.
-        Directory.CreateDirectory(
-            Path.GetDirectoryName(databasePath)!);
-
+        var backupDirectory =
+            settingsStore.GetDefaultBackupDirectory();
 
         var connectionString =
             $"Data Source={databasePath}";
 
+        services.AddSingleton(settingsStore);
 
-        // Register EF Core DbContext.
-        //
-        // AddDbContext registers the DbContext with a scoped
-        // lifetime, which is appropriate for EF Core operations.
         services.AddDbContext<StorePilotDbContext>(options =>
         {
             options.UseSqlite(connectionString);
         });
 
-        // --------------------------------------------------------
-        // Application
-        // --------------------------------------------------------
-
-        services.AddSingleton<AppBrandSettingsStore>();
         services.AddSingleton<BackupService>(_ =>
         {
             return new BackupService(
                 databasePath,
                 backupDirectory);
         });
-
-        // --------------------------------------------------------
-        // Forms
-        // --------------------------------------------------------
 
         services.AddTransient<MainShellForm>();
     }

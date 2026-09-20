@@ -27,18 +27,12 @@ namespace StorePilot.WinForms.Pages
             _refreshShell = refreshShell;
 
             _backupService = new BackupService(
-                Path.Combine(_settingsStore.RootPath, "Data", "StorePilot.db"),
-                Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                    "StorePilot",
-                    "Backups"));
+                _settingsStore.GetDatabasePath(),
+                _settingsStore.GetDefaultBackupDirectory());
 
             _viewModel = new SettingsViewModel();
 
             InitializeComponent();
-
-            RightToLeft = RightToLeft.Yes;
-            Load += SettingsPage_Load;
         }
 
         private void SettingsPage_Load(object? sender, EventArgs e)
@@ -55,18 +49,14 @@ namespace StorePilot.WinForms.Pages
             _viewModel.UserName = settings.UserName;
             _viewModel.Theme = settings.Theme;
             _viewModel.LogoFileName = settings.LogoFileName;
-            _viewModel.LastBackupDirectory =
-                settings.LastBackupDirectory;
+            _viewModel.LastBackupDirectory = settings.LastBackupDirectory;
+            _viewModel.LastBackupFileName = settings.LastBackupFileName;
 
-            _viewModel.LastBackupFileName =
-                settings.LastBackupFileName;
-
-            storeNameTextBox.Text = _viewModel.StoreName ?? string.Empty;
-            userNameTextBox.Text = _viewModel.UserName ?? string.Empty;
-
+            storeNameTextBox.Text = _viewModel.StoreName;
+            userNameTextBox.Text = _viewModel.UserName;
             themeComboBox.SelectedIndex = _viewModel.Theme == ThemeMode.Dark ? 1 : 0;
 
-            LoadLogo();
+            LoadLogo(_settingsStore.GetLogoPath());
 
             backupDirectoryLabel.Text =
                 string.IsNullOrWhiteSpace(_viewModel.LastBackupDirectory)
@@ -74,12 +64,17 @@ namespace StorePilot.WinForms.Pages
                     : _viewModel.LastBackupDirectory;
         }
 
-        private void LoadLogo()
+        private void LoadLogo(string? logoPath = null)
         {
             logoPictureBox.Image?.Dispose();
             logoPictureBox.Image = null;
+            logoPictureBox.ImageLocation = null;
 
-            var logoPath = _settingsStore.GetLogoPath();
+            if(string.IsNullOrWhiteSpace(logoPath))
+            {
+                logoFileNameLabel.Text = "لم يتم اختيار شعار.";
+                return;
+            }
 
             if (!File.Exists(logoPath))
             {
@@ -96,6 +91,7 @@ namespace StorePilot.WinForms.Pages
                     FileShare.Read))
                 {
                     logoPictureBox.Image = new Bitmap(stream);
+                    logoPictureBox.ImageLocation = logoPath;
                 }
 
                 logoFileNameLabel.Text =
@@ -104,6 +100,7 @@ namespace StorePilot.WinForms.Pages
             catch
             {
                 logoPictureBox.Image = null;
+                logoPictureBox.ImageLocation = null;
                 logoFileNameLabel.Text = "تعذر تحميل الشعار.";
             }
         }
@@ -126,30 +123,7 @@ namespace StorePilot.WinForms.Pages
                     return;
                 }
 
-                try
-                {
-                    _settingsStore.ReplaceLogo(dialog.FileName);
-
-                    LoadLogo();
-
-                    MessageBox.Show(
-                        FindForm(),
-                        "تم حفظ شعار المحل بنجاح, سيتم إغلاق النظام لتطبيق التغييرات.",
-                        "الإعدادات",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
-
-                    this.ParentForm?.Close();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(
-                        FindForm(),
-                        "تعذر حفظ الشعار:\n" + ex.Message,
-                        "خطأ",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
-                }
+                LoadLogo(dialog.FileName);
             }
         }
 
@@ -214,8 +188,6 @@ namespace StorePilot.WinForms.Pages
                 "الإعدادات",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
-
-            this.ParentForm?.Close();
         }
 
         private async void BackupButton_Click(
@@ -305,19 +277,45 @@ namespace StorePilot.WinForms.Pages
         }
 
         private void removeLogoButton_Click(object sender, EventArgs e)
+            => LoadLogo();
+
+        private void saveLogoButton_Click(object sender, EventArgs e)
         {
-            _settingsStore.DeleteLogo();
+            var result = MessageBox.Show(
+                FindForm(),
+                "هل تريد حفظ شعار المحل الحالي؟",
+                "تأكيد",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
 
-            LoadLogo();
+            if (result != DialogResult.Yes)
+                return;
 
-            MessageBox.Show(
-                        FindForm(),
-                        "تمت إزالة شعار المحل بنجاح, سيتم إغلاق النظام لتطبيق التغييرات.",
-                        "الإعدادات",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
+            try
+            {
+                if (logoPictureBox.Image == null)
+                    _settingsStore.RemoveLogo();
+                else
+                    _settingsStore.SaveLogo(logoPictureBox.ImageLocation);
 
-            this.ParentForm?.Close();
+                MessageBox.Show(
+                    FindForm(),
+                    "تم حفظ شعار المحل بنجاح, سيتم إغلاق النظام لتطبيق التغييرات.",
+                    "الإعدادات",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
+                _refreshShell?.Invoke();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    FindForm(),
+                    "تعذر حفظ الشعار:\n" + ex.Message,
+                    "خطأ",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
     }
 }

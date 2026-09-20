@@ -30,7 +30,6 @@ namespace StorePilot.WinForms.Pages
         private TableLayoutPanel logoLayout;
         private PictureBox logoPictureBox;
         private Label logoFileNameLabel;
-        private Button chooseLogoButton;
 
         private GroupBox backupGroup;
         private TableLayoutPanel backupLayout;
@@ -68,9 +67,11 @@ namespace StorePilot.WinForms.Pages
             saveSettingsButton = new Button();
             logoGroup = new GroupBox();
             logoLayout = new TableLayoutPanel();
-            removeLogoButton = new Button();
             logoPictureBox = new PictureBox();
             logoFileNameLabel = new Label();
+            tlpLogoButtons = new TableLayoutPanel();
+            saveLogoButton = new Button();
+            removeLogoButton = new Button();
             chooseLogoButton = new Button();
             backupGroup = new GroupBox();
             backupLayout = new TableLayoutPanel();
@@ -85,6 +86,7 @@ namespace StorePilot.WinForms.Pages
             logoGroup.SuspendLayout();
             logoLayout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)logoPictureBox).BeginInit();
+            tlpLogoButtons.SuspendLayout();
             backupGroup.SuspendLayout();
             backupLayout.SuspendLayout();
             SuspendLayout();
@@ -129,11 +131,11 @@ namespace StorePilot.WinForms.Pages
             // 
             // titleLabel
             // 
-            titleLabel.AutoSize = true;
+            titleLabel.Dock = DockStyle.Top;
             titleLabel.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
             titleLabel.Location = new Point(0, 0);
             titleLabel.Name = "titleLabel";
-            titleLabel.Size = new Size(136, 41);
+            titleLabel.Size = new Size(1251, 41);
             titleLabel.TabIndex = 1;
             titleLabel.Text = "الإعدادات";
             // 
@@ -288,35 +290,19 @@ namespace StorePilot.WinForms.Pages
             // 
             logoLayout.ColumnCount = 1;
             logoLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            logoLayout.Controls.Add(removeLogoButton, 0, 3);
             logoLayout.Controls.Add(logoPictureBox, 0, 0);
             logoLayout.Controls.Add(logoFileNameLabel, 0, 1);
-            logoLayout.Controls.Add(chooseLogoButton, 0, 2);
+            logoLayout.Controls.Add(tlpLogoButtons, 0, 2);
             logoLayout.Dock = DockStyle.Fill;
             logoLayout.Location = new Point(17, 40);
             logoLayout.Margin = new Padding(3, 4, 3, 4);
             logoLayout.Name = "logoLayout";
-            logoLayout.RowCount = 4;
+            logoLayout.RowCount = 3;
             logoLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            logoLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
             logoLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
             logoLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
             logoLayout.Size = new Size(453, 271);
             logoLayout.TabIndex = 0;
-            // 
-            // removeLogoButton
-            // 
-            removeLogoButton.Cursor = Cursors.Hand;
-            removeLogoButton.Dock = DockStyle.Fill;
-            removeLogoButton.FlatStyle = FlatStyle.Flat;
-            removeLogoButton.Location = new Point(6, 228);
-            removeLogoButton.Margin = new Padding(6, 7, 6, 7);
-            removeLogoButton.Name = "removeLogoButton";
-            removeLogoButton.Size = new Size(441, 36);
-            removeLogoButton.TabIndex = 5;
-            removeLogoButton.Text = "إزالة الشعار";
-            removeLogoButton.UseVisualStyleBackColor = false;
-            removeLogoButton.Click += removeLogoButton_Click;
             // 
             // logoPictureBox
             // 
@@ -326,7 +312,7 @@ namespace StorePilot.WinForms.Pages
             logoPictureBox.Location = new Point(6, 7);
             logoPictureBox.Margin = new Padding(6, 7, 6, 7);
             logoPictureBox.Name = "logoPictureBox";
-            logoPictureBox.Size = new Size(441, 107);
+            logoPictureBox.Size = new Size(441, 157);
             logoPictureBox.SizeMode = PictureBoxSizeMode.Zoom;
             logoPictureBox.TabIndex = 0;
             logoPictureBox.TabStop = false;
@@ -335,24 +321,69 @@ namespace StorePilot.WinForms.Pages
             // 
             logoFileNameLabel.AutoEllipsis = true;
             logoFileNameLabel.Dock = DockStyle.Fill;
-            logoFileNameLabel.Location = new Point(3, 121);
+            logoFileNameLabel.Location = new Point(3, 171);
             logoFileNameLabel.Name = "logoFileNameLabel";
             logoFileNameLabel.Size = new Size(447, 50);
             logoFileNameLabel.TabIndex = 1;
             logoFileNameLabel.Text = "لم يتم اختيار شعار.";
             logoFileNameLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
+            // tlpLogoButtons
+            // 
+            tlpLogoButtons.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            tlpLogoButtons.ColumnCount = 3;
+            tlpLogoButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333359F));
+            tlpLogoButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333359F));
+            tlpLogoButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333359F));
+            tlpLogoButtons.Controls.Add(saveLogoButton, 2, 0);
+            tlpLogoButtons.Controls.Add(removeLogoButton, 1, 0);
+            tlpLogoButtons.Controls.Add(chooseLogoButton, 0, 0);
+            tlpLogoButtons.Location = new Point(3, 224);
+            tlpLogoButtons.Name = "tlpLogoButtons";
+            tlpLogoButtons.RowCount = 1;
+            tlpLogoButtons.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tlpLogoButtons.Size = new Size(447, 44);
+            tlpLogoButtons.TabIndex = 6;
+            // 
+            // saveLogoButton
+            // 
+            saveLogoButton.Cursor = Cursors.Hand;
+            saveLogoButton.Dock = DockStyle.Fill;
+            saveLogoButton.FlatStyle = FlatStyle.Flat;
+            saveLogoButton.Location = new Point(6, 7);
+            saveLogoButton.Margin = new Padding(6, 7, 6, 7);
+            saveLogoButton.Name = "saveLogoButton";
+            saveLogoButton.Size = new Size(137, 30);
+            saveLogoButton.TabIndex = 7;
+            saveLogoButton.Text = "حفظ";
+            saveLogoButton.UseVisualStyleBackColor = false;
+            saveLogoButton.Click += saveLogoButton_Click;
+            // 
+            // removeLogoButton
+            // 
+            removeLogoButton.Cursor = Cursors.Hand;
+            removeLogoButton.Dock = DockStyle.Fill;
+            removeLogoButton.FlatStyle = FlatStyle.Flat;
+            removeLogoButton.Location = new Point(155, 7);
+            removeLogoButton.Margin = new Padding(6, 7, 6, 7);
+            removeLogoButton.Name = "removeLogoButton";
+            removeLogoButton.Size = new Size(137, 30);
+            removeLogoButton.TabIndex = 6;
+            removeLogoButton.Text = "إزالة";
+            removeLogoButton.UseVisualStyleBackColor = false;
+            removeLogoButton.Click += removeLogoButton_Click;
+            // 
             // chooseLogoButton
             // 
             chooseLogoButton.Cursor = Cursors.Hand;
             chooseLogoButton.Dock = DockStyle.Fill;
             chooseLogoButton.FlatStyle = FlatStyle.Flat;
-            chooseLogoButton.Location = new Point(6, 178);
+            chooseLogoButton.Location = new Point(304, 7);
             chooseLogoButton.Margin = new Padding(6, 7, 6, 7);
             chooseLogoButton.Name = "chooseLogoButton";
-            chooseLogoButton.Size = new Size(441, 36);
-            chooseLogoButton.TabIndex = 4;
-            chooseLogoButton.Text = "اختيار شعار";
+            chooseLogoButton.Size = new Size(137, 30);
+            chooseLogoButton.TabIndex = 5;
+            chooseLogoButton.Text = "اختيار";
             chooseLogoButton.UseVisualStyleBackColor = false;
             chooseLogoButton.Click += ChooseLogoButton_Click;
             // 
@@ -435,9 +466,9 @@ namespace StorePilot.WinForms.Pages
             Padding = new Padding(23, 27, 23, 27);
             RightToLeft = RightToLeft.Yes;
             Size = new Size(1297, 788);
+            Load += SettingsPage_Load;
             rootLayout.ResumeLayout(false);
             headerPanel.ResumeLayout(false);
-            headerPanel.PerformLayout();
             contentLayout.ResumeLayout(false);
             generalSettingsGroup.ResumeLayout(false);
             generalLayout.ResumeLayout(false);
@@ -445,12 +476,16 @@ namespace StorePilot.WinForms.Pages
             logoGroup.ResumeLayout(false);
             logoLayout.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)logoPictureBox).EndInit();
+            tlpLogoButtons.ResumeLayout(false);
             backupGroup.ResumeLayout(false);
             backupLayout.ResumeLayout(false);
             backupLayout.PerformLayout();
             ResumeLayout(false);
         }
 
+        private TableLayoutPanel tlpLogoButtons;
+        private Button saveLogoButton;
         private Button removeLogoButton;
+        private Button chooseLogoButton;
     }
 }
