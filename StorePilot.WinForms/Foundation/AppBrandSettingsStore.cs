@@ -29,15 +29,17 @@ public sealed class AppBrandSettingsStore
             "StorePilot.db");
 
         _brandingDirectory = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+            _rootPath,
             "Branding");
 
         _backupDirectory = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+            "StorePilot",
             "Backups");
 
         Directory.CreateDirectory(_rootPath);
         Directory.CreateDirectory(Path.GetDirectoryName(_databasePath)!);
+        Directory.CreateDirectory(Path.GetDirectoryName(_settingsFilePath)!);
         Directory.CreateDirectory(_brandingDirectory);
         Directory.CreateDirectory(_backupDirectory);
     }
@@ -109,7 +111,7 @@ public sealed class AppBrandSettingsStore
             json);
     }
 
-    public void SaveLogo(string sourceFilePath)
+    public void SaveLogo(string? sourceFilePath)
     {
         if (string.IsNullOrWhiteSpace(sourceFilePath))
             throw new ArgumentException(

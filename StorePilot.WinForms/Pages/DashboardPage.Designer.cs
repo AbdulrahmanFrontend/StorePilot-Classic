@@ -66,7 +66,7 @@ namespace StorePilot.WinForms.Pages
             headerPanel = new Panel();
             pageTitleLabel = new Label();
             pageSubtitleLabel = new Label();
-            panel1 = new Panel();
+            refreshPanel = new Panel();
             refreshButton = new Button();
             storeNameLabel = new Label();
             welcomeUserLabel = new Label();
@@ -107,7 +107,7 @@ namespace StorePilot.WinForms.Pages
             lowStockTitleLabel = new Label();
             rootLayout.SuspendLayout();
             headerPanel.SuspendLayout();
-            panel1.SuspendLayout();
+            refreshPanel.SuspendLayout();
             statisticsLayout.SuspendLayout();
             todaySalesCard.SuspendLayout();
             todayPurchasesCard.SuspendLayout();
@@ -144,7 +144,7 @@ namespace StorePilot.WinForms.Pages
             headerPanel.AutoSize = true;
             headerPanel.Controls.Add(pageTitleLabel);
             headerPanel.Controls.Add(pageSubtitleLabel);
-            headerPanel.Controls.Add(panel1);
+            headerPanel.Controls.Add(refreshPanel);
             headerPanel.Controls.Add(storeNameLabel);
             headerPanel.Controls.Add(welcomeUserLabel);
             headerPanel.Dock = DockStyle.Top;
@@ -175,15 +175,15 @@ namespace StorePilot.WinForms.Pages
             pageSubtitleLabel.Text = "ملخص سريع لحالة المبيعات والمشتريات والمخزون.";
             pageSubtitleLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
-            // panel1
+            // refreshPanel
             // 
-            panel1.Controls.Add(refreshButton);
-            panel1.Dock = DockStyle.Left;
-            panel1.Location = new Point(0, 0);
-            panel1.Name = "panel1";
-            panel1.Padding = new Padding(20);
-            panel1.Size = new Size(105, 78);
-            panel1.TabIndex = 2;
+            refreshPanel.Controls.Add(refreshButton);
+            refreshPanel.Dock = DockStyle.Left;
+            refreshPanel.Location = new Point(0, 0);
+            refreshPanel.Name = "refreshPanel";
+            refreshPanel.Padding = new Padding(20);
+            refreshPanel.Size = new Size(105, 78);
+            refreshPanel.TabIndex = 2;
             // 
             // refreshButton
             // 
@@ -640,8 +640,8 @@ namespace StorePilot.WinForms.Pages
             rootLayout.PerformLayout();
             headerPanel.ResumeLayout(false);
             headerPanel.PerformLayout();
-            panel1.ResumeLayout(false);
-            panel1.PerformLayout();
+            refreshPanel.ResumeLayout(false);
+            refreshPanel.PerformLayout();
             statisticsLayout.ResumeLayout(false);
             todaySalesCard.ResumeLayout(false);
             todayPurchasesCard.ResumeLayout(false);
@@ -663,7 +663,7 @@ namespace StorePilot.WinForms.Pages
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
-        private Panel panel1;
+        private Panel refreshPanel;
         private Button refreshButton;
         private Label pageTitleLabel;
         private Label pageSubtitleLabel;

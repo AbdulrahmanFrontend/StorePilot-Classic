@@ -256,6 +256,7 @@ namespace StorePilot.WinForms.Pages
             themeComboBox.Name = "themeComboBox";
             themeComboBox.Size = new Size(577, 28);
             themeComboBox.TabIndex = 2;
+            themeComboBox.SelectedIndexChanged += themeComboBox_SelectedIndexChanged;
             // 
             // saveSettingsButton
             // 

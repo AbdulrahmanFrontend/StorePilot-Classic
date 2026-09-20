@@ -70,7 +70,7 @@ namespace StorePilot.WinForms.Pages
             logoPictureBox.Image = null;
             logoPictureBox.ImageLocation = null;
 
-            if(string.IsNullOrWhiteSpace(logoPath))
+            if (string.IsNullOrWhiteSpace(logoPath))
             {
                 logoFileNameLabel.Text = "لم يتم اختيار شعار.";
                 return;
@@ -119,9 +119,7 @@ namespace StorePilot.WinForms.Pages
 
                 if (dialog.ShowDialog(FindForm()) !=
                     DialogResult.OK)
-                {
                     return;
-                }
 
                 LoadLogo(dialog.FileName);
             }
@@ -131,6 +129,16 @@ namespace StorePilot.WinForms.Pages
             object sender,
             EventArgs e)
         {
+            var result = MessageBox.Show(
+                        FindForm(),
+                        "هل تريد حفظ هذه الإعدادات؟",
+                        "تأكيد",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question);
+
+            if (result != DialogResult.Yes)
+                return;
+
             var storeName = storeNameTextBox.Text.Trim();
             var userName = userNameTextBox.Text.Trim();
 
@@ -180,14 +188,14 @@ namespace StorePilot.WinForms.Pages
 
             ApplyTheme();
 
-            _refreshShell?.Invoke();
-
             MessageBox.Show(
                 FindForm(),
-                "تم حفظ الإعدادات بنجاح, سيتم إغلاق النظام لتطبيق التغييرات.",
+                "تم حفظ الإعدادات بنجاح.",
                 "الإعدادات",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
+
+            _refreshShell?.Invoke();
         }
 
         private async void BackupButton_Click(
@@ -223,11 +231,19 @@ namespace StorePilot.WinForms.Pages
                     dialog.FileName = defaultFileName;
                     dialog.OverwritePrompt = true;
 
+                    var result = MessageBox.Show(
+                        FindForm(),
+                        "هل تريد إتمام عملية النسخ الإحتياطي هذه؟",
+                        "تأكيد",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question);
+
+                    if (result != DialogResult.Yes)
+                        return;
+
                     if (dialog.ShowDialog(FindForm()) !=
                         DialogResult.OK)
-                    {
                         return;
-                    }
 
                     var destinationPath = dialog.FileName;
 
@@ -265,6 +281,7 @@ namespace StorePilot.WinForms.Pages
 
         private void ApplyTheme()
         {
+            AppTheme.Set(_viewModel.Theme);
             AppTheme.Apply(this);
         }
 
@@ -300,7 +317,7 @@ namespace StorePilot.WinForms.Pages
 
                 MessageBox.Show(
                     FindForm(),
-                    "تم حفظ شعار المحل بنجاح, سيتم إغلاق النظام لتطبيق التغييرات.",
+                    "تم حفظ شعار المحل بنجاح.",
                     "الإعدادات",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
@@ -316,6 +333,15 @@ namespace StorePilot.WinForms.Pages
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
+        }
+
+        private void themeComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            AppTheme.Set(themeComboBox.SelectedIndex == 1
+                    ? ThemeMode.Dark
+                    : ThemeMode.Light);
+
+            AppTheme.Apply(this);
         }
     }
 }

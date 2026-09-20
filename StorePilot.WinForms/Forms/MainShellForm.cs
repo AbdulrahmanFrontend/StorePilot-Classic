@@ -26,8 +26,6 @@ public partial class MainShellForm : Form
         InitializeNavigation();
 
         ApplySettingsToView();
-
-        AppTheme.Apply(this);
     }
 
     private void InitializeNavigation()
@@ -72,6 +70,10 @@ public partial class MainShellForm : Form
             GetUserInitial(_viewModel.UserName);
 
         LoadLogo();
+
+        AppTheme.Set(_viewModel.Settings.Theme);
+
+        AppTheme.Apply(this);
     }
 
     private static string GetUserInitial(string userName)
@@ -125,8 +127,6 @@ public partial class MainShellForm : Form
         _viewModel.Reload();
 
         ApplySettingsToView();
-
-        AppTheme.Apply(this);
     }
 
     protected override void OnFormClosed(FormClosedEventArgs e)

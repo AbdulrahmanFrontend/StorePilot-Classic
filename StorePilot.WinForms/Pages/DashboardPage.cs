@@ -29,7 +29,6 @@ namespace StorePilot.WinForms.Pages
         {
             LoadSettings();
             LoadDashboardData();
-            ApplyTheme();
         }
 
         private void LoadSettings()
@@ -43,6 +42,9 @@ namespace StorePilot.WinForms.Pages
             welcomeUserLabel.Text = string.IsNullOrWhiteSpace(settings.UserName)
                 ? "مرحباً بك"
                 : $"مرحباً بك، {settings.UserName}";
+
+            AppTheme.Set(settings.Theme);
+            AppTheme.Apply(this);
         }
 
         private void LoadDashboardData()
@@ -76,11 +78,6 @@ namespace StorePilot.WinForms.Pages
                     item.MinimumQuantity
                 );
             }
-        }
-
-        private void ApplyTheme()
-        {
-            AppTheme.Apply(this);
         }
 
         private void RefreshButton_Click(object sender, EventArgs e)

@@ -29,14 +29,11 @@ public sealed class NavigationService
 
         ArgumentNullException.ThrowIfNull(factory);
 
-        if (!_pages.TryGetValue(key, out UserControl? page))
-        {
-            page = factory();
+        UserControl page = factory();
 
-            page.Dock = DockStyle.Fill;
+        page.Dock = DockStyle.Fill;
 
-            _pages.Add(key, page);
-        }
+        _pages[key] = page;
 
         if (_currentPageKey == key)
             return;

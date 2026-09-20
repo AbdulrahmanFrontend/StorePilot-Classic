@@ -392,6 +392,8 @@ partial class FirstRunSetupForm
         // 
         // FirstRunSetupForm
         // 
+        AcceptButton = saveButton;
+        CancelButton = cancelButton;
         ClientSize = new Size(900, 620);
         Controls.Add(contentLayout);
         Controls.Add(footerPanel);

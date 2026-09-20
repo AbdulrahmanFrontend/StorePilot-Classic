@@ -26,6 +26,7 @@ partial class SplashForm
     {
         backgroundPanel = new Panel();
         contentPanel = new Panel();
+        logoMarkPictureBox = new PictureBox();
         versionLabel = new Label();
         loadingLabel = new Label();
         loadingTrackPanel = new Panel();
@@ -33,11 +34,10 @@ partial class SplashForm
         subtitleLabel = new Label();
         brandLabel = new Label();
         logoMarkLabel = new Label();
-        logoMarkPictureBox = new PictureBox();
         backgroundPanel.SuspendLayout();
         contentPanel.SuspendLayout();
-        loadingTrackPanel.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)logoMarkPictureBox).BeginInit();
+        loadingTrackPanel.SuspendLayout();
         SuspendLayout();
         // 
         // backgroundPanel
@@ -66,6 +66,15 @@ partial class SplashForm
         contentPanel.Name = "contentPanel";
         contentPanel.Size = new Size(459, 280);
         contentPanel.TabIndex = 0;
+        // 
+        // logoMarkPictureBox
+        // 
+        logoMarkPictureBox.Location = new Point(186, 119);
+        logoMarkPictureBox.Name = "logoMarkPictureBox";
+        logoMarkPictureBox.Size = new Size(74, 74);
+        logoMarkPictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+        logoMarkPictureBox.TabIndex = 6;
+        logoMarkPictureBox.TabStop = false;
         // 
         // versionLabel
         // 
@@ -146,14 +155,6 @@ partial class SplashForm
         logoMarkLabel.Text = "SP";
         logoMarkLabel.TextAlign = ContentAlignment.MiddleCenter;
         // 
-        // LogoMarkPictureBox
-        // 
-        logoMarkPictureBox.Location = new Point(186, 119);
-        logoMarkPictureBox.Name = "LogoMarkPictureBox";
-        logoMarkPictureBox.Size = new Size(74, 74);
-        logoMarkPictureBox.TabIndex = 6;
-        logoMarkPictureBox.TabStop = false;
-        // 
         // SplashForm
         // 
         BackColor = Color.FromArgb(20, 24, 32);
@@ -166,8 +167,8 @@ partial class SplashForm
         Text = "StorePilot";
         backgroundPanel.ResumeLayout(false);
         contentPanel.ResumeLayout(false);
-        loadingTrackPanel.ResumeLayout(false);
         ((System.ComponentModel.ISupportInitialize)logoMarkPictureBox).EndInit();
+        loadingTrackPanel.ResumeLayout(false);
         ResumeLayout(false);
     }
 

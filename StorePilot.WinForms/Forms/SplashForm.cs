@@ -45,15 +45,12 @@ public partial class SplashForm : Form
     private void LoadLogo()
     {
         var settingsStore = new AppBrandSettingsStore();
-
         string? logoPath = settingsStore.GetLogoPath();
 
-        if (string.IsNullOrWhiteSpace(logoPath) ||
-            !File.Exists(logoPath))
+        // التحقق من وجود الملف
+        if (string.IsNullOrWhiteSpace(logoPath) || !File.Exists(logoPath))
         {
-            logoMarkPictureBox.Visible = false;
-            logoMarkLabel.Visible = true;
-
+            ShowDefaultLogoMark();
             return;
         }
 
@@ -67,16 +64,28 @@ public partial class SplashForm : Form
 
             using var image = Image.FromStream(stream);
 
+            // إنشاء نسخة جديدة من الصورة في الذاكرة لتجنب قفل الملف
+            logoMarkPictureBox.Image?.Dispose();
             logoMarkPictureBox.Image = new Bitmap(image);
 
+            // ضبط حجم الصورة لتكون مناسبة داخل الحاوية
+            logoMarkPictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+
             logoMarkPictureBox.Visible = true;
+            logoMarkPictureBox.BringToFront();
             logoMarkLabel.Visible = false;
         }
         catch
         {
-            logoMarkPictureBox.Visible = false;
-            logoMarkLabel.Visible = true;
+            ShowDefaultLogoMark();
         }
+    }
+
+    private void ShowDefaultLogoMark()
+    {
+        logoMarkPictureBox.Visible = false;
+        logoMarkLabel.Visible = true;
+        logoMarkLabel.BringToFront();
     }
 
     private void FadeInTimer_Tick(

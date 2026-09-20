@@ -135,10 +135,10 @@ partial class MainShellForm
         navigationPanel.Controls.Add(productsButton);
         navigationPanel.Controls.Add(dashboardButton);
         navigationPanel.Dock = DockStyle.Fill;
-        navigationPanel.Location = new Point(14, 97);
+        navigationPanel.Location = new Point(14, 85);
         navigationPanel.Name = "navigationPanel";
         navigationPanel.Padding = new Padding(5);
-        navigationPanel.Size = new Size(320, 847);
+        navigationPanel.Size = new Size(320, 859);
         navigationPanel.TabIndex = 2;
         // 
         // settingsButton
@@ -376,12 +376,11 @@ partial class MainShellForm
         brandPanel.Controls.Add(storeNameLabel);
         brandPanel.Controls.Add(logoMarkLabel);
         brandPanel.Controls.Add(logoPictureBox);
-        brandPanel.Cursor = Cursors.Hand;
         brandPanel.Dock = DockStyle.Top;
         brandPanel.Location = new Point(14, 16);
         brandPanel.Margin = new Padding(0);
         brandPanel.Name = "brandPanel";
-        brandPanel.Size = new Size(320, 81);
+        brandPanel.Size = new Size(320, 69);
         brandPanel.TabIndex = 0;
         // 
         // storeSubtitleLabel
@@ -390,9 +389,9 @@ partial class MainShellForm
         storeSubtitleLabel.Dock = DockStyle.Bottom;
         storeSubtitleLabel.Font = new Font("Segoe UI", 8F);
         storeSubtitleLabel.ForeColor = Color.FromArgb(160, 170, 185);
-        storeSubtitleLabel.Location = new Point(0, 41);
+        storeSubtitleLabel.Location = new Point(0, 37);
         storeSubtitleLabel.Name = "storeSubtitleLabel";
-        storeSubtitleLabel.Size = new Size(196, 40);
+        storeSubtitleLabel.Size = new Size(196, 32);
         storeSubtitleLabel.TabIndex = 7;
         storeSubtitleLabel.Text = "نظام إدارة المبيعات والمخزون";
         storeSubtitleLabel.TextAlign = ContentAlignment.MiddleLeft;
@@ -405,7 +404,7 @@ partial class MainShellForm
         storeNameLabel.ForeColor = Color.White;
         storeNameLabel.Location = new Point(0, 0);
         storeNameLabel.Name = "storeNameLabel";
-        storeNameLabel.Size = new Size(196, 42);
+        storeNameLabel.Size = new Size(196, 37);
         storeNameLabel.TabIndex = 6;
         storeNameLabel.Text = "StorePilot";
         storeNameLabel.TextAlign = ContentAlignment.MiddleLeft;
@@ -419,7 +418,7 @@ partial class MainShellForm
         logoMarkLabel.ImageAlign = ContentAlignment.MiddleLeft;
         logoMarkLabel.Location = new Point(196, 0);
         logoMarkLabel.Name = "logoMarkLabel";
-        logoMarkLabel.Size = new Size(62, 81);
+        logoMarkLabel.Size = new Size(62, 69);
         logoMarkLabel.TabIndex = 1;
         logoMarkLabel.Text = "SP";
         logoMarkLabel.TextAlign = ContentAlignment.MiddleCenter;
@@ -431,7 +430,7 @@ partial class MainShellForm
         logoPictureBox.Location = new Point(258, 0);
         logoPictureBox.Margin = new Padding(3, 4, 3, 4);
         logoPictureBox.Name = "logoPictureBox";
-        logoPictureBox.Size = new Size(62, 81);
+        logoPictureBox.Size = new Size(62, 69);
         logoPictureBox.SizeMode = PictureBoxSizeMode.Zoom;
         logoPictureBox.TabIndex = 0;
         logoPictureBox.TabStop = false;
