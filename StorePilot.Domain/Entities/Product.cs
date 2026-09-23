@@ -10,7 +10,7 @@ public class Product
 
     public string? Code { get; set; }
 
-    public string ProductName { get; set; } = string.Empty;
+    public string ProductName { get; set; } = null!;
 
     public decimal Quantity { get; set; } = 0;
 
@@ -35,5 +35,5 @@ public class Product
 
     public Unit Unit { get; set; } = null!;
 
-    public Group Group { get; set; } = null!;
+    public ProductGroup Group { get; set; } = null!;
 }

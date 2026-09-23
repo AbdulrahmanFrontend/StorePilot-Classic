@@ -1,8 +1,8 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using StorePilot.Infrastructure.Data;
 using StorePilot.Infrastructure.Data.Database;
-using StorePilot.WinForms.Backup;
+using StorePilot.Infrastructure.DependencyInjection;
+using StorePilot.Infrastructure.Storage;
 using StorePilot.WinForms.Forms;
 using StorePilot.WinForms.Foundation;
 using StorePilot.WinForms.Theme;
@@ -30,6 +30,12 @@ internal static class Program
         //
         ApplicationConfiguration.Initialize();
 
+        var paths = new StorePilotPaths();
+
+        var settingsStore =
+            new AppBrandSettingsStore(
+                paths.SettingsFilePath,
+                paths.BrandingDirectory);
 
         // --------------------------------------------------------
         // 2. Configure application services
@@ -47,7 +53,10 @@ internal static class Program
         //
         var services = new ServiceCollection();
 
-        ConfigureServices(services);
+        ConfigureServices(
+            services,
+            paths,
+            settingsStore);
 
 
         // --------------------------------------------------------
@@ -73,7 +82,7 @@ internal static class Program
         //
         InitializeDatabaseAsync(serviceProvider).GetAwaiter().GetResult();
 
-        if (!RunStartupFlow(serviceProvider))
+        if (!RunStartupFlow(serviceProvider, paths))
             return;
 
         //await TestDatabaseAsync(serviceProvider);
@@ -85,7 +94,7 @@ internal static class Program
         // Only after successful database initialization do we
         // open the main window.
         //
-        Application.Run(
+        System.Windows.Forms.Application.Run(
             serviceProvider.GetRequiredService<MainShellForm>());
     }
 
@@ -114,32 +123,16 @@ internal static class Program
     /// Registers application services in the Dependency Injection
     /// container.
     /// </summary>
-    private static void ConfigureServices(IServiceCollection services)
+    private static void ConfigureServices(
+        IServiceCollection services,
+        StorePilotPaths paths,
+        AppBrandSettingsStore settingsStore)
     {
-        var settingsStore = new AppBrandSettingsStore();
-
-        var databasePath =
-            settingsStore.GetDatabasePath();
-
-        var backupDirectory =
-            settingsStore.GetDefaultBackupDirectory();
-
-        var connectionString =
-            $"Data Source={databasePath}";
+        services.AddSingleton(paths);
 
         services.AddSingleton(settingsStore);
 
-        services.AddDbContext<StorePilotDbContext>(options =>
-        {
-            options.UseSqlite(connectionString);
-        });
-
-        services.AddSingleton<BackupService>(_ =>
-        {
-            return new BackupService(
-                databasePath,
-                backupDirectory);
-        });
+        services.AddStorePilotInfrastructure(paths);
 
         services.AddTransient<MainShellForm>();
     }
@@ -185,7 +178,9 @@ internal static class Program
         await DatabaseInitializer.InitializeAsync(dbContext);
     }
 
-    private static bool RunStartupFlow(IServiceProvider serviceProvider)
+    private static bool RunStartupFlow(
+        IServiceProvider serviceProvider,
+        StorePilotPaths paths)
     {
         var settingsStore =
             serviceProvider.GetRequiredService<AppBrandSettingsStore>();
@@ -194,7 +189,7 @@ internal static class Program
 
         AppTheme.Set(settings.Theme);
 
-        using (var splash = new SplashForm())
+        using (var splash = new SplashForm(paths))
         {
             splash.ShowDialog();
         }

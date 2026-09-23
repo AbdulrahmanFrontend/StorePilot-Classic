@@ -7,26 +7,29 @@ using System.Text;
 
 namespace StorePilot.Infrastructure.Data.Configurations;
 
-internal class UnitConfiguration : IEntityTypeConfiguration<Unit>
+internal sealed class UnitConfiguration : IEntityTypeConfiguration<Unit>
 {
     public void Configure(EntityTypeBuilder<Unit> builder)
     {
         builder.ToTable("Units");
 
-
         builder.HasKey(x => x.UnitId);
 
         builder.Property(x => x.UnitId)
-            .HasColumnName("UnitId");
+            .HasColumnName("UnitId")
+            .ValueGeneratedOnAdd();
 
-
-        builder.Property(x => x.UnitName)
+        builder.Property(x => x.Name)
             .HasColumnName("Unit")
             .IsRequired()
-            .HasMaxLength(10);
+            .HasMaxLength(100);
 
-
-        builder.HasIndex(x => x.UnitName)
+        builder.HasIndex(x => x.Name)
             .IsUnique();
+
+        builder.HasMany(x => x.Products)
+            .WithOne(x => x.Unit)
+            .HasForeignKey(x => x.UnitId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

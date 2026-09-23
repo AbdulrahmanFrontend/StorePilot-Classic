@@ -1,0 +1,35 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using StorePilot.Domain.Entities;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace StorePilot.Infrastructure.Data.Configurations;
+
+internal sealed class ProductGroupConfiguration : IEntityTypeConfiguration<ProductGroup>
+{
+    public void Configure(EntityTypeBuilder<ProductGroup> builder)
+    {
+        builder.ToTable("Groups");
+
+        builder.HasKey(x => x.GroupId);
+
+        builder.Property(x => x.GroupId)
+            .HasColumnName("GroupId")
+            .ValueGeneratedOnAdd();
+
+        builder.Property(x => x.Name)
+            .HasColumnName("Group")
+            .IsRequired()
+            .HasMaxLength(100);
+
+        builder.HasIndex(x => x.Name)
+            .IsUnique();
+
+        builder.HasMany(x => x.Products)
+            .WithOne(x => x.Group)
+            .HasForeignKey(x => x.GroupId)
+            .OnDelete(DeleteBehavior.Restrict);
+    }
+}

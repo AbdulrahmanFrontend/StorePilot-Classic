@@ -1,34 +1,39 @@
-﻿using System;
-using System.Drawing;
-using System.IO;
-using System.Windows.Forms;
-using StorePilot.WinForms.Backup;
+﻿using StorePilot.Application.Services.Backup;
+using StorePilot.Infrastructure.Backup;
+using StorePilot.Infrastructure.Storage;
 using StorePilot.WinForms.Foundation;
 using StorePilot.WinForms.Theme;
 using StorePilot.WinForms.ViewModels;
+using System;
+using System.Drawing;
+using System.IO;
+using System.Windows.Forms;
 
 namespace StorePilot.WinForms.Pages
 {
     public partial class SettingsPage : UserControl
     {
         private readonly AppBrandSettingsStore _settingsStore;
-        private readonly BackupService _backupService;
+        private readonly IBackupService _backupService;
+        private readonly StorePilotPaths _paths;
         private readonly Action _refreshShell;
 
         private readonly SettingsViewModel _viewModel;
 
         public SettingsPage(
             AppBrandSettingsStore settingsStore,
+            StorePilotPaths paths,
             Action refreshShell)
         {
             _settingsStore = settingsStore ??
                              throw new ArgumentNullException(nameof(settingsStore));
+            _paths = paths;
 
             _refreshShell = refreshShell;
 
-            _backupService = new BackupService(
-                _settingsStore.GetDatabasePath(),
-                _settingsStore.GetDefaultBackupDirectory());
+            _backupService = new FileBackupService(
+                _paths.DatabaseFilePath,
+                _paths.BackupDirectory);
 
             _viewModel = new SettingsViewModel();
 
@@ -208,7 +213,7 @@ namespace StorePilot.WinForms.Pages
 
                 var defaultDirectory =
                     string.IsNullOrWhiteSpace(settings.LastBackupDirectory)
-                        ? _settingsStore.GetDefaultBackupDirectory()
+                        ? _paths.BackupDirectory
                         : settings.LastBackupDirectory;
 
                 Directory.CreateDirectory(defaultDirectory);

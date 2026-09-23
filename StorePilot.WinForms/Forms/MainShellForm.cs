@@ -1,3 +1,4 @@
+using StorePilot.Infrastructure.Storage;
 using StorePilot.WinForms.Foundation;
 using StorePilot.WinForms.Navigation;
 using StorePilot.WinForms.Pages;
@@ -10,13 +11,15 @@ public partial class MainShellForm : Form
 {
     private readonly AppBrandSettingsStore _settingsStore;
     private readonly MainShellViewModel _viewModel;
-
+    private readonly StorePilotPaths _paths;
     private NavigationService? _navigationService;
 
     public MainShellForm(
-        AppBrandSettingsStore settingsStore)
+        AppBrandSettingsStore settingsStore,
+        StorePilotPaths paths)
     {
         _settingsStore = settingsStore;
+        _paths = paths;
 
         _viewModel = new MainShellViewModel(
             settingsStore);
@@ -158,6 +161,7 @@ public partial class MainShellForm : Form
                         PageKey.Settings,
                         () => new SettingsPage(
                             _settingsStore,
+                            _paths,
                             RefreshShell));
                     break;
             }

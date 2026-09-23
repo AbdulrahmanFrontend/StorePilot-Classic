@@ -1,4 +1,5 @@
-﻿using StorePilot.WinForms.Foundation;
+﻿using StorePilot.Infrastructure.Storage;
+using StorePilot.WinForms.Foundation;
 using StorePilot.WinForms.Theme;
 
 namespace StorePilot.WinForms.Forms;
@@ -10,9 +11,13 @@ public partial class SplashForm : Form
 
     private bool _closing;
 
-    public SplashForm()
+    private readonly StorePilotPaths _paths;
+
+    public SplashForm(StorePilotPaths paths)
     {
         InitializeComponent();
+
+        _paths = paths;
 
         _fadeInTimer = new System.Windows.Forms.Timer
         {
@@ -44,7 +49,9 @@ public partial class SplashForm : Form
 
     private void LoadLogo()
     {
-        var settingsStore = new AppBrandSettingsStore();
+        var settingsStore = new AppBrandSettingsStore(
+            _paths.SettingsFilePath,
+            _paths.BrandingDirectory);
         string? logoPath = settingsStore.GetLogoPath();
 
         // التحقق من وجود الملف

@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace StorePilot.Domain.Entities;
 
-public class Unit
+public sealed class Unit
 {
     public int UnitId { get; set; }
 
-    public string UnitName { get; set; } = string.Empty;
+    [Required(ErrorMessage = "اسم الوحدة مطلوب.")]
+    [MaxLength(100, ErrorMessage = "لا يمكن أن يتجاوز طول اسم الوحدة 100 حرف.")]
+    public string Name { get; set; } = null!;
 
-
-    // Navigation Property
-
-    public ICollection<Product> Products { get; set; }
-        = new List<Product>();
+    public ICollection<Product> Products { get; } = new List<Product>();
 }

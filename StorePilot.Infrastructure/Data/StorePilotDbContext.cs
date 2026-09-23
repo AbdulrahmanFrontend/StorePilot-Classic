@@ -3,7 +3,7 @@ using StorePilot.Domain.Entities;
 
 namespace StorePilot.Infrastructure.Data;
 
-public class StorePilotDbContext : DbContext
+public sealed class StorePilotDbContext : DbContext
 {
     public StorePilotDbContext(
         DbContextOptions<StorePilotDbContext> options)
@@ -20,8 +20,9 @@ public class StorePilotDbContext : DbContext
 
     public DbSet<Unit> Units => Set<Unit>();
 
-    public DbSet<Group> Groups => Set<Group>();
+    public DbSet<ProductGroup> Groups => Set<ProductGroup>();
 
+    public DbSet<PaymentMethod> PaymentMethods => Set<PaymentMethod>();
 
     protected override void OnModelCreating(
         ModelBuilder modelBuilder)

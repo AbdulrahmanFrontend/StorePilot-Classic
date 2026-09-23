@@ -1,5 +1,6 @@
-﻿using System.Data.Common;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using StorePilot.Domain.Entities;
+using System.Data.Common;
 using System.Reflection;
 
 namespace StorePilot.Infrastructure.Data.Database;
@@ -65,23 +66,50 @@ public static class DatabaseInitializer
         }
     }
 
-
     private static async Task<bool> IsDatabaseInitializedAsync(
-        DbConnection connection,
-        CancellationToken cancellationToken)
+    DbConnection connection,
+    CancellationToken cancellationToken)
     {
-        await using var command = connection.CreateCommand();
+        const string sql = """
+        SELECT COUNT(*)
+        FROM sqlite_master
+        WHERE type = 'table'
+          AND name IN (
+              'Units',
+              'Groups',
+              'PaymentMethods',
+              'People',
+              'Products',
+              'Customers',
+              'Suppliers',
+              'CashTransactions',
+              'StockTransactions',
+              'SaleInvoices',
+              'SaleInvoiceItems',
+              'Quotations',
+              'QuotationItems',
+              'PurchaseInvoices',
+              'PurchaseInvoiceItems',
+              'SaleReturns',
+              'SaleReturnItems',
+              'PurchaseReturns',
+              'PurchaseReturnItems',
+              'CustomerPayments',
+              'SupplierPayments',
+              'OldCustomerDebts'
+          );
+        """;
 
-        command.CommandText = """
-            SELECT COUNT(*)
-            FROM sqlite_master
-            WHERE type = 'table'
-              AND name = 'Products';
-            """;
+        await using var command =
+            connection.CreateCommand();
 
-        var result = await command.ExecuteScalarAsync(cancellationToken);
+        command.CommandText = sql;
 
-        return Convert.ToInt32(result) > 0;
+        var result =
+            await command.ExecuteScalarAsync(
+                cancellationToken);
+
+        return Convert.ToInt32(result) == 22;
     }
 
 
