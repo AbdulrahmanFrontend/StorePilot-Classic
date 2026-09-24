@@ -16,20 +16,17 @@ namespace StorePilot.WinForms.Pages
         private readonly AppBrandSettingsStore _settingsStore;
         private readonly IBackupService _backupService;
         private readonly StorePilotPaths _paths;
-        private readonly Action _refreshShell;
+        public Action refreshShell;
 
         private readonly SettingsViewModel _viewModel;
 
         public SettingsPage(
             AppBrandSettingsStore settingsStore,
-            StorePilotPaths paths,
-            Action refreshShell)
+            StorePilotPaths paths)
         {
             _settingsStore = settingsStore ??
                              throw new ArgumentNullException(nameof(settingsStore));
             _paths = paths;
-
-            _refreshShell = refreshShell;
 
             _backupService = new FileBackupService(
                 _paths.DatabaseFilePath,
@@ -200,7 +197,7 @@ namespace StorePilot.WinForms.Pages
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
 
-            _refreshShell?.Invoke();
+            refreshShell?.Invoke();
         }
 
         private async void BackupButton_Click(
@@ -327,7 +324,7 @@ namespace StorePilot.WinForms.Pages
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
 
-                _refreshShell?.Invoke();
+                refreshShell?.Invoke();
             }
             catch (Exception ex)
             {

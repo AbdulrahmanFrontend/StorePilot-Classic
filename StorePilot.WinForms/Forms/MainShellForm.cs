@@ -12,29 +12,31 @@ public partial class MainShellForm : Form
     private readonly AppBrandSettingsStore _settingsStore;
     private readonly MainShellViewModel _viewModel;
     private readonly StorePilotPaths _paths;
+    private readonly IPageFactory _pageFactory;
     private NavigationService? _navigationService;
 
     public MainShellForm(
         AppBrandSettingsStore settingsStore,
-        StorePilotPaths paths)
+        StorePilotPaths paths,
+        IPageFactory pageFactory)
     {
         _settingsStore = settingsStore;
         _paths = paths;
+        _pageFactory = pageFactory;
 
-        _viewModel = new MainShellViewModel(
-            settingsStore);
+        _viewModel = new MainShellViewModel(settingsStore);
 
         InitializeComponent();
 
         InitializeNavigation();
-
         ApplySettingsToView();
     }
 
     private void InitializeNavigation()
     {
         _navigationService = new NavigationService(
-            contentHostPanel);
+            contentHostPanel,
+            _pageFactory);
     }
 
     protected override void OnShown(EventArgs e)
@@ -42,6 +44,8 @@ public partial class MainShellForm : Form
         base.OnShown(e);
 
         dashboardButton.Tag = ((byte)PageKey.Dashboard);
+        groupsButton.Tag = ((byte)PageKey.ProductGroups);
+        unitsButton.Tag = ((byte)PageKey.Units);
         customersButton.Tag = ((byte)PageKey.Customers);
         suppliersButton.Tag = ((byte)PageKey.Suppliers);
         productsButton.Tag = ((byte)PageKey.Products);
@@ -53,9 +57,7 @@ public partial class MainShellForm : Form
         settingsButton.Tag = ((byte)PageKey.Settings);
         paymentsButton.Tag = ((byte)PageKey.CustomerPayments);
 
-        _navigationService?.Navigate(
-            PageKey.Dashboard,
-            () => new DashboardPage(_settingsStore));
+        _navigationService?.Navigate<DashboardPage>(PageKey.Dashboard);
     }
 
     private void ApplySettingsToView()
@@ -151,19 +153,22 @@ public partial class MainShellForm : Form
             switch ((PageKey)key)
             {
                 case PageKey.Dashboard:
-                    _navigationService?.Navigate(
-                        PageKey.Dashboard,
-                        () => new DashboardPage(_settingsStore)); 
+                    _navigationService?.Navigate<DashboardPage>(PageKey.Dashboard); 
                     break;
 
+            case PageKey.ProductGroups:
+                _navigationService?.Navigate<GroupsPage>(PageKey.ProductGroups);
+                break;
+
+            case PageKey.Units:
+                _navigationService?.Navigate<UnitsPage>(PageKey.Units);
+                break;
+
                 case PageKey.Settings:
-                    _navigationService?.Navigate(
-                        PageKey.Settings,
-                        () => new SettingsPage(
-                            _settingsStore,
-                            _paths,
-                            RefreshShell));
-                    break;
+                    _navigationService?.Navigate<SettingsPage>(PageKey.Settings);
+                var settingsPage = _navigationService?.GetCurrentPage() as SettingsPage;
+                settingsPage?.refreshShell = RefreshShell;
+                break;
             }
     }
 }

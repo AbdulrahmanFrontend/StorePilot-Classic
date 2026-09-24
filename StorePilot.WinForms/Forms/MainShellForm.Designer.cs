@@ -16,17 +16,6 @@ partial class MainShellForm
     private Label logoMarkLabel = null!;
 
     private Button dashboardButton = null!;
-    private Button productsButton = null!;
-    private Button customersButton = null!;
-    private Button suppliersButton = null!;
-    private Button salesButton = null!;
-    private Button purchasesButton = null!;
-    private Button quotationsButton = null!;
-    private Button returnsButton = null!;
-    private Button paymentsButton = null!;
-    private Button inventoryButton = null!;
-    private Button reportsButton = null!;
-    private Button settingsButton = null!;
 
     private Label topBarStoreNameLabel = null!;
     private Panel userPanel = null!;
@@ -35,6 +24,7 @@ partial class MainShellForm
 
     private Panel contentHostPanel = null!;
     private Label footerLabel = null!;
+    private Button unitsButton = null!;
 
     protected override void Dispose(bool disposing)
     {
@@ -49,17 +39,6 @@ partial class MainShellForm
         rootLayoutPanel = new TableLayoutPanel();
         sidebarPanel = new Panel();
         navigationPanel = new Panel();
-        settingsButton = new Button();
-        reportsButton = new Button();
-        inventoryButton = new Button();
-        paymentsButton = new Button();
-        returnsButton = new Button();
-        quotationsButton = new Button();
-        purchasesButton = new Button();
-        salesButton = new Button();
-        suppliersButton = new Button();
-        customersButton = new Button();
-        productsButton = new Button();
         dashboardButton = new Button();
         brandPanel = new Panel();
         storeSubtitleLabel = new Label();
@@ -78,6 +57,19 @@ partial class MainShellForm
         userAvatarPanel = new Panel();
         userInitialLabel = new Label();
         topBarStoreNameLabel = new Label();
+        groupsButton = new Button();
+        unitsButton = new Button();
+        productsButton = new Button();
+        customersButton = new Button();
+        suppliersButton = new Button();
+        salesButton = new Button();
+        purchasesButton = new Button();
+        quotationsButton = new Button();
+        returnsButton = new Button();
+        paymentsButton = new Button();
+        inventoryButton = new Button();
+        reportsButton = new Button();
+        settingsButton = new Button();
         rootLayoutPanel.SuspendLayout();
         sidebarPanel.SuspendLayout();
         navigationPanel.SuspendLayout();
@@ -133,6 +125,8 @@ partial class MainShellForm
         navigationPanel.Controls.Add(suppliersButton);
         navigationPanel.Controls.Add(customersButton);
         navigationPanel.Controls.Add(productsButton);
+        navigationPanel.Controls.Add(this.unitsButton);
+        navigationPanel.Controls.Add(groupsButton);
         navigationPanel.Controls.Add(dashboardButton);
         navigationPanel.Dock = DockStyle.Fill;
         navigationPanel.Location = new Point(14, 85);
@@ -140,215 +134,6 @@ partial class MainShellForm
         navigationPanel.Padding = new Padding(5);
         navigationPanel.Size = new Size(320, 859);
         navigationPanel.TabIndex = 2;
-        // 
-        // settingsButton
-        // 
-        settingsButton.BackColor = Color.FromArgb(20, 24, 32);
-        settingsButton.Cursor = Cursors.Hand;
-        settingsButton.Dock = DockStyle.Top;
-        settingsButton.FlatAppearance.BorderSize = 0;
-        settingsButton.FlatStyle = FlatStyle.Flat;
-        settingsButton.ForeColor = Color.FromArgb(220, 225, 235);
-        settingsButton.Location = new Point(5, 621);
-        settingsButton.Margin = new Padding(0, 0, 0, 8);
-        settingsButton.Name = "settingsButton";
-        settingsButton.Size = new Size(310, 56);
-        settingsButton.TabIndex = 11;
-        settingsButton.Tag = "11";
-        settingsButton.Text = "⚙  الإعدادات";
-        settingsButton.TextAlign = ContentAlignment.MiddleLeft;
-        settingsButton.UseVisualStyleBackColor = false;
-        settingsButton.Click += NavigationButton_Click;
-        // 
-        // reportsButton
-        // 
-        reportsButton.BackColor = Color.FromArgb(20, 24, 32);
-        reportsButton.Cursor = Cursors.Hand;
-        reportsButton.Dock = DockStyle.Top;
-        reportsButton.FlatAppearance.BorderSize = 0;
-        reportsButton.FlatStyle = FlatStyle.Flat;
-        reportsButton.ForeColor = Color.FromArgb(220, 225, 235);
-        reportsButton.Location = new Point(5, 565);
-        reportsButton.Margin = new Padding(0, 0, 0, 8);
-        reportsButton.Name = "reportsButton";
-        reportsButton.Size = new Size(310, 56);
-        reportsButton.TabIndex = 10;
-        reportsButton.Tag = "10";
-        reportsButton.Text = "▤    التقارير ";
-        reportsButton.TextAlign = ContentAlignment.MiddleLeft;
-        reportsButton.UseVisualStyleBackColor = false;
-        reportsButton.Click += NavigationButton_Click;
-        // 
-        // inventoryButton
-        // 
-        inventoryButton.BackColor = Color.FromArgb(20, 24, 32);
-        inventoryButton.Cursor = Cursors.Hand;
-        inventoryButton.Dock = DockStyle.Top;
-        inventoryButton.FlatAppearance.BorderSize = 0;
-        inventoryButton.FlatStyle = FlatStyle.Flat;
-        inventoryButton.ForeColor = Color.FromArgb(220, 225, 235);
-        inventoryButton.Location = new Point(5, 509);
-        inventoryButton.Margin = new Padding(0, 0, 0, 8);
-        inventoryButton.Name = "inventoryButton";
-        inventoryButton.Size = new Size(310, 56);
-        inventoryButton.TabIndex = 9;
-        inventoryButton.Tag = "9";
-        inventoryButton.Text = "▥    المخزون";
-        inventoryButton.TextAlign = ContentAlignment.MiddleLeft;
-        inventoryButton.UseVisualStyleBackColor = false;
-        inventoryButton.Click += NavigationButton_Click;
-        // 
-        // paymentsButton
-        // 
-        paymentsButton.BackColor = Color.FromArgb(20, 24, 32);
-        paymentsButton.Cursor = Cursors.Hand;
-        paymentsButton.Dock = DockStyle.Top;
-        paymentsButton.FlatAppearance.BorderSize = 0;
-        paymentsButton.FlatStyle = FlatStyle.Flat;
-        paymentsButton.ForeColor = Color.FromArgb(220, 225, 235);
-        paymentsButton.Location = new Point(5, 453);
-        paymentsButton.Margin = new Padding(0, 0, 0, 8);
-        paymentsButton.Name = "paymentsButton";
-        paymentsButton.Size = new Size(310, 56);
-        paymentsButton.TabIndex = 8;
-        paymentsButton.Tag = "8";
-        paymentsButton.Text = "◫    المدفوعات";
-        paymentsButton.TextAlign = ContentAlignment.MiddleLeft;
-        paymentsButton.UseVisualStyleBackColor = false;
-        paymentsButton.Click += NavigationButton_Click;
-        // 
-        // returnsButton
-        // 
-        returnsButton.BackColor = Color.FromArgb(20, 24, 32);
-        returnsButton.Cursor = Cursors.Hand;
-        returnsButton.Dock = DockStyle.Top;
-        returnsButton.FlatAppearance.BorderSize = 0;
-        returnsButton.FlatStyle = FlatStyle.Flat;
-        returnsButton.ForeColor = Color.FromArgb(220, 225, 235);
-        returnsButton.Location = new Point(5, 397);
-        returnsButton.Margin = new Padding(0, 0, 0, 8);
-        returnsButton.Name = "returnsButton";
-        returnsButton.Size = new Size(310, 56);
-        returnsButton.TabIndex = 7;
-        returnsButton.Tag = "7";
-        returnsButton.Text = "↩    المرتجعات";
-        returnsButton.TextAlign = ContentAlignment.MiddleLeft;
-        returnsButton.UseVisualStyleBackColor = false;
-        returnsButton.Click += NavigationButton_Click;
-        // 
-        // quotationsButton
-        // 
-        quotationsButton.BackColor = Color.FromArgb(20, 24, 32);
-        quotationsButton.Cursor = Cursors.Hand;
-        quotationsButton.Dock = DockStyle.Top;
-        quotationsButton.FlatAppearance.BorderSize = 0;
-        quotationsButton.FlatStyle = FlatStyle.Flat;
-        quotationsButton.ForeColor = Color.FromArgb(220, 225, 235);
-        quotationsButton.Location = new Point(5, 341);
-        quotationsButton.Margin = new Padding(0, 0, 0, 8);
-        quotationsButton.Name = "quotationsButton";
-        quotationsButton.Size = new Size(310, 56);
-        quotationsButton.TabIndex = 6;
-        quotationsButton.Tag = "6";
-        quotationsButton.Text = "▧    عروض الأسعار";
-        quotationsButton.TextAlign = ContentAlignment.MiddleLeft;
-        quotationsButton.UseVisualStyleBackColor = false;
-        quotationsButton.Click += NavigationButton_Click;
-        // 
-        // purchasesButton
-        // 
-        purchasesButton.BackColor = Color.FromArgb(20, 24, 32);
-        purchasesButton.Cursor = Cursors.Hand;
-        purchasesButton.Dock = DockStyle.Top;
-        purchasesButton.FlatAppearance.BorderSize = 0;
-        purchasesButton.FlatStyle = FlatStyle.Flat;
-        purchasesButton.ForeColor = Color.FromArgb(220, 225, 235);
-        purchasesButton.Location = new Point(5, 285);
-        purchasesButton.Margin = new Padding(0, 0, 0, 8);
-        purchasesButton.Name = "purchasesButton";
-        purchasesButton.Size = new Size(310, 56);
-        purchasesButton.TabIndex = 5;
-        purchasesButton.Tag = "5";
-        purchasesButton.Text = "▤    المشتريات";
-        purchasesButton.TextAlign = ContentAlignment.MiddleLeft;
-        purchasesButton.UseVisualStyleBackColor = false;
-        purchasesButton.Click += NavigationButton_Click;
-        // 
-        // salesButton
-        // 
-        salesButton.BackColor = Color.FromArgb(20, 24, 32);
-        salesButton.Cursor = Cursors.Hand;
-        salesButton.Dock = DockStyle.Top;
-        salesButton.FlatAppearance.BorderSize = 0;
-        salesButton.FlatStyle = FlatStyle.Flat;
-        salesButton.ForeColor = Color.FromArgb(220, 225, 235);
-        salesButton.Location = new Point(5, 229);
-        salesButton.Margin = new Padding(0, 0, 0, 8);
-        salesButton.Name = "salesButton";
-        salesButton.Size = new Size(310, 56);
-        salesButton.TabIndex = 4;
-        salesButton.Tag = "4";
-        salesButton.Text = "▰    المبيعات";
-        salesButton.TextAlign = ContentAlignment.MiddleLeft;
-        salesButton.UseVisualStyleBackColor = false;
-        salesButton.Click += NavigationButton_Click;
-        // 
-        // suppliersButton
-        // 
-        suppliersButton.BackColor = Color.FromArgb(20, 24, 32);
-        suppliersButton.Cursor = Cursors.Hand;
-        suppliersButton.Dock = DockStyle.Top;
-        suppliersButton.FlatAppearance.BorderSize = 0;
-        suppliersButton.FlatStyle = FlatStyle.Flat;
-        suppliersButton.ForeColor = Color.FromArgb(220, 225, 235);
-        suppliersButton.Location = new Point(5, 173);
-        suppliersButton.Margin = new Padding(0, 0, 0, 8);
-        suppliersButton.Name = "suppliersButton";
-        suppliersButton.Size = new Size(310, 56);
-        suppliersButton.TabIndex = 3;
-        suppliersButton.Tag = "3";
-        suppliersButton.Text = "▤    الموردون";
-        suppliersButton.TextAlign = ContentAlignment.MiddleLeft;
-        suppliersButton.UseVisualStyleBackColor = false;
-        suppliersButton.Click += NavigationButton_Click;
-        // 
-        // customersButton
-        // 
-        customersButton.BackColor = Color.FromArgb(20, 24, 32);
-        customersButton.Cursor = Cursors.Hand;
-        customersButton.Dock = DockStyle.Top;
-        customersButton.FlatAppearance.BorderSize = 0;
-        customersButton.FlatStyle = FlatStyle.Flat;
-        customersButton.ForeColor = Color.FromArgb(220, 225, 235);
-        customersButton.Location = new Point(5, 117);
-        customersButton.Margin = new Padding(0, 0, 0, 8);
-        customersButton.Name = "customersButton";
-        customersButton.Size = new Size(310, 56);
-        customersButton.TabIndex = 2;
-        customersButton.Tag = "2";
-        customersButton.Text = "◉    العملاء";
-        customersButton.TextAlign = ContentAlignment.MiddleLeft;
-        customersButton.UseVisualStyleBackColor = false;
-        customersButton.Click += NavigationButton_Click;
-        // 
-        // productsButton
-        // 
-        productsButton.BackColor = Color.FromArgb(20, 24, 32);
-        productsButton.Cursor = Cursors.Hand;
-        productsButton.Dock = DockStyle.Top;
-        productsButton.FlatAppearance.BorderSize = 0;
-        productsButton.FlatStyle = FlatStyle.Flat;
-        productsButton.ForeColor = Color.FromArgb(220, 225, 235);
-        productsButton.Location = new Point(5, 61);
-        productsButton.Margin = new Padding(0, 0, 0, 8);
-        productsButton.Name = "productsButton";
-        productsButton.Size = new Size(310, 56);
-        productsButton.TabIndex = 1;
-        productsButton.Tag = "1";
-        productsButton.Text = "▣    الأصناف";
-        productsButton.TextAlign = ContentAlignment.MiddleLeft;
-        productsButton.UseVisualStyleBackColor = false;
-        productsButton.Click += NavigationButton_Click;
         // 
         // dashboardButton
         // 
@@ -584,6 +369,253 @@ partial class MainShellForm
         topBarStoreNameLabel.Text = "StorePilot";
         topBarStoreNameLabel.TextAlign = ContentAlignment.MiddleLeft;
         // 
+        // groupsButton
+        // 
+        groupsButton.BackColor = Color.FromArgb(20, 24, 32);
+        groupsButton.Cursor = Cursors.Hand;
+        groupsButton.Dock = DockStyle.Top;
+        groupsButton.FlatAppearance.BorderSize = 0;
+        groupsButton.FlatStyle = FlatStyle.Flat;
+        groupsButton.ForeColor = Color.FromArgb(220, 225, 235);
+        groupsButton.Location = new Point(5, 61);
+        groupsButton.Margin = new Padding(0, 0, 0, 8);
+        groupsButton.Name = "groupsButton";
+        groupsButton.Size = new Size(310, 56);
+        groupsButton.TabIndex = 1;
+        groupsButton.Tag = "11";
+        groupsButton.Text = "⚙  المجموعات";
+        groupsButton.TextAlign = ContentAlignment.MiddleLeft;
+        groupsButton.UseVisualStyleBackColor = false;
+        groupsButton.Click += NavigationButton_Click;
+        // 
+        // unitsButton
+        // 
+        this.unitsButton.BackColor = Color.FromArgb(20, 24, 32);
+        this.unitsButton.Cursor = Cursors.Hand;
+        this.unitsButton.Dock = DockStyle.Top;
+        this.unitsButton.FlatAppearance.BorderSize = 0;
+        this.unitsButton.FlatStyle = FlatStyle.Flat;
+        this.unitsButton.ForeColor = Color.FromArgb(220, 225, 235);
+        this.unitsButton.Location = new Point(5, 117);
+        this.unitsButton.Margin = new Padding(0, 0, 0, 8);
+        this.unitsButton.Name = "unitsButton";
+        this.unitsButton.Size = new Size(310, 56);
+        this.unitsButton.TabIndex = 2;
+        this.unitsButton.Tag = "11";
+        this.unitsButton.Text = "⚙  وحدات القياس";
+        this.unitsButton.TextAlign = ContentAlignment.MiddleLeft;
+        this.unitsButton.UseVisualStyleBackColor = false;
+        this.unitsButton.Click += this.NavigationButton_Click;
+        // 
+        // productsButton
+        // 
+        productsButton.BackColor = Color.FromArgb(20, 24, 32);
+        productsButton.Cursor = Cursors.Hand;
+        productsButton.Dock = DockStyle.Top;
+        productsButton.FlatAppearance.BorderSize = 0;
+        productsButton.FlatStyle = FlatStyle.Flat;
+        productsButton.ForeColor = Color.FromArgb(220, 225, 235);
+        productsButton.Location = new Point(5, 173);
+        productsButton.Margin = new Padding(0, 0, 0, 8);
+        productsButton.Name = "productsButton";
+        productsButton.Size = new Size(310, 56);
+        productsButton.TabIndex = 3;
+        productsButton.Tag = "1";
+        productsButton.Text = "▣    الأصناف";
+        productsButton.TextAlign = ContentAlignment.MiddleLeft;
+        productsButton.UseVisualStyleBackColor = false;
+        productsButton.Click += NavigationButton_Click;
+        // 
+        // customersButton
+        // 
+        customersButton.BackColor = Color.FromArgb(20, 24, 32);
+        customersButton.Cursor = Cursors.Hand;
+        customersButton.Dock = DockStyle.Top;
+        customersButton.FlatAppearance.BorderSize = 0;
+        customersButton.FlatStyle = FlatStyle.Flat;
+        customersButton.ForeColor = Color.FromArgb(220, 225, 235);
+        customersButton.Location = new Point(5, 229);
+        customersButton.Margin = new Padding(0, 0, 0, 8);
+        customersButton.Name = "customersButton";
+        customersButton.Size = new Size(310, 56);
+        customersButton.TabIndex = 4;
+        customersButton.Tag = "2";
+        customersButton.Text = "◉    العملاء";
+        customersButton.TextAlign = ContentAlignment.MiddleLeft;
+        customersButton.UseVisualStyleBackColor = false;
+        customersButton.Click += NavigationButton_Click;
+        // 
+        // suppliersButton
+        // 
+        suppliersButton.BackColor = Color.FromArgb(20, 24, 32);
+        suppliersButton.Cursor = Cursors.Hand;
+        suppliersButton.Dock = DockStyle.Top;
+        suppliersButton.FlatAppearance.BorderSize = 0;
+        suppliersButton.FlatStyle = FlatStyle.Flat;
+        suppliersButton.ForeColor = Color.FromArgb(220, 225, 235);
+        suppliersButton.Location = new Point(5, 285);
+        suppliersButton.Margin = new Padding(0, 0, 0, 8);
+        suppliersButton.Name = "suppliersButton";
+        suppliersButton.Size = new Size(310, 56);
+        suppliersButton.TabIndex = 5;
+        suppliersButton.Tag = "3";
+        suppliersButton.Text = "▤    الموردون";
+        suppliersButton.TextAlign = ContentAlignment.MiddleLeft;
+        suppliersButton.UseVisualStyleBackColor = false;
+        suppliersButton.Click += NavigationButton_Click;
+        // 
+        // salesButton
+        // 
+        salesButton.BackColor = Color.FromArgb(20, 24, 32);
+        salesButton.Cursor = Cursors.Hand;
+        salesButton.Dock = DockStyle.Top;
+        salesButton.FlatAppearance.BorderSize = 0;
+        salesButton.FlatStyle = FlatStyle.Flat;
+        salesButton.ForeColor = Color.FromArgb(220, 225, 235);
+        salesButton.Location = new Point(5, 341);
+        salesButton.Margin = new Padding(0, 0, 0, 8);
+        salesButton.Name = "salesButton";
+        salesButton.Size = new Size(310, 56);
+        salesButton.TabIndex = 6;
+        salesButton.Tag = "4";
+        salesButton.Text = "▰    المبيعات";
+        salesButton.TextAlign = ContentAlignment.MiddleLeft;
+        salesButton.UseVisualStyleBackColor = false;
+        salesButton.Click += NavigationButton_Click;
+        // 
+        // purchasesButton
+        // 
+        purchasesButton.BackColor = Color.FromArgb(20, 24, 32);
+        purchasesButton.Cursor = Cursors.Hand;
+        purchasesButton.Dock = DockStyle.Top;
+        purchasesButton.FlatAppearance.BorderSize = 0;
+        purchasesButton.FlatStyle = FlatStyle.Flat;
+        purchasesButton.ForeColor = Color.FromArgb(220, 225, 235);
+        purchasesButton.Location = new Point(5, 397);
+        purchasesButton.Margin = new Padding(0, 0, 0, 8);
+        purchasesButton.Name = "purchasesButton";
+        purchasesButton.Size = new Size(310, 56);
+        purchasesButton.TabIndex = 7;
+        purchasesButton.Tag = "5";
+        purchasesButton.Text = "▤    المشتريات";
+        purchasesButton.TextAlign = ContentAlignment.MiddleLeft;
+        purchasesButton.UseVisualStyleBackColor = false;
+        purchasesButton.Click += NavigationButton_Click;
+        // 
+        // quotationsButton
+        // 
+        quotationsButton.BackColor = Color.FromArgb(20, 24, 32);
+        quotationsButton.Cursor = Cursors.Hand;
+        quotationsButton.Dock = DockStyle.Top;
+        quotationsButton.FlatAppearance.BorderSize = 0;
+        quotationsButton.FlatStyle = FlatStyle.Flat;
+        quotationsButton.ForeColor = Color.FromArgb(220, 225, 235);
+        quotationsButton.Location = new Point(5, 453);
+        quotationsButton.Margin = new Padding(0, 0, 0, 8);
+        quotationsButton.Name = "quotationsButton";
+        quotationsButton.Size = new Size(310, 56);
+        quotationsButton.TabIndex = 8;
+        quotationsButton.Tag = "6";
+        quotationsButton.Text = "▧    عروض الأسعار";
+        quotationsButton.TextAlign = ContentAlignment.MiddleLeft;
+        quotationsButton.UseVisualStyleBackColor = false;
+        quotationsButton.Click += NavigationButton_Click;
+        // 
+        // returnsButton
+        // 
+        returnsButton.BackColor = Color.FromArgb(20, 24, 32);
+        returnsButton.Cursor = Cursors.Hand;
+        returnsButton.Dock = DockStyle.Top;
+        returnsButton.FlatAppearance.BorderSize = 0;
+        returnsButton.FlatStyle = FlatStyle.Flat;
+        returnsButton.ForeColor = Color.FromArgb(220, 225, 235);
+        returnsButton.Location = new Point(5, 509);
+        returnsButton.Margin = new Padding(0, 0, 0, 8);
+        returnsButton.Name = "returnsButton";
+        returnsButton.Size = new Size(310, 56);
+        returnsButton.TabIndex = 9;
+        returnsButton.Tag = "7";
+        returnsButton.Text = "↩    المرتجعات";
+        returnsButton.TextAlign = ContentAlignment.MiddleLeft;
+        returnsButton.UseVisualStyleBackColor = false;
+        returnsButton.Click += NavigationButton_Click;
+        // 
+        // paymentsButton
+        // 
+        paymentsButton.BackColor = Color.FromArgb(20, 24, 32);
+        paymentsButton.Cursor = Cursors.Hand;
+        paymentsButton.Dock = DockStyle.Top;
+        paymentsButton.FlatAppearance.BorderSize = 0;
+        paymentsButton.FlatStyle = FlatStyle.Flat;
+        paymentsButton.ForeColor = Color.FromArgb(220, 225, 235);
+        paymentsButton.Location = new Point(5, 565);
+        paymentsButton.Margin = new Padding(0, 0, 0, 8);
+        paymentsButton.Name = "paymentsButton";
+        paymentsButton.Size = new Size(310, 56);
+        paymentsButton.TabIndex = 10;
+        paymentsButton.Tag = "8";
+        paymentsButton.Text = "◫    المدفوعات";
+        paymentsButton.TextAlign = ContentAlignment.MiddleLeft;
+        paymentsButton.UseVisualStyleBackColor = false;
+        paymentsButton.Click += NavigationButton_Click;
+        // 
+        // inventoryButton
+        // 
+        inventoryButton.BackColor = Color.FromArgb(20, 24, 32);
+        inventoryButton.Cursor = Cursors.Hand;
+        inventoryButton.Dock = DockStyle.Top;
+        inventoryButton.FlatAppearance.BorderSize = 0;
+        inventoryButton.FlatStyle = FlatStyle.Flat;
+        inventoryButton.ForeColor = Color.FromArgb(220, 225, 235);
+        inventoryButton.Location = new Point(5, 621);
+        inventoryButton.Margin = new Padding(0, 0, 0, 8);
+        inventoryButton.Name = "inventoryButton";
+        inventoryButton.Size = new Size(310, 56);
+        inventoryButton.TabIndex = 11;
+        inventoryButton.Tag = "9";
+        inventoryButton.Text = "▥    المخزون";
+        inventoryButton.TextAlign = ContentAlignment.MiddleLeft;
+        inventoryButton.UseVisualStyleBackColor = false;
+        inventoryButton.Click += NavigationButton_Click;
+        // 
+        // reportsButton
+        // 
+        reportsButton.BackColor = Color.FromArgb(20, 24, 32);
+        reportsButton.Cursor = Cursors.Hand;
+        reportsButton.Dock = DockStyle.Top;
+        reportsButton.FlatAppearance.BorderSize = 0;
+        reportsButton.FlatStyle = FlatStyle.Flat;
+        reportsButton.ForeColor = Color.FromArgb(220, 225, 235);
+        reportsButton.Location = new Point(5, 677);
+        reportsButton.Margin = new Padding(0, 0, 0, 8);
+        reportsButton.Name = "reportsButton";
+        reportsButton.Size = new Size(310, 56);
+        reportsButton.TabIndex = 12;
+        reportsButton.Tag = "10";
+        reportsButton.Text = "▤    التقارير ";
+        reportsButton.TextAlign = ContentAlignment.MiddleLeft;
+        reportsButton.UseVisualStyleBackColor = false;
+        reportsButton.Click += NavigationButton_Click;
+        // 
+        // settingsButton
+        // 
+        settingsButton.BackColor = Color.FromArgb(20, 24, 32);
+        settingsButton.Cursor = Cursors.Hand;
+        settingsButton.Dock = DockStyle.Top;
+        settingsButton.FlatAppearance.BorderSize = 0;
+        settingsButton.FlatStyle = FlatStyle.Flat;
+        settingsButton.ForeColor = Color.FromArgb(220, 225, 235);
+        settingsButton.Location = new Point(5, 733);
+        settingsButton.Margin = new Padding(0, 0, 0, 8);
+        settingsButton.Name = "settingsButton";
+        settingsButton.Size = new Size(310, 56);
+        settingsButton.TabIndex = 13;
+        settingsButton.Tag = "11";
+        settingsButton.Text = "⚙  الإعدادات";
+        settingsButton.TextAlign = ContentAlignment.MiddleLeft;
+        settingsButton.UseVisualStyleBackColor = false;
+        settingsButton.Click += NavigationButton_Click;
+        // 
         // MainShellForm
         // 
         AutoScaleDimensions = new SizeF(8F, 20F);
@@ -619,4 +651,18 @@ partial class MainShellForm
     private Label storeSubtitleLabel;
     private Label storeNameLabel;
     private Panel navigationPanel;
+    private Button suppliersButton;
+    private Button customersButton;
+    private Button productsButton;
+    //private Button button2;
+    private Button groupsButton;
+    private Button settingsButton;
+    private Button reportsButton;
+    private Button inventoryButton;
+    private Button paymentsButton;
+    private Button returnsButton;
+    private Button quotationsButton;
+    private Button purchasesButton;
+    private Button salesButton;
+    //private Button unitsButton;
 }

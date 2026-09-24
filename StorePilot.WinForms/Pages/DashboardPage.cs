@@ -60,10 +60,10 @@ namespace StorePilot.WinForms.Pages
             foreach (var sale in _viewModel.RecentSales)
             {
                 recentSalesGrid.Rows.Add(
-                    sale.InvoiceNumber,
-                    sale.CustomerName,
-                    sale.Total,
-                    sale.PaymentStatus,
+                    sale.InvoiceNumber == null ? string.Empty : sale.InvoiceNumber,
+                    sale.CustomerName == null ? string.Empty : sale.CustomerName,
+                    sale.Total == null ? string.Empty : sale.Total.ToString(),
+                    sale.PaymentStatus == null ? string.Empty : sale.PaymentStatus,
                     sale.Date.ToString("HH:mm")
                 );
             }
@@ -73,7 +73,7 @@ namespace StorePilot.WinForms.Pages
             foreach (var item in _viewModel.LowStockItems)
             {
                 lowStockGrid.Rows.Add(
-                    item.ProductName,
+                    item.ProductName == null ? string.Empty : item.ProductName,
                     item.CurrentQuantity,
                     item.MinimumQuantity
                 );

@@ -41,12 +41,12 @@ partial class PaginationControl
         rootLayoutPanel.ColumnCount = 8;
         rootLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 46F));
         rootLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 46F));
-        rootLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 85F));
-        rootLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 130F));
+        rootLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 68F));
+        rootLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 147F));
         rootLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 46F));
         rootLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 46F));
-        rootLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 70F));
-        rootLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 80F));
+        rootLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 91F));
+        rootLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 59F));
         rootLayoutPanel.Controls.Add(firstButton, 0, 0);
         rootLayoutPanel.Controls.Add(previousButton, 1, 0);
         rootLayoutPanel.Controls.Add(pageNumberComboBox, 2, 0);
@@ -66,7 +66,8 @@ partial class PaginationControl
         // 
         // firstButton
         // 
-        firstButton.Dock = DockStyle.Fill;
+        firstButton.Anchor = AnchorStyles.None;
+        firstButton.Cursor = Cursors.Hand;
         firstButton.Location = new Point(526, 2);
         firstButton.Margin = new Padding(2);
         firstButton.Name = "firstButton";
@@ -77,7 +78,8 @@ partial class PaginationControl
         // 
         // previousButton
         // 
-        previousButton.Dock = DockStyle.Fill;
+        previousButton.Anchor = AnchorStyles.None;
+        previousButton.Cursor = Cursors.Hand;
         previousButton.Location = new Point(480, 2);
         previousButton.Margin = new Padding(2);
         previousButton.Name = "previousButton";
@@ -89,11 +91,14 @@ partial class PaginationControl
         // pageNumberComboBox
         // 
         pageNumberComboBox.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+        pageNumberComboBox.Cursor = Cursors.Hand;
+        pageNumberComboBox.DropDownHeight = 100;
         pageNumberComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
         pageNumberComboBox.FormattingEnabled = true;
-        pageNumberComboBox.Location = new Point(396, 7);
+        pageNumberComboBox.IntegralHeight = false;
+        pageNumberComboBox.Location = new Point(413, 7);
         pageNumberComboBox.Name = "pageNumberComboBox";
-        pageNumberComboBox.Size = new Size(79, 28);
+        pageNumberComboBox.Size = new Size(62, 28);
         pageNumberComboBox.TabIndex = 2;
         // 
         // pageInfoLabel
@@ -101,39 +106,41 @@ partial class PaginationControl
         pageInfoLabel.Dock = DockStyle.Fill;
         pageInfoLabel.Location = new Point(266, 0);
         pageInfoLabel.Name = "pageInfoLabel";
-        pageInfoLabel.Size = new Size(124, 42);
+        pageInfoLabel.Size = new Size(141, 42);
         pageInfoLabel.TabIndex = 3;
         pageInfoLabel.Text = "لا توجد صفحات";
         pageInfoLabel.TextAlign = ContentAlignment.MiddleCenter;
         // 
         // nextButton
         // 
-        nextButton.Dock = DockStyle.Fill;
+        nextButton.Anchor = AnchorStyles.None;
+        nextButton.Cursor = Cursors.Hand;
         nextButton.Location = new Point(219, 2);
         nextButton.Margin = new Padding(2);
         nextButton.Name = "nextButton";
         nextButton.Size = new Size(42, 38);
-        nextButton.TabIndex = 4;
+        nextButton.TabIndex = 3;
         nextButton.Text = ">";
         nextButton.UseVisualStyleBackColor = true;
         // 
         // lastButton
         // 
-        lastButton.Dock = DockStyle.Fill;
+        lastButton.Anchor = AnchorStyles.None;
+        lastButton.Cursor = Cursors.Hand;
         lastButton.Location = new Point(173, 2);
         lastButton.Margin = new Padding(2);
         lastButton.Name = "lastButton";
         lastButton.Size = new Size(42, 38);
-        lastButton.TabIndex = 5;
+        lastButton.TabIndex = 4;
         lastButton.Text = ">|";
         lastButton.UseVisualStyleBackColor = true;
         // 
         // pageSizeLabel
         // 
         pageSizeLabel.Dock = DockStyle.Fill;
-        pageSizeLabel.Location = new Point(104, 0);
+        pageSizeLabel.Location = new Point(83, 0);
         pageSizeLabel.Name = "pageSizeLabel";
-        pageSizeLabel.Size = new Size(64, 42);
+        pageSizeLabel.Size = new Size(85, 42);
         pageSizeLabel.TabIndex = 6;
         pageSizeLabel.Text = "الحجم:";
         pageSizeLabel.TextAlign = ContentAlignment.MiddleCenter;
@@ -141,12 +148,15 @@ partial class PaginationControl
         // pageSizeComboBox
         // 
         pageSizeComboBox.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+        pageSizeComboBox.Cursor = Cursors.Hand;
+        pageSizeComboBox.DropDownHeight = 100;
         pageSizeComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
         pageSizeComboBox.FormattingEnabled = true;
+        pageSizeComboBox.IntegralHeight = false;
         pageSizeComboBox.Location = new Point(3, 7);
         pageSizeComboBox.Name = "pageSizeComboBox";
-        pageSizeComboBox.Size = new Size(95, 28);
-        pageSizeComboBox.TabIndex = 7;
+        pageSizeComboBox.Size = new Size(74, 28);
+        pageSizeComboBox.TabIndex = 5;
         // 
         // PaginationControl
         // 

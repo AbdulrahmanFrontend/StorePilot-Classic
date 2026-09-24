@@ -1,11 +1,18 @@
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using StorePilot.Application.Services.ProductGroupServices;
+using StorePilot.Application.Services.UnitServices;
 using StorePilot.Infrastructure.Data;
 using StorePilot.Infrastructure.Data.Database;
 using StorePilot.Infrastructure.DependencyInjection;
 using StorePilot.Infrastructure.Storage;
+using StorePilot.WinForms.Demo;
 using StorePilot.WinForms.Forms;
 using StorePilot.WinForms.Foundation;
+using StorePilot.WinForms.Navigation;
+using StorePilot.WinForms.Pages;
 using StorePilot.WinForms.Theme;
+using StorePilot.WinForms.ViewModels;
 
 namespace StorePilot.WinForms;
 
@@ -129,10 +136,22 @@ internal static class Program
         AppBrandSettingsStore settingsStore)
     {
         services.AddSingleton(paths);
-
         services.AddSingleton(settingsStore);
 
         services.AddStorePilotInfrastructure(paths);
+
+        services.AddSingleton<IPageFactory, DiPageFactory>();
+
+        services.AddSingleton<IUnitService, DemoUnitService>();
+        services.AddSingleton<IProductGroupService, DemoProductGroupService>();
+
+        services.AddTransient<UnitsViewModel>();
+        services.AddTransient<GroupsViewModel>();
+        services.AddTransient<DashboardPage>();
+        services.AddTransient<SettingsPage>();
+
+        services.AddTransient<UnitsPage>();
+        services.AddTransient<GroupsPage>();
 
         services.AddTransient<MainShellForm>();
     }

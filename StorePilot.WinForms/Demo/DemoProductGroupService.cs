@@ -43,7 +43,44 @@ public sealed class DemoProductGroupService : IProductGroupService
 
     private int _nextId = 31;
 
-    public Task<PagedResult<ProductGroupDto>> GetAllAsync(
+    public Task<Result<IReadOnlyList<ProductGroupDto>>> GetAllAsync(
+        CancellationToken cancellationToken = default)
+    {
+        var items = _items
+            .OrderBy(x => x.Name)
+            .ToList()
+            .AsReadOnly();
+        return Task.FromResult(
+            Result<IReadOnlyList<ProductGroupDto>>.Success(items));
+    }
+
+    public Task<Result<ProductGroupDto>> GetByIdAsync(
+        int groupId,
+        CancellationToken cancellationToken = default)
+    {
+        var item = _items.FirstOrDefault(
+            x => x.GroupId == groupId);
+        if (item is null)
+        {
+            return Task.FromResult(
+                Result<ProductGroupDto>.Failure(
+                    "مجموعة المنتج غير موجودة."));
+        }
+        return Task.FromResult(
+            Result<ProductGroupDto>.Success(item));
+    }
+
+    public Task<Result<bool>> ExistsAsync(
+        int groupId,
+        CancellationToken cancellationToken = default)
+    {
+        var exists = _items.Any(
+            x => x.GroupId == groupId);
+        return Task.FromResult(
+            Result<bool>.Success(exists));
+    }
+
+    public Task<PagedResult<ProductGroupDto>> GetPagesAsync(
         string? search = null,
         int pageNumber = 1,
         int pageSize = 10,

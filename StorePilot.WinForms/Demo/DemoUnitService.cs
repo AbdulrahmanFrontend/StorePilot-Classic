@@ -1,4 +1,5 @@
 ﻿using StorePilot.Application.Common;
+using StorePilot.Application.Dtos.ProductGroupDtos;
 using StorePilot.Application.Dtos.UnitDtos;
 using StorePilot.Application.Services.UnitServices;
 
@@ -32,7 +33,44 @@ public sealed class DemoUnitService : IUnitService
 
     private int _nextId = 21;
 
-    public Task<PagedResult<UnitDto>> GetAllAsync(
+    public Task<Result<IReadOnlyList<UnitDto>>> GetAllAsync(
+        CancellationToken cancellationToken = default)
+    {
+        var items = _items
+            .OrderBy(x => x.Name)
+            .ToList()
+            .AsReadOnly();
+        return Task.FromResult(
+            Result<IReadOnlyList<UnitDto>>.Success(items));
+    }
+
+    public Task<Result<UnitDto>> GetByIdAsync(
+        int unitId,
+        CancellationToken cancellationToken = default)
+    {
+        var item = _items.FirstOrDefault(
+            x => x.UnitId == unitId);
+        if (item is null)
+        {
+            return Task.FromResult(
+                Result<UnitDto>.Failure(
+                    "الوحدة غير موجودة."));
+        }
+        return Task.FromResult(
+            Result<UnitDto>.Success(item));
+    }
+
+    public Task<Result<bool>> ExistsAsync(
+        int unitId,
+        CancellationToken cancellationToken = default)
+    {
+        var exists = _items.Any(
+            x => x.UnitId == unitId);
+        return Task.FromResult(
+            Result<bool>.Success(exists));
+    }
+
+    public Task<PagedResult<UnitDto>> GetPagesAsync(
         string? search = null,
         int pageNumber = 1,
         int pageSize = 10,

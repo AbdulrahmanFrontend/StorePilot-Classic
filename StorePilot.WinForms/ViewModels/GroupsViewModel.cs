@@ -24,6 +24,11 @@ public sealed class GroupsViewModel
         _service = service;
     }
 
+    public async Task<Result<bool>> ExistsAsync(
+        int groupId,
+        CancellationToken cancellationToken = default)
+        => await _service.ExistsAsync(groupId, cancellationToken);
+
     public async Task LoadAsync(
         string? search = null,
         int pageNumber = 1,
@@ -31,7 +36,7 @@ public sealed class GroupsViewModel
         CancellationToken cancellationToken = default)
     {
         var result =
-            await _service.GetAllAsync(
+            await _service.GetPagesAsync(
                 search,
                 pageNumber,
                 pageSize,
@@ -48,23 +53,14 @@ public sealed class GroupsViewModel
             Items.Add(item);
     }
 
-    public Task<Result<int>> CreateAsync(
+    public async Task<Result<int>> CreateAsync(
         CreateProductGroupDto dto,
         CancellationToken cancellationToken = default)
-    {
-        return _service.CreateAsync(
-            dto,
-            cancellationToken);
-    }
+        => await _service.CreateAsync(dto, cancellationToken);
 
-    public Task<Result> UpdateAsync(
+    public async Task<Result> UpdateAsync(
         int groupId,
         UpdateProductGroupDto dto,
         CancellationToken cancellationToken = default)
-    {
-        return _service.UpdateAsync(
-            groupId,
-            dto,
-            cancellationToken);
-    }
+        => await _service.UpdateAsync(groupId, dto, cancellationToken);
 }

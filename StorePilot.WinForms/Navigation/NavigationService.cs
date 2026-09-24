@@ -1,3 +1,4 @@
+using StorePilot.WinForms.Pages;
 using System.Windows.Forms;
 
 namespace StorePilot.WinForms.Navigation;
@@ -5,35 +6,37 @@ namespace StorePilot.WinForms.Navigation;
 public sealed class NavigationService
 {
     private readonly Control _contentHost;
+    private readonly IPageFactory _pageFactory;
 
     private readonly Dictionary<PageKey, UserControl> _pages = new();
 
     private PageKey _currentPageKey = PageKey.Unknown;
 
-    public NavigationService(Control contentHost)
+    public NavigationService(
+        Control contentHost,
+        IPageFactory pageFactory)
     {
         _contentHost = contentHost;
+        _pageFactory = pageFactory;
     }
 
     public PageKey CurrentPageKey => _currentPageKey;
 
-    public void Navigate<TPage>(
-        PageKey key,
-        Func<TPage> factory)
-        where TPage : UserControl
+    public void Navigate<TPage>(PageKey key) where TPage : UserControl
     {
         if (key == PageKey.Unknown)
             throw new ArgumentException(
-                "مفتاح الصفحة غير صالح.",
+                "Unknown page key is not allowed.",
                 nameof(key));
 
-        ArgumentNullException.ThrowIfNull(factory);
+        if (!_pages.TryGetValue(key, out var page))
+        {
+            page = _pageFactory.Create<TPage>();
 
-        UserControl page = factory();
+            page.Dock = DockStyle.Fill;
 
-        page.Dock = DockStyle.Fill;
-
-        _pages[key] = page;
+            _pages[key] = page;
+        }
 
         if (_currentPageKey == key)
             return;
@@ -43,9 +46,7 @@ public sealed class NavigationService
         try
         {
             _contentHost.Controls.Clear();
-
             _contentHost.Controls.Add(page);
-
             page.BringToFront();
 
             _currentPageKey = key;
@@ -59,6 +60,12 @@ public sealed class NavigationService
     public bool Contains(PageKey key)
     {
         return _pages.ContainsKey(key);
+    }
+
+    public UserControl? GetCurrentPage()
+    {
+        _pages.TryGetValue(_currentPageKey, out UserControl? page);
+        return page;
     }
 
     public void Remove(PageKey key)

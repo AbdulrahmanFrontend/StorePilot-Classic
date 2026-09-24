@@ -31,7 +31,7 @@ public sealed class UnitsViewModel
         CancellationToken cancellationToken = default)
     {
         var result =
-            await _service.GetAllAsync(
+            await _service.GetPagesAsync(
                 search,
                 pageNumber,
                 pageSize,
