@@ -54,28 +54,6 @@ public partial class PaginationControl : UserControl
     public PaginationControl()
     {
         InitializeComponent();
-
-        pageSizeComboBox.Items.AddRange(
-        [
-            10,
-            20,
-            50
-        ]);
-
-        pageSizeComboBox.SelectedItem = 10;
-
-        pageNumberComboBox.SelectedIndexChanged +=
-            PageNumberComboBox_SelectedIndexChanged;
-
-        pageSizeComboBox.SelectedIndexChanged +=
-            PageSizeComboBox_SelectedIndexChanged;
-
-        firstButton.Click += FirstButton_Click;
-        previousButton.Click += PreviousButton_Click;
-        nextButton.Click += NextButton_Click;
-        lastButton.Click += LastButton_Click;
-
-        UpdateState();
     }
 
     public void SetPageState(
@@ -231,5 +209,13 @@ public partial class PaginationControl : UserControl
         PageChanged?.Invoke(
             this,
             EventArgs.Empty);
+    }
+
+    private void PaginationControl_Load(object sender, EventArgs e)
+    {
+        pageSizeComboBox.Items.AddRange([10, 20, 50]);
+        pageSizeComboBox.SelectedItem = 10;
+
+        UpdateState();
     }
 }

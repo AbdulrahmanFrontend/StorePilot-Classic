@@ -24,6 +24,10 @@ internal sealed class ProductGroupConfiguration : IEntityTypeConfiguration<Produ
             .IsRequired()
             .HasMaxLength(100);
 
+        builder.Property(x => x.CreatedAt)
+            .IsRequired()
+            .HasDefaultValue(DateTime.Now);
+
         builder.HasIndex(x => x.Name)
             .IsUnique();
 

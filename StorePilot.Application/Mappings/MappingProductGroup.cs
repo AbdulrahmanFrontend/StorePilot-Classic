@@ -9,7 +9,10 @@ namespace StorePilot.Application.Mappings;
 public static class MappingProductGroup
 {
     public static ProductGroupDto ToDto(this ProductGroup productGroup)
-        => new ProductGroupDto(productGroup.GroupId, productGroup.Name);
+        => new ProductGroupDto(
+            productGroup.GroupId,
+            productGroup.Name, 
+            productGroup.CreatedAt);
 
     public static ProductGroup ToEntity(this CreateProductGroupDto dto)
         => new ProductGroup { Name = dto.Name };

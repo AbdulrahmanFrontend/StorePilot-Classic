@@ -12,6 +12,7 @@ public sealed class Unit
     [Required(ErrorMessage = "اسم الوحدة مطلوب.")]
     [MaxLength(100, ErrorMessage = "لا يمكن أن يتجاوز طول اسم الوحدة 100 حرف.")]
     public string Name { get; set; } = null!;
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
 
     public ICollection<Product> Products { get; } = new List<Product>();
 }

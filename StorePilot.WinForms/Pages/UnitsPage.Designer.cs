@@ -78,6 +78,7 @@ partial class UnitsPage
         unitsGrid.RightToLeft = RightToLeft.Yes;
         unitsGrid.Size = new Size(962, 492);
         unitsGrid.TabIndex = 1;
+        unitsGrid.TabStop = false;
         unitsGrid.CellDoubleClicked += UnitsGrid_CellDoubleClicked;
         // 
         // footerLayoutPanel

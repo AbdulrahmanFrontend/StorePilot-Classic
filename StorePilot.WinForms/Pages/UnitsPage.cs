@@ -20,8 +20,6 @@ public partial class UnitsPage : UserControl
 
         _viewModel =
             viewModel;
-
-        ConfigurePage();
     }
 
     private void ConfigurePage()
@@ -30,8 +28,8 @@ public partial class UnitsPage : UserControl
             "الوحدات";
 
         unitsGrid.Configure(
-            "رقم الوحدة",
-            "اسم الوحدة");
+            "اسم الوحدة",
+            "تاريخ الإنشاء");
 
         unitsGrid.Grid.Columns["idColumn"]!
             .DataPropertyName =
@@ -40,6 +38,10 @@ public partial class UnitsPage : UserControl
         unitsGrid.Grid.Columns["nameColumn"]!
             .DataPropertyName =
             "Name";
+
+        unitsGrid.Grid.Columns["createdAtColumn"]!
+            .DataPropertyName =
+            "CreatedAt";
 
         unitsGrid.Grid.DataSource =
             _viewModel.Items;
@@ -51,6 +53,8 @@ public partial class UnitsPage : UserControl
         object? sender,
         EventArgs e)
     {
+        ConfigurePage();
+
         if (DesignMode)
             return;
 
@@ -198,7 +202,7 @@ public partial class UnitsPage : UserControl
         }
     }
 
-    private void ApplyTheme()
+    public void ApplyTheme()
     {
         BackColor =
             AppTheme.Background;

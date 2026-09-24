@@ -20,8 +20,6 @@ public partial class GroupsPage : UserControl
 
         _viewModel =
             viewModel;
-
-        ConfigurePage();
     }
 
     private void ConfigurePage()
@@ -30,16 +28,20 @@ public partial class GroupsPage : UserControl
             "مجموعات المنتجات";
 
         groupsGrid.Configure(
-            "رقم المجموعة",
-            "اسم المجموعة");
+            "اسم المجموعة",
+            "تاريخ الإنشاء");
 
         groupsGrid.Grid.Columns["idColumn"]!
             .DataPropertyName =
-            "GroupId";
+            "groupId";
 
         groupsGrid.Grid.Columns["nameColumn"]!
             .DataPropertyName =
             "Name";
+
+        groupsGrid.Grid.Columns["createdAtColumn"]!
+            .DataPropertyName =
+            "CreatedAt";
 
         groupsGrid.Grid.DataSource =
             _viewModel.Items;
@@ -51,6 +53,8 @@ public partial class GroupsPage : UserControl
         object? sender,
         EventArgs e)
     {
+        ConfigurePage();
+
         if (DesignMode)
             return;
 
@@ -198,7 +202,7 @@ public partial class GroupsPage : UserControl
         }
     }
 
-    private void ApplyTheme()
+    public void ApplyTheme()
     {
         BackColor =
             AppTheme.Background;

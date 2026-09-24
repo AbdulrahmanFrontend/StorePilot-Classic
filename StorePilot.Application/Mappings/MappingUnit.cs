@@ -10,7 +10,7 @@ namespace StorePilot.Application.Mappings;
 public static class MappingUnit
 {
     public static UnitDto ToDto(this Unit unit)
-        => new UnitDto(unit.UnitId, unit.Name);
+        => new UnitDto(unit.UnitId, unit.Name, unit.CreatedAt);
 
     public static Unit ToEntity(this CreateUnitDto dto)
         => new Unit { Name = dto.Name };

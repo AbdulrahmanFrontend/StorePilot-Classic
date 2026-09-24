@@ -17,16 +17,14 @@ public partial class ReferenceDataGrid : UserControl
     public ReferenceDataGrid()
     {
         InitializeComponent();
-
-        ApplyTheme();
     }
 
     public void Configure(
-        string idHeader,
-        string nameHeader)
+        string nameHeader,
+        string createdAtHeader)
     {
-        idColumn.HeaderText = idHeader;
         nameColumn.HeaderText = nameHeader;
+        createdAtColumn.HeaderText = createdAtHeader;
     }
 
     public void ApplyTheme()
@@ -78,4 +76,7 @@ public partial class ReferenceDataGrid : UserControl
             this,
             e);
     }
+
+    private void ReferenceDataGrid_Load(object sender, EventArgs e)
+        => ApplyTheme();
 }

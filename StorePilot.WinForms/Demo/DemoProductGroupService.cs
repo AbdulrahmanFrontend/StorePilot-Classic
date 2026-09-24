@@ -8,37 +8,36 @@ public sealed class DemoProductGroupService : IProductGroupService
 {
     private readonly List<ProductGroupDto> _items =
     [
-        new(1, "نواكل"),
-        new(2, "قطع بولي"),
-        new(3, "قطع ابيض"),
-        new(4, "مواسير بولي"),
-        new(5, "مواسير ابيض"),
-        new(6, "اطقم صيني"),
-        new(7, "نواكل صيني"),
-        new(8, "قطع ابيض صيني"),
-        new(9, "حدايد وبويات"),
-        new(10, "كهرباء"),
-        new(11, "موبايل قسط"),
-        new(12, "أجهزة كهربائية قسط"),
-        new(13, "مستلزمات قسط"),
-
-        new(14, "محابس"),
-        new(15, "خلاطات"),
-        new(16, "سيفونات"),
-        new(17, "أحواض"),
-        new(18, "بانيوهات"),
-        new(19, "وصلات"),
-        new(20, "كوع و تي"),
-        new(21, "جلب"),
-        new(22, "فلانشات"),
-        new(23, "محولات"),
-        new(24, "بلاعات"),
-        new(25, "خراطيم"),
-        new(26, "شطرطون"),
-        new(27, "سيليكون"),
-        new(28, "مواد عزل"),
-        new(29, "أدوات سباكة"),
-        new(30, "عدد يدوية")
+        new(1, "نواكل", DateTime.Now),
+        new(2, "قطع بولي", DateTime.Now),
+        new(3, "قطع ابيض", DateTime.Now),
+        new(4, "مواسير بولي", DateTime.Now),
+        new(5, "مواسير ابيض", DateTime.Now),
+        new(6, "اطقم صيني", DateTime.Now),
+        new(7, "نواكل صيني", DateTime.Now),
+        new(8, "قطع ابيض صيني", DateTime.Now),
+        new(9, "حدايد وبويات", DateTime.Now),
+        new(10, "كهرباء", DateTime.Now),
+        new(11, "موبايل قسط", DateTime.Now),
+        new(12, "أجهزة كهربائية قسط", DateTime.Now),
+        new(13, "مستلزمات قسط", DateTime.Now),
+        new(14, "محابس", DateTime.Now),
+        new(15, "خلاطات", DateTime.Now),
+        new(16, "سيفونات", DateTime.Now),
+        new(17, "أحواض", DateTime.Now),
+        new(18, "بانيوهات", DateTime.Now),
+        new(19, "وصلات", DateTime.Now),
+        new(20, "كوع و تي", DateTime.Now),
+        new(21, "جلب", DateTime.Now),
+        new(22, "فلانشات", DateTime.Now),
+        new(23, "محولات", DateTime.Now),
+        new(24, "بلاعات", DateTime.Now),
+        new(25, "خراطيم", DateTime.Now),
+        new(26, "شطرطون", DateTime.Now),
+        new(27, "سيليكون", DateTime.Now),
+        new(28, "مواد عزل", DateTime.Now),
+        new(29, "أدوات سباكة", DateTime.Now),
+        new(30, "عدد يدوية", DateTime.Now)
     ];
 
     private int _nextId = 31;
@@ -154,7 +153,8 @@ public sealed class DemoProductGroupService : IProductGroupService
 
         var item = new ProductGroupDto(
             _nextId++,
-            name);
+            name,
+            DateTime.Now);
 
         _items.Add(item);
 
@@ -194,7 +194,8 @@ public sealed class DemoProductGroupService : IProductGroupService
         _items[index] =
             new ProductGroupDto(
                 groupId,
-                name);
+                name,
+                DateTime.Now);
 
         return Task.FromResult(
             Result.Success());

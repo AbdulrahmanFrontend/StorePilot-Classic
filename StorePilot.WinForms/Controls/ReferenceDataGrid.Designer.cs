@@ -5,8 +5,6 @@
         private System.ComponentModel.IContainer components = null;
 
         private DataGridView dataGridView;
-        private DataGridViewTextBoxColumn idColumn;
-        private DataGridViewTextBoxColumn nameColumn;
 
         protected override void Dispose(bool disposing)
         {
@@ -21,7 +19,11 @@
         private void InitializeComponent()
         {
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             dataGridView = new DataGridView();
+            idColumn = new DataGridViewTextBoxColumn();
+            nameColumn = new DataGridViewTextBoxColumn();
+            createdAtColumn = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
             SuspendLayout();
             // 
@@ -38,6 +40,7 @@
             dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dataGridView.ColumnHeadersHeight = 42;
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dataGridView.Columns.AddRange(new DataGridViewColumn[] { idColumn, nameColumn, createdAtColumn });
             dataGridView.Cursor = Cursors.Hand;
             dataGridView.Dock = DockStyle.Fill;
             dataGridView.EnableHeadersVisualStyles = false;
@@ -53,6 +56,32 @@
             dataGridView.TabIndex = 0;
             dataGridView.CellDoubleClick += DataGridView_CellDoubleClick;
             // 
+            // idColumn
+            // 
+            idColumn.HeaderText = "Column1";
+            idColumn.MinimumWidth = 6;
+            idColumn.Name = "idColumn";
+            idColumn.ReadOnly = true;
+            idColumn.Visible = false;
+            // 
+            // nameColumn
+            // 
+            nameColumn.HeaderText = "Column1";
+            nameColumn.MinimumWidth = 6;
+            nameColumn.Name = "nameColumn";
+            nameColumn.ReadOnly = true;
+            // 
+            // createdAtColumn
+            // 
+            dataGridViewCellStyle2.Format = "g";
+            dataGridViewCellStyle2.NullValue = null;
+            createdAtColumn.DefaultCellStyle = dataGridViewCellStyle2;
+            createdAtColumn.HeaderText = "Column1";
+            createdAtColumn.MinimumWidth = 6;
+            createdAtColumn.Name = "createdAtColumn";
+            createdAtColumn.ReadOnly = true;
+            createdAtColumn.ToolTipText = "التاريخ والوقت الذي تم فيه إنشاء الصف";
+            // 
             // ReferenceDataGrid
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -63,8 +92,13 @@
             Name = "ReferenceDataGrid";
             RightToLeft = RightToLeft.Yes;
             Size = new Size(641, 400);
+            Load += ReferenceDataGrid_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridView).EndInit();
             ResumeLayout(false);
         }
+
+        private DataGridViewTextBoxColumn idColumn;
+        private DataGridViewTextBoxColumn nameColumn;
+        private DataGridViewTextBoxColumn createdAtColumn;
     }
 }

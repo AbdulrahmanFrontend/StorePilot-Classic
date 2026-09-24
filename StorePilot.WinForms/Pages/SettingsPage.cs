@@ -188,14 +188,14 @@ namespace StorePilot.WinForms.Pages
             _viewModel.UserName = settings.UserName;
             _viewModel.Theme = settings.Theme;
 
-            ApplyTheme();
-
             MessageBox.Show(
                 FindForm(),
                 "تم حفظ الإعدادات بنجاح.",
                 "الإعدادات",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
+
+            ApplyTheme();
 
             refreshShell?.Invoke();
         }
@@ -232,16 +232,6 @@ namespace StorePilot.WinForms.Pages
                     dialog.InitialDirectory = defaultDirectory;
                     dialog.FileName = defaultFileName;
                     dialog.OverwritePrompt = true;
-
-                    var result = MessageBox.Show(
-                        FindForm(),
-                        "هل تريد إتمام عملية النسخ الإحتياطي هذه؟",
-                        "تأكيد",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Question);
-
-                    if (result != DialogResult.Yes)
-                        return;
 
                     if (dialog.ShowDialog(FindForm()) !=
                         DialogResult.OK)
@@ -335,15 +325,6 @@ namespace StorePilot.WinForms.Pages
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
-        }
-
-        private void themeComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            AppTheme.Set(themeComboBox.SelectedIndex == 1
-                    ? ThemeMode.Dark
-                    : ThemeMode.Light);
-
-            AppTheme.Apply(this);
         }
     }
 }

@@ -20,14 +20,6 @@ public partial class EditNameForm : Form
 
         nameTextBox.Text =
             initialName;
-
-        ApplyTheme();
-
-        Shown += (_, _) =>
-        {
-            nameTextBox.Focus();
-            nameTextBox.SelectAll();
-        };
     }
 
     private void ApplyTheme()
@@ -83,6 +75,15 @@ public partial class EditNameForm : Form
             return;
         }
 
+        DialogResult result = MessageBox.Show(
+                "هل تريد تأكيد عملية الحفظ؟",
+                "تأكيد",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+        if (result != DialogResult.Yes)
+            return;
+
         DialogResult =
             DialogResult.OK;
 
@@ -98,4 +99,13 @@ public partial class EditNameForm : Form
 
         Close();
     }
+
+    private void EditNameForm_Shown(object sender, EventArgs e)
+    {
+        nameTextBox.Focus();
+        nameTextBox.SelectAll();
+    }
+
+    private void EditNameForm_Load(object sender, EventArgs e)
+        => ApplyTheme();
 }

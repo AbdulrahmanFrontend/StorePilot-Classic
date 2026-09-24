@@ -136,6 +136,7 @@
             Name = "ReferenceDataToolbar";
             RightToLeft = RightToLeft.Yes;
             Size = new Size(900, 70);
+            Load += ReferenceDataToolbar_Load;
             rootLayoutPanel.ResumeLayout(false);
             searchLayoutPanel.ResumeLayout(false);
             searchLayoutPanel.PerformLayout();

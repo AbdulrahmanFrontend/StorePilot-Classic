@@ -636,6 +636,7 @@ namespace StorePilot.WinForms.Pages
             Padding = new Padding(23, 27, 23, 27);
             RightToLeft = RightToLeft.Yes;
             Size = new Size(1297, 575);
+            Load += DashboardPage_Load;
             rootLayout.ResumeLayout(false);
             rootLayout.PerformLayout();
             headerPanel.ResumeLayout(false);

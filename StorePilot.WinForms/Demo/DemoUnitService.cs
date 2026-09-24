@@ -9,26 +9,26 @@ public sealed class DemoUnitService : IUnitService
 {
     private readonly List<UnitDto> _items =
     [
-        new(1, "قطعة"),
-        new(2, "متر"),
-        new(3, "كرتونة"),
-        new(4, "كيلوجرام"),
-        new(5, "علبة"),
-        new(6, "لفة"),
-        new(7, "طقم"),
-        new(8, "كيلو"),
-        new(9, "زوج"),
-        new(10, "رول"),
-        new(11, "عبوة"),
-        new(12, "شوال"),
-        new(13, "كيس"),
-        new(14, "صندوق"),
-        new(15, "حبة"),
-        new(16, "جركن"),
-        new(17, "لوح"),
-        new(18, "متر مربع"),
-        new(19, "متر طولي"),
-        new(20, "دستة")
+        new(1, "قطعة", DateTime.Now),
+        new(2, "متر", DateTime.Now),
+        new(3, "كرتونة", DateTime.Now),
+        new(4, "كيلوجرام", DateTime.Now),
+        new(5, "علبة", DateTime.Now),
+        new(6, "لفة", DateTime.Now),
+        new(7, "طقم", DateTime.Now),
+        new(8, "كيلو", DateTime.Now),
+        new(9, "زوج", DateTime.Now),
+        new(10, "رول", DateTime.Now),
+        new(11, "عبوة", DateTime.Now),
+        new(12, "شوال", DateTime.Now),
+        new(13, "كيس", DateTime.Now),
+        new(14, "صندوق", DateTime.Now),
+        new(15, "حبة", DateTime.Now),
+        new(16, "جركن", DateTime.Now),
+        new(17, "لوح", DateTime.Now),
+        new(18, "متر مربع", DateTime.Now),
+        new(19, "متر طولي", DateTime.Now),
+        new(20, "دستة", DateTime.Now)
     ];
 
     private int _nextId = 21;
@@ -144,7 +144,8 @@ public sealed class DemoUnitService : IUnitService
 
         var item = new UnitDto(
             _nextId++,
-            name);
+            name,
+            DateTime.Now);
 
         _items.Add(item);
 
@@ -182,7 +183,7 @@ public sealed class DemoUnitService : IUnitService
         }
 
         _items[index] =
-            new UnitDto(unitId, name);
+            new UnitDto(unitId, name, DateTime.Now);
 
         return Task.FromResult(
             Result.Success());

@@ -102,6 +102,7 @@
             // 
             // cancelButton
             // 
+            cancelButton.Cursor = Cursors.Hand;
             cancelButton.DialogResult = DialogResult.Cancel;
             cancelButton.FlatStyle = FlatStyle.Flat;
             cancelButton.Font = new Font("Segoe UI", 9F);
@@ -116,6 +117,7 @@
             // 
             // saveButton
             // 
+            saveButton.Cursor = Cursors.Hand;
             saveButton.FlatAppearance.BorderSize = 0;
             saveButton.FlatStyle = FlatStyle.Flat;
             saveButton.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
@@ -133,6 +135,7 @@
             AcceptButton = saveButton;
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            CancelButton = cancelButton;
             ClientSize = new Size(440, 230);
             Controls.Add(rootLayoutPanel);
             Font = new Font("Segoe UI", 9F);
@@ -144,6 +147,8 @@
             RightToLeftLayout = true;
             StartPosition = FormStartPosition.CenterParent;
             Text = "تعديل";
+            Load += EditNameForm_Load;
+            Shown += EditNameForm_Shown;
             rootLayoutPanel.ResumeLayout(false);
             rootLayoutPanel.PerformLayout();
             buttonsPanel.ResumeLayout(false);

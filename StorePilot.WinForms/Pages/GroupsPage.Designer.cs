@@ -78,6 +78,7 @@ namespace StorePilot.WinForms.Pages
             groupsGrid.RightToLeft = RightToLeft.Yes;
             groupsGrid.Size = new Size(968, 498);
             groupsGrid.TabIndex = 1;
+            groupsGrid.TabStop = false;
             groupsGrid.CellDoubleClicked += GroupsGrid_CellDoubleClicked;
             // 
             // tableLayoutPanel1
@@ -104,7 +105,7 @@ namespace StorePilot.WinForms.Pages
             pagination.Name = "pagination";
             pagination.RightToLeft = RightToLeft.Yes;
             pagination.Size = new Size(561, 35);
-            pagination.TabIndex = 3;
+            pagination.TabIndex = 2;
             pagination.PageChanged += Pagination_PageChanged;
             pagination.PageSizeChanged += Pagination_PageSizeChanged;
             // 

@@ -33,8 +33,6 @@ public partial class ReferenceDataToolbar : UserControl
     public ReferenceDataToolbar()
     {
         InitializeComponent();
-
-        ApplyTheme();
     }
 
     public void SetSearchText(string? value)
@@ -108,4 +106,7 @@ public partial class ReferenceDataToolbar : UserControl
             this,
             EventArgs.Empty);
     }
+
+    private void ReferenceDataToolbar_Load(object sender, EventArgs e)
+        => ApplyTheme();
 }

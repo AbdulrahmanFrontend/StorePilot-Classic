@@ -68,6 +68,8 @@ partial class PaginationControl
         // 
         firstButton.Anchor = AnchorStyles.None;
         firstButton.Cursor = Cursors.Hand;
+        firstButton.FlatAppearance.BorderSize = 0;
+        firstButton.FlatStyle = FlatStyle.Flat;
         firstButton.Location = new Point(526, 2);
         firstButton.Margin = new Padding(2);
         firstButton.Name = "firstButton";
@@ -75,11 +77,14 @@ partial class PaginationControl
         firstButton.TabIndex = 0;
         firstButton.Text = "|<";
         firstButton.UseVisualStyleBackColor = true;
+        firstButton.Click += FirstButton_Click;
         // 
         // previousButton
         // 
         previousButton.Anchor = AnchorStyles.None;
         previousButton.Cursor = Cursors.Hand;
+        previousButton.FlatAppearance.BorderSize = 0;
+        previousButton.FlatStyle = FlatStyle.Flat;
         previousButton.Location = new Point(480, 2);
         previousButton.Margin = new Padding(2);
         previousButton.Name = "previousButton";
@@ -87,6 +92,7 @@ partial class PaginationControl
         previousButton.TabIndex = 1;
         previousButton.Text = "<";
         previousButton.UseVisualStyleBackColor = true;
+        previousButton.Click += PreviousButton_Click;
         // 
         // pageNumberComboBox
         // 
@@ -100,6 +106,7 @@ partial class PaginationControl
         pageNumberComboBox.Name = "pageNumberComboBox";
         pageNumberComboBox.Size = new Size(62, 28);
         pageNumberComboBox.TabIndex = 2;
+        pageNumberComboBox.SelectedIndexChanged += PageNumberComboBox_SelectedIndexChanged;
         // 
         // pageInfoLabel
         // 
@@ -115,6 +122,8 @@ partial class PaginationControl
         // 
         nextButton.Anchor = AnchorStyles.None;
         nextButton.Cursor = Cursors.Hand;
+        nextButton.FlatAppearance.BorderSize = 0;
+        nextButton.FlatStyle = FlatStyle.Flat;
         nextButton.Location = new Point(219, 2);
         nextButton.Margin = new Padding(2);
         nextButton.Name = "nextButton";
@@ -122,11 +131,14 @@ partial class PaginationControl
         nextButton.TabIndex = 3;
         nextButton.Text = ">";
         nextButton.UseVisualStyleBackColor = true;
+        nextButton.Click += NextButton_Click;
         // 
         // lastButton
         // 
         lastButton.Anchor = AnchorStyles.None;
         lastButton.Cursor = Cursors.Hand;
+        lastButton.FlatAppearance.BorderSize = 0;
+        lastButton.FlatStyle = FlatStyle.Flat;
         lastButton.Location = new Point(173, 2);
         lastButton.Margin = new Padding(2);
         lastButton.Name = "lastButton";
@@ -134,6 +146,7 @@ partial class PaginationControl
         lastButton.TabIndex = 4;
         lastButton.Text = ">|";
         lastButton.UseVisualStyleBackColor = true;
+        lastButton.Click += LastButton_Click;
         // 
         // pageSizeLabel
         // 
@@ -157,6 +170,7 @@ partial class PaginationControl
         pageSizeComboBox.Name = "pageSizeComboBox";
         pageSizeComboBox.Size = new Size(74, 28);
         pageSizeComboBox.TabIndex = 5;
+        pageSizeComboBox.SelectedIndexChanged += PageSizeComboBox_SelectedIndexChanged;
         // 
         // PaginationControl
         // 
@@ -168,6 +182,7 @@ partial class PaginationControl
         Name = "PaginationControl";
         RightToLeft = RightToLeft.Yes;
         Size = new Size(570, 42);
+        Load += PaginationControl_Load;
         rootLayoutPanel.ResumeLayout(false);
         ResumeLayout(false);
     }

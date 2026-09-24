@@ -407,6 +407,7 @@ partial class FirstRunSetupForm
         RightToLeftLayout = true;
         StartPosition = FormStartPosition.CenterScreen;
         Text = "إعداد StorePilot";
+        Load += FirstRunSetupForm_Load;
         headerPanel.ResumeLayout(false);
         contentLayout.ResumeLayout(false);
         formPanel.ResumeLayout(false);

@@ -11,25 +11,19 @@ public partial class MainShellForm : Form
 {
     private readonly AppBrandSettingsStore _settingsStore;
     private readonly MainShellViewModel _viewModel;
-    private readonly StorePilotPaths _paths;
     private readonly IPageFactory _pageFactory;
     private NavigationService? _navigationService;
 
     public MainShellForm(
         AppBrandSettingsStore settingsStore,
-        StorePilotPaths paths,
         IPageFactory pageFactory)
     {
         _settingsStore = settingsStore;
-        _paths = paths;
         _pageFactory = pageFactory;
 
         _viewModel = new MainShellViewModel(settingsStore);
 
         InitializeComponent();
-
-        InitializeNavigation();
-        ApplySettingsToView();
     }
 
     private void InitializeNavigation()
@@ -150,25 +144,34 @@ public partial class MainShellForm : Form
 
         var key = int.TryParse(button.Tag?.ToString(), out int parsedKey) ? parsedKey : 14;
 
-            switch ((PageKey)key)
-            {
-                case PageKey.Dashboard:
-                    _navigationService?.Navigate<DashboardPage>(PageKey.Dashboard); 
-                    break;
+        switch ((PageKey)key)
+        {
+            case PageKey.Dashboard:
+                _navigationService?.Navigate<DashboardPage>(PageKey.Dashboard);
+                (_navigationService?.GetCurrentPage() as DashboardPage)?.LoadSettings();
+                break;
 
             case PageKey.ProductGroups:
                 _navigationService?.Navigate<GroupsPage>(PageKey.ProductGroups);
+                (_navigationService?.GetCurrentPage() as GroupsPage)?.ApplyTheme();
                 break;
 
             case PageKey.Units:
                 _navigationService?.Navigate<UnitsPage>(PageKey.Units);
+                (_navigationService?.GetCurrentPage() as UnitsPage)?.ApplyTheme();
                 break;
 
-                case PageKey.Settings:
-                    _navigationService?.Navigate<SettingsPage>(PageKey.Settings);
+            case PageKey.Settings:
+                _navigationService?.Navigate<SettingsPage>(PageKey.Settings);
                 var settingsPage = _navigationService?.GetCurrentPage() as SettingsPage;
                 settingsPage?.refreshShell = RefreshShell;
                 break;
-            }
+        }
+    }
+
+    private void MainShellForm_Load(object sender, EventArgs e)
+    {
+        InitializeNavigation();
+        ApplySettingsToView();
     }
 }

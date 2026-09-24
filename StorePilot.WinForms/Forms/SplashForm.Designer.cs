@@ -24,6 +24,7 @@ partial class SplashForm
 
     private void InitializeComponent()
     {
+        components = new System.ComponentModel.Container();
         backgroundPanel = new Panel();
         contentPanel = new Panel();
         logoMarkPictureBox = new PictureBox();
@@ -34,6 +35,8 @@ partial class SplashForm
         subtitleLabel = new Label();
         brandLabel = new Label();
         logoMarkLabel = new Label();
+        fadeInTimer = new System.Windows.Forms.Timer(components);
+        displayTimer = new System.Windows.Forms.Timer(components);
         backgroundPanel.SuspendLayout();
         contentPanel.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)logoMarkPictureBox).BeginInit();
@@ -155,6 +158,16 @@ partial class SplashForm
         logoMarkLabel.Text = "SP";
         logoMarkLabel.TextAlign = ContentAlignment.MiddleCenter;
         // 
+        // fadeInTimer
+        // 
+        fadeInTimer.Interval = 20;
+        fadeInTimer.Tick += FadeInTimer_Tick;
+        // 
+        // displayTimer
+        // 
+        displayTimer.Interval = 1500;
+        displayTimer.Tick += DisplayTimer_Tick;
+        // 
         // SplashForm
         // 
         BackColor = Color.FromArgb(20, 24, 32);
@@ -173,4 +186,6 @@ partial class SplashForm
     }
 
     private PictureBox logoMarkPictureBox;
+    private System.Windows.Forms.Timer fadeInTimer;
+    private System.Windows.Forms.Timer displayTimer;
 }

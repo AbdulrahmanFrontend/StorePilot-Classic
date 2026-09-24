@@ -6,9 +6,6 @@ namespace StorePilot.WinForms.Forms;
 
 public partial class SplashForm : Form
 {
-    private readonly System.Windows.Forms.Timer _fadeInTimer;
-    private readonly System.Windows.Forms.Timer _displayTimer;
-
     private bool _closing;
 
     private readonly StorePilotPaths _paths;
@@ -18,19 +15,6 @@ public partial class SplashForm : Form
         InitializeComponent();
 
         _paths = paths;
-
-        _fadeInTimer = new System.Windows.Forms.Timer
-        {
-            Interval = 20
-        };
-
-        _displayTimer = new System.Windows.Forms.Timer
-        {
-            Interval = 1500
-        };
-
-        _fadeInTimer.Tick += FadeInTimer_Tick;
-        _displayTimer.Tick += DisplayTimer_Tick;
     }
 
     protected override void OnShown(EventArgs e)
@@ -43,8 +27,8 @@ public partial class SplashForm : Form
 
         LoadLogo();
 
-        _fadeInTimer.Start();
-        _displayTimer.Start();
+        fadeInTimer.Start();
+        displayTimer.Start();
     }
 
     private void LoadLogo()
@@ -104,7 +88,7 @@ public partial class SplashForm : Form
             Opacity + 0.08);
 
         if (Opacity >= 1)
-            _fadeInTimer.Stop();
+            fadeInTimer.Stop();
     }
 
     private void DisplayTimer_Tick(
@@ -116,8 +100,8 @@ public partial class SplashForm : Form
 
         _closing = true;
 
-        _displayTimer.Stop();
-        _fadeInTimer.Stop();
+        displayTimer.Stop();
+        fadeInTimer.Stop();
 
         var fadeOutTimer = new System.Windows.Forms.Timer
         {
@@ -142,11 +126,11 @@ public partial class SplashForm : Form
 
     protected override void OnFormClosed(FormClosedEventArgs e)
     {
-        _fadeInTimer.Stop();
-        _displayTimer.Stop();
+        fadeInTimer.Stop();
+        displayTimer.Stop();
 
-        _fadeInTimer.Dispose();
-        _displayTimer.Dispose();
+        fadeInTimer.Dispose();
+        displayTimer.Dispose();
 
         logoMarkPictureBox.Image?.Dispose();
 

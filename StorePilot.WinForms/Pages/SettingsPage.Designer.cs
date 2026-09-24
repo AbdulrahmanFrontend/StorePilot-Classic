@@ -209,6 +209,7 @@ namespace StorePilot.WinForms.Pages
             storeNameTextBox.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             storeNameTextBox.Location = new Point(6, 20);
             storeNameTextBox.Margin = new Padding(6, 11, 6, 11);
+            storeNameTextBox.MaxLength = 50;
             storeNameTextBox.Name = "storeNameTextBox";
             storeNameTextBox.RightToLeft = RightToLeft.Yes;
             storeNameTextBox.Size = new Size(577, 27);
@@ -229,6 +230,7 @@ namespace StorePilot.WinForms.Pages
             userNameTextBox.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             userNameTextBox.Location = new Point(6, 87);
             userNameTextBox.Margin = new Padding(6, 11, 6, 11);
+            userNameTextBox.MaxLength = 20;
             userNameTextBox.Name = "userNameTextBox";
             userNameTextBox.RightToLeft = RightToLeft.Yes;
             userNameTextBox.Size = new Size(577, 27);
@@ -256,7 +258,6 @@ namespace StorePilot.WinForms.Pages
             themeComboBox.Name = "themeComboBox";
             themeComboBox.Size = new Size(577, 28);
             themeComboBox.TabIndex = 2;
-            themeComboBox.SelectedIndexChanged += themeComboBox_SelectedIndexChanged;
             // 
             // saveSettingsButton
             // 
@@ -355,7 +356,7 @@ namespace StorePilot.WinForms.Pages
             saveLogoButton.Margin = new Padding(6, 7, 6, 7);
             saveLogoButton.Name = "saveLogoButton";
             saveLogoButton.Size = new Size(137, 30);
-            saveLogoButton.TabIndex = 7;
+            saveLogoButton.TabIndex = 6;
             saveLogoButton.Text = "حفظ";
             saveLogoButton.UseVisualStyleBackColor = false;
             saveLogoButton.Click += saveLogoButton_Click;
@@ -369,7 +370,7 @@ namespace StorePilot.WinForms.Pages
             removeLogoButton.Margin = new Padding(6, 7, 6, 7);
             removeLogoButton.Name = "removeLogoButton";
             removeLogoButton.Size = new Size(137, 30);
-            removeLogoButton.TabIndex = 6;
+            removeLogoButton.TabIndex = 5;
             removeLogoButton.Text = "إزالة";
             removeLogoButton.UseVisualStyleBackColor = false;
             removeLogoButton.Click += removeLogoButton_Click;
@@ -383,7 +384,7 @@ namespace StorePilot.WinForms.Pages
             chooseLogoButton.Margin = new Padding(6, 7, 6, 7);
             chooseLogoButton.Name = "chooseLogoButton";
             chooseLogoButton.Size = new Size(137, 30);
-            chooseLogoButton.TabIndex = 5;
+            chooseLogoButton.TabIndex = 4;
             chooseLogoButton.Text = "اختيار";
             chooseLogoButton.UseVisualStyleBackColor = false;
             chooseLogoButton.Click += ChooseLogoButton_Click;
@@ -451,7 +452,7 @@ namespace StorePilot.WinForms.Pages
             backupButton.Name = "backupButton";
             backupButton.Padding = new Padding(17, 7, 17, 7);
             backupButton.Size = new Size(183, 56);
-            backupButton.TabIndex = 6;
+            backupButton.TabIndex = 7;
             backupButton.Text = "إنشاء نسخة احتياطية";
             backupButton.UseVisualStyleBackColor = false;
             backupButton.Click += BackupButton_Click;

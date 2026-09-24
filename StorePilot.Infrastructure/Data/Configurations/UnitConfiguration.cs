@@ -24,6 +24,10 @@ internal sealed class UnitConfiguration : IEntityTypeConfiguration<Unit>
             .IsRequired()
             .HasMaxLength(100);
 
+        builder.Property(x => x.CreatedAt)
+            .IsRequired()
+            .HasDefaultValue(DateTime.Now);
+
         builder.HasIndex(x => x.Name)
             .IsUnique();
 

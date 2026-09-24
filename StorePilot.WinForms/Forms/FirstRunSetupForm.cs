@@ -18,10 +18,6 @@ public partial class FirstRunSetupForm : Form
         _settingsStore = settingsStore;
 
         InitializeComponent();
-
-        UpdatePreview();
-
-        ApplyCurrentTheme();
     }
 
     private void ApplyCurrentTheme()
@@ -252,6 +248,13 @@ public partial class FirstRunSetupForm : Form
 
             Close();
         }
+    }
+
+    private void FirstRunSetupForm_Load(object sender, EventArgs e)
+    {
+        UpdatePreview();
+
+        ApplyCurrentTheme();
     }
 
     //protected override void Dispose(bool disposing)

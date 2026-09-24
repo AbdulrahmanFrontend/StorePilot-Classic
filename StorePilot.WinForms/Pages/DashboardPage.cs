@@ -10,28 +10,24 @@ namespace StorePilot.WinForms.Pages
     public partial class DashboardPage : UserControl
     {
         private readonly AppBrandSettingsStore _settingsStore;
-        private readonly DashboardViewModel _viewModel;
+        private DashboardViewModel _viewModel;
 
         public DashboardPage(AppBrandSettingsStore settingsStore)
         {
             _settingsStore = settingsStore ??
                              throw new ArgumentNullException(nameof(settingsStore));
 
-            _viewModel = DashboardViewModel.CreateDemo();
-
             InitializeComponent();
-
-            RightToLeft = RightToLeft.Yes;
-            Load += DashboardPage_Load;
         }
 
         private void DashboardPage_Load(object? sender, EventArgs e)
         {
+            _viewModel = DashboardViewModel.CreateDemo();
             LoadSettings();
             LoadDashboardData();
         }
 
-        private void LoadSettings()
+        public void LoadSettings()
         {
             var settings = _settingsStore.Load();
 
