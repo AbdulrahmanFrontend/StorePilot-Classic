@@ -148,7 +148,7 @@ partial class MainShellForm
         settingsButton.Name = "settingsButton";
         settingsButton.Size = new Size(310, 56);
         settingsButton.TabIndex = 13;
-        settingsButton.Tag = "11";
+        settingsButton.Tag = "";
         settingsButton.Text = "⚙  الإعدادات";
         settingsButton.TextAlign = ContentAlignment.MiddleLeft;
         settingsButton.UseVisualStyleBackColor = false;
@@ -167,7 +167,7 @@ partial class MainShellForm
         reportsButton.Name = "reportsButton";
         reportsButton.Size = new Size(310, 56);
         reportsButton.TabIndex = 12;
-        reportsButton.Tag = "10";
+        reportsButton.Tag = "";
         reportsButton.Text = "▤    التقارير ";
         reportsButton.TextAlign = ContentAlignment.MiddleLeft;
         reportsButton.UseVisualStyleBackColor = false;
@@ -186,7 +186,7 @@ partial class MainShellForm
         inventoryButton.Name = "inventoryButton";
         inventoryButton.Size = new Size(310, 56);
         inventoryButton.TabIndex = 11;
-        inventoryButton.Tag = "9";
+        inventoryButton.Tag = "";
         inventoryButton.Text = "▥    المخزون";
         inventoryButton.TextAlign = ContentAlignment.MiddleLeft;
         inventoryButton.UseVisualStyleBackColor = false;
@@ -205,7 +205,7 @@ partial class MainShellForm
         paymentsButton.Name = "paymentsButton";
         paymentsButton.Size = new Size(310, 56);
         paymentsButton.TabIndex = 10;
-        paymentsButton.Tag = "8";
+        paymentsButton.Tag = "";
         paymentsButton.Text = "◫    المدفوعات";
         paymentsButton.TextAlign = ContentAlignment.MiddleLeft;
         paymentsButton.UseVisualStyleBackColor = false;
@@ -224,7 +224,7 @@ partial class MainShellForm
         returnsButton.Name = "returnsButton";
         returnsButton.Size = new Size(310, 56);
         returnsButton.TabIndex = 9;
-        returnsButton.Tag = "7";
+        returnsButton.Tag = "";
         returnsButton.Text = "↩    المرتجعات";
         returnsButton.TextAlign = ContentAlignment.MiddleLeft;
         returnsButton.UseVisualStyleBackColor = false;
@@ -243,7 +243,7 @@ partial class MainShellForm
         quotationsButton.Name = "quotationsButton";
         quotationsButton.Size = new Size(310, 56);
         quotationsButton.TabIndex = 8;
-        quotationsButton.Tag = "6";
+        quotationsButton.Tag = "";
         quotationsButton.Text = "▧    عروض الأسعار";
         quotationsButton.TextAlign = ContentAlignment.MiddleLeft;
         quotationsButton.UseVisualStyleBackColor = false;
@@ -262,7 +262,7 @@ partial class MainShellForm
         purchasesButton.Name = "purchasesButton";
         purchasesButton.Size = new Size(310, 56);
         purchasesButton.TabIndex = 7;
-        purchasesButton.Tag = "5";
+        purchasesButton.Tag = "";
         purchasesButton.Text = "▤    المشتريات";
         purchasesButton.TextAlign = ContentAlignment.MiddleLeft;
         purchasesButton.UseVisualStyleBackColor = false;
@@ -281,7 +281,7 @@ partial class MainShellForm
         salesButton.Name = "salesButton";
         salesButton.Size = new Size(310, 56);
         salesButton.TabIndex = 6;
-        salesButton.Tag = "4";
+        salesButton.Tag = "";
         salesButton.Text = "▰    المبيعات";
         salesButton.TextAlign = ContentAlignment.MiddleLeft;
         salesButton.UseVisualStyleBackColor = false;
@@ -300,7 +300,7 @@ partial class MainShellForm
         suppliersButton.Name = "suppliersButton";
         suppliersButton.Size = new Size(310, 56);
         suppliersButton.TabIndex = 5;
-        suppliersButton.Tag = "3";
+        suppliersButton.Tag = "";
         suppliersButton.Text = "▤    الموردون";
         suppliersButton.TextAlign = ContentAlignment.MiddleLeft;
         suppliersButton.UseVisualStyleBackColor = false;
@@ -319,7 +319,7 @@ partial class MainShellForm
         customersButton.Name = "customersButton";
         customersButton.Size = new Size(310, 56);
         customersButton.TabIndex = 4;
-        customersButton.Tag = "2";
+        customersButton.Tag = "";
         customersButton.Text = "◉    العملاء";
         customersButton.TextAlign = ContentAlignment.MiddleLeft;
         customersButton.UseVisualStyleBackColor = false;
@@ -338,7 +338,7 @@ partial class MainShellForm
         productsButton.Name = "productsButton";
         productsButton.Size = new Size(310, 56);
         productsButton.TabIndex = 3;
-        productsButton.Tag = "1";
+        productsButton.Tag = "";
         productsButton.Text = "▣    الأصناف";
         productsButton.TextAlign = ContentAlignment.MiddleLeft;
         productsButton.UseVisualStyleBackColor = false;
@@ -357,8 +357,8 @@ partial class MainShellForm
         unitsButton.Name = "unitsButton";
         unitsButton.Size = new Size(310, 56);
         unitsButton.TabIndex = 2;
-        unitsButton.Tag = "11";
-        unitsButton.Text = "⚙  وحدات القياس";
+        unitsButton.Tag = "";
+        unitsButton.Text = "◈    وحدات القياس";
         unitsButton.TextAlign = ContentAlignment.MiddleLeft;
         unitsButton.UseVisualStyleBackColor = false;
         unitsButton.Click += NavigationButton_Click;
@@ -376,8 +376,8 @@ partial class MainShellForm
         groupsButton.Name = "groupsButton";
         groupsButton.Size = new Size(310, 56);
         groupsButton.TabIndex = 1;
-        groupsButton.Tag = "11";
-        groupsButton.Text = "⚙  المجموعات";
+        groupsButton.Tag = "";
+        groupsButton.Text = "▦    المجموعات";
         groupsButton.TextAlign = ContentAlignment.MiddleLeft;
         groupsButton.UseVisualStyleBackColor = false;
         groupsButton.Click += NavigationButton_Click;
@@ -395,7 +395,7 @@ partial class MainShellForm
         dashboardButton.Name = "dashboardButton";
         dashboardButton.Size = new Size(310, 56);
         dashboardButton.TabIndex = 0;
-        dashboardButton.Tag = "0";
+        dashboardButton.Tag = "";
         dashboardButton.Text = "⌂    الرئيسية";
         dashboardButton.TextAlign = ContentAlignment.MiddleLeft;
         dashboardButton.UseVisualStyleBackColor = false;
