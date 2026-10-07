@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using StorePilot.Application.Common;
 using StorePilot.Application.Dtos.UnitDtos;
-using StorePilot.Application.Services.UnitServices;
+using StorePilot.Application.Interfaces;
 
 namespace StorePilot.WinForms.ViewModels;
 

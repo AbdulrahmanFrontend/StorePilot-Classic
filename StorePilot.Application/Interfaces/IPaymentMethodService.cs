@@ -4,6 +4,6 @@ using System.Text;
 
 namespace StorePilot.Application.Interfaces;
 
-public interface IUnitRepository
+public interface IPaymentMethodService
 {
 }

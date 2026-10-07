@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace StorePilot.Application.Services.ProductServices;
+namespace StorePilot.Application.Services;
 
 internal class ProductService
 {

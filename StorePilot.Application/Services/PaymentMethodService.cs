@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace StorePilot.Application.Services.PaymentMethodServices;
+namespace StorePilot.Application.Services;
 
 internal class PaymentMethodService
 {

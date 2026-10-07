@@ -1,34 +1,33 @@
 ﻿using StorePilot.Application.Common;
 using StorePilot.Application.Dtos.ProductGroupDtos;
-using StorePilot.Application.Dtos.UnitDtos;
 
-namespace StorePilot.Application.Services.UnitServices;
+namespace StorePilot.Application.Interfaces;
 
-public interface IUnitService
+public interface IProductGroupService
 {
-    Task<Result<IReadOnlyList<UnitDto>>> GetAllAsync(
+    Task<Result<IReadOnlyList<ProductGroupDto>>> GetAllAsync(
         CancellationToken cancellationToken = default);
 
-    Task<PagedResult<UnitDto>> GetPagesAsync(
+    Task<Result<PagedResult<ProductGroupDto>>> GetPagesAsync(
         string? search = null,
         int pageNumber = 1,
         int pageSize = 10,
         CancellationToken cancellationToken = default);
 
-    Task<Result<UnitDto>> GetByIdAsync(
-        int unitId,
+    Task<Result<ProductGroupDto>> GetByIdAsync(
+        int groupId,
         CancellationToken cancellationToken = default);
 
     Task<Result<bool>> ExistsAsync(
-        int unitId,
+        int groupId,
         CancellationToken cancellationToken = default);
 
-    Task<Result<int>> CreateAsync(
-        CreateUnitDto dto,
+    Task<Result> CreateAsync(
+        CreateProductGroupDto dto,
         CancellationToken cancellationToken = default);
 
     Task<Result> UpdateAsync(
-        int unitId,
-        UpdateUnitDto dto,
+        int groupId,
+        UpdateProductGroupDto dto,
         CancellationToken cancellationToken = default);
 }

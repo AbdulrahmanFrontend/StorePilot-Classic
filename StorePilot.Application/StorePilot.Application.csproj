@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.12" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="StorePilot.Domain">
       <HintPath>..\StorePilot.Domain\bin\Debug\net10.0\StorePilot.Domain.dll</HintPath>
     </Reference>

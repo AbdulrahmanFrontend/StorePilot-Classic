@@ -1,12 +1,11 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using StorePilot.Application.Services.ProductGroupServices;
-using StorePilot.Application.Services.UnitServices;
+using StorePilot.Application.Interfaces;
+using StorePilot.Application.Services;
 using StorePilot.Infrastructure.Data;
 using StorePilot.Infrastructure.Data.Database;
 using StorePilot.Infrastructure.DependencyInjection;
 using StorePilot.Infrastructure.Storage;
-using StorePilot.WinForms.Demo;
 using StorePilot.WinForms.Forms;
 using StorePilot.WinForms.Foundation;
 using StorePilot.WinForms.Navigation;
@@ -142,8 +141,8 @@ internal static class Program
 
         services.AddSingleton<IPageFactory, DiPageFactory>();
 
-        services.AddSingleton<IUnitService, DemoUnitService>();
-        services.AddSingleton<IProductGroupService, DemoProductGroupService>();
+        services.AddSingleton<IUnitService, UnitService>();
+        services.AddSingleton<IProductGroupService, ProductGroupService>();
 
         services.AddTransient<UnitsViewModel>();
         services.AddTransient<GroupsViewModel>();
