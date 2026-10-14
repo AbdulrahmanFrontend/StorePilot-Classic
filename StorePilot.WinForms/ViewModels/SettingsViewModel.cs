@@ -1,5 +1,4 @@
 ﻿using StorePilot.WinForms.Theme;
-using System.Drawing;
 
 namespace StorePilot.WinForms.ViewModels;
 

@@ -1,9 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using StorePilot.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace StorePilot.Infrastructure.Data.Configurations;
 
@@ -19,16 +16,16 @@ internal sealed class UnitConfiguration : IEntityTypeConfiguration<Unit>
             .HasColumnName("UnitId")
             .ValueGeneratedOnAdd();
 
-        builder.Property(x => x.Name)
+        builder.Property(x => x.UnitName)
             .HasColumnName("Unit")
             .IsRequired()
-            .HasMaxLength(100);
+            .HasMaxLength(20);
 
         builder.Property(x => x.CreatedAt)
             .IsRequired()
             .HasDefaultValue(DateTime.Now);
 
-        builder.HasIndex(x => x.Name)
+        builder.HasIndex(x => x.UnitName)
             .IsUnique();
 
         builder.HasMany(x => x.Products)

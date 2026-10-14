@@ -1,13 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using StorePilot.Application.Common;
-using StorePilot.Application.Dtos.ProductGroupDtos;
 using StorePilot.Application.Dtos.UnitDtos;
 using StorePilot.Application.Interfaces;
 using StorePilot.Application.Mappings;
 using StorePilot.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace StorePilot.Application.Services;
 
@@ -38,180 +36,142 @@ public class UnitService : IUnitService
     //];
 
     private readonly IAppDbContext _context;
+    private readonly ILogger<UnitService> _logger;
+    private readonly IValidator<CreateUnitDto> _createValidator;
+    private readonly IValidator<UpdateUnitDto> _updateValidator; // جديد
 
-    public UnitService(IAppDbContext context)
+    public UnitService(
+        IAppDbContext context,
+        ILogger<UnitService> logger,
+        IValidator<CreateUnitDto> createValidator,
+        IValidator<UpdateUnitDto> updateValidator) // استقباله عبر الـ DI
     {
         _context = context;
+        _logger = logger;
+        _createValidator = createValidator;
+        _updateValidator = updateValidator;
     }
 
     public async Task<Result<IReadOnlyList<UnitDto>>> GetAllAsync(
         CancellationToken cancellationToken = default)
     {
-        try
-        {
-            var entities = await _context.Units
+        var entities = await _context.Units
             .OrderByDescending(x => x.UnitId)
             .AsNoTracking()
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
 
-            var dtos = new List<UnitDto>();
-            entities.ForEach(e => dtos.Add(e.ToDto()));
+        var dtos = entities.Select(e => e.ToDto()).ToList();
 
-            return await Task.FromResult(
-                Result<IReadOnlyList<UnitDto>>.Success(dtos));
-        }
-        catch
-        {
-            return await Task.FromResult(
-                Result<IReadOnlyList<UnitDto>>.Failure(
-                    "فشلت عملية الحصول على جميع وحدات القياس!"));
-        }
+        return Result<IReadOnlyList<UnitDto>>.Success(dtos);
     }
 
     public async Task<Result<UnitDto>> GetByIdAsync(
         int unitId,
         CancellationToken cancellationToken = default)
     {
-        try
-        {
-            var item = await _context.Units.FindAsync(unitId);
+        var item = await _context.Units.FindAsync(
+            new object[] { unitId },
+            cancellationToken);
 
-            if (item is null)
-                return await Task.FromResult(
-                    Result<UnitDto>.Failure(
-                        "وحدة قياس الصنف غير موجودة!"));
+        if (item is null)
+            return Result<UnitDto>.Failure(
+                "الوحدة غير موجودة.");
 
-            return await Task.FromResult(
-                Result<UnitDto>.Success(item.ToDto()));
-        }
-        catch
-        {
-            return await Task.FromResult(
-                Result<UnitDto>.Failure(
-                    "فشلت عملية الحصول على وحدة قياس الصنف!"));
-        }
+        return Result<UnitDto>.Success(item.ToDto());
     }
 
     public async Task<Result<bool>> ExistsAsync(
         int unitId,
         CancellationToken cancellationToken = default)
     {
-        try
-        {
-            bool exists = await _context.Units.AnyAsync(
-            x => x.UnitId == unitId);
+        bool exists = await _context.Units.AnyAsync(
+            x => x.UnitId == unitId,
+            cancellationToken);
 
-            return await Task.FromResult(
-                Result<bool>.Success(exists));
-        }
-        catch
-        {
-            return await Task.FromResult(
-                Result<bool>.Failure("فشلت عملية التأكد من وجود وحدة القياس!"));
-        }
+        return Result<bool>.Success(exists);
     }
 
     public async Task<Result<PagedResult<UnitDto>>> GetPagesAsync(
         string? search = null,
         int pageNumber = 1,
-        int pageSize = 10,
+        int pageSize = 50,
         CancellationToken cancellationToken = default)
     {
         pageNumber = Math.Max(1, pageNumber);
-        pageSize = Math.Max(0, pageSize);
+        pageSize = Math.Max(1, pageSize);
 
-        try
+        var query = _context.Units
+            .OrderByDescending(x => x.UnitId)
+            .AsNoTracking();
+
+        if (!string.IsNullOrWhiteSpace(search))
         {
-            var query = _context.Units
-            .OrderByDescending(x => x.UnitId);
-
-            var totalCount = await query.CountAsync();
-
-            var totalPages = totalCount == 0
-                ? 0
-                : (int)Math.Ceiling(
-                    totalCount / (double)pageSize);
-
-            if (totalPages > 0 && pageNumber > totalPages)
-                pageNumber = totalPages;
-
-            IEnumerable<Unit> entities;
-
-            if (!string.IsNullOrWhiteSpace(search))
-            {
-                var value = search.Trim();
-
-                entities = await query.Where(x =>
-                    x.Name.StartsWith(
-                        value,
-                        StringComparison.OrdinalIgnoreCase))
-                    .Skip((pageNumber - 1) * pageSize)
-                    .Take(pageSize)
-                    .ToListAsync();
-            }
-            else
-                entities = await query.Skip((pageNumber - 1) * pageSize)
-                    .Take(pageSize)
-                    .ToListAsync();
-
-            var dtos = new List<UnitDto>();
-
-            foreach (Unit unit in entities)
-                dtos.Add(unit.ToDto());
-
-            return await Task.FromResult(
-                Result<PagedResult<UnitDto>>.Success(
-                    new PagedResult<UnitDto>(
-                    dtos,
-                    totalCount,
-                    pageNumber,
-                    pageSize)));
+            var value = search.Trim();
+            query = (IOrderedQueryable<Unit>)query
+                .Where(x => x.UnitName.StartsWith(value));
         }
-        catch
-        {
-            return await Task.FromResult(
-                Result<PagedResult<UnitDto>>.Failure(
-                    "فشلت عملية الحصول على وحدات القياس!"));
-        }
+
+        var totalCount = await query.CountAsync(cancellationToken);
+
+        var totalPages = totalCount == 0
+            ? 0
+            : (int)Math.Ceiling(totalCount / (double)pageSize);
+
+        if (totalPages > 0 && pageNumber > totalPages)
+            pageNumber = totalPages;
+
+        var entities = await query
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
+
+        var dtos = entities.Select(e => e.ToDto()).ToList();
+
+        var pagedResult = new PagedResult<UnitDto>(
+            dtos,
+            totalCount,
+            pageNumber,
+            pageSize);
+
+        return Result<PagedResult<UnitDto>>.Success(pagedResult);
     }
 
     public async Task<Result> CreateAsync(
         CreateUnitDto dto,
         CancellationToken cancellationToken = default)
     {
-        var name = dto.Name.Trim();
+        if(dto is null)
+            return Result.Failure("بيانات الوحدة غير موجودة!");
 
-        try
-        {
-            if (await _context.Units.AnyAsync(x =>
-            string.Equals(
-                x.Name,
-                name,
-                StringComparison.OrdinalIgnoreCase)))
-            {
-                return await Task.FromResult(
-                    Result.Failure(
-                        "وحدة القياس هذه موجودة بالفعل."));
-            }
+        var validationResult = await _createValidator
+            .ValidateAsync(dto, cancellationToken);
 
-            var item = dto.ToEntity();
+        if (!validationResult.IsValid)
+            return Result.Failure(validationResult.Errors.First().ErrorMessage);
 
-            await _context.Units.AddAsync(item);
+        var name = dto.UnitName.Trim();
 
-            int rowsAffected = await _context.SaveChangesAsync(cancellationToken);
+        bool exists = await _context.Units.AnyAsync(
+            x => string.Equals(
+                x.UnitName,
+                name),
+            cancellationToken);
 
-            if (rowsAffected > 0)
-                return await Task.FromResult(
-                    Result.Success("تمت عملية حفظ بيانات وحدة القياس هذه بنجاح."));
+        if (exists)
+            return Result.Failure("هذه الوحدة موجودة بالفعل!");
 
-            return await Task.FromResult(
-                Result.Failure("لم يتم حفظ بيانات وحدة القياس هذه في النظام!"));
-        }
-        catch
-        {
-            return await Task.FromResult(
-                Result.Failure("فشلت عملية حفظ بيانات وحدة القياس هذه في النظام!"));
-        }
+        var item = dto.ToEntity();
+
+        await _context.Units.AddAsync(item, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
+
+        // تسجيل الحدث بنجاح داخل ملف الـ Log الخاص بالعميل
+        _logger.LogInformation(
+            "تم إنشاء وحدة جديدة بنجاح باسم: {UnitName}",
+            name);
+
+        return Result.Success(
+            "تمت عملية حفظ بيانات هذه الوحدة بنجاح.");
     }
 
     public async Task<Result> UpdateAsync(
@@ -219,46 +179,42 @@ public class UnitService : IUnitService
         UpdateUnitDto dto,
         CancellationToken cancellationToken = default)
     {
-        var name = dto.Name.Trim();
+        if(dto is null)
+            return Result.Failure("بيانات الوحدة غير موجودة!");
 
-        try
-        {
-            var item = await _context.Units.FindAsync(unitId);
+        var validationResult = await _updateValidator
+            .ValidateAsync(dto, cancellationToken);
+        
+        if (!validationResult.IsValid)
+            return Result.Failure(validationResult.Errors.First().ErrorMessage);
 
-            if (item is null)
-            {
-                return await Task.FromResult(
-                    Result.Failure(
-                        "وحدة قياس الصنف غير موجودة."));
-            }
+        var name = dto.UnitName.Trim();
 
-            if (await _context.Units.AnyAsync(x =>
-                x.UnitId != unitId &&
-                string.Equals(
-                    x.Name,
-                    name,
-                    StringComparison.OrdinalIgnoreCase)))
-            {
-                return await Task.FromResult(
-                    Result.Failure(
-                        "وحدة القياس هذه موجودة بالفعل."));
-            }
+        var item = await _context.Units.FindAsync(
+            new object[] { unitId },
+            cancellationToken);
 
-            item = dto.ToEntity(unitId);
+        if (item is null)
+            return Result.Failure("الوحدة غير موجودة!");
 
-            int rowsAffected = await _context.SaveChangesAsync(cancellationToken);
+        bool isDuplicate = await _context.Units.AnyAsync(
+            x => x.UnitId != unitId && string.Equals(x.UnitName,
+            name),
+            cancellationToken);
 
-            if (rowsAffected > 0)
-                return await Task.FromResult(
-                    Result.Success());
+        if (isDuplicate)
+            return Result.Failure("هذه الوحدة موجودة بالفعل!");
 
-            return await Task.FromResult(
-                    Result.Failure("لم يتم حفظ بيانات وحدة القياس!"));
-        }
-        catch
-        {
-            return await Task.FromResult(
-                    Result.Failure("فشلت عملية حفظ بيانات وحدة القياس!"));
-        }
+        item.UpdateFromDto(dto);
+
+        await _context.SaveChangesAsync(cancellationToken);
+
+        _logger.LogInformation(
+            "تم تحديث الوحدة برقم {UnitId} بنجاح إلى الاسم:" +
+            " {UnitName}",
+            unitId,
+            name);
+
+        return Result.Success("تم تحديث بيانات الوحدة بنجاح.");
     }
 }

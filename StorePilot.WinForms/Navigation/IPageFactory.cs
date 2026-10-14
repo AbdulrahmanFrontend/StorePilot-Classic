@@ -1,6 +1,4 @@
-﻿using System.Windows.Forms;
-
-namespace StorePilot.WinForms.Navigation;
+﻿namespace StorePilot.WinForms.Navigation;
 
 public interface IPageFactory
 {

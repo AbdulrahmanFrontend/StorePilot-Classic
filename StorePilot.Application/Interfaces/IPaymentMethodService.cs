@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace StorePilot.Application.Interfaces;
+﻿namespace StorePilot.Application.Interfaces;
 
 public interface IPaymentMethodService
 {

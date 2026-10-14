@@ -1,6 +1,3 @@
-using StorePilot.WinForms.Pages;
-using System.Windows.Forms;
-
 namespace StorePilot.WinForms.Navigation;
 
 public sealed class NavigationService
@@ -57,10 +54,7 @@ public sealed class NavigationService
         }
     }
 
-    public bool Contains(PageKey key)
-    {
-        return _pages.ContainsKey(key);
-    }
+    public bool Contains(PageKey key) => _pages.ContainsKey(key);
 
     public UserControl? GetCurrentPage()
     {

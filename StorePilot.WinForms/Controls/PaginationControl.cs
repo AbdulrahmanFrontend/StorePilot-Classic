@@ -13,8 +13,7 @@ public partial class PaginationControl : UserControl
     public event EventHandler? PageSizeChanged;
 
     [Browsable(false)]
-    [DesignerSerializationVisibility(
-        DesignerSerializationVisibility.Hidden)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public int CurrentPage
     {
         get => _currentPage;
@@ -26,8 +25,7 @@ public partial class PaginationControl : UserControl
     }
 
     [Browsable(false)]
-    [DesignerSerializationVisibility(
-        DesignerSerializationVisibility.Hidden)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public int TotalPages
     {
         get => _totalPages;
@@ -39,8 +37,7 @@ public partial class PaginationControl : UserControl
     }
 
     [Browsable(false)]
-    [DesignerSerializationVisibility(
-        DesignerSerializationVisibility.Hidden)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public int PageSize
     {
         get => _pageSize;
@@ -61,17 +58,11 @@ public partial class PaginationControl : UserControl
         int totalPages,
         int pageSize)
     {
-        _currentPage = Math.Max(
-            1,
-            currentPage);
+        _currentPage = Math.Max(1, currentPage);
 
-        _totalPages = Math.Max(
-            0,
-            totalPages);
+        _totalPages = Math.Max(0, totalPages);
 
-        _pageSize = pageSize > 0
-            ? pageSize
-            : 10;
+        _pageSize = pageSize > 0 ? pageSize : 10;
 
         RebuildPageNumbers();
         UpdateState();
@@ -89,16 +80,10 @@ public partial class PaginationControl : UserControl
                 pageNumberComboBox.Items.Add(i);
 
             if (TotalPages > 0)
-            {
-                pageNumberComboBox.SelectedItem =
-                    Math.Min(
-                        CurrentPage,
-                        TotalPages);
-            }
+                pageNumberComboBox.SelectedItem = 
+                    Math.Min(CurrentPage, TotalPages);
             else
-            {
                 pageNumberComboBox.SelectedIndex = -1;
-            }
         }
         finally
         {
@@ -112,17 +97,13 @@ public partial class PaginationControl : UserControl
 
         pageNumberComboBox.Enabled = hasPages;
 
-        firstButton.Enabled =
-            hasPages && CurrentPage > 1;
+        firstButton.Enabled = hasPages && CurrentPage > 1;
 
-        previousButton.Enabled =
-            hasPages && CurrentPage > 1;
+        previousButton.Enabled = hasPages && CurrentPage > 1;
 
-        nextButton.Enabled =
-            hasPages && CurrentPage < TotalPages;
+        nextButton.Enabled = hasPages && CurrentPage < TotalPages;
 
-        lastButton.Enabled =
-            hasPages && CurrentPage < TotalPages;
+        lastButton.Enabled = hasPages && CurrentPage < TotalPages;
 
         pageInfoLabel.Text = hasPages
             ? $"صفحة {CurrentPage} من {TotalPages}"
@@ -132,30 +113,22 @@ public partial class PaginationControl : UserControl
     private void FirstButton_Click(
         object? sender,
         EventArgs e)
-    {
-        GoToPage(1);
-    }
+        => GoToPage(1);
 
     private void PreviousButton_Click(
         object? sender,
         EventArgs e)
-    {
-        GoToPage(CurrentPage - 1);
-    }
+        => GoToPage(CurrentPage - 1);
 
     private void NextButton_Click(
         object? sender,
         EventArgs e)
-    {
-        GoToPage(CurrentPage + 1);
-    }
+        => GoToPage(CurrentPage + 1);
 
     private void LastButton_Click(
         object? sender,
         EventArgs e)
-    {
-        GoToPage(TotalPages);
-    }
+        => GoToPage(TotalPages);
 
     private void PageNumberComboBox_SelectedIndexChanged(
         object? sender,
@@ -178,13 +151,9 @@ public partial class PaginationControl : UserControl
         _pageSize = pageSize;
         _currentPage = 1;
 
-        PageSizeChanged?.Invoke(
-            this,
-            EventArgs.Empty);
+        PageSizeChanged?.Invoke(this, EventArgs.Empty);
 
-        PageChanged?.Invoke(
-            this,
-            EventArgs.Empty);
+        PageChanged?.Invoke(this, EventArgs.Empty);
     }
 
     private void GoToPage(int page)
@@ -192,10 +161,7 @@ public partial class PaginationControl : UserControl
         if (TotalPages <= 0)
             return;
 
-        page = Math.Clamp(
-            page,
-            1,
-            TotalPages);
+        page = Math.Clamp(page, 1, TotalPages);
 
         if (CurrentPage == page)
             return;
@@ -206,15 +172,13 @@ public partial class PaginationControl : UserControl
 
         UpdateState();
 
-        PageChanged?.Invoke(
-            this,
-            EventArgs.Empty);
+        PageChanged?.Invoke(this, EventArgs.Empty);
     }
 
     private void PaginationControl_Load(object sender, EventArgs e)
     {
-        pageSizeComboBox.Items.AddRange([10, 20, 50]);
-        pageSizeComboBox.SelectedItem = 10;
+        pageSizeComboBox.Items.AddRange([50, 100, 150, 200]);
+        pageSizeComboBox.SelectedItem = 50;
 
         UpdateState();
     }

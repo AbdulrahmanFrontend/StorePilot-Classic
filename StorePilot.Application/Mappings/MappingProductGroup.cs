@@ -1,8 +1,5 @@
 ﻿using StorePilot.Application.Dtos.ProductGroupDtos;
 using StorePilot.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace StorePilot.Application.Mappings;
 
@@ -17,6 +14,10 @@ public static class MappingProductGroup
     public static ProductGroup ToEntity(this CreateProductGroupDto dto)
         => new ProductGroup { Name = dto.Name };
 
-    public static ProductGroup ToEntity(this UpdateProductGroupDto dto, int groupId)
-        => new ProductGroup { GroupId = groupId, Name = dto.Name };
+    public static void UpdateFromDto(
+        this ProductGroup entity,
+        UpdateProductGroupDto dto)
+    {
+        entity.Name = dto.Name;
+    }
 }

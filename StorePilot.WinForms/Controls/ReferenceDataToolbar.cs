@@ -1,9 +1,5 @@
-﻿using ReaLTaiizor.Controls;
-using StorePilot.WinForms.Foundation;
-using StorePilot.WinForms.Theme;
+﻿using StorePilot.WinForms.Theme;
 using System.ComponentModel;
-using System.Drawing;
-using System.Windows.Forms;
 
 namespace StorePilot.WinForms.Controls;
 
@@ -23,12 +19,11 @@ public partial class ReferenceDataToolbar : UserControl
 
     [Browsable(false)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public string SearchText =>
-        searchTextBox.Text.Trim();
+    public string SearchText => searchTextBox.Text.Trim();
 
     [Browsable(false)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public System.Windows.Forms.Button AddButton => addButton;
+    public Button AddButton => addButton;
 
     public ReferenceDataToolbar()
     {
@@ -36,9 +31,7 @@ public partial class ReferenceDataToolbar : UserControl
     }
 
     public void SetSearchText(string? value)
-    {
-        searchTextBox.Text = value ?? string.Empty;
-    }
+        => searchTextBox.Text = value ?? string.Empty;
 
     public void FocusSearch()
     {
@@ -63,17 +56,13 @@ public partial class ReferenceDataToolbar : UserControl
         addButton.FlatAppearance.BorderColor = AppTheme.Accent;
     }
 
-    private void SearchTextBox_TextChanged(
-        object? sender,
-        EventArgs e)
+    private void SearchTextBox_TextChanged(object? sender, EventArgs e)
     {
         searchTimer.Stop();
         searchTimer.Start();
     }
 
-    private void SearchTextBox_KeyDown(
-        object? sender,
-        KeyEventArgs e)
+    private void SearchTextBox_KeyDown(object? sender, KeyEventArgs e)
     {
         if (e.KeyCode != Keys.Enter)
             return;
@@ -82,30 +71,18 @@ public partial class ReferenceDataToolbar : UserControl
 
         searchTimer.Stop();
 
-        SearchRequested?.Invoke(
-            this,
-            EventArgs.Empty);
+        SearchRequested?.Invoke(this, EventArgs.Empty);
     }
 
-    private void SearchTimer_Tick(
-        object? sender,
-        EventArgs e)
+    private void SearchTimer_Tick(object? sender, EventArgs e)
     {
         searchTimer.Stop();
 
-        SearchRequested?.Invoke(
-            this,
-            EventArgs.Empty);
+        SearchRequested?.Invoke(this, EventArgs.Empty);
     }
 
-    private void AddButton_Click(
-        object? sender,
-        EventArgs e)
-    {
-        AddClicked?.Invoke(
-            this,
-            EventArgs.Empty);
-    }
+    private void AddButton_Click(object? sender, EventArgs e)
+        => AddClicked?.Invoke(this, EventArgs.Empty);
 
     private void ReferenceDataToolbar_Load(object sender, EventArgs e)
         => ApplyTheme();

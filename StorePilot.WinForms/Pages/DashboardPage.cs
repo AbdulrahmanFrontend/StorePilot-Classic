@@ -1,6 +1,4 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
+﻿using StorePilot.Application.Dtos.DashboardDtos;
 using StorePilot.WinForms.Foundation;
 using StorePilot.WinForms.Theme;
 using StorePilot.WinForms.ViewModels;
@@ -10,19 +8,25 @@ namespace StorePilot.WinForms.Pages
     public partial class DashboardPage : UserControl
     {
         private readonly AppBrandSettingsStore _settingsStore;
-        private DashboardViewModel _viewModel;
+        private readonly DashboardViewModel _viewModel;
 
-        public DashboardPage(AppBrandSettingsStore settingsStore)
+        public DashboardPage(
+            AppBrandSettingsStore settingsStore,
+            DashboardViewModel viewModel)
         {
             _settingsStore = settingsStore ??
-                             throw new ArgumentNullException(nameof(settingsStore));
+                             throw new ArgumentNullException(
+                                 nameof(settingsStore));
+
+            _viewModel = viewModel ??
+                             throw new ArgumentNullException(
+                                 nameof(viewModel));
 
             InitializeComponent();
         }
 
         private void DashboardPage_Load(object? sender, EventArgs e)
         {
-            _viewModel = DashboardViewModel.CreateDemo();
             LoadSettings();
             LoadDashboardData();
         }
@@ -31,11 +35,13 @@ namespace StorePilot.WinForms.Pages
         {
             var settings = _settingsStore.Load();
 
-            storeNameLabel.Text = string.IsNullOrWhiteSpace(settings.StoreName)
+            storeNameLabel.Text = 
+                string.IsNullOrWhiteSpace(settings.StoreName)
                 ? "StorePilot"
                 : settings.StoreName;
 
-            welcomeUserLabel.Text = string.IsNullOrWhiteSpace(settings.UserName)
+            welcomeUserLabel.Text = 
+                string.IsNullOrWhiteSpace(settings.UserName)
                 ? "مرحباً بك"
                 : $"مرحباً بك، {settings.UserName}";
 
@@ -45,33 +51,41 @@ namespace StorePilot.WinForms.Pages
 
         private void LoadDashboardData()
         {
-            todaySalesValueLabel.Text = _viewModel.TodaySales;
-            todayPurchasesValueLabel.Text = _viewModel.TodayPurchases;
-            totalDebtsValueLabel.Text = _viewModel.TotalDebts;
-            productsValueLabel.Text = _viewModel.ProductsCount;
-            lowStockValueLabel.Text = _viewModel.LowStockCount;
+            var dashboardData = _viewModel.GetDashboardDataAsync().Result.Value;
+            todaySalesValueLabel.Text = dashboardData?.TodaySales.ToString("C");
+            todayPurchasesValueLabel.Text = 
+                dashboardData?.TodayPurchases.ToString("C");
+            totalDebtsValueLabel.Text = dashboardData?.TotalDebts.ToString("C");
+            productsValueLabel.Text = dashboardData?.ProductsCount.ToString();
+            lowStockValueLabel.Text = dashboardData?.LowStockCount.ToString();
 
             recentSalesGrid.Rows.Clear();
 
-            foreach (var sale in _viewModel.RecentSales)
+            var recentSalesItems = dashboardData?.RecentSalesItems ??
+                Enumerable.Empty<RecentSaleItemDto>();
+
+            foreach (var sale in recentSalesItems)
             {
                 recentSalesGrid.Rows.Add(
-                    sale.InvoiceNumber == null ? string.Empty : sale.InvoiceNumber,
-                    sale.CustomerName == null ? string.Empty : sale.CustomerName,
-                    sale.Total == null ? string.Empty : sale.Total.ToString(),
-                    sale.PaymentStatus == null ? string.Empty : sale.PaymentStatus,
-                    sale.Date.ToString("HH:mm")
+                    sale.InvoiceNumber,
+                    sale.CustomerName,
+                    sale.TotalAmount.ToString(),
+                    sale.Status,
+                    sale.SaleDate.ToString("HH:mm")
                 );
             }
 
             lowStockGrid.Rows.Clear();
 
-            foreach (var item in _viewModel.LowStockItems)
+            var lowStockItems = dashboardData?.LowStockItems ??
+                Enumerable.Empty<LowStockItemDto>();
+
+            foreach (var item in lowStockItems)
             {
                 lowStockGrid.Rows.Add(
-                    item.ProductName == null ? string.Empty : item.ProductName,
-                    item.CurrentQuantity,
-                    item.MinimumQuantity
+                    item.ProductName,
+                    item.CurrentStock,
+                    item.MinimumStock
                 );
             }
         }

@@ -1,7 +1,5 @@
 ﻿using StorePilot.Application.Dtos.UnitDtos;
-using StorePilot.WinForms.Controls;
 using StorePilot.WinForms.Forms;
-using StorePilot.WinForms.Foundation;
 using StorePilot.WinForms.Theme;
 using StorePilot.WinForms.ViewModels;
 
@@ -13,45 +11,31 @@ public partial class UnitsPage : UserControl
 
     private bool _loading;
 
-    public UnitsPage(
-        UnitsViewModel viewModel)
+    public UnitsPage(UnitsViewModel viewModel)
     {
         InitializeComponent();
 
-        _viewModel =
-            viewModel;
+        _viewModel = viewModel;
     }
 
     private void ConfigurePage()
     {
-        toolbar.Title =
-            "الوحدات";
+        toolbar.Title = "الوحدات";
 
-        unitsGrid.Configure(
-            "اسم الوحدة",
-            "تاريخ الإنشاء");
+        unitsGrid.Configure("اسم الوحدة", "تاريخ الإنشاء");
 
-        unitsGrid.Grid.Columns["idColumn"]!
-            .DataPropertyName =
-            "UnitId";
+        unitsGrid.Grid.Columns["idColumn"]!.DataPropertyName = "UnitId";
 
-        unitsGrid.Grid.Columns["nameColumn"]!
-            .DataPropertyName =
-            "Name";
+        unitsGrid.Grid.Columns["nameColumn"]!.DataPropertyName = "Name";
 
-        unitsGrid.Grid.Columns["createdAtColumn"]!
-            .DataPropertyName =
-            "CreatedAt";
+        unitsGrid.Grid.Columns["createdAtColumn"]!.DataPropertyName ="CreatedAt";
 
-        unitsGrid.Grid.DataSource =
-            _viewModel.Items;
+        unitsGrid.Grid.DataSource = _viewModel.Items;
 
         ApplyTheme();
     }
 
-    private async void UnitsPage_Load(
-        object? sender,
-        EventArgs e)
+    private async void UnitsPage_Load(object? sender, EventArgs e)
     {
         ConfigurePage();
 
@@ -61,52 +45,26 @@ public partial class UnitsPage : UserControl
         await LoadDataAsync();
     }
 
-    private async void Toolbar_SearchRequested(
-        object? sender,
-        EventArgs e)
-    {
-        await LoadDataAsync(
-            toolbar.SearchText,
-            1,
-            pagination.PageSize);
-    }
+    private async void Toolbar_SearchRequested(object? sender, EventArgs e)
+        => await LoadDataAsync(toolbar.SearchText, 1, pagination.PageSize);
 
-    private async void Pagination_PageChanged(
-        object? sender,
-        EventArgs e)
-    {
-        await LoadDataAsync(
+    private async void Pagination_PageChanged(object? sender, EventArgs e)
+        => await LoadDataAsync(
             toolbar.SearchText,
             pagination.CurrentPage,
             pagination.PageSize);
-    }
 
-    private async void Pagination_PageSizeChanged(
-        object? sender,
-        EventArgs e)
+    private async void Pagination_PageSizeChanged(object? sender, EventArgs e)
+        => await LoadDataAsync(toolbar.SearchText, 1, pagination.PageSize);
+
+    private async void Toolbar_AddClicked(object? sender, EventArgs e)
     {
-        await LoadDataAsync(
-            toolbar.SearchText,
-            1,
-            pagination.PageSize);
-    }
+        using var form = new EditNameForm("إضافة وحدة");
 
-    private async void Toolbar_AddClicked(
-        object? sender,
-        EventArgs e)
-    {
-        using var form =
-            new EditNameForm(
-                "إضافة وحدة");
-
-        if (form.ShowDialog(this) !=
-            DialogResult.OK)
-        {
+        if (form.ShowDialog(this) != DialogResult.OK)
             return;
-        }
 
-        var result =
-            await _viewModel.CreateAsync(
+        var result = await _viewModel.CreateAsync(
                 new CreateUnitDto(
                     form.NameValue));
 
@@ -128,28 +86,18 @@ public partial class UnitsPage : UserControl
     }
 
     private async void UnitsGrid_CellDoubleClicked(
-        object? sender,
+        object? sender, 
         DataGridViewCellEventArgs e)
     {
-        if (unitsGrid.Grid.Rows[e.RowIndex]
-            .DataBoundItem is not UnitDto item)
-        {
+        if (unitsGrid.Grid.Rows[e.RowIndex].DataBoundItem is not UnitDto item)
             return;
-        }
 
-        using var form =
-            new EditNameForm(
-                "تعديل الوحدة",
-                item.Name);
+        using var form = new EditNameForm("تعديل الوحدة", item.UnitName);
 
-        if (form.ShowDialog(this) !=
-            DialogResult.OK)
-        {
+        if (form.ShowDialog(this) != DialogResult.OK)
             return;
-        }
 
-        var result =
-            await _viewModel.UpdateAsync(
+        var result = await _viewModel.UpdateAsync(
                 item.UnitId,
                 new UpdateUnitDto(
                     form.NameValue));
@@ -193,8 +141,7 @@ public partial class UnitsPage : UserControl
                 _viewModel.TotalPages,
                 _viewModel.PageSize);
 
-            totalLabel.Text =
-                $"إجمالي الوحدات: {_viewModel.TotalCount}";
+            totalLabel.Text = $"إجمالي الوحدات: {_viewModel.TotalCount}";
         }
         finally
         {
@@ -204,13 +151,11 @@ public partial class UnitsPage : UserControl
 
     public void ApplyTheme()
     {
-        BackColor =
-            AppTheme.Background;
+        BackColor = AppTheme.Background;
 
         toolbar.ApplyTheme();
         unitsGrid.ApplyTheme();
 
-        totalLabel.ForeColor =
-            AppTheme.MutedText;
+        totalLabel.ForeColor = AppTheme.MutedText;
     }
 }

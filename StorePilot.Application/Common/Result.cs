@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace StorePilot.Application.Common;
+﻿namespace StorePilot.Application.Common;
 
 public class Result<T>
 {

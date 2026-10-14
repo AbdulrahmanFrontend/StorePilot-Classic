@@ -1,6 +1,3 @@
-using System.Drawing;
-using System.Windows.Forms;
-
 namespace StorePilot.WinForms.Theme;
 
 public static class AppTheme
@@ -72,9 +69,7 @@ public static class AppTheme
         control.ForeColor = Text;
 
         foreach (Control child in control.Controls)
-        {
             ApplyChild(child);
-        }
     }
 
     private static void ApplyChild(Control control)
@@ -95,9 +90,7 @@ public static class AppTheme
             control.ForeColor = Text;
         }
         else if (control is Label label)
-        {
             label.ForeColor = Text;
-        }
         else if (control is TextBox textBox)
         {
             textBox.BackColor = Surface;
@@ -115,13 +108,9 @@ public static class AppTheme
             comboBox.ForeColor = Text;
         }
         else if (control is CheckBox checkBox)
-        {
             checkBox.ForeColor = Text;
-        }
         else if (control is RadioButton radioButton)
-        {
             radioButton.ForeColor = Text;
-        }
         else if (control is Button button)
         {
             button.FlatStyle = FlatStyle.Flat;
@@ -133,9 +122,7 @@ public static class AppTheme
         if (control.HasChildren)
         {
             foreach (Control child in control.Controls)
-            {
                 ApplyChild(child);
-            }
         }
     }
 }

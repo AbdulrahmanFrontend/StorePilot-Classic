@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace StorePilot.WinForms.Navigation
+﻿namespace StorePilot.WinForms.Navigation
 {
-    public enum PageKey
+    public enum PageKey : byte
     {
         Dashboard = 0,
         Units = 1,

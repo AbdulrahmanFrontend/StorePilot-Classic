@@ -18,40 +18,27 @@ public partial class GroupsPage : UserControl
     {
         InitializeComponent();
 
-        _viewModel =
-            viewModel;
+        _viewModel = viewModel;
     }
 
     private void ConfigurePage()
     {
-        toolbar.Title =
-            "مجموعات المنتجات";
+        toolbar.Title = "مجموعات المنتجات";
 
-        groupsGrid.Configure(
-            "اسم المجموعة",
-            "تاريخ الإنشاء");
+        groupsGrid.Configure("اسم المجموعة", "تاريخ الإنشاء");
 
-        groupsGrid.Grid.Columns["idColumn"]!
-            .DataPropertyName =
-            "groupId";
+        groupsGrid.Grid.Columns["idColumn"]!.DataPropertyName = "groupId";
 
-        groupsGrid.Grid.Columns["nameColumn"]!
-            .DataPropertyName =
-            "Name";
+        groupsGrid.Grid.Columns["nameColumn"]!.DataPropertyName = "Name";
 
-        groupsGrid.Grid.Columns["createdAtColumn"]!
-            .DataPropertyName =
-            "CreatedAt";
+        groupsGrid.Grid.Columns["createdAtColumn"]!.DataPropertyName = "CreatedAt";
 
-        groupsGrid.Grid.DataSource =
-            _viewModel.Items;
+        groupsGrid.Grid.DataSource = _viewModel.Items;
 
         ApplyTheme();
     }
 
-    private async void GroupsPage_Load(
-        object? sender,
-        EventArgs e)
+    private async void GroupsPage_Load(object? sender, EventArgs e)
     {
         ConfigurePage();
 
@@ -61,52 +48,28 @@ public partial class GroupsPage : UserControl
         await LoadDataAsync();
     }
 
-    private async void Toolbar_SearchRequested(
-        object? sender,
-        EventArgs e)
-    {
-        await LoadDataAsync(
-            toolbar.SearchText,
-            1,
-            pagination.PageSize);
-    }
+    private async void Toolbar_SearchRequested(object? sender, EventArgs e)
+        => await LoadDataAsync(toolbar.SearchText, 1, pagination.PageSize);
 
-    private async void Pagination_PageChanged(
-        object? sender,
-        EventArgs e)
-    {
-        await LoadDataAsync(
-            toolbar.SearchText,
+    private async void Pagination_PageChanged(object? sender, EventArgs e)
+        => await LoadDataAsync(
+            toolbar.SearchText, 
             pagination.CurrentPage,
             pagination.PageSize);
-    }
 
-    private async void Pagination_PageSizeChanged(
-        object? sender,
-        EventArgs e)
-    {
-        await LoadDataAsync(
-            toolbar.SearchText,
-            1,
-            pagination.PageSize);
-    }
+    private async void Pagination_PageSizeChanged(object? sender, EventArgs e)
+        => await LoadDataAsync(toolbar.SearchText, 1, pagination.PageSize);
 
     private async void Toolbar_AddClicked(
         object? sender,
         EventArgs e)
     {
-        using var form =
-            new EditNameForm(
-                "إضافة مجموعة");
+        using var form = new EditNameForm("إضافة مجموعة");
 
-        if (form.ShowDialog(this) !=
-            DialogResult.OK)
-        {
+        if (form.ShowDialog(this) != DialogResult.OK)
             return;
-        }
 
-        var result =
-            await _viewModel.CreateAsync(
+        var result = await _viewModel.CreateAsync(
                 new CreateProductGroupDto(
                     form.NameValue));
 
@@ -133,23 +96,14 @@ public partial class GroupsPage : UserControl
     {
         if (groupsGrid.Grid.Rows[e.RowIndex]
             .DataBoundItem is not ProductGroupDto item)
-        {
             return;
-        }
 
-        using var form =
-            new EditNameForm(
-                "تعديل المجموعة",
-                item.Name);
+        using var form = new EditNameForm("تعديل المجموعة", item.Name);
 
-        if (form.ShowDialog(this) !=
-            DialogResult.OK)
-        {
+        if (form.ShowDialog(this) != DialogResult.OK)
             return;
-        }
 
-        var result =
-            await _viewModel.UpdateAsync(
+        var result = await _viewModel.UpdateAsync(
                 item.GroupId,
                 new UpdateProductGroupDto(
                     form.NameValue));
@@ -174,7 +128,7 @@ public partial class GroupsPage : UserControl
     private async Task LoadDataAsync(
         string? search = null,
         int pageNumber = 1,
-        int pageSize = 10)
+        int pageSize = 50)
     {
         if (_loading)
             return;
@@ -193,8 +147,7 @@ public partial class GroupsPage : UserControl
                 _viewModel.TotalPages,
                 _viewModel.PageSize);
 
-            totalLabel.Text =
-                $"إجمالي المجموعات: {_viewModel.TotalCount}";
+            totalLabel.Text = $"إجمالي المجموعات: {_viewModel.TotalCount}";
         }
         finally
         {
@@ -204,13 +157,11 @@ public partial class GroupsPage : UserControl
 
     public void ApplyTheme()
     {
-        BackColor =
-            AppTheme.Background;
+        BackColor = AppTheme.Background;
 
         toolbar.ApplyTheme();
         groupsGrid.ApplyTheme();
 
-        totalLabel.ForeColor =
-            AppTheme.MutedText;
+        totalLabel.ForeColor = AppTheme.MutedText;
     }
 }

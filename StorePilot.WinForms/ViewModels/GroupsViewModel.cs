@@ -13,7 +13,7 @@ public sealed class GroupsViewModel
 
     public int PageNumber { get; private set; } = 1;
 
-    public int PageSize { get; private set; } = 10;
+    public int PageSize { get; private set; } = 50;
 
     public int TotalCount { get; private set; }
 
@@ -35,25 +35,24 @@ public sealed class GroupsViewModel
         int pageSize = 10,
         CancellationToken cancellationToken = default)
     {
-        var result =
-            await _service.GetPagesAsync(
+        var result = await _service.GetPagesAsync(
                 search,
                 pageNumber,
                 pageSize,
                 cancellationToken);
 
-        PageNumber = result.PageNumber;
-        PageSize = result.PageSize;
-        TotalCount = result.TotalCount;
-        TotalPages = result.TotalPages;
+        PageNumber = result.Value == null ? 1 : result.Value.PageNumber;
+        PageSize = result.Value == null ? 50 : result.Value.PageSize;
+        TotalCount = result.Value == null ? 0 : result.Value.TotalCount;
+        TotalPages = result.Value == null ? 1 : result.Value.TotalPages;
 
         Items.Clear();
 
-        foreach (var item in result.Items)
+        foreach (var item in result.Value?.Items ?? Array.Empty<ProductGroupDto>())
             Items.Add(item);
     }
 
-    public async Task<Result<int>> CreateAsync(
+    public async Task<Result> CreateAsync(
         CreateProductGroupDto dto,
         CancellationToken cancellationToken = default)
         => await _service.CreateAsync(dto, cancellationToken);

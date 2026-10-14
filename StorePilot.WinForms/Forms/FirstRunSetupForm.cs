@@ -1,5 +1,4 @@
-﻿using ReaLTaiizor.Controls;
-using StorePilot.WinForms.Foundation;
+﻿using StorePilot.WinForms.Foundation;
 using StorePilot.WinForms.Theme;
 
 namespace StorePilot.WinForms.Forms;
@@ -12,8 +11,7 @@ public partial class FirstRunSetupForm : Form
 
     private bool _pendingLogoDeletion;
 
-    public FirstRunSetupForm(
-        AppBrandSettingsStore settingsStore)
+    public FirstRunSetupForm(AppBrandSettingsStore settingsStore)
     {
         _settingsStore = settingsStore;
 
@@ -24,23 +22,17 @@ public partial class FirstRunSetupForm : Form
     {
         AppTheme.Apply(this);
 
-        previewPanel.BackColor =
-            AppTheme.Background;
+        previewPanel.BackColor = AppTheme.Background;
 
-        logoPreview.BackColor =
-            AppTheme.Background;
+        logoPreview.BackColor = AppTheme.Background;
 
-        saveButton.BackColor =
-            AppTheme.Accent;
+        saveButton.BackColor = AppTheme.Accent;
 
-        saveButton.ForeColor =
-            Color.White;
+        saveButton.ForeColor = Color.White;
 
-        cancelButton.BackColor =
-            AppTheme.Surface;
+        cancelButton.BackColor = AppTheme.Surface;
 
-        cancelButton.ForeColor =
-            AppTheme.Text;
+        cancelButton.ForeColor = AppTheme.Text;
     }
 
     private void UpdatePreview()
@@ -56,28 +48,17 @@ public partial class FirstRunSetupForm : Form
                 : userNameTextBox.Text.Trim();
     }
 
-    private void storeNameTextBox_TextChanged(
-        object sender,
-        EventArgs e)
-    {
-        UpdatePreview();
-    }
+    private void storeNameTextBox_TextChanged(object sender, EventArgs e)
+        => UpdatePreview();
 
-    private void userNameTextBox_TextChanged(
-        object sender,
-        EventArgs e)
-    {
-        UpdatePreview();
-    }
+    private void userNameTextBox_TextChanged(object sender, EventArgs e)
+        => UpdatePreview();
 
-    private void chooseLogoButton_Click(
-        object sender,
-        EventArgs e)
+    private void chooseLogoButton_Click(object sender, EventArgs e)
     {
         using var dialog = new OpenFileDialog
         {
             Filter = "Image files|*.png;*.jpg;*.jpeg;*.bmp",
-
             Title = "اختيار شعار المحل"
         };
 
@@ -88,20 +69,16 @@ public partial class FirstRunSetupForm : Form
 
         _pendingLogoDeletion = false;
 
-        using var sourceImage =
-            Image.FromFile(dialog.FileName);
+        using var sourceImage = Image.FromFile(dialog.FileName);
 
         logoPreview.Image?.Dispose();
 
-        logoPreview.Image =
-            new Bitmap(sourceImage);
+        logoPreview.Image = new Bitmap(sourceImage);
 
         logoPreview.Text = string.Empty;
     }
 
-    private void removeLogoButton_Click(
-        object sender,
-        EventArgs e)
+    private void removeLogoButton_Click( object sender, EventArgs e)
     {
         _pendingLogoPath = null;
 
@@ -114,15 +91,10 @@ public partial class FirstRunSetupForm : Form
         logoPreview.Text = "بدون شعار";
     }
 
-    private void themeRadioButton_CheckedChanged(
-        object sender,
-        EventArgs e)
+    private void themeRadioButton_CheckedChanged(object sender, EventArgs e)
     {
-        if (!lightThemeRadioButton.Checked &&
-            !darkThemeRadioButton.Checked)
-        {
+        if (!lightThemeRadioButton.Checked && !darkThemeRadioButton.Checked)
             return;
-        }
 
         AppTheme.Set(
             lightThemeRadioButton.Checked
@@ -132,15 +104,11 @@ public partial class FirstRunSetupForm : Form
         ApplyCurrentTheme();
     }
 
-    private void saveButton_Click(
-        object sender,
-        EventArgs e)
+    private void saveButton_Click(object sender, EventArgs e)
     {
-        var storeName =
-            storeNameTextBox.Text.Trim();
+        var storeName = storeNameTextBox.Text.Trim();
 
-        var userName =
-            userNameTextBox.Text.Trim();
+        var userName = userNameTextBox.Text.Trim();
 
         if (string.IsNullOrWhiteSpace(storeName))
         {
@@ -183,33 +151,23 @@ public partial class FirstRunSetupForm : Form
         try
         {
             if (_pendingLogoDeletion)
-            {
                 _settingsStore.RemoveLogo();
-            }
             else if (!string.IsNullOrWhiteSpace(_pendingLogoPath))
-            {
-                _settingsStore.SaveLogo(
-                    _pendingLogoPath);
-            }
+                _settingsStore.SaveLogo(_pendingLogoPath);
 
-            var logoPath =
-                _settingsStore.GetLogoPath();
+            var logoPath = _settingsStore.GetLogoPath();
 
             var settings = new AppBrandSettings
             {
                 StoreName = storeName,
-
                 UserName = userName,
-
                 Theme = lightThemeRadioButton.Checked
                     ? ThemeMode.Light
                     : ThemeMode.Dark,
-
                 LogoFileName = logoPath is null
                     ? null
                     : Path.GetFileName(logoPath),
-
-                IsConfigured = true
+                IsConfigured = true,
             };
 
             _settingsStore.Save(settings);
@@ -231,9 +189,7 @@ public partial class FirstRunSetupForm : Form
         }
     }
 
-    private void cancelButton_Click(
-        object sender,
-        EventArgs e)
+    private void cancelButton_Click(object sender, EventArgs e)
     {
         var confirmation = MessageBox.Show(
             this,
@@ -245,7 +201,6 @@ public partial class FirstRunSetupForm : Form
         if (confirmation == DialogResult.Yes)
         {
             DialogResult = DialogResult.Cancel;
-
             Close();
         }
     }
@@ -253,15 +208,6 @@ public partial class FirstRunSetupForm : Form
     private void FirstRunSetupForm_Load(object sender, EventArgs e)
     {
         UpdatePreview();
-
         ApplyCurrentTheme();
     }
-
-    //protected override void Dispose(bool disposing)
-    //{
-    //    if (disposing)
-    //        logoPreview.Image?.Dispose();
-
-    //    base.Dispose(disposing);
-    //}
 }

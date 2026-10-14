@@ -1,6 +1,4 @@
-﻿using System;
-using System.Windows.Forms;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace StorePilot.WinForms.Navigation;
 
@@ -14,7 +12,5 @@ public sealed class DiPageFactory : IPageFactory
     }
 
     public TPage Create<TPage>() where TPage : UserControl
-    {
-        return _serviceProvider.GetRequiredService<TPage>();
-    }
+        => _serviceProvider.GetRequiredService<TPage>();
 }

@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using StorePilot.Domain.Entities;
 using System.Data.Common;
 using System.Reflection;
 
@@ -30,16 +29,20 @@ public static class DatabaseInitializer
             await using (var pragmaCommand = connection.CreateCommand())
             {
                 pragmaCommand.CommandText = "PRAGMA foreign_keys = ON;";
-                await pragmaCommand.ExecuteNonQueryAsync(cancellationToken);
+                await pragmaCommand.ExecuteNonQueryAsync(
+                    cancellationToken);
             }
 
             // If the database already contains the schema, there is
             // nothing to initialize.
-            if (await IsDatabaseInitializedAsync(connection, cancellationToken))
+            if (await IsDatabaseInitializedAsync(
+                connection,
+                cancellationToken))
                 return;
 
             await using var transaction =
-                await connection.BeginTransactionAsync(cancellationToken);
+                await connection.BeginTransactionAsync(
+                    cancellationToken);
 
             try
             {
@@ -100,14 +103,11 @@ public static class DatabaseInitializer
           );
         """;
 
-        await using var command =
-            connection.CreateCommand();
+        await using var command = connection.CreateCommand();
 
         command.CommandText = sql;
 
-        var result =
-            await command.ExecuteScalarAsync(
-                cancellationToken);
+        var result = await command.ExecuteScalarAsync(cancellationToken);
 
         return Convert.ToInt32(result) == 22;
     }
@@ -120,7 +120,8 @@ public static class DatabaseInitializer
         await using var stream =
             assembly.GetManifestResourceStream(SchemaResourceName)
             ?? throw new InvalidOperationException(
-                $"Database schema resource '{SchemaResourceName}' was not found.");
+                $"Database schema resource '{SchemaResourceName}' " +
+                $"was not found.");
 
         using var reader = new StreamReader(stream);
 

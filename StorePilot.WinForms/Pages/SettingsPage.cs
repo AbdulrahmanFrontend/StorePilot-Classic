@@ -56,7 +56,8 @@ namespace StorePilot.WinForms.Pages
 
             storeNameTextBox.Text = _viewModel.StoreName;
             userNameTextBox.Text = _viewModel.UserName;
-            themeComboBox.SelectedIndex = _viewModel.Theme == ThemeMode.Dark ? 1 : 0;
+            themeComboBox.SelectedIndex = _viewModel.Theme == ThemeMode.Dark ?
+                1 : 0;
 
             LoadLogo(_settingsStore.GetLogoPath());
 
@@ -96,8 +97,7 @@ namespace StorePilot.WinForms.Pages
                     logoPictureBox.ImageLocation = logoPath;
                 }
 
-                logoFileNameLabel.Text =
-                    Path.GetFileName(logoPath);
+                logoFileNameLabel.Text = Path.GetFileName(logoPath);
             }
             catch
             {
@@ -114,13 +114,11 @@ namespace StorePilot.WinForms.Pages
             using (var dialog = new OpenFileDialog())
             {
                 dialog.Title = "اختيار شعار المحل";
-                dialog.Filter =
-                    "Image Files|*.png;*.jpg;*.jpeg;*.bmp;*.gif";
+                dialog.Filter = "Image Files|*.png;*.jpg;*.jpeg;*.bmp;*.gif";
 
                 dialog.Multiselect = false;
 
-                if (dialog.ShowDialog(FindForm()) !=
-                    DialogResult.OK)
+                if (dialog.ShowDialog(FindForm()) != DialogResult.OK)
                     return;
 
                 LoadLogo(dialog.FileName);
@@ -223,8 +221,7 @@ namespace StorePilot.WinForms.Pages
                 using (var dialog = new SaveFileDialog())
                 {
                     dialog.Title = "اختيار مكان النسخة الاحتياطية";
-                    dialog.Filter =
-                        "SQLite Database|*.db|All Files|*.*";
+                    dialog.Filter = "SQLite Database|*.db|All Files|*.*";
 
                     dialog.DefaultExt = "db";
                     dialog.AddExtension = true;
@@ -233,8 +230,7 @@ namespace StorePilot.WinForms.Pages
                     dialog.FileName = defaultFileName;
                     dialog.OverwritePrompt = true;
 
-                    if (dialog.ShowDialog(FindForm()) !=
-                        DialogResult.OK)
+                    if (dialog.ShowDialog(FindForm()) != DialogResult.OK)
                         return;
 
                     var destinationPath = dialog.FileName;
@@ -244,13 +240,12 @@ namespace StorePilot.WinForms.Pages
                     settings.LastBackupDirectory =
                         Path.GetDirectoryName(destinationPath);
 
-                    settings.LastBackupFileName =
+                    settings.LastBackupFileName = 
                         Path.GetFileName(destinationPath);
 
                     _settingsStore.Save(settings);
 
-                    backupDirectoryLabel.Text =
-                        settings.LastBackupDirectory;
+                    backupDirectoryLabel.Text = settings.LastBackupDirectory;
 
                     MessageBox.Show(
                         FindForm(),

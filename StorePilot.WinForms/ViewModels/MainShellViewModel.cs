@@ -6,8 +6,7 @@ public sealed class MainShellViewModel
 {
     private readonly AppBrandSettingsStore _settingsStore;
 
-    public MainShellViewModel(
-        AppBrandSettingsStore settingsStore)
+    public MainShellViewModel(AppBrandSettingsStore settingsStore)
     {
         _settingsStore = settingsStore;
 
@@ -29,8 +28,5 @@ public sealed class MainShellViewModel
     public string? LogoPath =>
         _settingsStore.GetLogoPath();
 
-    public void Reload()
-    {
-        Settings = _settingsStore.Load();
-    }
+    public void Reload() => Settings = _settingsStore.Load();
 }

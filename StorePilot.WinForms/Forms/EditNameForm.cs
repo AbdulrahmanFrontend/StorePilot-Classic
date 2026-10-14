@@ -6,61 +6,44 @@ namespace StorePilot.WinForms.Forms;
 
 public partial class EditNameForm : Form
 {
-    public string NameValue =>
-        nameTextBox.Text.Trim();
+    public string NameValue => nameTextBox.Text.Trim();
 
-    public EditNameForm(
-        string title,
-        string initialName = "")
+    public EditNameForm(string title, string initialName = "")
     {
         InitializeComponent();
 
         Text = title;
         titleLabel.Text = title;
 
-        nameTextBox.Text =
-            initialName;
+        nameTextBox.Text = initialName;
     }
 
     private void ApplyTheme()
     {
-        BackColor =
-            AppTheme.Background;
+        BackColor = AppTheme.Background;
 
-        titleLabel.ForeColor =
-            AppTheme.Text;
+        titleLabel.ForeColor = AppTheme.Text;
 
-        nameLabel.ForeColor =
-            AppTheme.MutedText;
+        nameLabel.ForeColor = AppTheme.MutedText;
 
-        nameTextBox.BackColor =
-            AppTheme.Surface;
+        nameTextBox.BackColor = AppTheme.Surface;
 
-        nameTextBox.ForeColor =
-            AppTheme.Text;
+        nameTextBox.ForeColor = AppTheme.Text;
 
-        cancelButton.BackColor =
-            AppTheme.SurfaceSecondary;
+        cancelButton.BackColor = AppTheme.SurfaceSecondary;
 
-        cancelButton.ForeColor =
-            AppTheme.Text;
+        cancelButton.ForeColor = AppTheme.Text;
 
-        cancelButton.FlatAppearance.BorderColor =
-            AppTheme.Border;
+        cancelButton.FlatAppearance.BorderColor = AppTheme.Border;
 
-        saveButton.BackColor =
-            AppTheme.Accent;
+        saveButton.BackColor = AppTheme.Accent;
 
-        saveButton.ForeColor =
-            Color.White;
+        saveButton.ForeColor = Color.White;
 
-        saveButton.FlatAppearance.BorderColor =
-            AppTheme.Accent;
+        saveButton.FlatAppearance.BorderColor = AppTheme.Accent;
     }
 
-    private void SaveButton_Click(
-        object? sender,
-        EventArgs e)
+    private void SaveButton_Click(object? sender, EventArgs e)
     {
         if (string.IsNullOrWhiteSpace(NameValue))
         {
@@ -84,18 +67,14 @@ public partial class EditNameForm : Form
         if (result != DialogResult.Yes)
             return;
 
-        DialogResult =
-            DialogResult.OK;
+        DialogResult = DialogResult.OK;
 
         Close();
     }
 
-    private void CancelButton_Click(
-        object? sender,
-        EventArgs e)
+    private void CancelButton_Click(object? sender, EventArgs e)
     {
-        DialogResult =
-            DialogResult.Cancel;
+        DialogResult = DialogResult.Cancel;
 
         Close();
     }

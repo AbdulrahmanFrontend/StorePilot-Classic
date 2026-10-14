@@ -1,9 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using StorePilot.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace StorePilot.Infrastructure.Data.Configurations;
 

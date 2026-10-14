@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace StorePilot.Application.Dtos.ProductDtos;
 
-namespace StorePilot.Application.Dtos.ProductDtos;
-
-public sealed record CreateProductDto(string ProductName, string? Code, decimal MinQuantity,
-    decimal PurchasePrice, decimal SalePrice, int UnitId, int GroupId, 
-    string? Notes);
+public sealed record CreateProductDto(string ProductName, string? Code,
+    decimal MinQuantity, decimal PurchasePrice, decimal SalePrice, int UnitId,
+    int GroupId, string? Notes);

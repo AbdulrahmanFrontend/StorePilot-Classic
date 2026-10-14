@@ -83,17 +83,13 @@ public partial class SplashForm : Form
         object? sender,
         EventArgs e)
     {
-        Opacity = Math.Min(
-            1,
-            Opacity + 0.08);
+        Opacity = Math.Min(1, Opacity + 0.08);
 
         if (Opacity >= 1)
             fadeInTimer.Stop();
     }
 
-    private void DisplayTimer_Tick(
-        object? sender,
-        EventArgs e)
+    private void DisplayTimer_Tick(object? sender, EventArgs e)
     {
         if (_closing)
             return;
@@ -115,7 +111,6 @@ public partial class SplashForm : Form
             if (Opacity <= 0)
             {
                 fadeOutTimer.Stop();
-                fadeOutTimer.Dispose();
 
                 Close();
             }
@@ -128,11 +123,6 @@ public partial class SplashForm : Form
     {
         fadeInTimer.Stop();
         displayTimer.Stop();
-
-        fadeInTimer.Dispose();
-        displayTimer.Dispose();
-
-        logoMarkPictureBox.Image?.Dispose();
 
         base.OnFormClosed(e);
     }

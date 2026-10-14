@@ -13,7 +13,7 @@ public sealed class UnitsViewModel
 
     public int PageNumber { get; private set; } = 1;
 
-    public int PageSize { get; private set; } = 10;
+    public int PageSize { get; private set; } = 50;
 
     public int TotalCount { get; private set; }
 
@@ -37,34 +37,25 @@ public sealed class UnitsViewModel
                 pageSize,
                 cancellationToken);
 
-        PageNumber = result.PageNumber;
-        PageSize = result.PageSize;
-        TotalCount = result.TotalCount;
-        TotalPages = result.TotalPages;
+        PageNumber = result.Value == null ? 1 : result.Value.PageNumber;
+        PageSize = result.Value == null ? 50 : result.Value.PageSize;
+        TotalCount = result.Value == null ? 0 : result.Value.TotalCount;
+        TotalPages = result.Value == null ? 1 : result.Value.TotalPages;
 
         Items.Clear();
 
-        foreach (var item in result.Items)
+        foreach (var item in result.Value?.Items ?? Array.Empty<UnitDto>())
             Items.Add(item);
     }
 
-    public Task<Result<int>> CreateAsync(
+    public Task<Result> CreateAsync(
         CreateUnitDto dto,
         CancellationToken cancellationToken = default)
-    {
-        return _service.CreateAsync(
-            dto,
-            cancellationToken);
-    }
+        => _service.CreateAsync(dto, cancellationToken);
 
     public Task<Result> UpdateAsync(
         int unitId,
         UpdateUnitDto dto,
         CancellationToken cancellationToken = default)
-    {
-        return _service.UpdateAsync(
-            unitId,
-            dto,
-            cancellationToken);
-    }
+        => _service.UpdateAsync(unitId, dto, cancellationToken);
 }

@@ -1,9 +1,5 @@
 ﻿using StorePilot.Application.Dtos.ProductDtos;
-using StorePilot.Application.Dtos.ProductGroupDtos;
 using StorePilot.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace StorePilot.Application.Mappings;
 

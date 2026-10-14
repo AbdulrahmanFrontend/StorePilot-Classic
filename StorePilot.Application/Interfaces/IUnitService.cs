@@ -1,5 +1,4 @@
 ﻿using StorePilot.Application.Common;
-using StorePilot.Application.Dtos.ProductGroupDtos;
 using StorePilot.Application.Dtos.UnitDtos;
 
 namespace StorePilot.Application.Interfaces;

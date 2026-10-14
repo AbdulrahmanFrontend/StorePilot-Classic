@@ -1,123 +1,63 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using StorePilot.Application.Common;
 using StorePilot.Application.Dtos.ProductGroupDtos;
 using StorePilot.Application.Interfaces;
 using StorePilot.Application.Mappings;
 using StorePilot.Domain.Entities;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace StorePilot.Application.Services;
 
 public class ProductGroupService : IProductGroupService
 {
-    //private readonly List<ProductGroupDto> _items =
-    //[
-    //    new(1, "نواكل", DateTime.Now),
-    //    new(2, "قطع بولي", DateTime.Now),
-    //    new(3, "قطع ابيض", DateTime.Now),
-    //    new(4, "مواسير بولي", DateTime.Now),
-    //    new(5, "مواسير ابيض", DateTime.Now),
-    //    new(6, "اطقم صيني", DateTime.Now),
-    //    new(7, "نواكل صيني", DateTime.Now),
-    //    new(8, "قطع ابيض صيني", DateTime.Now),
-    //    new(9, "حدايد وبويات", DateTime.Now),
-    //    new(10, "كهرباء", DateTime.Now),
-    //    new(11, "موبايل قسط", DateTime.Now),
-    //    new(12, "أجهزة كهربائية قسط", DateTime.Now),
-    //    new(13, "مستلزمات قسط", DateTime.Now),
-    //    new(14, "محابس", DateTime.Now),
-    //    new(15, "خلاطات", DateTime.Now),
-    //    new(16, "سيفونات", DateTime.Now),
-    //    new(17, "أحواض", DateTime.Now),
-    //    new(18, "بانيوهات", DateTime.Now),
-    //    new(19, "وصلات", DateTime.Now),
-    //    new(20, "كوع و تي", DateTime.Now),
-    //    new(21, "جلب", DateTime.Now),
-    //    new(22, "فلانشات", DateTime.Now),
-    //    new(23, "محولات", DateTime.Now),
-    //    new(24, "بلاعات", DateTime.Now),
-    //    new(25, "خراطيم", DateTime.Now),
-    //    new(26, "شطرطون", DateTime.Now),
-    //    new(27, "سيليكون", DateTime.Now),
-    //    new(28, "مواد عزل", DateTime.Now),
-    //    new(29, "أدوات سباكة", DateTime.Now),
-    //    new(30, "عدد يدوية", DateTime.Now)
-    //];
-
-    //private int _nextId = 31;
-
     private readonly IAppDbContext _context;
+    private readonly ILogger<ProductGroupService> _logger;
 
-    public ProductGroupService(IAppDbContext context)
+    public ProductGroupService(
+        IAppDbContext context, 
+        ILogger<ProductGroupService> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
     public async Task<Result<IReadOnlyList<ProductGroupDto>>> GetAllAsync(
         CancellationToken cancellationToken = default)
     {
-        try
-        {
-            var entities = await _context.ProductGroups
+        var entities = await _context.ProductGroups
             .OrderByDescending(x => x.GroupId)
             .AsNoTracking()
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
 
-            var dtos = new List<ProductGroupDto>();
-            entities.ForEach(e => dtos.Add(e.ToDto()));
+        var dtos = entities.Select(e => e.ToDto()).ToList();
 
-            return await Task.FromResult(
-                Result<IReadOnlyList<ProductGroupDto>>.Success(dtos));
-        }
-        catch
-        {
-            return await Task.FromResult(
-                Result<IReadOnlyList<ProductGroupDto>>.Failure(
-                    "فشلت عملية الحصول على جميع المجموعات!"));
-        }
+        return Result<IReadOnlyList<ProductGroupDto>>.Success(dtos);
     }
 
     public async Task<Result<ProductGroupDto>> GetByIdAsync(
         int groupId,
         CancellationToken cancellationToken = default)
     {
-        try
-        {
-            var item = await _context.ProductGroups.FindAsync(groupId);
+        var item = await _context.ProductGroups.FindAsync(
+            new object[] { groupId }, 
+            cancellationToken);
 
-            if (item is null)
-                return await Task.FromResult(
-                    Result<ProductGroupDto>.Failure(
-                        "مجموعة المنتج غير الصنف!"));
+        if (item is null)
+            return Result<ProductGroupDto>.Failure(
+                "مجموعة الصنف غير موجودة!");
 
-            return await Task.FromResult(
-                Result<ProductGroupDto>.Success(item.ToDto()));
-        }
-        catch
-        {
-            return await Task.FromResult(
-                Result<ProductGroupDto>.Failure(
-                    "فشلت عملية الحصول على مجموعة الصنف!"));
-        }
+        return Result<ProductGroupDto>.Success(item.ToDto());
     }
 
     public async Task<Result<bool>> ExistsAsync(
         int groupId,
         CancellationToken cancellationToken = default)
     {
-        try
-        {
-            bool exists = await _context.ProductGroups.AnyAsync(
-            x => x.GroupId == groupId);
+        bool exists = await _context.ProductGroups.AnyAsync(
+            x => x.GroupId == groupId,
+            cancellationToken);
 
-            return await Task.FromResult(
-                Result<bool>.Success(exists));
-        }
-        catch
-        {
-            return await Task.FromResult(
-                Result<bool>.Failure("فشلت عملية التأكد من وجود هذه المجموعة!"));
-        }
+        return Result<bool>.Success(exists);
     }
 
     public async Task<Result<PagedResult<ProductGroupDto>>> GetPagesAsync(
@@ -127,100 +67,74 @@ public class ProductGroupService : IProductGroupService
         CancellationToken cancellationToken = default)
     {
         pageNumber = Math.Max(1, pageNumber);
-        pageSize = Math.Max(0, pageSize);
+        pageSize = Math.Max(1, pageSize);
 
-        try
+        var query = _context.ProductGroups
+            .OrderByDescending(x => x.GroupId)
+            .AsNoTracking();
+
+        if (!string.IsNullOrWhiteSpace(search))
         {
-            var query = _context.ProductGroups
-            .OrderByDescending(x => x.GroupId);
-
-            var totalCount = await query.CountAsync();
-
-            var totalPages = totalCount == 0
-                ? 0
-                : (int)Math.Ceiling(
-                    totalCount / (double)pageSize);
-
-            if (totalPages > 0 && pageNumber > totalPages)
-                pageNumber = totalPages;
-
-            IEnumerable<ProductGroup> entities;
-
-            if (!string.IsNullOrWhiteSpace(search))
-            {
-                var value = search.Trim();
-
-                entities = await query.Where(x =>
-                    x.Name.StartsWith(
-                        value,
-                        StringComparison.OrdinalIgnoreCase))
-                    .Skip((pageNumber - 1) * pageSize)
-                    .Take(pageSize)
-                    .ToListAsync();
-            }
-            else
-                entities = await query.Skip((pageNumber - 1) * pageSize)
-                    .Take(pageSize)
-                    .ToListAsync();
-
-            var dtos = new List<ProductGroupDto>();
-
-            foreach (ProductGroup group in entities)
-                dtos.Add(group.ToDto());
-
-            return await Task.FromResult(
-                Result<PagedResult<ProductGroupDto>>.Success(
-                    new PagedResult<ProductGroupDto>(
-                    dtos,
-                    totalCount,
-                    pageNumber,
-                    pageSize)));
+            var value = search.Trim();
+            query = (IOrderedQueryable<ProductGroup>)query
+                .Where(x => x.Name.StartsWith(value));
         }
-        catch
-        {
-            return await Task.FromResult(
-                Result<PagedResult<ProductGroupDto>>.Failure(
-                    "فشلت عملية الحصول على المجموعات!"));
-        }
+
+        var totalCount = await query.CountAsync(cancellationToken);
+
+        var totalPages = totalCount == 0
+            ? 0
+            : (int)Math.Ceiling(totalCount / (double)pageSize);
+
+        if (totalPages > 0 && pageNumber > totalPages)
+            pageNumber = totalPages;
+
+        var entities = await query
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
+
+        var dtos = entities.Select(e => e.ToDto()).ToList();
+
+        var pagedResult = new PagedResult<ProductGroupDto>(
+            dtos,
+            totalCount,
+            pageNumber,
+            pageSize);
+
+        return Result<PagedResult<ProductGroupDto>>.Success(pagedResult);
     }
 
     public async Task<Result> CreateAsync(
         CreateProductGroupDto dto,
         CancellationToken cancellationToken = default)
     {
+        if(dto is null)
+            return Result.Failure("بيانات المجموعة غير موجودة!");
+
         var name = dto.Name.Trim();
 
-        try
-        {
-            if (await _context.ProductGroups.AnyAsync(x =>
-            string.Equals(
+        bool exists = await _context.ProductGroups.AnyAsync(
+            x => string.Equals(
                 x.Name,
-                name,
-                StringComparison.OrdinalIgnoreCase)))
-            {
-                return await Task.FromResult(
-                    Result.Failure(
-                        "هذه المجموعة موجودة بالفعل."));
-            }
+                name),
+            cancellationToken);
 
-            var item = dto.ToEntity();
+        if (exists)
+            return Result.Failure("هذه المجموعة موجودة بالفعل!");
 
-            await _context.ProductGroups.AddAsync(item);
+        var item = dto.ToEntity();
 
-            int rowsAffected = await _context.SaveChangesAsync(cancellationToken);
+        await _context.ProductGroups.AddAsync(item, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
 
-            if (rowsAffected > 0)
-                return await Task.FromResult(
-                    Result.Success("تمت عملية حفظ بيانات هذه المجموعة بنجاح."));
+        // تسجيل الحدث بنجاح داخل ملف الـ Log الخاص بالعميل
+        _logger.LogInformation(
+            "تم إنشاء مجموعة أصناف جديدة بنجاح باسم: {GroupName}",
+            name);
 
-            return await Task.FromResult(
-                Result.Failure("لم يتم حفظ بيانات هذه المجموعة للنظام!"));
-        }
-        catch
-        {
-            return await Task.FromResult(
-                Result.Failure("فشلت عملية حفظ بيانات هذه المجموعة للنظام!"));
-        }
+        return Result.Success(
+            "تمت عملية حفظ بيانات هذه المجموعة بنجاح.");
     }
 
     public async Task<Result> UpdateAsync(
@@ -228,46 +142,36 @@ public class ProductGroupService : IProductGroupService
         UpdateProductGroupDto dto,
         CancellationToken cancellationToken = default)
     {
+        if(dto is null)
+            return Result.Failure("بيانات المجموعة غير موجودة!");
+
         var name = dto.Name.Trim();
 
-        try
-        {
-            var item = await _context.ProductGroups.FindAsync(groupId);
+        var item = await _context.ProductGroups.FindAsync(
+            new object[] { groupId },
+            cancellationToken);
 
-            if (item is null)
-            {
-                return await Task.FromResult(
-                    Result.Failure(
-                        "مجموعة الصنف غير موجودة."));
-            }
+        if (item is null)
+            return Result.Failure("مجموعة الصنف غير موجودة!");
 
-            if (await _context.ProductGroups.AnyAsync(x =>
-                x.GroupId != groupId &&
-                string.Equals(
-                    x.Name,
-                    name,
-                    StringComparison.OrdinalIgnoreCase)))
-            {
-                return await Task.FromResult(
-                    Result.Failure(
-                        "هذه المجموعة موجودة بالفعل."));
-            }
+        bool isDuplicate = await _context.ProductGroups.AnyAsync(
+            x => x.GroupId != groupId && string.Equals(x.Name,
+            name),
+            cancellationToken);
 
-            item = dto.ToEntity(groupId);
+        if (isDuplicate)
+            return Result.Failure("هذه المجموعة موجودة بالفعل!");
 
-            int rowsAffected = await _context.SaveChangesAsync(cancellationToken);
+        item.UpdateFromDto(dto);
 
-            if (rowsAffected > 0)
-                return await Task.FromResult(
-                    Result.Success());
+        await _context.SaveChangesAsync(cancellationToken);
 
-            return await Task.FromResult(
-                    Result.Failure("لم يتم حفظ بيانات هذه المجموعة!"));
-        }
-        catch
-        {
-            return await Task.FromResult(
-                    Result.Failure("فشلت عملية حفظ بيانات هذه المجموعة!"));
-        }
+        _logger.LogInformation(
+            "تم تحديث مجموعة الأصناف برقم {GroupId} بنجاح إلى الاسم:" +
+            " {GroupName}",
+            groupId,
+            name);
+
+        return Result.Success("تم تحديث بيانات المجموعة بنجاح.");
     }
 }

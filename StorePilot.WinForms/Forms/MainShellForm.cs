@@ -1,4 +1,3 @@
-using StorePilot.Infrastructure.Storage;
 using StorePilot.WinForms.Foundation;
 using StorePilot.WinForms.Navigation;
 using StorePilot.WinForms.Pages;
@@ -15,7 +14,7 @@ public partial class MainShellForm : Form
     private NavigationService? _navigationService;
 
     public MainShellForm(
-        AppBrandSettingsStore settingsStore,
+        AppBrandSettingsStore settingsStore, 
         IPageFactory pageFactory)
     {
         _settingsStore = settingsStore;
@@ -62,11 +61,9 @@ public partial class MainShellForm : Form
 
         userNameLabel.Text = _viewModel.UserName;
 
-        welcomeUserLabel.Text =
-            $"مرحباً، {_viewModel.UserName}";
+        welcomeUserLabel.Text = $"مرحباً، {_viewModel.UserName}";
 
-        userInitialLabel.Text =
-            GetUserInitial(_viewModel.UserName);
+        userInitialLabel.Text = GetUserInitial(_viewModel.UserName);
 
         LoadLogo();
 
@@ -90,8 +87,7 @@ public partial class MainShellForm : Form
 
         string? logoPath = _viewModel.LogoPath;
 
-        if (string.IsNullOrWhiteSpace(logoPath) ||
-            !File.Exists(logoPath))
+        if (string.IsNullOrWhiteSpace(logoPath) || !File.Exists(logoPath))
         {
             logoPictureBox.Visible = false;
             logoMarkLabel.Visible = true;
@@ -142,13 +138,15 @@ public partial class MainShellForm : Form
         if (sender is not Button button)
             return;
 
-        var key = int.TryParse(button.Tag?.ToString(), out int parsedKey) ? parsedKey : 14;
+        var key = int.TryParse(button.Tag?.ToString(), out int parsedKey) ?
+            parsedKey : 14;
 
         switch ((PageKey)key)
         {
             case PageKey.Dashboard:
                 _navigationService?.Navigate<DashboardPage>(PageKey.Dashboard);
-                (_navigationService?.GetCurrentPage() as DashboardPage)?.LoadSettings();
+                (_navigationService?.GetCurrentPage() as DashboardPage)?
+                    .LoadSettings();
                 break;
 
             case PageKey.ProductGroups:
@@ -163,7 +161,8 @@ public partial class MainShellForm : Form
 
             case PageKey.Settings:
                 _navigationService?.Navigate<SettingsPage>(PageKey.Settings);
-                var settingsPage = _navigationService?.GetCurrentPage() as SettingsPage;
+                var settingsPage = _navigationService?.GetCurrentPage()
+                    as SettingsPage;
                 settingsPage?.refreshShell = RefreshShell;
                 break;
         }

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace StorePilot.Application.Dtos.UnitDtos;
+﻿namespace StorePilot.Application.Dtos.UnitDtos;
 
 public sealed record UnitDto(
     int UnitId,
-    string Name,
+    string UnitName,
     DateTime CreatedAt);

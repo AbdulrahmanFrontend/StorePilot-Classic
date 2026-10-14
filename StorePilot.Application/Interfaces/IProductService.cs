@@ -1,8 +1,5 @@
 ﻿using StorePilot.Application.Common;
 using StorePilot.Application.Dtos.ProductDtos;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace StorePilot.Application.Interfaces;
 
