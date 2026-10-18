@@ -8,16 +8,16 @@ public static class MappingProductGroup
     public static ProductGroupDto ToDto(this ProductGroup productGroup)
         => new ProductGroupDto(
             productGroup.GroupId,
-            productGroup.Name, 
+            productGroup.GroupName, 
             productGroup.CreatedAt);
 
     public static ProductGroup ToEntity(this CreateProductGroupDto dto)
-        => new ProductGroup { Name = dto.Name };
+        => new ProductGroup { GroupName = dto.Name };
 
     public static void UpdateFromDto(
         this ProductGroup entity,
         UpdateProductGroupDto dto)
     {
-        entity.Name = dto.Name;
+        entity.GroupName = dto.Name;
     }
 }

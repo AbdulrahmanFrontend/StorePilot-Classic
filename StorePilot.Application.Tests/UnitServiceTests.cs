@@ -7,7 +7,6 @@ using StorePilot.Domain.Entities;
 using StorePilot.Infrastructure.Data; // نفترض أن الـ StorePilotDbContext موجود هنا
 using FluentAssertions;
 using StorePilot.Application.Validators.Units;
-using FluentValidation;
 
 public class UnitServiceTests
 {
@@ -26,7 +25,7 @@ public class UnitServiceTests
     private Mock<ILogger<UnitService>> GetMockLogger() 
         => new Mock<ILogger<UnitService>>();
 
-    private UnitService GetUnitService(StorePilotDbContext context) => 
+    private UnitService GetService(StorePilotDbContext context) => 
         new UnitService(
             context,
             GetMockLogger().Object,
@@ -42,7 +41,7 @@ public class UnitServiceTests
         context.Units.Add(new Unit { UnitName = "وحدة ثانية" });
         await context.SaveChangesAsync();
 
-        var service = GetUnitService(context);
+        var service = GetService(context);
 
         // --- Act ---
         var result = await service.GetAllAsync();
@@ -60,7 +59,7 @@ public class UnitServiceTests
     public async Task GetAllAsync_Should_Return_Empty_List_When_No_Units_Exist()
     {
         // --- Arrange ---
-        var service = GetUnitService(GetInMemoryDbContext());
+        var service = GetService(GetInMemoryDbContext());
 
         // --- Act ---
         var result = await service.GetAllAsync();
@@ -81,7 +80,7 @@ public class UnitServiceTests
         context.Units.Add(unit);
         await context.SaveChangesAsync(); // سيتم توليد UnitId تلقائياً (مثلاً 1)
 
-        var service = GetUnitService(context);
+        var service = GetService(context);
 
         // --- Act ---
         var result = await service.GetByIdAsync(unit.UnitId);
@@ -96,14 +95,14 @@ public class UnitServiceTests
     public async Task GetByIdAsync_Should_Fail_When_Id_Does_Not_Exist()
     {
         // --- Arrange ---
-        var service = GetUnitService(GetInMemoryDbContext());
+        var service = GetService(GetInMemoryDbContext());
 
         // --- Act ---
         var result = await service.GetByIdAsync(999); // رقم غير موجود
 
         // --- Assert ---
         result.IsSuccess.Should().BeFalse();
-        result.ErrorMessage.Should().Be("الوحدة غير موجودة.");
+        result.ErrorMessage.Should().Be("الوحدة غير موجودة!");
     }
 
     [Fact]
@@ -115,7 +114,7 @@ public class UnitServiceTests
         context.Units.Add(unit);
         await context.SaveChangesAsync();
 
-        var service = GetUnitService(context);
+        var service = GetService(context);
 
         // --- Act ---
         var result = await service.ExistsAsync(unit.UnitId);
@@ -129,7 +128,7 @@ public class UnitServiceTests
     public async Task ExistsAsync_Should_Return_False_When_Unit_Does_Not_Exist()
     {
         // --- Arrange ---
-        var service = GetUnitService(GetInMemoryDbContext());
+        var service = GetService(GetInMemoryDbContext());
 
         // --- Act ---
         var result = await service.ExistsAsync(9999); // رقم غير موجود
@@ -150,7 +149,7 @@ public class UnitServiceTests
         context.Units.Add(new Unit { UnitName = "قطعة" });
         await context.SaveChangesAsync();
 
-        var service = GetUnitService(context);
+        var service = GetService(context);
 
         // --- Act (البحث عن الوحدات التي تبدأ بكلمة "كيلو" بحجم صفحة 1 عناصر) ---
         var result = await service.GetPagesAsync(search: "كيلو", pageNumber: 1, pageSize: 1);
@@ -174,7 +173,7 @@ public class UnitServiceTests
         context.Units.Add(new Unit { UnitName = "قطعة" });
         await context.SaveChangesAsync();
 
-        var service = GetUnitService(context);
+        var service = GetService(context);
 
         // --- Act ---
         var result = await service.GetPagesAsync(search: null, pageNumber: 1, pageSize: 1);
@@ -198,7 +197,7 @@ public class UnitServiceTests
         context.Units.Add(new Unit { UnitName = "قطعة" });
         await context.SaveChangesAsync();
 
-        var service = GetUnitService(context);
+        var service = GetService(context);
 
         // --- Act ---
         var result = await service.GetPagesAsync(search: "متر", pageNumber: 1, pageSize: 1);
@@ -215,7 +214,7 @@ public class UnitServiceTests
     {
         // --- Arrange (الترتيب والتحضير) ---
         var context = GetInMemoryDbContext();
-        var service = GetUnitService(context);
+        var service = GetService(context);
 
         var dto = new CreateUnitDto("كيلوجرام");
 
@@ -238,7 +237,7 @@ public class UnitServiceTests
     public async Task CreateAsync_Should_Fail_When_CreateUnitDto_Is_Null()
     {
         // --- Arrange (الترتيب والتحضير) ---
-        var service = GetUnitService(GetInMemoryDbContext());
+        var service = GetService(GetInMemoryDbContext());
 
         CreateUnitDto dto = null;
 
@@ -254,7 +253,7 @@ public class UnitServiceTests
     public async Task CreateAsync_Should_Fail_When_Unit_Name_Is_NULL()
     {
         // --- Arrange (الترتيب والتحضير) ---
-        var service = GetUnitService(GetInMemoryDbContext());
+        var service = GetService(GetInMemoryDbContext());
 
         var dto = new CreateUnitDto(null);
 
@@ -270,7 +269,7 @@ public class UnitServiceTests
     public async Task CreateAsync_Should_Fail_When_Unit_Name_Is_Empty()
     {
         // --- Arrange (الترتيب والتحضير) ---
-        var service = GetUnitService(GetInMemoryDbContext());
+        var service = GetService(GetInMemoryDbContext());
 
         var dto = new CreateUnitDto(string.Empty);
 
@@ -286,7 +285,7 @@ public class UnitServiceTests
     public async Task CreateAsync_Should_Fail_When_Unit_Name_Is_Whitespace()
     {
         // --- Arrange (الترتيب والتحضير) ---
-        var service = GetUnitService(GetInMemoryDbContext());
+        var service = GetService(GetInMemoryDbContext());
 
         var dto = new CreateUnitDto(" ");
 
@@ -302,7 +301,7 @@ public class UnitServiceTests
     public async Task CreateAsync_Should_Fail_When_Unit_Name_Is_Larger_Than_20_Chars()
     {
         // --- Arrange (الترتيب والتحضير) ---
-        var service = GetUnitService(GetInMemoryDbContext());
+        var service = GetService(GetInMemoryDbContext());
 
         var dto = new CreateUnitDto("أبتثجحخدذرزسشصضطظعغفق"); // 20 حروف
 
@@ -324,7 +323,7 @@ public class UnitServiceTests
         context.Units.Add(new Unit { UnitName = "متر" });
         await context.SaveChangesAsync();
 
-        var service = GetUnitService(context);
+        var service = GetService(context);
         var duplicateDto = new CreateUnitDto("متر"); // نفس الاسم تماماً
 
         // --- Act ---
@@ -345,7 +344,7 @@ public class UnitServiceTests
         context.Units.Add(unit);
         await context.SaveChangesAsync();
 
-        var service = GetUnitService(context);
+        var service = GetService(context);
         var updateDto = new UpdateUnitDto("صندوق جديد");
 
         // --- Act ---
@@ -369,7 +368,7 @@ public class UnitServiceTests
         context.Units.Add(unit);
         await context.SaveChangesAsync();
 
-        var service = GetUnitService(context);
+        var service = GetService(context);
         var updateDto = new UpdateUnitDto("صندوق قديم");
 
         // --- Act ---
@@ -393,7 +392,7 @@ public class UnitServiceTests
         context.Units.Add(unit);
         await context.SaveChangesAsync();
 
-        var service = GetUnitService(context);
+        var service = GetService(context);
         UpdateUnitDto updateDto = null;
 
         // --- Act ---
@@ -413,7 +412,7 @@ public class UnitServiceTests
 
         var unit = await context.Units.FindAsync(unitId); // رقم غير موجود
 
-        var service = GetUnitService(context);
+        var service = GetService(context);
         var updateDto = new UpdateUnitDto("صندوق جديد");
 
         // --- Act ---
@@ -429,7 +428,7 @@ public class UnitServiceTests
     {
         // --- Arrange (الترتيب والتحضير) ---
         var context = GetInMemoryDbContext();
-        var service = GetUnitService(context);
+        var service = GetService(context);
 
         var unit = new Unit { UnitName = "صندوق قديم" };
         context.Units.Add(unit);
@@ -450,7 +449,7 @@ public class UnitServiceTests
     {
         // --- Arrange (الترتيب والتحضير) ---
         var context = GetInMemoryDbContext();
-        var service = GetUnitService(context);
+        var service = GetService(context);
 
         var unit = new Unit { UnitName = "صندوق قديم" };
         context.Units.Add(unit);
@@ -471,7 +470,7 @@ public class UnitServiceTests
     {
         // --- Arrange (الترتيب والتحضير) ---
         var context = GetInMemoryDbContext();
-        var service = GetUnitService(context);
+        var service = GetService(context);
 
         var unit = new Unit { UnitName = "صندوق قديم" };
         context.Units.Add(unit);
@@ -492,7 +491,7 @@ public class UnitServiceTests
     {
         // --- Arrange (الترتيب والتحضير) ---
         var context = GetInMemoryDbContext();
-        var service = GetUnitService(context);
+        var service = GetService(context);
 
         var unit = new Unit { UnitName = "صندوق قديم" };
         context.Units.Add(unit);
@@ -519,7 +518,7 @@ public class UnitServiceTests
         context.Units.Add(new Unit { UnitName = "قطعة" });
         await context.SaveChangesAsync();
 
-        var service = GetUnitService(context);
+        var service = GetService(context);
         var existsUnit = service.GetByIdAsync(1); // الحصول على الوحدة الأولى (متر)
         var duplicateDto = new UpdateUnitDto("قطعة"); // نفس الاسم تماماً
 

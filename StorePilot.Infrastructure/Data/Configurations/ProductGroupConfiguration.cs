@@ -16,16 +16,16 @@ internal sealed class ProductGroupConfiguration : IEntityTypeConfiguration<Produ
             .HasColumnName("GroupId")
             .ValueGeneratedOnAdd();
 
-        builder.Property(x => x.Name)
+        builder.Property(x => x.GroupName)
             .HasColumnName("Group")
             .IsRequired()
-            .HasMaxLength(100);
+            .HasMaxLength(20);
 
         builder.Property(x => x.CreatedAt)
             .IsRequired()
             .HasDefaultValue(DateTime.Now);
 
-        builder.HasIndex(x => x.Name)
+        builder.HasIndex(x => x.GroupName)
             .IsUnique();
 
         builder.HasMany(x => x.Products)

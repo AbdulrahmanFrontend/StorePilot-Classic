@@ -2,8 +2,11 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using StorePilot.Application.Dtos.ProductGroupDtos;
 using StorePilot.Application.Interfaces;
 using StorePilot.Application.Services;
+using StorePilot.Application.Validators.ProductGroups;
+using StorePilot.Application.Validators.Products;
 using StorePilot.Application.Validators.Units;
 using StorePilot.Infrastructure.Backup;
 using StorePilot.Infrastructure.Data;
@@ -145,24 +148,50 @@ internal static class Program
 
         services.AddSingleton<IPageFactory, DiPageFactory>();
 
+        ServicesRegistration(services);
+        
+        ValidatorsRegistration(services);
+
+        ViewModelsRegistration(services);
+
+        PagesRegistration(services);
+
+        services.AddTransient<MainShellForm>();
+    }
+
+    private static void ServicesRegistration(IServiceCollection services)
+    {
         services.AddScoped<IDashboardService, DashboardService>();
         services.AddScoped<IUnitService, UnitService>();
-        services.AddScoped<
-            IProductGroupService, 
-            ProductGroupService>();
+        services.AddScoped<IProductGroupService, ProductGroupService>();
+    }
+
+    private static void ValidatorsRegistration(IServiceCollection services)
+    {
         services.AddValidatorsFromAssembly(typeof(CreateUnitDtoValidator).Assembly);
         services.AddValidatorsFromAssembly(typeof(UpdateUnitDtoValidator).Assembly);
 
+        services.AddValidatorsFromAssembly(typeof(CreateProductGroupDtoValidator).Assembly);
+        services.AddValidatorsFromAssembly(typeof(UpdateProductGroupDtoValidator).Assembly);
+
+        services.AddValidatorsFromAssembly(typeof(CreateProductDtoValidator).Assembly);
+        services.AddValidatorsFromAssembly(typeof(UpdateProductDtoValidator).Assembly);
+    }
+
+    private static void ViewModelsRegistration(IServiceCollection services)
+    {
         services.AddTransient<UnitsViewModel>();
         services.AddTransient<GroupsViewModel>();
         services.AddTransient<DashboardViewModel>();
+    }
+
+    private static void PagesRegistration(IServiceCollection services)
+    {
         services.AddTransient<DashboardPage>();
         services.AddTransient<SettingsPage>();
 
         services.AddTransient<UnitsPage>();
         services.AddTransient<GroupsPage>();
-
-        services.AddTransient<MainShellForm>();
     }
 
     /// <summary>

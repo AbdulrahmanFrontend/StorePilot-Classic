@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using StorePilot.Application.Common;
 using StorePilot.Application.Dtos.ProductGroupDtos;
@@ -12,13 +13,19 @@ public class ProductGroupService : IProductGroupService
 {
     private readonly IAppDbContext _context;
     private readonly ILogger<ProductGroupService> _logger;
+    private readonly IValidator<CreateProductGroupDto> _createValidator;
+    private readonly IValidator<UpdateProductGroupDto> _updateValidator;
 
     public ProductGroupService(
         IAppDbContext context, 
-        ILogger<ProductGroupService> logger)
+        ILogger<ProductGroupService> logger,
+        IValidator<CreateProductGroupDto> createValidator,
+        IValidator<UpdateProductGroupDto> updateValidator)
     {
         _context = context;
         _logger = logger;
+        _createValidator = createValidator;
+        _updateValidator = updateValidator;
     }
 
     public async Task<Result<IReadOnlyList<ProductGroupDto>>> GetAllAsync(
@@ -77,7 +84,7 @@ public class ProductGroupService : IProductGroupService
         {
             var value = search.Trim();
             query = (IOrderedQueryable<ProductGroup>)query
-                .Where(x => x.Name.StartsWith(value));
+                .Where(x => x.GroupName.StartsWith(value));
         }
 
         var totalCount = await query.CountAsync(cancellationToken);
@@ -112,11 +119,18 @@ public class ProductGroupService : IProductGroupService
         if(dto is null)
             return Result.Failure("بيانات المجموعة غير موجودة!");
 
+        var validationResult = await _createValidator.ValidateAsync(
+            dto,
+            cancellationToken);
+
+        if (!validationResult.IsValid)
+            return Result.Failure(validationResult.Errors.First().ErrorMessage);
+
         var name = dto.Name.Trim();
 
         bool exists = await _context.ProductGroups.AnyAsync(
             x => string.Equals(
-                x.Name,
+                x.GroupName,
                 name),
             cancellationToken);
 
@@ -144,6 +158,13 @@ public class ProductGroupService : IProductGroupService
     {
         if(dto is null)
             return Result.Failure("بيانات المجموعة غير موجودة!");
+        
+        var validationResult = await _updateValidator.ValidateAsync(
+            dto,
+            cancellationToken);
+
+        if (!validationResult.IsValid)
+            return Result.Failure(validationResult.Errors.First().ErrorMessage);
 
         var name = dto.Name.Trim();
 
@@ -152,10 +173,10 @@ public class ProductGroupService : IProductGroupService
             cancellationToken);
 
         if (item is null)
-            return Result.Failure("مجموعة الصنف غير موجودة!");
+            return Result.Failure("المجموعة غير موجودة!");
 
         bool isDuplicate = await _context.ProductGroups.AnyAsync(
-            x => x.GroupId != groupId && string.Equals(x.Name,
+            x => x.GroupId != groupId && string.Equals(x.GroupName,
             name),
             cancellationToken);
 

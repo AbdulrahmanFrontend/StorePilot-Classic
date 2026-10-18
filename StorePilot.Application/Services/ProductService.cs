@@ -1,5 +1,5 @@
 ﻿namespace StorePilot.Application.Services;
 
-internal class ProductService
+public class ProductService
 {
 }
