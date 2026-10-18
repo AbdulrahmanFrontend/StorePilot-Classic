@@ -5,18 +5,28 @@ namespace StorePilot.Application.Interfaces;
 
 public interface IProductService
 {
-    Task<PagedResult<ProductDto>> GetAllAsync(
-        string? search,
-        int pageNumber,
-        int pageSize,
+    Task<ProductDto> GetByIdAsync(
+        int productId,
         CancellationToken cancellationToken = default);
 
-    Task<Result<int>> CreateAsync(
+    Task<bool> ExistsAsync(
+        int productId,
+        CancellationToken cancellationToken = default);
+
+    Task<Result> CreateAsync(
         CreateProductDto dto,
         CancellationToken cancellationToken = default);
 
     Task<Result> UpdateAsync(
         int productId,
         UpdateProductDto dto,
+        CancellationToken cancellationToken = default);
+
+    Task<PagedResult<ProductDto>> GetFilteredAsync(
+        GetProductsQueryDto queryDto, 
+        CancellationToken cancellationToken = default);
+
+    Task<Result> DeleteAsync(
+        int productId,
         CancellationToken cancellationToken = default);
 }

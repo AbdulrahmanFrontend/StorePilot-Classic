@@ -11,7 +11,7 @@ public interface IUnitService
     Task<Result<PagedResult<UnitDto>>> GetPagesAsync(
         string? search = null,
         int pageNumber = 1,
-        int pageSize = 10,
+        int pageSize = 50,
         CancellationToken cancellationToken = default);
 
     Task<Result<UnitDto>> GetByIdAsync(

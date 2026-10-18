@@ -70,7 +70,7 @@ public class ProductGroupService : IProductGroupService
     public async Task<Result<PagedResult<ProductGroupDto>>> GetPagesAsync(
         string? search = null,
         int pageNumber = 1,
-        int pageSize = 10,
+        int pageSize = 50,
         CancellationToken cancellationToken = default)
     {
         pageNumber = Math.Max(1, pageNumber);
@@ -84,7 +84,7 @@ public class ProductGroupService : IProductGroupService
         {
             var value = search.Trim();
             query = (IOrderedQueryable<ProductGroup>)query
-                .Where(x => x.GroupName.StartsWith(value));
+                .Where(x => x.GroupName.StartsWith(value)).AsNoTracking();
         }
 
         var totalCount = await query.CountAsync(cancellationToken);
@@ -99,6 +99,7 @@ public class ProductGroupService : IProductGroupService
         var entities = await query
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
+            .AsNoTracking()
             .ToListAsync(cancellationToken);
 
         var dtos = entities.Select(e => e.ToDto()).ToList();
@@ -117,14 +118,24 @@ public class ProductGroupService : IProductGroupService
         CancellationToken cancellationToken = default)
     {
         if(dto is null)
+        {
+            _logger.LogWarning("محاولة إنشاء مجموعة جديدة بدون بيانات!");
             return Result.Failure("بيانات المجموعة غير موجودة!");
+        }
 
         var validationResult = await _createValidator.ValidateAsync(
             dto,
             cancellationToken);
 
         if (!validationResult.IsValid)
+        {
+            string errorMessage = validationResult.Errors.First().ErrorMessage;
+
+            _logger.LogWarning(
+                "فشل التحقق من صحة بيانات المجموعة الجديدة: {Error}",
+                errorMessage);
             return Result.Failure(validationResult.Errors.First().ErrorMessage);
+        }
 
         var name = dto.Name.Trim();
 
@@ -135,7 +146,12 @@ public class ProductGroupService : IProductGroupService
             cancellationToken);
 
         if (exists)
+        {
+            _logger.LogWarning(
+                "محاولة إنشاء مجموعة جديدة باسم موجود بالفعل: {GroupName}",
+                name);
             return Result.Failure("هذه المجموعة موجودة بالفعل!");
+        }
 
         var item = dto.ToEntity();
 
@@ -157,14 +173,27 @@ public class ProductGroupService : IProductGroupService
         CancellationToken cancellationToken = default)
     {
         if(dto is null)
+        {
+            _logger.LogWarning(
+                "فشل تحديث مجموعة الأصناف برقم {GroupId} بسبب عدم وجود بيانات المجموعة",
+                groupId);
             return Result.Failure("بيانات المجموعة غير موجودة!");
+        }
         
         var validationResult = await _updateValidator.ValidateAsync(
             dto,
             cancellationToken);
 
         if (!validationResult.IsValid)
+        {
+            string errorMessage = validationResult.Errors.First().ErrorMessage;
+
+            _logger.LogWarning(
+                "فشل التحقق من صحة بيانات المجموعة برقم {GroupId}: {Error}",
+                groupId,
+                errorMessage);
             return Result.Failure(validationResult.Errors.First().ErrorMessage);
+        }
 
         var name = dto.Name.Trim();
 
@@ -173,7 +202,12 @@ public class ProductGroupService : IProductGroupService
             cancellationToken);
 
         if (item is null)
+        {
+            _logger.LogWarning(
+                "محاولة تحديث بيانات المجموعة برقم {GroupId} غير موجودة!",
+                groupId);
             return Result.Failure("المجموعة غير موجودة!");
+        }
 
         bool isDuplicate = await _context.ProductGroups.AnyAsync(
             x => x.GroupId != groupId && string.Equals(x.GroupName,
@@ -181,7 +215,14 @@ public class ProductGroupService : IProductGroupService
             cancellationToken);
 
         if (isDuplicate)
+        {
+            _logger.LogWarning(
+                "محاولة تحديث بيانات المجموعة برقم {GroupId}," +
+                " الإسم موجود بالفعل: {GroupName}",
+                groupId,
+                name);
             return Result.Failure("هذه المجموعة موجودة بالفعل!");
+        }
 
         item.UpdateFromDto(dto);
 

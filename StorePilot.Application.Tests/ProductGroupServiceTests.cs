@@ -223,7 +223,7 @@ public class ProductGroupServiceTests
 
         // --- Assert (التحقق) ---
         result.IsSuccess.Should().BeTrue();
-        result.ErrorMessage.Should().Be("تمت عملية حفظ بيانات هذه المجموعة بنجاح.");
+        result.Message.Should().Be("تمت عملية حفظ بيانات هذه المجموعة بنجاح.");
 
         // التحقق من أن العنصر أُضيف فعلياً لقاعدة البيانات الوهمية
         var dbCount = await context.ProductGroups.CountAsync();
@@ -246,7 +246,7 @@ public class ProductGroupServiceTests
 
         // --- Assert (التحقق) ---
         result.IsSuccess.Should().BeFalse();
-        result.ErrorMessage.Should().Be("بيانات المجموعة غير موجودة!");
+        result.Message.Should().Be("بيانات المجموعة غير موجودة!");
     }
 
     [Fact]
@@ -262,7 +262,7 @@ public class ProductGroupServiceTests
 
         // --- Assert (التحقق) ---
         result.IsSuccess.Should().BeFalse();
-        result.ErrorMessage.Should().Be("اسم المجموعة مطلوب ولا يمكن أن يكون فارغاً!");
+        result.Message.Should().Be("اسم المجموعة مطلوب ولا يمكن أن يكون فارغاً!");
     }
 
     [Fact]
@@ -278,7 +278,7 @@ public class ProductGroupServiceTests
 
         // --- Assert (التحقق) ---
         result.IsSuccess.Should().BeFalse();
-        result.ErrorMessage.Should().Be("اسم المجموعة مطلوب ولا يمكن أن يكون فارغاً!");
+        result.Message.Should().Be("اسم المجموعة مطلوب ولا يمكن أن يكون فارغاً!");
     }
 
     [Fact]
@@ -294,7 +294,7 @@ public class ProductGroupServiceTests
 
         // --- Assert (التحقق) ---
         result.IsSuccess.Should().BeFalse();
-        result.ErrorMessage.Should().Be("اسم المجموعة مطلوب ولا يمكن أن يكون فارغاً!");
+        result.Message.Should().Be("اسم المجموعة مطلوب ولا يمكن أن يكون فارغاً!");
     }
 
     [Fact]
@@ -310,7 +310,7 @@ public class ProductGroupServiceTests
 
         // --- Assert (التحقق) ---
         result.IsSuccess.Should().BeFalse();
-        result.ErrorMessage.Should().Be("اسم المجموعة يجب ألا يتجاوز 20 حرفاً!");
+        result.Message.Should().Be("اسم المجموعة يجب ألا يتجاوز 20 حرفاً!");
     }
 
     [Fact]
@@ -331,7 +331,7 @@ public class ProductGroupServiceTests
 
         // --- Assert ---
         result.IsSuccess.Should().BeFalse();
-        result.ErrorMessage.Should().Be("هذه المجموعة موجودة بالفعل!");
+        result.Message.Should().Be("هذه المجموعة موجودة بالفعل!");
     }
 
     [Fact]
@@ -400,7 +400,7 @@ public class ProductGroupServiceTests
 
         // --- Assert ---
         result.IsSuccess.Should().BeFalse();
-        result.ErrorMessage.Should().Be("بيانات المجموعة غير موجودة!");
+        result.Message.Should().Be("بيانات المجموعة غير موجودة!");
     }
 
     [Fact]
@@ -418,7 +418,7 @@ public class ProductGroupServiceTests
 
         // --- Assert ---
         result.IsSuccess.Should().BeFalse();
-        result.ErrorMessage.Should().Be("المجموعة غير موجودة!");
+        result.Message.Should().Be("المجموعة غير موجودة!");
     }
 
     [Fact]
@@ -439,7 +439,7 @@ public class ProductGroupServiceTests
 
         // --- Assert (التحقق) ---
         result.IsSuccess.Should().BeFalse();
-        result.ErrorMessage.Should().Be("اسم المجموعة مطلوب ولا يمكن أن يكون فارغاً!");
+        result.Message.Should().Be("اسم المجموعة مطلوب ولا يمكن أن يكون فارغاً!");
     }
 
     [Fact]
@@ -460,7 +460,7 @@ public class ProductGroupServiceTests
 
         // --- Assert (التحقق) ---
         result.IsSuccess.Should().BeFalse();
-        result.ErrorMessage.Should().Be("اسم المجموعة مطلوب ولا يمكن أن يكون فارغاً!");
+        result.Message.Should().Be("اسم المجموعة مطلوب ولا يمكن أن يكون فارغاً!");
     }
 
     [Fact]
@@ -481,7 +481,7 @@ public class ProductGroupServiceTests
 
         // --- Assert (التحقق) ---
         result.IsSuccess.Should().BeFalse();
-        result.ErrorMessage.Should().Be("اسم المجموعة مطلوب ولا يمكن أن يكون فارغاً!");
+        result.Message.Should().Be("اسم المجموعة مطلوب ولا يمكن أن يكون فارغاً!");
     }
 
     [Fact]
@@ -502,7 +502,7 @@ public class ProductGroupServiceTests
 
         // --- Assert (التحقق) ---
         result.IsSuccess.Should().BeFalse();
-        result.ErrorMessage.Should().Be("اسم المجموعة يجب ألا يتجاوز 20 حرفاً!");
+        result.Message.Should().Be("اسم المجموعة يجب ألا يتجاوز 20 حرفاً!");
     }
 
     [Fact]
@@ -527,6 +527,6 @@ public class ProductGroupServiceTests
 
         // --- Assert ---
         result.IsSuccess.Should().BeFalse();
-        result.ErrorMessage.Should().Be("هذه المجموعة موجودة بالفعل!");
+        result.Message.Should().Be("هذه المجموعة موجودة بالفعل!");
     }
 }

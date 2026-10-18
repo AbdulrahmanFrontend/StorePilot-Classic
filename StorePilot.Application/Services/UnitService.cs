@@ -108,7 +108,7 @@ public class UnitService : IUnitService
         {
             var value = search.Trim();
             query = (IOrderedQueryable<Unit>)query
-                .Where(x => x.UnitName.StartsWith(value));
+                .Where(x => x.UnitName.StartsWith(value)).AsNoTracking();
         }
 
         var totalCount = await query.CountAsync(cancellationToken);
@@ -123,6 +123,7 @@ public class UnitService : IUnitService
         var entities = await query
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
+            .AsNoTracking()
             .ToListAsync(cancellationToken);
 
         var dtos = entities.Select(e => e.ToDto()).ToList();
@@ -141,13 +142,23 @@ public class UnitService : IUnitService
         CancellationToken cancellationToken = default)
     {
         if(dto is null)
+        {
+            _logger.LogWarning("محاولة إنشاء وحدة جديدة بدون بيانات!");
             return Result.Failure("بيانات الوحدة غير موجودة!");
+        }
 
         var validationResult = await _createValidator
             .ValidateAsync(dto, cancellationToken);
 
         if (!validationResult.IsValid)
-            return Result.Failure(validationResult.Errors.First().ErrorMessage);
+        {
+            string errorMessage = validationResult.Errors.First().ErrorMessage;
+
+            _logger.LogWarning(
+                "فشل التحقق من صحة بيانات الوحدة الجديدة: {Error}",
+                errorMessage);
+            return Result.Failure(errorMessage);
+        }
 
         var name = dto.UnitName.Trim();
 
@@ -158,7 +169,12 @@ public class UnitService : IUnitService
             cancellationToken);
 
         if (exists)
+        {
+            _logger.LogWarning(
+                "محاولة إنشاء وحدة جديدة باسم موجود بالفعل: {UnitName}",
+                name);
             return Result.Failure("هذه الوحدة موجودة بالفعل!");
+        }
 
         var item = dto.ToEntity();
 
@@ -180,13 +196,26 @@ public class UnitService : IUnitService
         CancellationToken cancellationToken = default)
     {
         if(dto is null)
+        {
+            _logger.LogWarning(
+                "محاولة تحديث بيانات الوحدة برقم {UnitId} ب��ون بيانات!",
+                unitId);
             return Result.Failure("بيانات الوحدة غير موجودة!");
+        }
 
         var validationResult = await _updateValidator
             .ValidateAsync(dto, cancellationToken);
         
         if (!validationResult.IsValid)
-            return Result.Failure(validationResult.Errors.First().ErrorMessage);
+        {
+            string errorMessage = validationResult.Errors.First().ErrorMessage;
+
+            _logger.LogWarning(
+                "فشل التحقق من صحة بيانات الوحدة برقم {UnitId}: {Error}",
+                unitId,
+                errorMessage);
+            return Result.Failure(errorMessage);
+        }
 
         var name = dto.UnitName.Trim();
 
@@ -195,7 +224,12 @@ public class UnitService : IUnitService
             cancellationToken);
 
         if (item is null)
+        {
+            _logger.LogWarning(
+                "محاولة تحديث بيانات الوحدة برقم {UnitId} غير موجودة!",
+                unitId);
             return Result.Failure("الوحدة غير موجودة!");
+        }
 
         bool isDuplicate = await _context.Units.AnyAsync(
             x => x.UnitId != unitId && string.Equals(x.UnitName,
@@ -203,7 +237,13 @@ public class UnitService : IUnitService
             cancellationToken);
 
         if (isDuplicate)
+        {
+            _logger.LogWarning(
+                "محاولة تحديث بيانات الوحدة برقم {UnitId}, الإسم موجود بالفعل: {UnitName}",
+                unitId,
+                name);
             return Result.Failure("هذه الوحدة موجودة بالفعل!");
+        }
 
         item.UpdateFromDto(dto);
 

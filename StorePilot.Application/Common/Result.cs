@@ -23,12 +23,12 @@ public class Result<T>
 public class Result
 {
     public bool IsSuccess { get; }
-    public string? ErrorMessage { get; }
+    public string? Message { get; }
 
     private Result(bool isSuccess,string? errorMessage)
     {
         IsSuccess = isSuccess;
-        ErrorMessage = errorMessage;
+        Message = errorMessage;
     }
 
     public static Result Success(string? errorMessage = null)

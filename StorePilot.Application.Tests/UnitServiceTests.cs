@@ -223,7 +223,7 @@ public class UnitServiceTests
 
         // --- Assert (التحقق) ---
         result.IsSuccess.Should().BeTrue();
-        result.ErrorMessage.Should().Be("تمت عملية حفظ بيانات هذه الوحدة بنجاح.");
+        result.Message.Should().Be("تمت عملية حفظ بيانات هذه الوحدة بنجاح.");
 
         // التحقق من أن العنصر أُضيف فعلياً لقاعدة البيانات الوهمية
         var dbCount = await context.Units.CountAsync();
@@ -246,7 +246,7 @@ public class UnitServiceTests
 
         // --- Assert (التحقق) ---
         result.IsSuccess.Should().BeFalse();
-        result.ErrorMessage.Should().Be("بيانات الوحدة غير موجودة!");
+        result.Message.Should().Be("بيانات الوحدة غير موجودة!");
     }
 
     [Fact]
@@ -262,7 +262,7 @@ public class UnitServiceTests
 
         // --- Assert (التحقق) ---
         result.IsSuccess.Should().BeFalse();
-        result.ErrorMessage.Should().Be("اسم الوحدة مطلوب ولا يمكن أن يكون فارغاً!");
+        result.Message.Should().Be("اسم الوحدة مطلوب ولا يمكن أن يكون فارغاً!");
     }
 
     [Fact]
@@ -278,7 +278,7 @@ public class UnitServiceTests
 
         // --- Assert (التحقق) ---
         result.IsSuccess.Should().BeFalse();
-        result.ErrorMessage.Should().Be("اسم الوحدة مطلوب ولا يمكن أن يكون فارغاً!");
+        result.Message.Should().Be("اسم الوحدة مطلوب ولا يمكن أن يكون فارغاً!");
     }
 
     [Fact]
@@ -294,7 +294,7 @@ public class UnitServiceTests
 
         // --- Assert (التحقق) ---
         result.IsSuccess.Should().BeFalse();
-        result.ErrorMessage.Should().Be("اسم الوحدة مطلوب ولا يمكن أن يكون فارغاً!");
+        result.Message.Should().Be("اسم الوحدة مطلوب ولا يمكن أن يكون فارغاً!");
     }
 
     [Fact]
@@ -310,7 +310,7 @@ public class UnitServiceTests
 
         // --- Assert (التحقق) ---
         result.IsSuccess.Should().BeFalse();
-        result.ErrorMessage.Should().Be("اسم الوحدة يجب ألا يتجاوز 20 حرفاً!");
+        result.Message.Should().Be("اسم الوحدة يجب ألا يتجاوز 20 حرفاً!");
     }
 
     [Fact]
@@ -331,7 +331,7 @@ public class UnitServiceTests
 
         // --- Assert ---
         result.IsSuccess.Should().BeFalse();
-        result.ErrorMessage.Should().Be("هذه الوحدة موجودة بالفعل!");
+        result.Message.Should().Be("هذه الوحدة موجودة بالفعل!");
     }
 
     [Fact]
@@ -400,7 +400,7 @@ public class UnitServiceTests
 
         // --- Assert ---
         result.IsSuccess.Should().BeFalse();
-        result.ErrorMessage.Should().Be("بيانات الوحدة غير موجودة!");
+        result.Message.Should().Be("بيانات الوحدة غير موجودة!");
     }
 
     [Fact]
@@ -420,7 +420,7 @@ public class UnitServiceTests
 
         // --- Assert ---
         result.IsSuccess.Should().BeFalse();
-        result.ErrorMessage.Should().Be("الوحدة غير موجودة!");
+        result.Message.Should().Be("الوحدة غير موجودة!");
     }
 
     [Fact]
@@ -441,7 +441,7 @@ public class UnitServiceTests
 
         // --- Assert (التحقق) ---
         result.IsSuccess.Should().BeFalse();
-        result.ErrorMessage.Should().Be("اسم الوحدة مطلوب ولا يمكن أن يكون فارغاً!");
+        result.Message.Should().Be("اسم الوحدة مطلوب ولا يمكن أن يكون فارغاً!");
     }
 
     [Fact]
@@ -462,7 +462,7 @@ public class UnitServiceTests
 
         // --- Assert (التحقق) ---
         result.IsSuccess.Should().BeFalse();
-        result.ErrorMessage.Should().Be("اسم الوحدة مطلوب ولا يمكن أن يكون فارغاً!");
+        result.Message.Should().Be("اسم الوحدة مطلوب ولا يمكن أن يكون فارغاً!");
     }
 
     [Fact]
@@ -483,7 +483,7 @@ public class UnitServiceTests
 
         // --- Assert (التحقق) ---
         result.IsSuccess.Should().BeFalse();
-        result.ErrorMessage.Should().Be("اسم الوحدة مطلوب ولا يمكن أن يكون فارغاً!");
+        result.Message.Should().Be("اسم الوحدة مطلوب ولا يمكن أن يكون فارغاً!");
     }
 
     [Fact]
@@ -504,7 +504,7 @@ public class UnitServiceTests
 
         // --- Assert (التحقق) ---
         result.IsSuccess.Should().BeFalse();
-        result.ErrorMessage.Should().Be("اسم الوحدة يجب ألا يتجاوز 20 حرفاً!");
+        result.Message.Should().Be("اسم الوحدة يجب ألا يتجاوز 20 حرفاً!");
     }
 
     [Fact]
@@ -529,6 +529,6 @@ public class UnitServiceTests
 
         // --- Assert ---
         result.IsSuccess.Should().BeFalse();
-        result.ErrorMessage.Should().Be("هذه الوحدة موجودة بالفعل!");
+        result.Message.Should().Be("هذه الوحدة موجودة بالفعل!");
     }
 }

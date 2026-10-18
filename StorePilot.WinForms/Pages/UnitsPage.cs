@@ -71,7 +71,7 @@ public partial class UnitsPage : UserControl
         if (!result.IsSuccess)
         {
             MessageBox.Show(
-                result.ErrorMessage,
+                result.Message,
                 "تعذر الحفظ",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Warning);
@@ -105,7 +105,7 @@ public partial class UnitsPage : UserControl
         if (!result.IsSuccess)
         {
             MessageBox.Show(
-                result.ErrorMessage,
+                result.Message,
                 "تعذر الحفظ",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Warning);

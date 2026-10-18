@@ -6,10 +6,21 @@ namespace StorePilot.Application.Mappings;
 public static class MappingProduct
 {
     public static ProductDto ToDto(this Product product)
-        => new ProductDto(product.ProductId, product.ProductName, product.Code, 
-            product.Quantity, product.MinQuantity, product.PurchasePrice, product.SalePrice,
-            product.UnitId, product.GroupId, product.Notes, product.CreatedAt, 
-            product.Active);
+        => new ProductDto 
+        { 
+            ProductId = product.ProductId, 
+            ProductName = product.ProductName,
+            Code = product.Code,
+            Quantity = product.Quantity,
+            MinQuantity = product.MinQuantity,
+            PurchasePrice = product.PurchasePrice,
+            SalePrice = product.SalePrice,
+            UnitId = product.UnitId, 
+            GroupId = product.GroupId,
+            Notes = product.Notes, 
+            CreatedAt = product.CreatedAt,
+            Active = product.Active
+        };
 
     public static Product ToEntity(this CreateProductDto dto)
         => new Product
@@ -24,17 +35,15 @@ public static class MappingProduct
             Notes = dto.Notes
         };
 
-    public static Product ToEntity(this UpdateProductDto dto, int productId)
-        => new Product
-        {
-            ProductId = productId,
-            ProductName = dto.ProductName,
-            Code = dto.Code,
-            MinQuantity = dto.MinQuantity,
-            PurchasePrice = dto.PurchasePrice,
-            SalePrice = dto.SalePrice,
-            GroupId = dto.GroupId,
-            Notes = dto.Notes,
-            Active = dto.Active
-        };
+    public static void UpdateFromDto(this Product product ,UpdateProductDto dto)
+    {
+        product.ProductName = dto.ProductName;
+        product.Code = dto.Code;
+        product.MinQuantity = dto.MinQuantity;
+        product.PurchasePrice = dto.PurchasePrice;
+        product.SalePrice = dto.SalePrice;
+        product.GroupId = dto.GroupId;
+        product.Notes = dto.Notes;
+        product.Active = dto.Active;
+    }
 }
