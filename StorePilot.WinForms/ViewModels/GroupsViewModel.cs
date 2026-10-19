@@ -9,7 +9,7 @@ public sealed class GroupsViewModel
 {
     private readonly IProductGroupService _service;
 
-    public BindingList<ProductGroupDto> Items { get; } = new();
+    public BindingList<ProductGroupFilteredDto> Items { get; } = new();
 
     public int PageNumber { get; private set; } = 1;
 
@@ -24,7 +24,7 @@ public sealed class GroupsViewModel
         _service = service;
     }
 
-    public async Task<Result<bool>> ExistsAsync(
+    public async Task<bool> ExistsAsync(
         int groupId,
         CancellationToken cancellationToken = default)
         => await _service.ExistsAsync(groupId, cancellationToken);
@@ -41,14 +41,14 @@ public sealed class GroupsViewModel
                 pageSize,
                 cancellationToken);
 
-        PageNumber = result.Value == null ? 1 : result.Value.PageNumber;
-        PageSize = result.Value == null ? 50 : result.Value.PageSize;
-        TotalCount = result.Value == null ? 0 : result.Value.TotalCount;
-        TotalPages = result.Value == null ? 1 : result.Value.TotalPages;
+        PageNumber = result.PageNumber;
+        PageSize = result.PageSize;
+        TotalCount = result.TotalCount;
+        TotalPages = result.TotalPages;
 
         Items.Clear();
 
-        foreach (var item in result.Value?.Items ?? Array.Empty<ProductGroupDto>())
+        foreach (var item in result.Items)
             Items.Add(item);
     }
 

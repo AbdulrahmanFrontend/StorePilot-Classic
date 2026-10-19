@@ -1,6 +1,6 @@
 ﻿namespace StorePilot.Application.Dtos.ProductDtos;
 
-public sealed record GetProductsQueryDto(
+public sealed record ProductsQueryDto(
     string? SearchTerm,    // للبحث بالاسم أو الكود (يبدأ بـ StartsWith)
     int? GroupId,          // فلترة بالمجموعة
     bool? Active,          // تفعيل / غير تفعيل / الكل (لو null يجلب الكل)

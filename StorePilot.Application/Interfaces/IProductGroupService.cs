@@ -5,20 +5,17 @@ namespace StorePilot.Application.Interfaces;
 
 public interface IProductGroupService
 {
-    Task<Result<IReadOnlyList<ProductGroupDto>>> GetAllAsync(
-        CancellationToken cancellationToken = default);
-
-    Task<Result<PagedResult<ProductGroupDto>>> GetPagesAsync(
+    Task<PagedResult<ProductGroupFilteredDto>> GetPagesAsync(
         string? search = null,
         int pageNumber = 1,
         int pageSize = 50,
         CancellationToken cancellationToken = default);
 
-    Task<Result<ProductGroupDto>> GetByIdAsync(
+    Task<ProductGroupDto> GetByIdAsync(
         int groupId,
         CancellationToken cancellationToken = default);
 
-    Task<Result<bool>> ExistsAsync(
+    Task<bool> ExistsAsync(
         int groupId,
         CancellationToken cancellationToken = default);
 

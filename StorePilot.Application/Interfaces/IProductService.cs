@@ -1,5 +1,7 @@
 ﻿using StorePilot.Application.Common;
 using StorePilot.Application.Dtos.ProductDtos;
+using StorePilot.Application.Dtos.ProductGroupDtos;
+using StorePilot.Application.Dtos.UnitDtos;
 
 namespace StorePilot.Application.Interfaces;
 
@@ -7,6 +9,12 @@ public interface IProductService
 {
     Task<ProductDto> GetByIdAsync(
         int productId,
+        CancellationToken cancellationToken = default);
+
+    Task<IReadOnlyList<ProductGroupDto>> GetAllGroups(
+        CancellationToken cancellationToken = default);
+
+    Task<IReadOnlyList<UnitDto>> GetAllUnits(
         CancellationToken cancellationToken = default);
 
     Task<bool> ExistsAsync(
@@ -23,7 +31,7 @@ public interface IProductService
         CancellationToken cancellationToken = default);
 
     Task<PagedResult<ProductDto>> GetFilteredAsync(
-        GetProductsQueryDto queryDto, 
+        ProductsQueryDto queryDto, 
         CancellationToken cancellationToken = default);
 
     Task<Result> DeleteAsync(

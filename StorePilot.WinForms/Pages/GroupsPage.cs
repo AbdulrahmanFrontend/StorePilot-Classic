@@ -95,10 +95,10 @@ public partial class GroupsPage : UserControl
         DataGridViewCellEventArgs e)
     {
         if (groupsGrid.Grid.Rows[e.RowIndex]
-            .DataBoundItem is not ProductGroupDto item)
+            .DataBoundItem is not ProductGroupFilteredDto item)
             return;
 
-        using var form = new EditNameForm("تعديل المجموعة", item.Name);
+        using var form = new EditNameForm("تعديل المجموعة", item.GroupName);
 
         if (form.ShowDialog(this) != DialogResult.OK)
             return;

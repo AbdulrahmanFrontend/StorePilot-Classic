@@ -2,5 +2,4 @@
 
 public sealed record ProductGroupDto(
     int GroupId,
-    string Name,
-    DateTime CreatedAt);
+    string GroupName);

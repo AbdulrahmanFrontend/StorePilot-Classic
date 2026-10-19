@@ -33,44 +33,6 @@ public class UnitServiceTests
             new UpdateUnitDtoValidator());
 
     [Fact]
-    public async Task GetAllAsync_Should_Return_All_Units_Ordered_Descending()
-    {
-        // --- Arrange ---
-        var context = GetInMemoryDbContext();
-        context.Units.Add(new Unit { UnitName = "وحدة أولى" });
-        context.Units.Add(new Unit { UnitName = "وحدة ثانية" });
-        await context.SaveChangesAsync();
-
-        var service = GetService(context);
-
-        // --- Act ---
-        var result = await service.GetAllAsync();
-
-        // --- Assert ---
-        result.IsSuccess.Should().BeTrue();
-        result.Value.Should().NotBeNull();
-        result.Value.Should().HaveCount(2);
-        // التأكد من أن التنازلي يعمل (العنصر الأحدث يظهر أولاً)
-        result.Value[0].UnitName.Should().Be("وحدة ثانية");
-        result.Value[1].UnitName.Should().Be("وحدة أولى");
-    }
-
-    [Fact]
-    public async Task GetAllAsync_Should_Return_Empty_List_When_No_Units_Exist()
-    {
-        // --- Arrange ---
-        var service = GetService(GetInMemoryDbContext());
-
-        // --- Act ---
-        var result = await service.GetAllAsync();
-
-        // --- Assert ---
-        result.IsSuccess.Should().BeTrue();
-        result.Value.Should().BeEmpty();
-        result.Value.Should().HaveCount(0);
-    }
-
-    [Fact]
     public async Task GetByIdAsync_Should_Return_Unit_When_Id_Exists()
     {
         // --- Arrange ---
@@ -86,9 +48,8 @@ public class UnitServiceTests
         var result = await service.GetByIdAsync(unit.UnitId);
 
         // --- Assert ---
-        result.IsSuccess.Should().BeTrue();
-        result.Value.Should().NotBeNull();
-        result.Value.UnitName.Should().Be("قطعة");
+        result.Should().NotBeNull();
+        result.UnitName.Should().Be("قطعة");
     }
 
     [Fact]
@@ -101,8 +62,7 @@ public class UnitServiceTests
         var result = await service.GetByIdAsync(999); // رقم غير موجود
 
         // --- Assert ---
-        result.IsSuccess.Should().BeFalse();
-        result.ErrorMessage.Should().Be("الوحدة غير موجودة!");
+        result.Should().BeNull();
     }
 
     [Fact]
@@ -120,8 +80,7 @@ public class UnitServiceTests
         var result = await service.ExistsAsync(unit.UnitId);
 
         // --- Assert ---
-        result.IsSuccess.Should().BeTrue();
-        result.Value.Should().BeTrue(); // العنصر موجود بالفعل
+        result.Should().BeTrue(); // العنصر موجود بالفعل
     }
 
     [Fact]
@@ -134,8 +93,7 @@ public class UnitServiceTests
         var result = await service.ExistsAsync(9999); // رقم غير موجود
 
         // --- Assert ---
-        result.IsSuccess.Should().BeTrue();
-        result.Value.Should().BeFalse(); // العنصر غير موجود
+        result.Should().BeFalse(); // العنصر غير موجود
     }
 
     [Fact]
@@ -155,11 +113,12 @@ public class UnitServiceTests
         var result = await service.GetPagesAsync(search: "كيلو", pageNumber: 1, pageSize: 1);
 
         // --- Assert ---
-        result.IsSuccess.Should().BeTrue();
-        result.Value?.TotalCount.Should().Be(2);     // وجد عنصرين يمطابقان البحث
-        result.Value?.TotalPages.Should().Be(2);    // طالما إجمالي العناصر 2 وحجم الصفحة 1، إذن لدينا صفحتان
-        result.Value?.Items.Should().HaveCount(1);   // يجب أن يعود بعنصر واحد فقط في الصفحة الأولى
-        result.Value?.Items[0].UnitName.Should().Be("كيلومتر"); // الأحدث يأتي أولاً بسبب OrderByDescending
+        result.PageNumber.Should().Be(1);
+        result.PageSize.Should().Be(1);
+        result.TotalCount.Should().Be(2);     // وجد عنصرين يمطابقان البحث
+        result.TotalPages.Should().Be(2);    // طالما إجمالي العناصر 2 وحجم الصفحة 1، إذن لدينا صفحتان
+        result.Items.Should().HaveCount(1);   // يجب أن يعود بعنصر واحد فقط في الصفحة الأولى
+        result.Items[0].UnitName.Should().Be("كيلومتر"); // الأحدث يأتي أولاً بسبب OrderByDescending
     }
 
     [Fact]
@@ -179,11 +138,12 @@ public class UnitServiceTests
         var result = await service.GetPagesAsync(search: null, pageNumber: 1, pageSize: 1);
 
         // --- Assert ---
-        result.IsSuccess.Should().BeTrue();
-        result.Value?.TotalCount.Should().Be(3);     // وجد ثلاثة عناصر
-        result.Value?.TotalPages.Should().Be(3);    // طالما إجمالي العناصر 3 وحجم الصفحة 1، إذن لدينا ثلاث صفحتان
-        result.Value?.Items.Should().HaveCount(1);   // يجب أن يعود بعنصر واحد فقط في الصفحة الأولى
-        result.Value?.Items[0].UnitName.Should().Be("قطعة"); // الأحدث يأتي أولاً بسبب OrderByDescending
+        result.PageSize.Should().Be(1);
+        result.PageNumber.Should().Be(1);
+        result.TotalCount.Should().Be(3);     // وجد ثلاثة عناصر
+        result.TotalPages.Should().Be(3);    // طالما إجمالي العناصر 3 وحجم الصفحة 1، إذن لدينا ثلاث صفحتان
+        result.Items.Should().HaveCount(1);   // يجب أن يعود بعنصر واحد فقط في الصفحة الأولى
+        result.Items[0].UnitName.Should().Be("قطعة"); // الأحدث يأتي أولاً بسبب OrderByDescending
     }
 
     [Fact]
@@ -203,10 +163,11 @@ public class UnitServiceTests
         var result = await service.GetPagesAsync(search: "متر", pageNumber: 1, pageSize: 1);
 
         // --- Assert ---
-        result.IsSuccess.Should().BeTrue();
-        result.Value?.TotalCount.Should().Be(0);     // لم يُجد أي عناصر
-        result.Value?.TotalPages.Should().Be(0);    // طالما إجمالي العناصر 0 وحجم الصفحة 1، إذن لدينا صفحتان
-        result.Value?.Items.Should().HaveCount(0);   // يجب أن يعود بعنصر واحد فقط في الصفحة الأولى
+        result.PageSize.Should().Be(1);
+        result.PageNumber.Should().Be(1);
+        result.TotalCount.Should().Be(0);     // لم يُجد أي عناصر
+        result.TotalPages.Should().Be(0);    // طالما إجمالي العناصر 0 وحجم الصفحة 1، إذن لدينا صفحتان
+        result.Items.Should().HaveCount(0);   // يجب أن يعود بعنصر واحد فقط في الصفحة الأولى
     }
 
     [Fact]
@@ -519,12 +480,12 @@ public class UnitServiceTests
         await context.SaveChangesAsync();
 
         var service = GetService(context);
-        var existsUnit = service.GetByIdAsync(1); // الحصول على الوحدة الأولى (متر)
+        var existsUnit = context.Units.First(); // الحصول على الوحدة الأولى (متر)
         var duplicateDto = new UpdateUnitDto("قطعة"); // نفس الاسم تماماً
 
         // --- Act ---
         var result = await service.UpdateAsync(
-            existsUnit.Result.Value.UnitId, 
+            existsUnit.UnitId, 
             duplicateDto);
 
         // --- Assert ---

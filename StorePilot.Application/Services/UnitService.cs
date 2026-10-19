@@ -52,20 +52,7 @@ public class UnitService : IUnitService
         _updateValidator = updateValidator;
     }
 
-    public async Task<Result<IReadOnlyList<UnitDto>>> GetAllAsync(
-        CancellationToken cancellationToken = default)
-    {
-        var entities = await _context.Units
-            .OrderByDescending(x => x.UnitId)
-            .AsNoTracking()
-            .ToListAsync(cancellationToken);
-
-        var dtos = entities.Select(e => e.ToDto()).ToList();
-
-        return Result<IReadOnlyList<UnitDto>>.Success(dtos);
-    }
-
-    public async Task<Result<UnitDto>> GetByIdAsync(
+    public async Task<UnitDto> GetByIdAsync(
         int unitId,
         CancellationToken cancellationToken = default)
     {
@@ -73,14 +60,10 @@ public class UnitService : IUnitService
             new object[] { unitId },
             cancellationToken);
 
-        if (item is null)
-            return Result<UnitDto>.Failure(
-                "الوحدة غير موجودة!");
-
-        return Result<UnitDto>.Success(item.ToDto());
+        return item.ToDto();
     }
 
-    public async Task<Result<bool>> ExistsAsync(
+    public async Task<bool> ExistsAsync(
         int unitId,
         CancellationToken cancellationToken = default)
     {
@@ -88,10 +71,10 @@ public class UnitService : IUnitService
             x => x.UnitId == unitId,
             cancellationToken);
 
-        return Result<bool>.Success(exists);
+        return exists;
     }
 
-    public async Task<Result<PagedResult<UnitDto>>> GetPagesAsync(
+    public async Task<PagedResult<UnitFilteredDto>> GetPagesAsync(
         string? search = null,
         int pageNumber = 1,
         int pageSize = 50,
@@ -126,15 +109,15 @@ public class UnitService : IUnitService
             .AsNoTracking()
             .ToListAsync(cancellationToken);
 
-        var dtos = entities.Select(e => e.ToDto()).ToList();
+        var dtos = entities.Select(e => e.ToQueryDto()).ToList();
 
-        var pagedResult = new PagedResult<UnitDto>(
+        var pagedResult = new PagedResult<UnitFilteredDto>(
             dtos,
             totalCount,
             pageNumber,
             pageSize);
 
-        return Result<PagedResult<UnitDto>>.Success(pagedResult);
+        return pagedResult;
     }
 
     public async Task<Result> CreateAsync(

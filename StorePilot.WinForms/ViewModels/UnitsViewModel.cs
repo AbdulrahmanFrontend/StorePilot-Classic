@@ -9,7 +9,7 @@ public sealed class UnitsViewModel
 {
     private readonly IUnitService _service;
 
-    public BindingList<UnitDto> Items { get; } = new();
+    public BindingList<UnitFilteredDto> Items { get; } = new();
 
     public int PageNumber { get; private set; } = 1;
 
@@ -37,14 +37,14 @@ public sealed class UnitsViewModel
                 pageSize,
                 cancellationToken);
 
-        PageNumber = result.Value == null ? 1 : result.Value.PageNumber;
-        PageSize = result.Value == null ? 50 : result.Value.PageSize;
-        TotalCount = result.Value == null ? 0 : result.Value.TotalCount;
-        TotalPages = result.Value == null ? 1 : result.Value.TotalPages;
+        PageNumber = result.PageNumber;
+        PageSize = result.PageSize;
+        TotalCount = result.TotalCount;
+        TotalPages = result.TotalPages;
 
         Items.Clear();
 
-        foreach (var item in result.Value?.Items ?? Array.Empty<UnitDto>())
+        foreach (var item in result.Items)
             Items.Add(item);
     }
 

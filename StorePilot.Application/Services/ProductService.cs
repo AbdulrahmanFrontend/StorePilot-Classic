@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using StorePilot.Application.Common;
 using StorePilot.Application.Dtos.ProductDtos;
+using StorePilot.Application.Dtos.ProductGroupDtos;
+using StorePilot.Application.Dtos.UnitDtos;
 using StorePilot.Application.Interfaces;
 using StorePilot.Application.Mappings;
 
@@ -25,6 +27,28 @@ public class ProductService : IProductService
         _logger = logger;
         _createValidator = createValidator;
         _updateValidator = updateValidator;
+    }
+
+    public async Task<IReadOnlyList<ProductGroupDto>> GetAllGroups(
+        CancellationToken cancellationToken = default)
+    {
+        var groups = await _context.ProductGroups
+            .Select(g => g.ToDto())
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
+
+        return groups;
+    }
+
+    public async Task<IReadOnlyList<UnitDto>> GetAllUnits(
+        CancellationToken cancellationToken = default)
+    {
+        var units = await _context.Units
+            .Select(u => u.ToDto())
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
+
+        return units;
     }
 
     private async Task<Result> ValidationResult(
@@ -148,11 +172,11 @@ public class ProductService : IProductService
     {
         var product = _context.Products.FindAsync(productId, cancellationToken).Result;
 
-        return product?.ToDto();
+        return product.ToDto();
     }
 
     public async Task<PagedResult<ProductDto>> GetFilteredAsync(
-        GetProductsQueryDto queryDto,
+        ProductsQueryDto queryDto,
         CancellationToken cancellationToken = default)
     {
         // 1. نبدأ بـ IQueryable الأساسي

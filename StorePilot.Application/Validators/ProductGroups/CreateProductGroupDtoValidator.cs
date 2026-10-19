@@ -12,7 +12,7 @@ public class CreateProductGroupDtoValidator : AbstractValidator<CreateProductGro
     {
         RuleLevelCascadeMode = CascadeMode.Stop;
 
-        RuleFor(x => x.Name)
+        RuleFor(x => x.GroupName)
             .NotEmpty().WithMessage("اسم المجموعة مطلوب ولا يمكن أن يكون فارغاً!")
             .MaximumLength(20).WithMessage("اسم المجموعة يجب ألا يتجاوز 20 حرفاً!");
     }

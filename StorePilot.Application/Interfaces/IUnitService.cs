@@ -5,20 +5,17 @@ namespace StorePilot.Application.Interfaces;
 
 public interface IUnitService
 {
-    Task<Result<IReadOnlyList<UnitDto>>> GetAllAsync(
-        CancellationToken cancellationToken = default);
-
-    Task<Result<PagedResult<UnitDto>>> GetPagesAsync(
+    Task<PagedResult<UnitFilteredDto>> GetPagesAsync(
         string? search = null,
         int pageNumber = 1,
         int pageSize = 50,
         CancellationToken cancellationToken = default);
 
-    Task<Result<UnitDto>> GetByIdAsync(
+    Task<UnitDto> GetByIdAsync(
         int unitId,
         CancellationToken cancellationToken = default);
 
-    Task<Result<bool>> ExistsAsync(
+    Task<bool> ExistsAsync(
         int unitId,
         CancellationToken cancellationToken = default);
 

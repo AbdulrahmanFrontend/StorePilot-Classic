@@ -2,5 +2,4 @@
 
 public sealed record UnitDto(
     int UnitId,
-    string UnitName,
-    DateTime CreatedAt);
+    string UnitName);

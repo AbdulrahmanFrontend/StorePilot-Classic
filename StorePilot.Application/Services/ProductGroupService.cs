@@ -28,20 +28,7 @@ public class ProductGroupService : IProductGroupService
         _updateValidator = updateValidator;
     }
 
-    public async Task<Result<IReadOnlyList<ProductGroupDto>>> GetAllAsync(
-        CancellationToken cancellationToken = default)
-    {
-        var entities = await _context.ProductGroups
-            .OrderByDescending(x => x.GroupId)
-            .AsNoTracking()
-            .ToListAsync(cancellationToken);
-
-        var dtos = entities.Select(e => e.ToDto()).ToList();
-
-        return Result<IReadOnlyList<ProductGroupDto>>.Success(dtos);
-    }
-
-    public async Task<Result<ProductGroupDto>> GetByIdAsync(
+    public async Task<ProductGroupDto> GetByIdAsync(
         int groupId,
         CancellationToken cancellationToken = default)
     {
@@ -49,14 +36,10 @@ public class ProductGroupService : IProductGroupService
             new object[] { groupId }, 
             cancellationToken);
 
-        if (item is null)
-            return Result<ProductGroupDto>.Failure(
-                "مجموعة الصنف غير موجودة!");
-
-        return Result<ProductGroupDto>.Success(item.ToDto());
+        return item.ToDto();
     }
 
-    public async Task<Result<bool>> ExistsAsync(
+    public async Task<bool> ExistsAsync(
         int groupId,
         CancellationToken cancellationToken = default)
     {
@@ -64,10 +47,10 @@ public class ProductGroupService : IProductGroupService
             x => x.GroupId == groupId,
             cancellationToken);
 
-        return Result<bool>.Success(exists);
+        return exists;
     }
 
-    public async Task<Result<PagedResult<ProductGroupDto>>> GetPagesAsync(
+    public async Task<PagedResult<ProductGroupFilteredDto>> GetPagesAsync(
         string? search = null,
         int pageNumber = 1,
         int pageSize = 50,
@@ -102,15 +85,15 @@ public class ProductGroupService : IProductGroupService
             .AsNoTracking()
             .ToListAsync(cancellationToken);
 
-        var dtos = entities.Select(e => e.ToDto()).ToList();
+        var dtos = entities.Select(e => e.ToQueryDto()).ToList();
 
-        var pagedResult = new PagedResult<ProductGroupDto>(
+        var pagedResult = new PagedResult<ProductGroupFilteredDto>(
             dtos,
             totalCount,
             pageNumber,
             pageSize);
 
-        return Result<PagedResult<ProductGroupDto>>.Success(pagedResult);
+        return pagedResult;
     }
 
     public async Task<Result> CreateAsync(
@@ -137,7 +120,7 @@ public class ProductGroupService : IProductGroupService
             return Result.Failure(validationResult.Errors.First().ErrorMessage);
         }
 
-        var name = dto.Name.Trim();
+        var name = dto.GroupName.Trim();
 
         bool exists = await _context.ProductGroups.AnyAsync(
             x => string.Equals(
@@ -195,7 +178,7 @@ public class ProductGroupService : IProductGroupService
             return Result.Failure(validationResult.Errors.First().ErrorMessage);
         }
 
-        var name = dto.Name.Trim();
+        var name = dto.GroupName.Trim();
 
         var item = await _context.ProductGroups.FindAsync(
             new object[] { groupId },

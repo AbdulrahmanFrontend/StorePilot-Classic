@@ -5,8 +5,16 @@ namespace StorePilot.Application.Mappings;
 
 public static class MappingUnit
 {
+    public static UnitFilteredDto ToQueryDto(this Unit unit)
+        => new UnitFilteredDto(unit.UnitId, unit.UnitName, unit.CreatedAt);
+
     public static UnitDto ToDto(this Unit unit)
-        => new UnitDto(unit.UnitId, unit.UnitName, unit.CreatedAt);
+    {
+        if (unit is null)
+            return null;
+
+        return new UnitDto(unit.UnitId, unit.UnitName); 
+    }
 
     public static Unit ToEntity(this CreateUnitDto dto)
         => new Unit { UnitName = dto.UnitName };

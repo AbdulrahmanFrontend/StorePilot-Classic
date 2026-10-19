@@ -89,7 +89,7 @@ public partial class UnitsPage : UserControl
         object? sender, 
         DataGridViewCellEventArgs e)
     {
-        if (unitsGrid.Grid.Rows[e.RowIndex].DataBoundItem is not UnitDto item)
+        if (unitsGrid.Grid.Rows[e.RowIndex].DataBoundItem is not UnitFilteredDto item)
             return;
 
         using var form = new EditNameForm("تعديل الوحدة", item.UnitName);
