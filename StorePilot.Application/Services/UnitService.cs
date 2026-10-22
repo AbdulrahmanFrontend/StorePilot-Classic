@@ -56,9 +56,11 @@ public class UnitService : IUnitService
         int unitId,
         CancellationToken cancellationToken = default)
     {
-        var item = await _context.Units.FindAsync(
-            new object[] { unitId },
-            cancellationToken);
+        var item = await _context.Units
+            .AsNoTracking()
+            .FirstOrDefaultAsync(
+                x => x.UnitId == unitId,
+                cancellationToken);
 
         return item.ToDto();
     }

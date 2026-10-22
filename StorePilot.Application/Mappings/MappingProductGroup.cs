@@ -6,10 +6,15 @@ namespace StorePilot.Application.Mappings;
 public static class MappingProductGroup
 {
     public static ProductGroupFilteredDto ToQueryDto(this ProductGroup productGroup)
-        => new ProductGroupFilteredDto(
+    {
+        if (productGroup is null)
+            return null;
+
+        return new ProductGroupFilteredDto(
             productGroup.GroupId,
-            productGroup.GroupName, 
-            productGroup.CreatedAt);
+            productGroup.GroupName,
+            productGroup.CreatedAt); 
+    }
 
     public static ProductGroupDto ToDto(this ProductGroup productGroup)
     {
@@ -22,12 +27,20 @@ public static class MappingProductGroup
     }
 
     public static ProductGroup ToEntity(this CreateProductGroupDto dto)
-        => new ProductGroup { GroupName = dto.GroupName };
+    {
+        if (dto is null)
+            return null;
+
+        return new ProductGroup { GroupName = dto.GroupName }; 
+    }
 
     public static void UpdateFromDto(
         this ProductGroup entity,
         UpdateProductGroupDto dto)
     {
+        if (entity is null || dto is null)
+            return;
+
         entity.GroupName = dto.GroupName;
     }
 }

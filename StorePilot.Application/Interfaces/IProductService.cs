@@ -11,10 +11,10 @@ public interface IProductService
         int productId,
         CancellationToken cancellationToken = default);
 
-    Task<IReadOnlyList<ProductGroupDto>> GetAllGroups(
+    Task<IReadOnlyList<ProductGroupDto>> GetAllGroupsAsync(
         CancellationToken cancellationToken = default);
 
-    Task<IReadOnlyList<UnitDto>> GetAllUnits(
+    Task<IReadOnlyList<UnitDto>> GetAllUnitsAsync(
         CancellationToken cancellationToken = default);
 
     Task<bool> ExistsAsync(
@@ -30,7 +30,7 @@ public interface IProductService
         UpdateProductDto dto,
         CancellationToken cancellationToken = default);
 
-    Task<PagedResult<ProductDto>> GetFilteredAsync(
+    Task<PagedResult<ProductFilteredDto>> GetFilteredAsync(
         ProductsQueryDto queryDto, 
         CancellationToken cancellationToken = default);
 

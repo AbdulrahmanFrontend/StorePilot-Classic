@@ -32,9 +32,11 @@ public class ProductGroupService : IProductGroupService
         int groupId,
         CancellationToken cancellationToken = default)
     {
-        var item = await _context.ProductGroups.FindAsync(
-            new object[] { groupId }, 
-            cancellationToken);
+        var item = await _context.ProductGroups
+            .AsNoTracking()
+            .FirstOrDefaultAsync(
+                x => x.GroupId == groupId,
+                cancellationToken);
 
         return item.ToDto();
     }

@@ -29,7 +29,7 @@ public class ProductService : IProductService
         _updateValidator = updateValidator;
     }
 
-    public async Task<IReadOnlyList<ProductGroupDto>> GetAllGroups(
+    public async Task<IReadOnlyList<ProductGroupDto>> GetAllGroupsAsync(
         CancellationToken cancellationToken = default)
     {
         var groups = await _context.ProductGroups
@@ -40,7 +40,7 @@ public class ProductService : IProductService
         return groups;
     }
 
-    public async Task<IReadOnlyList<UnitDto>> GetAllUnits(
+    public async Task<IReadOnlyList<UnitDto>> GetAllUnitsAsync(
         CancellationToken cancellationToken = default)
     {
         var units = await _context.Units
@@ -170,40 +170,47 @@ public class ProductService : IProductService
         int productId,
         CancellationToken cancellationToken = default)
     {
-        var product = _context.Products.FindAsync(productId, cancellationToken).Result;
+        var product = _context.Products
+            .AsNoTracking()
+            .FirstOrDefaultAsync(p => p.ProductId == productId, cancellationToken)
+            .Result;
 
         return product.ToDto();
     }
 
-    public async Task<PagedResult<ProductDto>> GetFilteredAsync(
+    public async Task<PagedResult<ProductFilteredDto>> GetFilteredAsync(
         ProductsQueryDto queryDto,
         CancellationToken cancellationToken = default)
     {
+        if (queryDto is null)
+            return null;
+
         // 1. نبدأ بـ IQueryable الأساسي
-        var query = _context.Products.AsQueryable();
+        var query = _context.Products.AsQueryable().AsNoTracking();
 
         // 2. تطبيق فلتر الحالة (تفعيل / غير تفعيل / الكل)
         if (queryDto.Active.HasValue)
-            query = query.Where(p => p.Active == queryDto.Active.Value).AsNoTracking();
+            query = query.Where(p => p.Active == queryDto.Active.Value);
 
         // 3. تطبيق فلتر المجموعة إذا تم تحديده
         if (queryDto.GroupId.HasValue)
-            query = query.Where(p => p.GroupId == queryDto.GroupId.Value).AsNoTracking();
+            query = query.Where(p => p.GroupId == queryDto.GroupId.Value);
 
         // 4. تطبيق البحث النصي (بالاسم أو بالكود - تبدأ بـ StartsWith لاستغلال الفهارس)
         if (!string.IsNullOrWhiteSpace(queryDto.SearchTerm))
         {
             var term = queryDto.SearchTerm.Trim();
-            query = query.Where(
+            query = query
+                .Where(
                 p => p.ProductName.StartsWith(term) 
-                || (p.Code != null && p.Code.StartsWith(term))).AsNoTracking();
+                || (p.Code != null && p.Code.StartsWith(term)));
         }
 
         // 5. الأهم: حساب العدد الإجمالي للسجلات المطابقة للبحث *قبل* الـ Skip و Take
         var totalCount = await query.CountAsync(cancellationToken);
 
         // 6. الترتيب التنازلي حسب الـ ID (الأحدث يظهر أولاً)
-        query = query.OrderByDescending(p => p.ProductId).AsNoTracking();
+        query = query.OrderByDescending(p => p.ProductId);
 
         // 7. تطبيق الـ Pagination لجلب عناصر الصفحة الحالية فقط
         var skip = (queryDto.PageNumber - 1) * queryDto.PageSize;
@@ -211,7 +218,8 @@ public class ProductService : IProductService
         var items = await query
             .Skip(skip)
             .Take(queryDto.PageSize)
-            .Select(p => new ProductDto 
+            .Include(p => p.Group) // إذا كنت بحاجة إلى تضمين بيانات المجموعة
+            .Select(p => new ProductFilteredDto 
             {
                 ProductId = p.ProductId,
                 ProductName = p.ProductName,
@@ -221,15 +229,16 @@ public class ProductService : IProductService
                 PurchasePrice = p.PurchasePrice,
                 SalePrice = p.SalePrice,
                 UnitId = p.UnitId,
+                UnitName = p.Unit.UnitName, // تضمين اسم الوحدة
                 GroupId = p.GroupId,
+                GroupName = p.Group.GroupName, // تضمين اسم المجموعة
                 CreatedAt = p.CreatedAt,
                 Active = p.Active
             })
-            .AsNoTracking()
             .ToListAsync(cancellationToken);
 
         // 8. إرجاع النتيجة مغلفة في الـ PagedResult الجاهز لديك
-        return new PagedResult<ProductDto>(
+        return new PagedResult<ProductFilteredDto>(
             items,
             totalCount, 
             queryDto.PageNumber,

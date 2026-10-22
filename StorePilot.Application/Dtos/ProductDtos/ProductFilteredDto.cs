@@ -10,7 +10,9 @@ public sealed class ProductFilteredDto
     public decimal PurchasePrice { get; set; }
     public decimal SalePrice { get; set; }
     public int UnitId { get; set; }
+    public string UnitName { get; set; } = null!;
     public int GroupId { get; set; }
+    public string GroupName { get; set; } = null!;
     public DateTime CreatedAt { get; set; }
     public bool Active { get; set; }
 }

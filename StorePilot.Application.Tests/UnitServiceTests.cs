@@ -469,7 +469,7 @@ public class UnitServiceTests
     }
 
     [Fact]
-    public async Task UpdateAsync_Should_Fail_When_Unit_Id_Is_Dupplicate()
+    public async Task UpdateAsync_Should_Fail_When_Unit_Is_Dupplicate()
     {
         // --- Arrange ---
         var context = GetInMemoryDbContext();

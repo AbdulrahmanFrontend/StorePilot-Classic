@@ -78,7 +78,14 @@ internal class ProductConfiguration : IEntityTypeConfiguration<Product>
 
         builder.Property(x => x.Active)
             .HasColumnName("Active")
-            .HasDefaultValue(true);
+            .HasDefaultValue(true)
+            .HasConversion<int>();
+
+        builder.HasIndex(x => x.ProductName)
+            .IsUnique();
+
+        builder.HasIndex(x => x.Code)
+            .IsUnique();
 
 
         // --------------------------------------------------------

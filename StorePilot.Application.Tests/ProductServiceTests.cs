@@ -464,7 +464,7 @@ public class ProductServiceTests
     }
 
     [Fact]
-    public async Task UpdateAsync_Should_Fail_When_MinQuantity_Is_Less_Than_0()
+    public async Task UpdateAsync_Should_Fail_When_MinQuantity_Is_Negative()
     {
         // -- Arrange --
         var context = GetInMemoryDbContext();
@@ -625,5 +625,242 @@ public class ProductServiceTests
         // -- Assert --
         result?.Result.IsSuccess.Should().BeFalse();
         result?.Result.Message.Should().Be("المجموعة المحددة غير موجودة!");
+    }
+
+    private async Task SeedFilteredProductsAsync(StorePilotDbContext context)
+    {
+        var group = new CreateProductGroupDto("مجموعة");
+        await context.ProductGroups.AddAsync(group.ToEntity());
+
+        group = new CreateProductGroupDto("مجموعة2");
+        await context.ProductGroups.AddAsync(group.ToEntity());
+
+        var unit = new CreateUnitDto("متر");
+        await context.Units.AddAsync(unit.ToEntity());
+
+        unit = new CreateUnitDto("قطعة");
+        await context.Units.AddAsync(unit.ToEntity());
+
+        await context.SaveChangesAsync();
+
+        await context.Products.AddAsync(new CreateProductDto("ماسورة", null, 0, 0, 0, 1, 1, null).ToEntity());
+        await context.Products.AddAsync(new CreateProductDto("ماسورة2", "123456", 0, 0, 0, 2, 1, null).ToEntity());
+        await context.Products.AddAsync(new CreateProductDto("ماسورة3", null, 0, 0, 0, 1, 2, null).ToEntity());
+        await context.Products.AddAsync(new CreateProductDto("ماسورة4", "123458", 0, 0, 0, 2, 2, null).ToEntity());
+        await context.SaveChangesAsync();
+
+        var product = await context.Products.FirstOrDefaultAsync();
+        product?.Active = false;
+        await context.SaveChangesAsync();
+
+        product = await context.Products.FindAsync(2);
+        product?.Active = false;
+        await context.SaveChangesAsync();
+    }
+
+    [Fact]
+    public async Task GetFilteredAsync_Should_Return_Active_Products()
+    {
+        // -- Arrange --
+        var context = GetInMemoryDbContext();
+
+        await SeedFilteredProductsAsync(context);
+
+        var service = GetService(context);
+
+        // -- Act --
+        var result = await service.GetFilteredAsync(new ProductsQueryDto(null, null, true));
+
+        // -- Assert --
+        result.Items.Count.Should().Be(2);
+        result.TotalCount.Should().Be(2);
+        result.PageNumber.Should().Be(1);
+        result.PageSize.Should().Be(50);
+        result.TotalPages.Should().Be(1);
+        result.Items[0].Active.Should().Be(true);
+        result.Items[1].Active.Should().Be(true);
+    }
+
+    [Fact]
+    public async Task GetFilteredAsync_Should_Return_Products_In_Same_Group()
+    {
+        // -- Arrange --
+        var context = GetInMemoryDbContext();
+
+        await SeedFilteredProductsAsync(context);
+
+        var service = GetService(context);
+
+        // -- Act --
+        var result = await service.GetFilteredAsync(new ProductsQueryDto(null, 1, null));
+
+        // -- Assert --
+        result.Items.Count.Should().Be(2);
+        result.TotalCount.Should().Be(2);
+        result.PageNumber.Should().Be(1);
+        result.PageSize.Should().Be(50);
+        result.TotalPages.Should().Be(1);
+        result.Items[0].GroupId.Should().Be(1);
+        result.Items[1].GroupId.Should().Be(1);
+    }
+
+    [Fact]
+    public async Task GetFilteredAsync_Should_Return_Products_With_Same_Code()
+    {
+        // -- Arrange --
+        var context = GetInMemoryDbContext();
+
+        await SeedFilteredProductsAsync(context);
+
+        var service = GetService(context);
+
+        // -- Act --
+        var result = await service.GetFilteredAsync(new ProductsQueryDto("1", null, null));
+
+        // -- Assert --
+        result.Items.Count.Should().Be(2);
+        result.TotalCount.Should().Be(2);
+        result.PageNumber.Should().Be(1);
+        result.PageSize.Should().Be(50);
+        result.TotalPages.Should().Be(1);
+        result.Items[0].Code.Should().StartWith("1");
+        result.Items[0].Code.Should().StartWith("12");
+    }
+
+    [Fact]
+    public async Task GetFilteredAsync_Should_Return_Products_With_Same_Name()
+    {
+        // -- Arrange --
+        var context = GetInMemoryDbContext();
+
+        await SeedFilteredProductsAsync(context);
+
+        var service = GetService(context);
+
+        // -- Act --
+        var result = await service.GetFilteredAsync(new ProductsQueryDto("ماسورة2", null, null));
+
+        // -- Assert --
+        result.Items.Count.Should().Be(1);
+        result.TotalCount.Should().Be(1);
+        result.PageNumber.Should().Be(1);
+        result.PageSize.Should().Be(50);
+        result.TotalPages.Should().Be(1);
+        result.Items[0].ProductName.Should().StartWith("ماسورة");
+    }
+
+    [Fact]
+    public async Task GetFilteredAsync_Should_Return_Active_Products_With_Same_Name()
+    {
+        // -- Arrange --
+        var context = GetInMemoryDbContext();
+
+        await SeedFilteredProductsAsync(context);
+
+        var service = GetService(context);
+
+        // -- Act --
+        var result = await service.GetFilteredAsync(new ProductsQueryDto("ماسورة", null, true));
+
+        // -- Assert --
+        result.Items.Count.Should().Be(2);
+        result.TotalCount.Should().Be(2);
+        result.PageNumber.Should().Be(1);
+        result.PageSize.Should().Be(50);
+        result.TotalPages.Should().Be(1);
+        result.Items[0].ProductName.Should().StartWith("ماسورة");
+        result.Items[0].Active.Should().Be(true);
+        result.Items[1].ProductName.Should().StartWith("ماسورة");
+        result.Items[1].Active.Should().Be(true);
+    }
+
+    [Fact]
+    public async Task GetFilteredAsync_Should_Return_InActive_Products_With_Same_Code()
+    {
+        // -- Arrange --
+        var context = GetInMemoryDbContext();
+
+        await SeedFilteredProductsAsync(context);
+
+        var service = GetService(context);
+
+        // -- Act --
+        var result = await service.GetFilteredAsync(new ProductsQueryDto("1", null, false));
+
+        // -- Assert --
+        result.Items.Count.Should().Be(2);
+        result.TotalCount.Should().Be(2);
+        result.PageNumber.Should().Be(1);
+        result.PageSize.Should().Be(50);
+        result.TotalPages.Should().Be(1);
+        result.Items[0].Code.Should().StartWith("1234");
+        result.Items[0].Active.Should().Be(false);
+        result.Items[1].Code.Should().StartWith("12");
+        result.Items[1].Active.Should().Be(false);
+    }
+
+    [Fact]
+    public async Task GetFilteredAsync_Should_Return_Active_Products_With_Same_Group()
+    {
+        // -- Arrange --
+        var context = GetInMemoryDbContext();
+
+        await SeedFilteredProductsAsync(context);
+
+        var service = GetService(context);
+
+        // -- Act --
+        var result = await service.GetFilteredAsync(new ProductsQueryDto(null, 1, true));
+
+        // -- Assert --
+        result.Items.Count.Should().Be(1);
+        result.TotalCount.Should().Be(1);
+        result.PageNumber.Should().Be(1);
+        result.PageSize.Should().Be(50);
+        result.TotalPages.Should().Be(1);
+        result.Items[0].GroupId.Should().Be(1);
+        result.Items[0].Active.Should().Be(true);
+    }
+
+    [Fact]
+    public async Task GetFilteredAsync_Should_Return_All_Products()
+    {
+        // -- Arrange --
+        var context = GetInMemoryDbContext();
+
+        await SeedFilteredProductsAsync(context);
+
+        var service = GetService(context);
+
+        // -- Act --
+        var result = await service.GetFilteredAsync(new ProductsQueryDto(null, null, null));
+
+        // -- Assert --
+        result.Items.Count.Should().Be(4);
+        result.TotalCount.Should().Be(4);
+        result.TotalPages.Should().Be(1);
+        result.PageSize.Should().Be(50);
+        result.PageNumber.Should().Be(1);
+    }
+
+    [Fact]
+    public async Task GetFilteredAsync_Should_Return_Empty_Page()
+    {
+        // -- Arrange --
+        var context = GetInMemoryDbContext();
+
+        await SeedFilteredProductsAsync(context);
+
+        var service = GetService(context);
+
+        // -- Act --
+        var result = await service.GetFilteredAsync(new ProductsQueryDto(null, null, null, 2, 4));
+
+        // -- Assert --
+        result.Items.Count.Should().Be(0);
+        result.TotalCount.Should().Be(4);
+        result.PageNumber.Should().Be(2);
+        result.PageSize.Should().Be(4);
+        result.TotalPages.Should().Be(1);
     }
 }

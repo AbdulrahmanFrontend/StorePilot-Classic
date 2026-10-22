@@ -41,6 +41,7 @@ CREATE TABLE IF NOT EXISTS "People" (
     "Address" TEXT,
     "CreatedAt" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "Notes" TEXT,
+    "Active" INTEGER NOT NULL DEFAULT 1 CHECK ("Active" IN (0, 1)),
     PRIMARY KEY ("PersonId" AUTOINCREMENT)
 ) STRICT;
 
@@ -53,8 +54,8 @@ CREATE TABLE IF NOT EXISTS "People" (
 
 CREATE TABLE IF NOT EXISTS "Products" (
     "ProductId" INTEGER,
-    "Code" TEXT,
-    "ProductName" TEXT NOT NULL,
+    "Code" TEXT UNIQUE,
+    "ProductName" TEXT NOT NULL UNIQUE,
     "Quantity" REAL NOT NULL DEFAULT 0 CHECK ("Quantity" >= 0),
     "MinQuantity" REAL NOT NULL DEFAULT 0 CHECK ("MinQuantity" >= 0),
     "SalePrice" REAL NOT NULL DEFAULT 0 CHECK ("SalePrice" >= 0),

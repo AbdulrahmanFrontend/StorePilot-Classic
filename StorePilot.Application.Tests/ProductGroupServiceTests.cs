@@ -462,7 +462,7 @@ public class ProductGroupServiceTests
     }
 
     [Fact]
-    public async Task UpdateAsync_Should_Fail_When_ProductGroup_Id_Is_Dupplicate()
+    public async Task UpdateAsync_Should_Fail_When_ProductGroup_Is_Dupplicate()
     {
         // --- Arrange ---
         var context = GetInMemoryDbContext();

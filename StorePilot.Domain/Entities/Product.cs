@@ -24,7 +24,7 @@ public class Product
 
     public string? Notes { get; set; }
 
-    public bool Active { get; set; }
+    public bool Active { get; set; } = true;
 
 
     // Navigation Properties
